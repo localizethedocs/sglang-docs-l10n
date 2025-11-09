@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/benchmark_and_profiling.md:1
+msgid "Benchmark and Profiling"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:3
+msgid "Benchmark"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:4
+msgid ""
+"Benchmark the latency of running a single static batch without a server. The "
+"arguments are the same as for `launch_server.py`. Note that this is a "
+"simplified test script without a dynamic batching server, so it may run out "
+"of memory for a batch size that a real server can handle. A real server "
+"truncates the prefill into several batches, while this simplified script "
+"does not."
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:6
+msgid ""
+"python -m sglang.bench_one_batch --model-path meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --batch 32 --input-len 256 --output-len 32\n"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:9
+msgid ""
+"Benchmark offline processing. This script will start an offline engine and "
+"run the benchmark."
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:10
+msgid ""
+"python3 -m sglang.bench_offline_throughput --model-path meta-llama/Meta-"
+"Llama-3.1-8B-Instruct --num-prompts 10\n"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:13
+msgid ""
+"Benchmark online serving. Please use `sglang.launch_server` to launch a "
+"server first and run the following command."
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:14
+msgid "python3 -m sglang.bench_serving --backend sglang --num-prompt 10\n"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:18
+msgid "Profile with Nsight"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:19
+msgid "Prerequisite"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:20
+msgid ""
+"# install nsys\n"
+"# https://docs.nvidia.com/nsight-systems/InstallationGuide/index.html\n"
+"apt update\n"
+"apt install -y --no-install-recommends gnupg\n"
+"echo \"deb http://developer.download.nvidia.com/devtools/repos/"
+"ubuntu$(source /etc/lsb-release; echo \"$DISTRIB_RELEASE\" | tr -d .)/$(dpkg "
+"--print-architecture) /\" | tee /etc/apt/sources.list.d/nvidia-devtools."
+"list\n"
+"apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/"
+"repos/ubuntu1804/x86_64/7fa2af80.pub\n"
+"apt update\n"
+"apt install nsight-systems-cli\n"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:31
+msgid ""
+"To profile a single batch, use `nsys profile --trace-fork-before-exec=true --"
+"cuda-graph-trace=node python3 -m sglang.bench_one_batch --model meta-llama/"
+"Meta-Llama-3-8B --batch-size 64 --input-len 512`"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:33
+msgid "To profile a server, e.g."
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:35
+msgid ""
+"# server\n"
+"# set the delay and duration times according to needs\n"
+"nsys profile --trace-fork-before-exec=true --cuda-graph-trace=node -o sglang."
+"out --delay 60 --duration 70 python3 -m sglang.launch_server --model-path "
+"meta-llama/Llama-3.1-8B-Instruct --disable-radix-cache\n"
+"\n"
+"# client\n"
+"python3 -m sglang.bench_serving --backend sglang --num-prompts 1000 --"
+"dataset-name random --random-input 1024 --random-output 512\n"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:44
+msgid "Use NVTX, e.g."
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:46
+msgid ""
+"# install nvtx\n"
+"pip install nvtx\n"
+"\n"
+"# code snippets\n"
+"import nvtx\n"
+"with nvtx.annotate(\"description\", color=\"color\"):\n"
+"    # some critical code\n"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:56
+msgid "Other tips"
+msgstr ""
+
+#: ../../../references/benchmark_and_profiling.md:58
+msgid ""
+"You can benchmark a model using dummy weights by only providing the config."
+"json file. This allows for quick testing of model variants without training. "
+"To do so, add `--load-format dummy` to the above commands and then you only "
+"need a correct `config.json` under the checkpoint folder."
+msgstr ""
