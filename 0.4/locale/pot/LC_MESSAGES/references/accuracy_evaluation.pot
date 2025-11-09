@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/accuracy_evaluation.md:1
+msgid "Measuring Model Accuracy in SGLang"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:3
+msgid ""
+"This guide shows how to evaluate model accuracy using SGLang's [built-in "
+"benchmarks](https://github.com/sgl-project/sglang/tree/"
+"b045841baeff37a5601fcde23fa98bd09d942c36/benchmark). Please include accuracy "
+"on crucial benchmarks in your PR if you make modifications on the model "
+"side, like the kernel and model architecture."
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:5
+msgid "Benchmarking Model Accuracy"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:7
+msgid ""
+"This is a reference workflow for the [MMLU benchmark](https://github.com/sgl-"
+"project/sglang/tree/main/benchmark/mmlu). For more details or other "
+"benchmarks, please refer to the README in each specific benchmark folder "
+"under [sglang/benchmark](https://github.com/sgl-project/sglang/tree/"
+"b045841baeff37a5601fcde23fa98bd09d942c36/benchmark)."
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:9
+msgid ""
+"# Step 1: Download the dataset\n"
+"bash download_data.sh\n"
+"\n"
+"# Step 2: Launch the server\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen2.5-Math-1.5B-Instruct \\  # Model selection\n"
+"  --port 30000 \\  # Network configuration\n"
+"  --mem-fraction-static 0.8  # Memory optimization\n"
+"\n"
+"# Step 3: Run the benchmark script\n"
+"python3 bench_sglang.py --nsub 10  # Test 10 subjects\n"
+"\n"
+"# Step 4: Extract the accuracy\n"
+"cat result.jsonl | grep -oP '\"accuracy\": \\K\\d+\\.\\d+'\n"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:26
+msgid "Customizing Benchmark Scripts"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:28
+msgid ""
+"Some benchmark implementations may differ from ours, causing accuracy "
+"discrepancies. To match [[Qwen2.5-Math]](https://github.com/QwenLM/Qwen2.5-"
+"Math)'s reported 76.8% GSM8K accuracy, customization is required."
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:30
+msgid ""
+"# The GSM8K benchmark script includes few shot examples for evaluation by "
+"default.\n"
+"# Here we exclude them.\n"
+"for i in range(len(lines[num_shots:num_questions])):\n"
+"    questions.append(get_one_example(lines, i, False))\n"
+"    labels.append(get_answer_value(lines[i][\"answer\"]))\n"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:38
+msgid ""
+"@sgl.function\n"
+"def few_shot_gsm8k(s, question):\n"
+"    # System prompt given in https://github.com/QwenLM/Qwen2.5-Math\n"
+"    s += sgl.system(\"Please reason step by step, and put your final answer "
+"within \\\\boxed{}.\") # Include system prompt\n"
+"    s += few_shot_examples + question\n"
+"    # Stopwords given in evaluation/math_eval.py of the Qwen2.5-Math repo\n"
+"    s += sgl.gen(\n"
+"        \"answer\", max_tokens=2048, stop=[\"Question\", \"Assistant:\", \"</"
+"s>\", \"<|im_end|>\", \"<|endoftext|>\"]\n"
+"    )\n"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:50
+msgid "These adjustments should return the desired accuracy."
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:52
+msgid "Extending Evaluation Capabilities"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:54
+msgid "**Contribute New Benchmarks**"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:55
+msgid ""
+"Follow our [contribution guidelines](../references/contribution_guide.md) to "
+"add new test scripts"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:56
+msgid "**Request Implementations**"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:57
+msgid "Feel free to open an issue describing your evaluation needs"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:58
+msgid "**Use Alternative Tools**"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:59
+msgid "[OpenCompass](https://opencompass.org.cn)"
+msgstr ""
+
+#: ../../../references/accuracy_evaluation.md:60
+msgid ""
+"[LM Evaluation Harness](https://github.com/EleutherAI/lm-evaluation-harness)"
+msgstr ""
