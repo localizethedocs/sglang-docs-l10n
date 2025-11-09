@@ -1,0 +1,289 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../supported_models/embedding_models.md:1
+msgid "Embedding Models"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:3
+msgid ""
+"SGLang provides robust support for embedding models by integrating efficient "
+"serving mechanisms with its flexible programming interface. This integration "
+"allows for streamlined handling of embedding tasks, facilitating faster and "
+"more accurate retrieval and semantic search operations. SGLang's "
+"architecture enables better resource utilization and reduced latency in "
+"embedding model deployment."
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:6
+msgid ""
+"Embedding models are executed with `--is-embedding` flag and some may "
+"require `--trust-remote-code`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:9
+msgid "Quick Start"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:11
+msgid "Launch Server"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:13
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-Embedding-4B \\\n"
+"  --is-embedding \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:21
+msgid "Client Request"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:23
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000\"\n"
+"\n"
+"payload = {\n"
+"    \"model\": \"Qwen/Qwen3-Embedding-4B\",\n"
+"    \"input\": \"What is the capital of France?\",\n"
+"    \"encoding_format\": \"float\"\n"
+"}\n"
+"\n"
+"response = requests.post(url + \"/v1/embeddings\", json=payload).json()\n"
+"print(\"Embedding:\", response[\"data\"][0][\"embedding\"])\n"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:40
+msgid "Multimodal Embedding Example"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:42
+msgid "For multimodal models like GME that support both text and images:"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:44
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Alibaba-NLP/gme-Qwen2-VL-2B-Instruct \\\n"
+"  --is-embedding \\\n"
+"  --chat-template gme-qwen2-vl \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:53
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000\"\n"
+"\n"
+"text_input = \"Represent this image in embedding space.\"\n"
+"image_path = \"https://huggingface.co/datasets/liuhaotian/llava-bench-in-the-"
+"wild/resolve/main/images/023.jpg\"\n"
+"\n"
+"payload = {\n"
+"    \"model\": \"gme-qwen2-vl\",\n"
+"    \"input\": [\n"
+"        {\n"
+"            \"text\": text_input\n"
+"        },\n"
+"        {\n"
+"            \"image\": image_path\n"
+"        }\n"
+"    ],\n"
+"}\n"
+"\n"
+"response = requests.post(url + \"/v1/embeddings\", json=payload).json()\n"
+"\n"
+"print(\"Embeddings:\", [x.get(\"embedding\") for x in response.get(\"data\", "
+"[])])\n"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:78
+msgid "Matryoshka Embedding Example"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:80
+msgid ""
+"[Matryoshka Embeddings](https://sbert.net/examples/sentence_transformer/"
+"training/matryoshka/README.html#matryoshka-embeddings) or [Matryoshka "
+"Representation Learning (MRL)](https://arxiv.org/abs/2205.13147) is a "
+"technique used in training embedding models. It allows user to trade off "
+"between performance and cost."
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:82
+msgid "1. Launch a Matryoshka‑capable model"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:84
+msgid ""
+"If the model config already includes `matryoshka_dimensions` or "
+"`is_matryoshka` then no override is needed. Otherwise, you can use `--json-"
+"model-override-args` as below:"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:86
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-Embedding-0.6B \\\n"
+"    --is-embedding \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000 \\\n"
+"    --json-model-override-args '{\"matryoshka_dimensions\": [128, 256, 512, "
+"1024, 1536]}'\n"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:95
+msgid ""
+"Setting `\"is_matryoshka\": true` allows truncating to any dimension. "
+"Otherwise, the server will validate that the specified dimension in the "
+"request is one of `matryoshka_dimensions`."
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:96
+msgid "Omitting `dimensions` in a request returns the full vector."
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:98
+msgid "2. Make requests with different output dimensions"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:100
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000\"\n"
+"\n"
+"# Request a truncated (Matryoshka) embedding by specifying a supported "
+"dimension.\n"
+"payload = {\n"
+"    \"model\": \"Qwen/Qwen3-Embedding-0.6B\",\n"
+"    \"input\": \"Explain diffusion models simply.\",\n"
+"    \"dimensions\": 512  # change to 128 / 1024 / omit for full size\n"
+"}\n"
+"\n"
+"response = requests.post(url + \"/v1/embeddings\", json=payload).json()\n"
+"print(\"Embedding:\", response[\"data\"][0][\"embedding\"])\n"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:117
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Model Family"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Example Model"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Chat Template"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Description"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "**E5 (Llama/Mistral based)**"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`intfloat/e5-mistral-7b-instruct`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "N/A"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "High-quality text embeddings based on Mistral/Llama architectures"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "**GTE-Qwen2**"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`Alibaba-NLP/gte-Qwen2-7B-instruct`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Alibaba's text embedding model with multilingual support"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "**Qwen3-Embedding**"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`Qwen/Qwen3-Embedding-4B`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Latest Qwen3-based text embedding model for semantic representation"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "**BGE**"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`BAAI/bge-large-en-v1.5`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid ""
+"BAAI's text embeddings (requires `attention-backend` triton/torch_native)"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "**GME (Multimodal)**"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`Alibaba-NLP/gme-Qwen2-VL-2B-Instruct`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`gme-qwen2-vl`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "Multimodal embedding for text and image cross-modal tasks"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "**CLIP**"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "`openai/clip-vit-large-patch14-336`"
+msgstr ""
+
+#: ../../../supported_models/embedding_models.md:5
+msgid "OpenAI's CLIP for image and text embeddings"
+msgstr ""
