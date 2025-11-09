@@ -1,0 +1,280 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../developer_guide/development_guide_using_docker.md:1
+msgid "Development Guide Using Docker"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:3
+msgid "Setup VSCode on a Remote Host"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:4
+msgid ""
+"(Optional - you can skip this step if you plan to run sglang dev container "
+"locally)"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:6
+msgid ""
+"In the remote host, download `code` from [Https://code.visualstudio.com/"
+"docs/?dv=linux64cli](https://code.visualstudio.com/download) and run `code "
+"tunnel` in a shell."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:8
+msgid "Example"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:9
+msgid ""
+"wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/"
+"fabdb6a30b49f79a7aba0f2ad9df9b399473380f/vscode_cli_alpine_x64_cli.tar.gz\n"
+"tar xf vscode_cli_alpine_x64_cli.tar.gz\n"
+"\n"
+"# https://code.visualstudio.com/docs/remote/tunnels\n"
+"./code tunnel\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:17
+msgid ""
+"In your local machine, press F1 in VSCode and choose \"Remote Tunnels: "
+"Connect to Tunnel\"."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:19
+msgid "Setup Docker Container"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:21
+msgid "Option 1. Use the default dev container automatically from VSCode"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:22
+msgid ""
+"There is a `.devcontainer` folder in the sglang repository root folder to "
+"allow VSCode to automatically start up within dev container. You can read "
+"more about this VSCode extension in VSCode official document [Developing "
+"inside a Container](https://code.visualstudio.com/docs/devcontainers/"
+"containers). ![image](https://github.com/user-attachments/"
+"assets/6a245da8-2d4d-4ea8-8db1-5a05b3a66f6d) (*Figure 1: Diagram from VSCode "
+"official documentation [Developing inside a Container](https://code."
+"visualstudio.com/docs/devcontainers/containers).*)"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:22
+#: ../../../developer_guide/development_guide_using_docker.md:33
+#: ../../../developer_guide/development_guide_using_docker.md:37
+msgid "image"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:26
+msgid "To enable this, you only need to:"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:27
+msgid ""
+"Start Visual Studio Code and install [VSCode dev container extension]"
+"(https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-"
+"containers)."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:28
+msgid "Press F1, type and choose \"Dev Container: Open Folder in Container."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:29
+msgid "Input the `sglang` local repo path in your machine and press enter."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:31
+msgid ""
+"The first time you open it in dev container might take longer due to docker "
+"pull and build. Once it's successful, you should set on your status bar at "
+"the bottom left displaying that you are in a dev container:"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:33
+msgid ""
+"![image](https://github.com/user-attachments/assets/650bba0b-c023-455f-91f9-"
+"ab357340106b)"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:35
+msgid ""
+"Now when you run `sglang.launch_server` in the VSCode terminal or start "
+"debugging using F5, sglang server will be started in the dev container with "
+"all your local changes applied automatically:"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:37
+msgid ""
+"![image](https://github.com/user-attachments/"
+"assets/748c85ba-7f8c-465e-8599-2bf7a8dde895)"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:40
+msgid "Option 2. Start up containers manually (advanced)"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:42
+msgid ""
+"The following startup command is an example for internal development by the "
+"SGLang team. You can **modify or add directory mappings as needed**, "
+"especially for model weight downloads, to prevent repeated downloads by "
+"different Docker containers."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:44
+msgid "❗️ **Note on RDMA**"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:46
+msgid ""
+"1. `--network host` and `--privileged` are required by RDMA. If you don't "
+"need RDMA, you can remove them but keeping them there does not harm. Thus, "
+"we enable these two flags by default in the commands below.\n"
+"2. You may need to set `NCCL_IB_GID_INDEX` if you are using RoCE, for "
+"example: `export NCCL_IB_GID_INDEX=3`.\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:49
+msgid ""
+"# Change the name to yours\n"
+"docker run -itd --shm-size 32g --gpus all -v <volumes-to-mount> --ipc=host --"
+"network=host --privileged --name sglang_dev lmsysorg/sglang:dev /bin/zsh\n"
+"docker exec -it sglang_dev /bin/zsh\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:54
+msgid "Some useful volumes to mount are:"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:55
+msgid ""
+"**Huggingface model cache**: mounting model cache can avoid re-download "
+"every time docker restarts. Default location on Linux is `~/.cache/"
+"huggingface/`."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:56
+msgid ""
+"**SGLang repository**: code changes in the SGLang local repository will be "
+"automatically synced to the .devcontainer."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:58
+msgid ""
+"Example 1: Monting local cache folder `/opt/dlami/nvme/.cache` but not the "
+"SGLang repo. Use this when you prefer to manually transfer local code "
+"changes to the devcontainer."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:59
+msgid ""
+"docker run -itd --shm-size 32g --gpus all -v /opt/dlami/nvme/.cache:/root/."
+"cache --ipc=host --network=host --privileged --name sglang_zhyncs lmsysorg/"
+"sglang:dev /bin/zsh\n"
+"docker exec -it sglang_zhyncs /bin/zsh\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:63
+msgid ""
+"Example 2: Mounting both HuggingFace cache and local SGLang repo. Local code "
+"changes are automatically synced to the devcontainer as the SGLang is "
+"installed in editable mode in the dev image."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:64
+msgid ""
+"docker run -itd --shm-size 32g --gpus all -v $HOME/.cache/huggingface/:/"
+"root/.cache/huggingface -v $HOME/src/sglang:/sgl-workspace/sglang --ipc=host "
+"--network=host --privileged --name sglang_zhyncs lmsysorg/sglang:dev /bin/"
+"zsh\n"
+"docker exec -it sglang_zhyncs /bin/zsh\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:68
+msgid "Debug SGLang with VSCode Debugger"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:69
+msgid "(Create if not exist) open `launch.json` in VSCode."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:70
+msgid ""
+"Add the following config and save. Please note that you can edit the script "
+"as needed to apply different parameters or debug a different program (e.g. "
+"benchmark script)."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:71
+msgid ""
+"  {\n"
+"     \"version\": \"0.2.0\",\n"
+"     \"configurations\": [\n"
+"         {\n"
+"             \"name\": \"Python Debugger: launch_server\",\n"
+"             \"type\": \"debugpy\",\n"
+"             \"request\": \"launch\",\n"
+"             \"module\": \"sglang.launch_server\",\n"
+"             \"console\": \"integratedTerminal\",\n"
+"             \"args\": [\n"
+"                 \"--model-path\", \"meta-llama/Llama-3.2-1B\",\n"
+"                 \"--host\", \"0.0.0.0\",\n"
+"                 \"--port\", \"30000\",\n"
+"                 \"--trust-remote-code\",\n"
+"             ],\n"
+"             \"justMyCode\": false\n"
+"         }\n"
+"     ]\n"
+" }\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:93
+msgid ""
+"Press \"F5\" to start. VSCode debugger will ensure that the program will "
+"pause at the breakpoints even if the program is running at remote SSH/Tunnel "
+"host + dev container."
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:95
+msgid "Profile"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:97
+msgid ""
+"# Change batch size, input, output and add `disable-cuda-graph` (for easier "
+"analysis)\n"
+"# e.g. DeepSeek V3\n"
+"nsys profile -o deepseek_v3 python3 -m sglang.bench_one_batch --batch-size 1 "
+"--input 128 --output 256 --model deepseek-ai/DeepSeek-V3 --trust-remote-code "
+"--tp 8 --disable-cuda-graph\n"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:103
+msgid "Evaluation"
+msgstr ""
+
+#: ../../../developer_guide/development_guide_using_docker.md:105
+msgid ""
+"# e.g. gsm8k 8 shot\n"
+"python3 benchmark/gsm8k/bench_sglang.py --num-questions 2000 --parallel 2000 "
+"--num-shots 8\n"
+msgstr ""
