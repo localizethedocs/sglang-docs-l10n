@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:47+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../hyperparameter_tuning.md:1
+msgid "Guide on Hyperparameter Tuning"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:3
+msgid "Achieving Peak Throughput"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:5
+msgid ""
+"Achieving a large batch size is the most important thing for attaining high "
+"throughput."
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:7
+msgid ""
+"When the server is running at full load, look for the following in the log:"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:9
+msgid ""
+"```Decode batch. #running-req: 233, #token: 370959, token usage: 0.82, gen "
+"throughput (token/s): 4594.01, #queue-req: 417```"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:11
+msgid "Tune Your Request Submission Speed"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:12
+msgid ""
+"`#queue-req` indicates the number of requests in the queue. If you "
+"frequently see `#queue-req == 0`, it suggests you are bottlenecked by the "
+"request submission speed. A healthy range for `#queue-req` is `50 - 1000`. "
+"On the other hand, do not make `#queue-req` too large because it will also "
+"increase the scheduling overhead on the server."
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:16
+msgid "Tune `--schedule-conservativeness`"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:17
+msgid ""
+"`token usage` indicates the KV cache memory utilization of the server. "
+"`token usage > 0.9` means good utilization. If you frequently see `token "
+"usage < 0.9` and `#queue-req > 0`, it means the server is too conservative "
+"about taking in new requests. You can decrease `--schedule-conservativeness` "
+"to a value like 0.3. The case of serving being too conservative can happen "
+"when users send many requests with a large `max_new_tokens` but the requests "
+"stop very early due to EOS or stop strings."
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:21
+msgid ""
+"On the other hand, if you see `token usage` very high and you frequently see "
+"warnings like `decode out of memory happened, #retracted_reqs: 1, "
+"#new_token_ratio: 0.9998 -> 1.0000`, you can increase `--schedule-"
+"conservativeness` to a value like 1.3. If you see `decode out of memory "
+"happened` occasionally but not frequently, it is okay."
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:25
+msgid "Tune `--dp-size` and `--tp-size`"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:26
+msgid ""
+"Data parallelism is better for throughput. When there is enough GPU memory, "
+"always favor data parallelism for throughput."
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:28
+msgid ""
+"Avoid out-of-memory by tuning `--chunked-prefill-size`, `--mem-fraction-"
+"static`, `--max-running-requests`"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:29
+msgid ""
+"If you see out of memory (OOM) errors, you can decrease these parameters.   "
+"If OOM happens during prefill, try to decrease `--chunked-prefill-size` to "
+"`4096` or `2048`.   If OOM happens during decoding, try to decrease `--max-"
+"running-requests`.   You can also try to decrease `--mem-fraction-static`, "
+"which reduces the memory usage of the KV cache memory pool and helps both "
+"prefill and decoding."
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:0
+msgid "<br />\n"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:0
+msgid "\\\\\n"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:34
+msgid "(Minor) Tune `--schedule-policy`"
+msgstr ""
+
+#: ../../../hyperparameter_tuning.md:35
+msgid ""
+"If you have many shared prefixes, use the default `--schedule-policy lpm`. "
+"`lpm` stands for longest prefix match. When you have no shared prefixes at "
+"all or you always send the requests with the shared prefixes together, you "
+"can try `--schedule-policy fcfs`. `fcfs` stands for first come first serve."
+msgstr ""
