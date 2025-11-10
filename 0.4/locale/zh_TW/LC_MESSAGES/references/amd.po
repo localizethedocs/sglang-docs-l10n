@@ -1,0 +1,297 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/amd.md:1
+msgid "SGLang on AMD"
+msgstr ""
+
+#: ../../../references/amd.md:3
+msgid ""
+"This document describes how to set up an AMD-based environment for [SGLang]"
+"(https://github.com/sgl-project/sglang). If you encounter issues or have "
+"questions, please [open an issue](https://github.com/sgl-project/sglang/"
+"issues) on the SGLang repository."
+msgstr ""
+
+#: ../../../references/amd.md:5
+msgid "System Configuration"
+msgstr ""
+
+#: ../../../references/amd.md:7
+msgid ""
+"When using AMD GPUs (such as MI300X), certain system-level optimizations "
+"help ensure stable performance. Here we take MI300X as an example. AMD "
+"provides official documentation for MI300X optimization and system tuning:"
+msgstr ""
+
+#: ../../../references/amd.md:9
+msgid ""
+"[AMD MI300X Tuning Guides](https://rocm.docs.amd.com/en/latest/how-to/tuning-"
+"guides/mi300x/index.html)"
+msgstr ""
+
+#: ../../../references/amd.md:10
+msgid ""
+"[LLM inference performance validation on AMD Instinct MI300X](https://rocm."
+"docs.amd.com/en/latest/how-to/rocm-for-ai/inference/vllm-benchmark.html)"
+msgstr ""
+
+#: ../../../references/amd.md:11
+msgid ""
+"[AMD Instinct MI300X System Optimization](https://rocm.docs.amd.com/en/"
+"latest/how-to/system-optimization/mi300x.html)"
+msgstr ""
+
+#: ../../../references/amd.md:12
+msgid ""
+"[AMD Instinct MI300X Workload Optimization](https://rocm.docs.amd.com/en/"
+"latest/how-to/rocm-for-ai/inference-optimization/workload.html)"
+msgstr ""
+
+#: ../../../references/amd.md:14
+msgid ""
+"**NOTE:** We strongly recommend reading these docs and guides entirely to "
+"fully utilize your system."
+msgstr ""
+
+#: ../../../references/amd.md:16
+msgid "Below are a few key settings to confirm or enable for SGLang:"
+msgstr ""
+
+#: ../../../references/amd.md:18
+msgid "Update GRUB Settings"
+msgstr ""
+
+#: ../../../references/amd.md:20
+msgid "In `/etc/default/grub`, append the following to `GRUB_CMDLINE_LINUX`:"
+msgstr ""
+
+#: ../../../references/amd.md:22
+msgid "pci=realloc=off iommu=pt\n"
+msgstr ""
+
+#: ../../../references/amd.md:26
+msgid ""
+"Afterward, run `sudo update-grub` (or your distro’s equivalent) and reboot."
+msgstr ""
+
+#: ../../../references/amd.md:28
+msgid "Disable NUMA Auto-Balancing"
+msgstr ""
+
+#: ../../../references/amd.md:30
+msgid "sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'\n"
+msgstr ""
+
+#: ../../../references/amd.md:34
+msgid ""
+"You can automate or verify this change using [this helpful script](https://"
+"github.com/ROCm/triton/blob/rocm_env/scripts/amd/env_check.sh)."
+msgstr ""
+
+#: ../../../references/amd.md:36
+msgid ""
+"Again, please go through the entire documentation to confirm your system is "
+"using the recommended configuration."
+msgstr ""
+
+#: ../../../references/amd.md:38
+msgid "Installing SGLang"
+msgstr ""
+
+#: ../../../references/amd.md:40
+msgid ""
+"For general installation instructions, see the official [SGLang Installation "
+"Docs](../start/install.md). Below are the AMD-specific steps summarized for "
+"convenience."
+msgstr ""
+
+#: ../../../references/amd.md:42
+msgid "Install from Source"
+msgstr ""
+
+#: ../../../references/amd.md:44
+msgid ""
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"pip install --upgrade pip\n"
+"pip install sgl-kernel --force-reinstall --no-deps\n"
+"pip install -e \"python[all_hip]\"\n"
+msgstr ""
+
+#: ../../../references/amd.md:53
+msgid "Install Using Docker (Recommended)"
+msgstr ""
+
+#: ../../../references/amd.md:55
+msgid "Build the docker image."
+msgstr ""
+
+#: ../../../references/amd.md:57
+msgid "docker build -t sglang_image -f Dockerfile.rocm .\n"
+msgstr ""
+
+#: ../../../references/amd.md:61
+msgid "Create a convenient alias."
+msgstr ""
+
+#: ../../../references/amd.md:63
+msgid ""
+"alias drun='docker run -it --rm --network=host --privileged --device=/dev/"
+"kfd --device=/dev/dri \\\n"
+"    --ipc=host --shm-size 16G --group-add video --cap-add=SYS_PTRACE \\\n"
+"    --security-opt seccomp=unconfined \\\n"
+"    -v $HOME/dockerx:/dockerx \\\n"
+"    -v /data:/data'\n"
+msgstr ""
+
+#: ../../../references/amd.md:71
+msgid "If you are using RDMA, please note that:"
+msgstr ""
+
+#: ../../../references/amd.md:73
+msgid ""
+"`--network host` and `--privileged` are required by RDMA. If you don't need "
+"RDMA, you can remove them."
+msgstr ""
+
+#: ../../../references/amd.md:74
+msgid ""
+"You may need to set `NCCL_IB_GID_INDEX` if you are using RoCE, for example: "
+"`export NCCL_IB_GID_INDEX=3`."
+msgstr ""
+
+#: ../../../references/amd.md:75
+msgid "Launch the server."
+msgstr ""
+
+#: ../../../references/amd.md:77
+msgid ""
+"**NOTE:** Replace `<secret>` below with your [huggingface hub token](https://"
+"huggingface.co/docs/hub/en/security-tokens)."
+msgstr ""
+
+#: ../../../references/amd.md:79
+msgid ""
+"drun -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    sglang_image \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path NousResearch/Meta-Llama-3.1-8B \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../references/amd.md:90
+msgid ""
+"To verify the utility, you can run a benchmark in another terminal or refer "
+"to [other docs](https://docs.sglang.ai/backend/openai_api_completions.html) "
+"to send requests to the engine."
+msgstr ""
+
+#: ../../../references/amd.md:92
+msgid ""
+"drun sglang_image \\\n"
+"    python3 -m sglang.bench_serving \\\n"
+"    --backend sglang \\\n"
+"    --dataset-name random \\\n"
+"    --num-prompts 4000 \\\n"
+"    --random-input 128 \\\n"
+"    --random-output 128\n"
+msgstr ""
+
+#: ../../../references/amd.md:102
+msgid ""
+"With your AMD system properly configured and SGLang installed, you can now "
+"fully leverage AMD hardware to power SGLang’s machine learning capabilities."
+msgstr ""
+
+#: ../../../references/amd.md:104
+msgid "Examples"
+msgstr ""
+
+#: ../../../references/amd.md:106
+msgid "Running DeepSeek-V3"
+msgstr ""
+
+#: ../../../references/amd.md:108
+msgid ""
+"The only difference when running DeepSeek-V3 is in how you start the server. "
+"Here's an example command:"
+msgstr ""
+
+#: ../../../references/amd.md:110
+msgid ""
+"drun -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --ipc=host \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    sglang_image \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path deepseek-ai/DeepSeek-V3 \\ # <- here\n"
+"    --tp 8 \\\n"
+"    --trust-remote-code \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../references/amd.md:124
+msgid ""
+"[Running DeepSeek-R1 on a single NDv5 MI300X VM](https://techcommunity."
+"microsoft.com/blog/azurehighperformancecomputingblog/running-deepseek-r1-on-"
+"a-single-ndv5-mi300x-vm/4372726) could also be a good reference."
+msgstr ""
+
+#: ../../../references/amd.md:126
+msgid "Running Llama3.1"
+msgstr ""
+
+#: ../../../references/amd.md:128
+msgid ""
+"Running Llama3.1 is nearly identical to running DeepSeek-V3. The only "
+"difference is in the model specified when starting the server, shown by the "
+"following example command:"
+msgstr ""
+
+#: ../../../references/amd.md:130
+msgid ""
+"drun -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --ipc=host \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    sglang_image \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\ # <- here\n"
+"    --tp 8 \\\n"
+"    --trust-remote-code \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../references/amd.md:144
+msgid "Warmup Step"
+msgstr ""
+
+#: ../../../references/amd.md:146
+msgid ""
+"When the server displays `The server is fired up and ready to roll!`, it "
+"means the startup is successful."
+msgstr ""

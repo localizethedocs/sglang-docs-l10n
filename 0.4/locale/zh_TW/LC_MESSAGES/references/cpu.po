@@ -1,0 +1,387 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/cpu.md:1
+msgid "SGLang on CPU"
+msgstr ""
+
+#: ../../../references/cpu.md:3
+msgid ""
+"The document addresses how to set up the [SGLang](https://github.com/sgl-"
+"project/sglang) environment and run LLM inference on CPU servers. "
+"Specifically, SGLang is well optimized on the CPUs equipped with Intel® AMX® "
+"Instructions, which are 4th generation or newer Intel® Xeon® Scalable "
+"Processors."
+msgstr ""
+
+#: ../../../references/cpu.md:7
+msgid "Optimized Model List"
+msgstr ""
+
+#: ../../../references/cpu.md:9
+msgid ""
+"A list of popular LLMs are optimized and run efficiently on CPU, including "
+"the most notable open-source models like Llama series, Qwen series, and the "
+"phenomenal high-quality reasoning model DeepSeek-R1."
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "Model Name"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "BF16"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "w8a8_int8"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "FP8"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "DeepSeek-R1"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[meituan/DeepSeek-R1-Channel-INT8](https://huggingface.co/meituan/DeepSeek-"
+"R1-Channel-INT8)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[deepseek-ai/DeepSeek-R1](https://huggingface.co/deepseek-ai/DeepSeek-R1)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "Llama-3.2-3B"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[meta-llama/Llama-3.2-3B-Instruct](https://huggingface.co/meta-llama/"
+"Llama-3.2-3B-Instruct)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[RedHatAI/Llama-3.2-3B-quantized.w8a8](https://huggingface.co/RedHatAI/"
+"Llama-3.2-3B-Instruct-quantized.w8a8)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "Llama-3.1-8B"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[meta-llama/Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/"
+"Llama-3.1-8B-Instruct)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[RedHatAI/Meta-Llama-3.1-8B-quantized.w8a8](https://huggingface.co/RedHatAI/"
+"Meta-Llama-3.1-8B-quantized.w8a8)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "QwQ-32B"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[RedHatAI/QwQ-32B-quantized.w8a8](https://huggingface.co/RedHatAI/QwQ-32B-"
+"quantized.w8a8)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "DeepSeek-Distilled-Llama"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[RedHatAI/DeepSeek-R1-Distill-Llama-70B-quantized.w8a8](https://huggingface."
+"co/RedHatAI/DeepSeek-R1-Distill-Llama-70B-quantized.w8a8)"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid "Qwen3-235B"
+msgstr ""
+
+#: ../../../references/cpu.md:0
+msgid ""
+"[Qwen/Qwen3-235B-A22B-FP8](https://huggingface.co/Qwen/Qwen3-235B-A22B-FP8)"
+msgstr ""
+
+#: ../../../references/cpu.md:22
+msgid ""
+"**Note:** The model identifiers listed in the table above have been verified "
+"on 6th Gen Intel® Xeon® P-core platforms."
+msgstr ""
+
+#: ../../../references/cpu.md:25
+msgid "Installation"
+msgstr ""
+
+#: ../../../references/cpu.md:27
+msgid "Install Using Docker"
+msgstr ""
+
+#: ../../../references/cpu.md:29
+msgid ""
+"It is recommended to use Docker for setting up the SGLang environment. A "
+"[Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/"
+"Dockerfile.xeon) is provided to facilitate the installation. Replace "
+"`<secret>` below with your [HuggingFace access token](https://huggingface.co/"
+"docs/hub/en/security-tokens)."
+msgstr ""
+
+#: ../../../references/cpu.md:33
+msgid ""
+"# Clone the SGLang repository\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang/docker\n"
+"\n"
+"# Build the docker image\n"
+"docker build -t sglang-cpu:main -f Dockerfile.xeon .\n"
+"\n"
+"# Initiate a docker container\n"
+"docker run \\\n"
+"    -it \\\n"
+"    --privileged \\\n"
+"    --ipc=host \\\n"
+"    --network=host \\\n"
+"    -v /dev/shm:/dev/shm \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    -p 30000:30000 \\\n"
+"    -e \"HF_TOKEN=<secret>\" \\\n"
+"    sglang-cpu:main /bin/bash\n"
+msgstr ""
+
+#: ../../../references/cpu.md:54
+msgid "Install From Source"
+msgstr ""
+
+#: ../../../references/cpu.md:56
+msgid ""
+"If you'd prefer to install SGLang in a bare metal environment, the command "
+"list is as below. It is worth noting that the environment variable "
+"`SGLANG_USE_CPU_ENGINE=1` is required to enable SGLang service with CPU "
+"engine."
+msgstr ""
+
+#: ../../../references/cpu.md:61
+msgid ""
+"# Create and activate a conda environment\n"
+"conda create -n sgl-cpu python=3.12 -y\n"
+"conda activate sgl-cpu\n"
+"\n"
+"# Optional: Set PyTorch CPU as primary pip install channel to avoid "
+"installing CUDA version\n"
+"pip config set global.index-url https://download.pytorch.org/whl/cpu\n"
+"pip config set global.extra-index-url https://pypi.org/simple\n"
+"\n"
+"# Check if some conda related environment variables have been set\n"
+"env | grep -i conda\n"
+"# The following environment variable settings are required\n"
+"# if they have not been set properly\n"
+"export CONDA_EXE=$(which conda)\n"
+"export CONDA_ROOT=${CONDA_EXE}/../..\n"
+"export CONDA_PREFIX=${CONDA_ROOT}/envs/sgl-cpu\n"
+"export PATH=${PATH}:${CONDA_ROOT}/bin:${CONDA_ROOT}/condabin\n"
+"\n"
+"# Clone the SGLang code\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"git checkout <YOUR-DESIRED-VERSION>\n"
+"\n"
+"# Install SGLang dependent libs, and build SGLang main package\n"
+"pip install --upgrade pip setuptools\n"
+"conda install -y libsqlite==3.48.0 gperftools tbb libnuma numactl\n"
+"pip install intel-openmp\n"
+"pip install -e \"python[all_cpu]\"\n"
+"\n"
+"# Build the CPU backend kernels\n"
+"cd sgl-kernel\n"
+"cp pyproject_cpu.toml pyproject.toml\n"
+"pip install -v .\n"
+"\n"
+"# Other required environment variables\n"
+"# Recommend to set these in ~/.bashrc in order not to set every time in a "
+"new terminal\n"
+"export SGLANG_USE_CPU_ENGINE=1\n"
+"export LD_PRELOAD=${LD_PRELOAD}:${CONDA_PREFIX}/lib/libiomp5.so:"
+"${CONDA_PREFIX}/lib/libtcmalloc.so:${CONDA_PREFIX}/lib/libtbbmalloc.so.2\n"
+msgstr ""
+
+#: ../../../references/cpu.md:101
+msgid "Launch of the Serving Engine"
+msgstr ""
+
+#: ../../../references/cpu.md:103
+msgid "Example command to launch SGLang serving:"
+msgstr ""
+
+#: ../../../references/cpu.md:105
+msgid ""
+"python -m sglang.launch_server   \\\n"
+"    --model <MODEL_ID_OR_PATH>   \\\n"
+"    --trust-remote-code          \\\n"
+"    --disable-overlap-schedule   \\\n"
+"    --device cpu                 \\\n"
+"    --host 0.0.0.0               \\\n"
+"    --tp 6\n"
+msgstr ""
+
+#: ../../../references/cpu.md:115
+msgid "Notes:"
+msgstr ""
+
+#: ../../../references/cpu.md:117
+msgid ""
+"For running W8A8 quantized models, please add the flag `--quantization "
+"w8a8_int8`."
+msgstr ""
+
+#: ../../../references/cpu.md:119
+msgid ""
+"The flag `--tp 6` specifies that tensor parallelism will be applied using 6 "
+"ranks (TP6).  The number of TP specified is how many TP ranks will be used "
+"during the execution.  In a CPU platform, a TP rank means a sub-NUMA cluster "
+"(SNC).  Usually we can get the SNC information (How many available) from "
+"Operation System.  User can specify TP to be no more than the total "
+"available SNCs in current system."
+msgstr ""
+
+#: ../../../references/cpu.md:125
+msgid ""
+"If the specified TP rank number differs from the total SNC count,  the "
+"system will automatically utilize the first `n` SNCs.  Note that `n` cannot "
+"exceed the total SNC number, doing so will result in an error."
+msgstr ""
+
+#: ../../../references/cpu.md:129
+msgid ""
+"To specify the cores to be used, we need to explicitly set the environment "
+"variable `SGLANG_CPU_OMP_THREADS_BIND`.  For example, if we want to run the "
+"SGLang service using the first 40 cores of each SNC on a Xeon® 6980P "
+"server,  which has 43-43-42 cores on the 3 SNCs of a socket, we should set:"
+msgstr ""
+
+#: ../../../references/cpu.md:133
+msgid ""
+"export SGLANG_CPU_OMP_THREADS_BIND=\"0-39|43-82|86-125|128-167|171-210|"
+"214-253\"\n"
+msgstr ""
+
+#: ../../../references/cpu.md:137
+msgid ""
+"A warmup step is automatically triggered when the service is started. The "
+"server is ready when you see the log `The server is fired up and ready to "
+"roll!`."
+msgstr ""
+
+#: ../../../references/cpu.md:140
+msgid "Benchmarking with Requests"
+msgstr ""
+
+#: ../../../references/cpu.md:142
+msgid ""
+"You can benchmark the performance via the `bench_serving` script. Run the "
+"command in another terminal."
+msgstr ""
+
+#: ../../../references/cpu.md:145
+msgid ""
+"python -m sglang.bench_serving   \\\n"
+"    --dataset-name random        \\\n"
+"    --random-input-len 1024      \\\n"
+"    --random-output-len 1024     \\\n"
+"    --num-prompts 1              \\\n"
+"    --request-rate inf           \\\n"
+"    --random-range-ratio 1.0\n"
+msgstr ""
+
+#: ../../../references/cpu.md:155
+msgid ""
+"The detail explanations of the parameters can be looked up by the command:"
+msgstr ""
+
+#: ../../../references/cpu.md:157
+msgid "python -m sglang.bench_serving -h\n"
+msgstr ""
+
+#: ../../../references/cpu.md:161
+msgid ""
+"Additionally, the requests can be formed with [OpenAI Completions API]"
+"(https://docs.sglang.ai/backend/openai_api_completions.html) and sent via "
+"the command line (e.g. using `curl`) or via your own script."
+msgstr ""
+
+#: ../../../references/cpu.md:165
+msgid "Example: Running DeepSeek-R1"
+msgstr ""
+
+#: ../../../references/cpu.md:167
+msgid ""
+"An example command to launch service for W8A8 DeepSeek-R1 on a Xeon® 6980P "
+"server"
+msgstr ""
+
+#: ../../../references/cpu.md:169
+msgid ""
+"python -m sglang.launch_server                 \\\n"
+"    --model meituan/DeepSeek-R1-Channel-INT8   \\\n"
+"    --trust-remote-code                        \\\n"
+"    --disable-overlap-schedule                 \\\n"
+"    --device cpu                               \\\n"
+"    --quantization w8a8_int8                   \\\n"
+"    --host 0.0.0.0                             \\\n"
+"    --mem-fraction-static 0.8                  \\\n"
+"    --max-total-token 65536                    \\\n"
+"    --tp 6\n"
+msgstr ""
+
+#: ../../../references/cpu.md:182
+msgid ""
+"Similarly, an example command to launch service for FP8 DeepSeek-R1 would be"
+msgstr ""
+
+#: ../../../references/cpu.md:184
+msgid ""
+"python -m sglang.launch_server                 \\\n"
+"    --model deepseek-ai/DeepSeek-R1            \\\n"
+"    --trust-remote-code                        \\\n"
+"    --disable-overlap-schedule                 \\\n"
+"    --device cpu                               \\\n"
+"    --host 0.0.0.0                             \\\n"
+"    --mem-fraction-static 0.8                  \\\n"
+"    --max-total-token 65536                    \\\n"
+"    --tp 6\n"
+msgstr ""
+
+#: ../../../references/cpu.md:196
+msgid ""
+"Then you can test with `bench_serving` command or construct your own command "
+"or script following [the benchmarking example](#benchmarking-with-requests)."
+msgstr ""

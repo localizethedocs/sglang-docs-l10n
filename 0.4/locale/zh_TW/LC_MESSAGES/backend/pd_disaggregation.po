@@ -1,0 +1,402 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../backend/pd_disaggregation.md:1
+msgid "PD Disaggregation"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:3
+msgid "Why and What is PD Disaggregation?"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:5
+msgid ""
+"Large Language Model (LLM) inference comprises two distinct phases: "
+"**Prefill** and **Decode**. The Prefill phase is computation-intensive, "
+"processing the entire input sequence, while the Decode phase is memory-"
+"intensive, managing the Key-Value (KV) cache for token generation. "
+"Traditionally, these phases are handled within a unified engine, where "
+"combined scheduling of prefill and decode batches introduces inefficiencies. "
+"To address these challenges, we introduce **Prefill and Decoding (PD) "
+"Disaggregation** in SGLang."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:7
+msgid "Issues with Unified Scheduling"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:9
+msgid ""
+"The conventional unified engine, which processes prefill and decode batches "
+"together, results in two significant problems:"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:11
+msgid ""
+"**Prefill Interruption**: Incoming prefill batches frequently interrupt "
+"ongoing decode batches, causing substantial delays in token generation."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:12
+msgid ""
+"**DP Attention Imbalance**: In data-parallel (DP) attention, one DP worker "
+"may process a prefill batch while another handles a decode batch "
+"simultaneously, leading to increased decode latency."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:14
+msgid ""
+"PD Disaggregation resolves these by separating the two stages, enabling "
+"tailored optimizations for each."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:16
+msgid ""
+"For the design details, please refer to [link](https://docs.google.com/"
+"document/d/1rQXJwKd5b9b1aOzLh98mnyMhBMhlxXA5ATZTHoQrwvc/edit?tab=t.0)."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:18
+msgid "Currently, we support Mooncake and NIXL as the transfer engine."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:21
+msgid "Mooncake"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:22
+#: ../../../backend/pd_disaggregation.md:75
+msgid "Requirements"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:24
+msgid "uv pip install mooncake-transfer-engine\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:28
+#: ../../../backend/pd_disaggregation.md:92
+#: ../../../backend/pd_disaggregation.md:117
+msgid "Usage"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:30
+#: ../../../backend/pd_disaggregation.md:94
+#: ../../../backend/pd_disaggregation.md:131
+msgid "Llama Single Node"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:32
+msgid ""
+"$ python -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --disaggregation-mode prefill --disaggregation-ib-device "
+"mlx5_roce0\n"
+"$ python -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --disaggregation-mode decode --port 30001 --base-gpu-id 1 --"
+"disaggregation-ib-device mlx5_roce0\n"
+"$ python -m sglang.srt.disaggregation.mini_lb --prefill "
+"http://127.0.0.1:30000 --decode http://127.0.0.1:30001 --host 0.0.0.0 --port "
+"8000\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:38
+#: ../../../backend/pd_disaggregation.md:102
+#: ../../../backend/pd_disaggregation.md:139
+msgid "DeepSeek Multi-Node"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:40
+msgid ""
+"# prefill 0\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 --"
+"disaggregation-ib-device ${device_name} --disaggregation-mode prefill --host "
+"${local_ip} --port 30000 --trust-remote-code --dist-init-addr "
+"${prefill_master_ip}:5000 --nnodes 2 --node-rank 0 --tp-size 16 --dp-size 8 "
+"--enable-dp-attention --enable-deepep-moe --deepep-mode normal --mem-"
+"fraction-static 0.8\n"
+"# prefill 1\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 --"
+"disaggregation-ib-device ${device_name} --disaggregation-mode prefill --host "
+"${local_ip} --port 30000 --trust-remote-code --dist-init-addr "
+"${prefill_master_ip}:5000 --nnodes 2 --node-rank 1 --tp-size 16 --dp-size 8 "
+"--enable-dp-attention --enable-deepep-moe --deepep-mode normal --mem-"
+"fraction-static 0.8\n"
+"# decode 0\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 --"
+"disaggregation-ib-device ${device_name} --disaggregation-mode decode --host "
+"${local_ip} --port 30001 --trust-remote-code --dist-init-addr "
+"${decode_master_ip}:5000 --nnodes 2 --node-rank 0 --tp-size 16 --dp-size 8 --"
+"enable-dp-attention --enable-deepep-moe --deepep-mode low_latency --mem-"
+"fraction-static 0.8 --max-running-requests 128\n"
+"# decode 1\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 --"
+"disaggregation-ib-device ${device_name} --disaggregation-mode decode --host "
+"${local_ip} --port 30001 --trust-remote-code --dist-init-addr "
+"${decode_master_ip}:5000 --nnodes 2 --node-rank 1 --tp-size 16 --dp-size 8 --"
+"enable-dp-attention --enable-deepep-moe --deepep-mode low_latency --mem-"
+"fraction-static 0.8 --max-running-requests 128\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:50
+msgid "Advanced Configuration"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:52
+msgid ""
+"PD Disaggregation with Mooncake supports the following environment variables "
+"for fine-grained control over system behavior."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:54
+msgid "Prefill Server Configuration"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "Variable"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_THREAD_POOL_SIZE`**"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid ""
+"Controls the total number of worker threads for KVCache transfer operations "
+"per TP rank"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid ""
+"A dynamic value calculated by `int(0.75 * os.cpu_count()) // 8)`, which is "
+"limited to be larger than 4 and less than 12 to ensure efficiency and "
+"prevent thread race conditions"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_QUEUE_SIZE`**"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid ""
+"Sets the number of parallel transfer queues. KVCache transfer requests from "
+"multiple decode instances will be sharded into these queues so that they can "
+"share the threads and the transfer bandwidth at the same time. If it is set "
+"to `1`, then we transfer requests one by one according to fcfs strategy"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "`4`"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT`**"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid ""
+"Timeout (seconds) for receiving destination KV indices during request "
+"initialization"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "`300`"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:61
+msgid ""
+"If a greater mean TTFT is acceptable, you can `export "
+"SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT=600` (10 minutes) to relax the "
+"timeout condition. Please be aware that this setting will cause prefill "
+"instances to take a longer time to clean up the affected memory resources "
+"when a running decode node loses connection."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:64
+msgid "Decode Server Configuration"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_HEARTBEAT_INTERVAL`**"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "Interval (seconds) between health checks to prefill bootstrap servers"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "`5.0`"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_HEARTBEAT_MAX_FAILURE`**"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "Consecutive heartbeat failures before marking prefill server offline"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "`2`"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_WAITING_TIMEOUT`**"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:0
+msgid "Timeout (seconds) for receiving KV Cache after request initialization"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:71
+msgid ""
+"If a greater mean TTFT is acceptable, you can `export "
+"SGLANG_DISAGGREGATION_WAITING_TIMEOUT=600` (10 minutes) to relax the timeout "
+"condition."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:74
+msgid "NIXL"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:77
+msgid "Install via pip."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:79
+msgid "pip install nixl\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:83
+msgid ""
+"Or build from source - may be required if you already have UCX installed."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:85
+msgid ""
+"git clone https://github.com/ai-dynamo/nixl.git\n"
+"cd nixl\n"
+"pip install . --config-settings=setup-args=\"-Ducx_path=/path/to/ucx\"\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:96
+msgid ""
+"$ python -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --disaggregation-mode prefill --disaggregation-transfer-backend "
+"nixl\n"
+"$ python -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --disaggregation-mode decode --port 30001 --base-gpu-id 1 --"
+"disaggregation-transfer-backend nixl\n"
+"$ python -m sglang.srt.disaggregation.mini_lb --prefill "
+"http://127.0.0.1:30000 --decode http://127.0.0.1:30001 --host 0.0.0.0 --port "
+"8000\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:104
+msgid ""
+"# prefill 0\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 "
+"---disaggregation-transfer-backend nixl --disaggregation-mode prefill --host "
+"${local_ip} --port 30000 --trust-remote-code --dist-init-addr "
+"${prefill_master_ip}:5000 --nnodes 2 --node-rank 0 --tp-size 16 --dp-size 8 "
+"--enable-dp-attention --enable-deepep-moe --deepep-mode normal --mem-"
+"fraction-static 0.8\n"
+"# prefill 1\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 "
+"---disaggregation-transfer-backend nixl --disaggregation-mode prefill --host "
+"${local_ip} --port 30000 --trust-remote-code --dist-init-addr "
+"${prefill_master_ip}:5000 --nnodes 2 --node-rank 1 --tp-size 16 --dp-size 8 "
+"--enable-dp-attention --enable-deepep-moe --deepep-mode normal --mem-"
+"fraction-static 0.8\n"
+"# decode 0\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 "
+"---disaggregation-transfer-backend nixl --disaggregation-mode decode --host "
+"${local_ip} --port 30001 --trust-remote-code --dist-init-addr "
+"${decode_master_ip}:5000 --nnodes 2 --node-rank 0 --tp-size 16 --dp-size 8 --"
+"enable-dp-attention --enable-deepep-moe --deepep-mode low_latency --mem-"
+"fraction-static 0.8 --max-running-requests 128\n"
+"# decode 1\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 "
+"---disaggregation-transfer-backend nixl --disaggregation-mode decode --host "
+"${local_ip} --port 30001 --trust-remote-code --dist-init-addr "
+"${decode_master_ip}:5000 --nnodes 2 --node-rank 1 --tp-size 16 --dp-size 8 --"
+"enable-dp-attention --enable-deepep-moe --deepep-mode low_latency --mem-"
+"fraction-static 0.8 --max-running-requests 128\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:115
+msgid "ASCEND"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:119
+msgid ""
+"Use ascend backend with [mf_adapter(download link)](https://sglang-ascend."
+"obs.cn-east-3.myhuaweicloud.com:443/sglang/mf_adapter-1.0.0-cp311-cp311-"
+"linux_aarch64.whl?"
+"AccessKeyId=HPUAXT4YM0U8JNTERLST&Expires=1783151861&Signature=3j10QDUjqk70enaq8lostYV2bEA%3D) "
+"and ASCEND_MF_STORE_URL being set"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:121
+msgid ""
+"pip install mf_adapter-1.0.0-cp311-cp311-linux_aarch64.whl --force-"
+"reinstall\n"
+"export ASCEND_MF_STORE_URL=\"tcp://xxx.xx.xxx.xxx:xxxx\"\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:125
+msgid "Use mooncake backend, more details can be found in mooncake section."
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:126
+msgid "export ENABLE_ASCEND_TRANSFER_WITH_MOONCAKE=true\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:133
+msgid ""
+"$ python -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --disaggregation-mode prefill --disaggregation-transfer-backend "
+"ascend\n"
+"$ python -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --disaggregation-mode decode --port 30001 --base-gpu-id 1 --"
+"disaggregation-transfer-backend ascend\n"
+"$ python -m sglang.srt.disaggregation.mini_lb --prefill "
+"http://127.0.0.1:30000 --decode http://127.0.0.1:30001 --host 0.0.0.0 --port "
+"8000\n"
+msgstr ""
+
+#: ../../../backend/pd_disaggregation.md:141
+msgid ""
+"# prefill 0\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 "
+"---disaggregation-transfer-backend ascend --disaggregation-mode prefill --"
+"host ${local_ip} --port 30000 --trust-remote-code --dist-init-addr "
+"${prefill_master_ip}:5000 --nnodes 1 --node-rank 0 --tp-size 16\n"
+"# decode 0\n"
+"$ python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3-0324 "
+"---disaggregation-transfer-backend ascend --disaggregation-mode decode --"
+"host ${local_ip} --port 30001 --trust-remote-code --dist-init-addr "
+"${decode_master_ip}:5000 --nnodes 1 --node-rank 0 --tp-size 16\n"
+msgstr ""

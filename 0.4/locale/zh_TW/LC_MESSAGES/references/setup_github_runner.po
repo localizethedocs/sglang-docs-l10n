@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/setup_github_runner.md:1
+msgid "Set Up Self-Hosted Runners for GitHub Action"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:3
+msgid "Add a Runner"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:5
+msgid "Step 1: Start a docker container."
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:7
+msgid ""
+"You can mount a folder for the shared huggingface model weights cache. The "
+"command below uses `/tmp/huggingface` as an example."
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:9
+msgid ""
+"docker pull nvidia/cuda:12.1.1-devel-ubuntu22.04\n"
+"# Nvidia\n"
+"docker run --shm-size 128g -it -v /tmp/huggingface:/hf_home --gpus all "
+"nvidia/cuda:12.1.1-devel-ubuntu22.04 /bin/bash\n"
+"# AMD\n"
+"docker run --rm --device=/dev/kfd --device=/dev/dri --group-add video --shm-"
+"size 128g -it -v /tmp/huggingface:/hf_home lmsysorg/sglang:v0.4.10-rocm630 /"
+"bin/bash\n"
+"# AMD just the last 2 GPUs\n"
+"docker run --rm --device=/dev/kfd --device=/dev/dri/renderD176 --device=/dev/"
+"dri/renderD184 --group-add video --shm-size 128g -it -v /tmp/huggingface:/"
+"hf_home lmsysorg/sglang:v0.4.10-rocm630 /bin/bash\n"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:19
+msgid "Step 2: Configure the runner by `config.sh`"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:21
+msgid "Run these commands inside the container."
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:23
+msgid ""
+"apt update && apt install -y curl python3-pip git\n"
+"export RUNNER_ALLOW_RUNASROOT=1\n"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:28
+msgid ""
+"Then follow https://github.com/sgl-project/sglang/settings/actions/runners/"
+"new?arch=x64&os=linux to run `config.sh`"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:30
+msgid "**Notes**"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:31
+msgid "Do not need to specify the runner group"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:32
+msgid ""
+"Give it a name (e.g., `test-sgl-gpu-0`) and some labels (e.g., `1-gpu-"
+"runner`). The labels can be edited later in Github Settings."
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:33
+msgid "Do not need to change the work folder."
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:35
+msgid "Step 3: Run the runner by `run.sh`"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:37
+msgid "Set up environment variables"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:38
+msgid ""
+"export HF_HOME=/hf_home\n"
+"export SGLANG_IS_IN_CI=true\n"
+"export HF_TOKEN=hf_xxx\n"
+"export OPENAI_API_KEY=sk-xxx\n"
+"export CUDA_VISIBLE_DEVICES=0\n"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:46
+msgid "Run it forever"
+msgstr ""
+
+#: ../../../references/setup_github_runner.md:47
+msgid "while true; do ./run.sh; echo \"Restarting...\"; sleep 2; done\n"
+msgstr ""

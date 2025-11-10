@@ -1,0 +1,395 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../backend/openai_api_completions.ipynb:2
+msgid ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:9
+msgid "OpenAI APIs - Completions"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:11
+msgid ""
+"SGLang provides OpenAI-compatible APIs to enable a smooth transition from "
+"OpenAI services to self-hosted local models. A complete reference for the "
+"API is available in the `OpenAI API Reference <https://platform.openai.com/"
+"docs/api-reference>`__."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:13
+msgid "This tutorial covers the following popular APIs:"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:15
+msgid "``chat/completions``"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:16
+msgid "``completions``"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:18
+msgid ""
+"Check out other tutorials to learn about `vision APIs <https://docs.sglang."
+"ai/backend/openai_api_vision.html>`__ for vision-language models and "
+"`embedding APIs <https://docs.sglang.ai/backend/openai_api_embeddings."
+"html>`__ for embedding models."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:30
+msgid "Launch A Server"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:32
+msgid "Launch the server in your terminal and wait for it to initialize."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid "[ ]:"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid ""
+"from sglang.test.test_utils import is_in_ci\n"
+"\n"
+"if is_in_ci():\n"
+"    from patch import launch_server_cmd\n"
+"else:\n"
+"    from sglang.utils import launch_server_cmd\n"
+"\n"
+"from sglang.utils import wait_for_server, print_highlight, "
+"terminate_process\n"
+"\n"
+"\n"
+"server_process, port = launch_server_cmd(\n"
+"    \"python3 -m sglang.launch_server --model-path qwen/qwen2.5-0.5b-"
+"instruct --host 0.0.0.0 --mem-fraction-static 0.8\"\n"
+")\n"
+"\n"
+"wait_for_server(f\"http://localhost:{port}\")\n"
+"print(f\"Server started on http://localhost:{port}\")"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:68
+msgid "Chat Completions"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:71
+#: ../../../backend/openai_api_completions.ipynb:254
+msgid "Usage"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:73
+msgid ""
+"The server fully implements the OpenAI API. It will automatically apply the "
+"chat template specified in the Hugging Face tokenizer, if one is available. "
+"You can also specify a custom chat template with ``--chat-template`` when "
+"launching the server."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid ""
+"import openai\n"
+"\n"
+"client = openai.Client(base_url=f\"http://127.0.0.1:{port}/v1\", "
+"api_key=\"None\")\n"
+"\n"
+"response = client.chat.completions.create(\n"
+"    model=\"qwen/qwen2.5-0.5b-instruct\",\n"
+"    messages=[\n"
+"        {\"role\": \"user\", \"content\": \"List 3 countries and their "
+"capitals.\"},\n"
+"    ],\n"
+"    temperature=0,\n"
+"    max_tokens=64,\n"
+")\n"
+"\n"
+"print_highlight(f\"Response: {response}\")"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:107
+#: ../../../backend/openai_api_completions.ipynb:286
+msgid "Parameters"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:109
+msgid ""
+"The chat completions API accepts OpenAI Chat Completions API's parameters. "
+"Refer to `OpenAI Chat Completions API <https://platform.openai.com/docs/api-"
+"reference/chat/create>`__ for more details."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:111
+msgid ""
+"SGLang extends the standard API with the ``extra_body`` parameter, allowing "
+"for additional customization. One key option within ``extra_body`` is "
+"``chat_template_kwargs``, which can be used to pass arguments to the chat "
+"template processor."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:114
+msgid "Enabling Model Thinking/Reasoning"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:116
+msgid ""
+"You can use ``chat_template_kwargs`` to enable or disable the model's "
+"internal thinking or reasoning process output. Set ``\"enable_thinking\": "
+"True`` within ``chat_template_kwargs`` to include the reasoning steps in the "
+"response. This requires launching the server with a compatible reasoning "
+"parser."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:118
+msgid "**Reasoning Parser Options:**"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:120
+msgid ""
+"``--reasoning-parser deepseek-r1``: For DeepSeek-R1 family models (R1, "
+"R1-0528, R1-Distill)"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:121
+msgid ""
+"``--reasoning-parser qwen3``: For standard Qwen3 models that support "
+"``enable_thinking`` parameter"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:122
+msgid ""
+"``--reasoning-parser qwen3-thinking``: For Qwen3-Thinking models (e.g., Qwen/"
+"Qwen3-235B-A22B-Thinking-2507) that always generate thinking content"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:123
+msgid "``--reasoning-parser kimi``: For Kimi thinking models"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:125
+msgid ""
+"Here's an example demonstrating how to enable thinking and retrieve the "
+"reasoning content separately (using ``separate_reasoning: True``):"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:127
+msgid ""
+"# For standard Qwen3 models with enable_thinking support:\n"
+"# python3 -m sglang.launch_server --model-path QwQ/Qwen3-32B-250415 --"
+"reasoning-parser qwen3 ...\n"
+"\n"
+"# For Qwen3-Thinking models that always think:\n"
+"# python3 -m sglang.launch_server --model-path Qwen/Qwen3-235B-A22B-"
+"Thinking-2507 --reasoning-parser qwen3-thinking ...\n"
+"\n"
+"from openai import OpenAI\n"
+"\n"
+"# Modify OpenAI's API key and API base to use SGLang's API server.\n"
+"openai_api_key = \"EMPTY\"\n"
+"openai_api_base = f\"http://127.0.0.1:{port}/v1\" # Use the correct port\n"
+"\n"
+"client = OpenAI(\n"
+"    api_key=openai_api_key,\n"
+"    base_url=openai_api_base,\n"
+")\n"
+"\n"
+"model = \"QwQ/Qwen3-32B-250415\" # Use the model loaded by the server\n"
+"messages = [{\"role\": \"user\", \"content\": \"9.11 and 9.8, which is "
+"greater?\"}]\n"
+"\n"
+"response = client.chat.completions.create(\n"
+"    model=model,\n"
+"    messages=messages,\n"
+"    extra_body={\n"
+"        \"chat_template_kwargs\": {\"enable_thinking\": True}, # Only for "
+"standard Qwen3 models\n"
+"        \"separate_reasoning\": True\n"
+"    }\n"
+")\n"
+"\n"
+"print(\"response.choices[0].message.reasoning_content: \\n\", response."
+"choices[0].message.reasoning_content)\n"
+"print(\"response.choices[0].message.content: \\n\", response.choices[0]."
+"message.content)"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:161
+msgid "**Example Output:**"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:165
+msgid ""
+"response.choices[0].message.reasoning_content:\n"
+" Okay, so I need to figure out which number is greater between 9.11 and 9.8. "
+"Hmm, let me think. Both numbers start with 9, right? So the whole number "
+"part is the same. That means I need to look at the decimal parts to "
+"determine which one is bigger.\n"
+"...\n"
+"Therefore, after checking multiple methods—aligning decimals, subtracting, "
+"converting to fractions, and using a real-world analogy—it's clear that 9.8 "
+"is greater than 9.11.\n"
+"\n"
+"response.choices[0].message.content:\n"
+" To determine which number is greater between **9.11** and **9.8**, follow "
+"these steps:\n"
+"...\n"
+"**Answer**:\n"
+"9.8 is greater than 9.11."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:176
+msgid ""
+"Setting ``\"enable_thinking\": False`` (or omitting it) will result in "
+"``reasoning_content`` being ``None``."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:178
+msgid ""
+"**Note for Qwen3-Thinking models:** These models always generate thinking "
+"content and do not support the ``enable_thinking`` parameter. When using ``--"
+"reasoning-parser qwen3-thinking``, the model will always produce reasoning "
+"content regardless of the ``enable_thinking`` setting."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:180
+msgid ""
+"Here is an example of a detailed chat completion request using standard "
+"OpenAI parameters:"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid ""
+"response = client.chat.completions.create(\n"
+"    model=\"qwen/qwen2.5-0.5b-instruct\",\n"
+"    messages=[\n"
+"        {\n"
+"            \"role\": \"system\",\n"
+"            \"content\": \"You are a knowledgeable historian who provides "
+"concise responses.\",\n"
+"        },\n"
+"        {\"role\": \"user\", \"content\": \"Tell me about ancient Rome\"},\n"
+"        {\n"
+"            \"role\": \"assistant\",\n"
+"            \"content\": \"Ancient Rome was a civilization centered in Italy."
+"\",\n"
+"        },\n"
+"        {\"role\": \"user\", \"content\": \"What were their major "
+"achievements?\"},\n"
+"    ],\n"
+"    temperature=0.3,  # Lower temperature for more focused responses\n"
+"    max_tokens=128,  # Reasonable length for a concise response\n"
+"    top_p=0.95,  # Slightly higher for better fluency\n"
+"    presence_penalty=0.2,  # Mild penalty to avoid repetition\n"
+"    frequency_penalty=0.2,  # Mild penalty for more natural language\n"
+"    n=1,  # Single response is usually more stable\n"
+"    seed=42,  # Keep for reproducibility\n"
+")\n"
+"\n"
+"print_highlight(response.choices[0].message.content)"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:223
+msgid "Streaming mode is also supported."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid ""
+"stream = client.chat.completions.create(\n"
+"    model=\"qwen/qwen2.5-0.5b-instruct\",\n"
+"    messages=[{\"role\": \"user\", \"content\": \"Say this is a test\"}],\n"
+"    stream=True,\n"
+")\n"
+"for chunk in stream:\n"
+"    if chunk.choices[0].delta.content is not None:\n"
+"        print(chunk.choices[0].delta.content, end=\"\")"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:251
+msgid "Completions"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:256
+msgid ""
+"Completions API is similar to Chat Completions API, but without the "
+"``messages`` parameter or chat templates."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid ""
+"response = client.completions.create(\n"
+"    model=\"qwen/qwen2.5-0.5b-instruct\",\n"
+"    prompt=\"List 3 countries and their capitals.\",\n"
+"    temperature=0,\n"
+"    max_tokens=64,\n"
+"    n=1,\n"
+"    stop=None,\n"
+")\n"
+"\n"
+"print_highlight(f\"Response: {response}\")"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:288
+msgid ""
+"The completions API accepts OpenAI Completions API's parameters. Refer to "
+"`OpenAI Completions API <https://platform.openai.com/docs/api-reference/"
+"completions/create>`__ for more details."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:290
+msgid "Here is an example of a detailed completions request:"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid ""
+"response = client.completions.create(\n"
+"    model=\"qwen/qwen2.5-0.5b-instruct\",\n"
+"    prompt=\"Write a short story about a space explorer.\",\n"
+"    temperature=0.7,  # Moderate temperature for creative writing\n"
+"    max_tokens=150,  # Longer response for a story\n"
+"    top_p=0.9,  # Balanced diversity in word choice\n"
+"    stop=[\"\\n\\n\", \"THE END\"],  # Multiple stop sequences\n"
+"    presence_penalty=0.3,  # Encourage novel elements\n"
+"    frequency_penalty=0.3,  # Reduce repetitive phrases\n"
+"    n=1,  # Generate one completion\n"
+"    seed=123,  # For reproducible results\n"
+")\n"
+"\n"
+"print_highlight(f\"Response: {response}\")"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:324
+msgid "Structured Outputs (JSON, Regex, EBNF)"
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:326
+msgid ""
+"For OpenAI compatible structured outputs API, refer to `Structured Outputs "
+"<https://docs.sglang.ai/backend/structured_outputs.html#OpenAI-Compatible-"
+"API>`__ for more details."
+msgstr ""
+
+#: ../../../backend/openai_api_completions.ipynb:-1
+msgid "terminate_process(server_process)"
+msgstr ""
