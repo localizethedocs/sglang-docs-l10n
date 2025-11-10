@@ -1,0 +1,3274 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/server_arguments.md:1
+msgid "Server Arguments"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:3
+msgid ""
+"This page provides a list of server arguments used in the command line to "
+"configure the behavior and performance of the language model server during "
+"deployment. These arguments enable users to customize key aspects of the "
+"server, including model selection, parallelism policies, memory management, "
+"and optimization techniques. You can find all arguments by `python3 -m "
+"sglang.launch_server --help`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:9
+msgid "Common launch commands"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:11
+msgid ""
+"To use a configuration file, create a YAML file with your server arguments "
+"and specify it with `--config`. CLI arguments will override config file "
+"values."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:13
+msgid ""
+"# Create config.yaml\n"
+"cat > config.yaml << EOF\n"
+"model-path: meta-llama/Meta-Llama-3-8B-Instruct\n"
+"host: 0.0.0.0\n"
+"port: 30000\n"
+"tensor-parallel-size: 2\n"
+"enable-metrics: true\n"
+"log-requests: true\n"
+"EOF\n"
+"\n"
+"# Launch server with config file\n"
+"python -m sglang.launch_server --config config.yaml\n"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:28
+msgid ""
+"To enable multi-GPU tensor parallelism, add `--tp 2`. If it reports the "
+"error \"peer access is not supported between these two devices\", add `--"
+"enable-p2p-check` to the server launch command."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:30
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --tp 2\n"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:34
+msgid ""
+"To enable multi-GPU data parallelism, add `--dp 2`. Data parallelism is "
+"better for throughput if there is enough memory. It can also be used "
+"together with tensor parallelism. The following command uses 4 GPUs in "
+"total. We recommend [SGLang Router](../advanced_features/router.md) for data "
+"parallelism."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:36
+msgid ""
+"python -m sglang_router.launch_server --model-path meta-llama/Meta-"
+"Llama-3-8B-Instruct --dp 2 --tp 2\n"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:40
+msgid ""
+"If you see out-of-memory errors during serving, try to reduce the memory "
+"usage of the KV cache pool by setting a smaller value of `--mem-fraction-"
+"static`. The default value is `0.9`."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:42
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --mem-fraction-static 0.7\n"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:46
+msgid ""
+"See [hyperparameter tuning](hyperparameter_tuning.md) on tuning "
+"hyperparameters for better performance."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:47
+msgid ""
+"For docker and Kubernetes runs, you need to set up shared memory which is "
+"used for communication between processes. See `--shm-size` for docker and `/"
+"dev/shm` size update for Kubernetes manifests."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:48
+msgid ""
+"If you see out-of-memory errors during prefill for long prompts, try to set "
+"a smaller chunked prefill size."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:50
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --chunked-prefill-size 4096\n"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:54
+msgid ""
+"To enable `torch.compile` acceleration, add `--enable-torch-compile`. It "
+"accelerates small models on small batch sizes. By default, the cache path is "
+"located at `/tmp/torchinductor_root`, you can customize it using environment "
+"variable `TORCHINDUCTOR_CACHE_DIR`. For more details, please refer to "
+"[PyTorch official documentation](https://pytorch.org/tutorials/recipes/"
+"torch_compile_caching_tutorial.html) and [Enabling cache for torch.compile]"
+"(https://docs.sglang.ai/references/torch_compile_cache.html)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:55
+msgid ""
+"To enable torchao quantization, add `--torchao-config int4wo-128`. It "
+"supports other [quantization strategies (INT8/FP8)](https://github.com/sgl-"
+"project/sglang/blob/v0.3.6/python/sglang/srt/server_args.py#L671) as well."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:56
+msgid ""
+"To enable fp8 weight quantization, add `--quantization fp8` on a fp16 "
+"checkpoint or directly load a fp8 checkpoint without specifying any "
+"arguments."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:57
+msgid "To enable fp8 kv cache quantization, add `--kv-cache-dtype fp8_e5m2`."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:58
+msgid ""
+"To enable deterministic inference and batch invariant operations, add `--"
+"enable-deterministic-inference`. More details can be found in [deterministic "
+"inference document](../advanced_features/deterministic_inference.md)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:59
+msgid ""
+"If the model does not have a chat template in the Hugging Face tokenizer, "
+"you can specify a [custom chat template](../references/custom_chat_template."
+"md)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:60
+msgid ""
+"To run tensor parallelism on multiple nodes, add `--nnodes 2`. If you have "
+"two nodes with two GPUs on each node and want to run TP=4, let `sgl-dev-0` "
+"be the hostname of the first node and `50000` be an available port, you can "
+"use the following commands. If you meet deadlock, please try to add `--"
+"disable-cuda-graph`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:62
+msgid ""
+"# Node 0\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Meta-Llama-3-8B-Instruct \\\n"
+"  --tp 4 \\\n"
+"  --dist-init-addr sgl-dev-0:50000 \\\n"
+"  --nnodes 2 \\\n"
+"  --node-rank 0\n"
+"\n"
+"# Node 1\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Meta-Llama-3-8B-Instruct \\\n"
+"  --tp 4 \\\n"
+"  --dist-init-addr sgl-dev-0:50000 \\\n"
+"  --nnodes 2 \\\n"
+"  --node-rank 1\n"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:80
+msgid ""
+"Please consult the documentation below and [server_args.py](https://github."
+"com/sgl-project/sglang/blob/main/python/sglang/srt/server_args.py) to learn "
+"more about the arguments you may provide when launching a server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:82
+msgid "Model and tokenizer"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Argument"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Defaults"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Options"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--model-path`<br>`--model`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:85
+#: ../../../advanced_features/server_arguments.md:145
+#: ../../../advanced_features/server_arguments.md:146
+#: ../../../advanced_features/server_arguments.md:205
+#: ../../../advanced_features/server_arguments.md:213
+#: ../../../advanced_features/server_arguments.md:252
+#: ../../../advanced_features/server_arguments.md:277
+msgid "<br>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The path of the model weights. This can be a local folder or a Hugging Face "
+"repo ID."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`None`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Type: str"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tokenizer-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The path of the tokenizer."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tokenizer-mode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Tokenizer mode. 'auto' will use the fast tokenizer if available, and 'slow' "
+"will always use the slow tokenizer."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`auto`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`auto`, `slow`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tokenizer-worker-num`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The worker num of the tokenizer manager."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`1`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Type: int"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--skip-tokenizer-init`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "If set, skip init tokenizer and pass input_ids in generate request."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`False`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "bool flag (set to enable)"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--load-format`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The format of the model weights to load. \"auto\" will try to load the "
+"weights in the safetensors format and fall back to the pytorch bin format if "
+"safetensors format is not available. \"pt\" will load the weights in the "
+"pytorch bin format. \"safetensors\" will load the weights in the safetensors "
+"format. \"npcache\" will load the weights in pytorch format and store a "
+"numpy cache to speed up the loading. \"dummy\" will initialize the weights "
+"with random values, which is mainly for profiling.\"gguf\" will load the "
+"weights in the gguf format. \"bitsandbytes\" will load the weights using "
+"bitsandbytes quantization.\"layered\" loads weights layer by layer so that "
+"one can quantize a layer before loading another to make the peak memory "
+"envelope smaller."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`auto`, `pt`, `safetensors`, `npcache`, `dummy`, `sharded_state`, `gguf`, "
+"`bitsandbytes`, `layered`, `remote`, `remote_instance`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--model-loader-extra-config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Extra config for model loader. This will be passed to the model loader "
+"corresponding to the chosen load_format."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`{}`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--trust-remote-code`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Whether or not to allow for custom models defined on the Hub in their own "
+"modeling files."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--context-length`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The model's maximum context length. Defaults to None (will use the value "
+"from the model's config.json instead)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--is-embedding`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Whether to use a CausalLM as an embedding model."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-multimodal`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable the multimodal functionality for the served model. If the model being "
+"served is not multimodal, nothing will happen"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--revision`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The specific model version to use. It can be a branch name, a tag name, or a "
+"commit id. If unspecified, will use the default version."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--model-impl`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Which implementation of the model to use. * \"auto\" will try to use the "
+"SGLang implementation if it exists and fall back to the Transformers "
+"implementation if no SGLang implementation is available. * \"sglang\" will "
+"use the SGLang model implementation. * \"transformers\" will use the "
+"Transformers model implementation."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:99
+msgid "HTTP server"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--host`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The host of the HTTP server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`127.0.0.1`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--port`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The port of the HTTP server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`30000`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--skip-server-warmup`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "If set, skip warmup."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--warmups`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Specify custom warmup functions (csv) to run before server starts eg. --"
+"warmups=warmup_name1,warmup_name2 will run the functions `warmup_name1` and "
+"`warmup_name2` specified in warmup.py before the server starts listening for "
+"requests"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--nccl-port`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The port for NCCL distributed environment setup. Defaults to a random port."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:108
+msgid "Quantization and data type"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--dtype`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Data type for model weights and activations. * \"auto\" will use FP16 "
+"precision for FP32 and FP16 models, and BF16 precision for BF16 models. * "
+"\"half\" for FP16. Recommended for AWQ quantization. * \"float16\" is the "
+"same as \"half\". * \"bfloat16\" for a balance between precision and range. "
+"* \"float\" is shorthand for FP32 precision. * \"float32\" for FP32 "
+"precision."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`auto`, `half`, `float16`, `bfloat16`, `float`, `float32`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--quantization`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The quantization method."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`awq`, `fp8`, `gptq`, `marlin`, `gptq_marlin`, `awq_marlin`, `bitsandbytes`, "
+"`gguf`, `modelopt`, `modelopt_fp4`, `petit_nvfp4`, `w8a8_int8`, `w8a8_fp8`, "
+"`moe_wna16`, `qoq`, `w4afp8`, `mxfp4`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--quantization-param-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Path to the JSON file containing the KV cache scaling factors. This should "
+"generally be supplied, when KV cache dtype is FP8. Otherwise, KV cache "
+"scaling factors default to 1.0, which may cause accuracy issues."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Type: Optional[str]"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--modelopt-quant`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The ModelOpt quantization configuration. Supported values: 'fp8', "
+"'int4_awq', 'w4a8_awq', 'nvfp4', 'nvfp4_awq'. This requires the NVIDIA Model "
+"Optimizer library to be installed: pip install nvidia-modelopt"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--modelopt-checkpoint-restore-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Path to restore a previously saved ModelOpt quantized checkpoint. If "
+"provided, the quantization process will be skipped and the model will be "
+"loaded from this checkpoint."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--modelopt-checkpoint-save-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Path to save the ModelOpt quantized checkpoint after quantization. This "
+"allows reusing the quantized model in future runs."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--kv-cache-dtype`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Data type for kv cache storage. \"auto\" will use model data type. "
+"\"fp8_e5m2\" and \"fp8_e4m3\" is supported for CUDA 11.8+."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`auto`, `fp8_e5m2`, `fp8_e4m3`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-fp32-lm-head`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "If set, the LM head outputs (logits) are in FP32."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:120
+msgid "Memory and scheduling"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--mem-fraction-static`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The fraction of the memory used for static allocation (model weights and KV "
+"cache memory pool). Use a smaller value if you see out-of-memory errors."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Type: float"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-running-requests`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The maximum number of running requests."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-queued-requests`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum number of queued requests. This option is ignored when using "
+"disaggregation-mode."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-total-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum number of tokens in the memory pool. If not specified, it will "
+"be automatically calculated based on the memory usage fraction. This option "
+"is typically used for development and debugging purposes."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--chunked-prefill-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum number of tokens in a chunk for the chunked prefill. Setting "
+"this to -1 means disabling chunked prefill."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-prefill-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum number of tokens in a prefill batch. The real bound will be the "
+"maximum of this value and the model's maximum context length."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`16384`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--schedule-policy`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The scheduling policy of the requests."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`fcfs`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`lpm`, `random`, `fcfs`, `dfs-weight`, `lof`, `priority`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-priority-scheduling`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable priority scheduling. Requests with higher priority integer values "
+"will be scheduled first by default."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--schedule-low-priority-values-first`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"If specified with --enable-priority-scheduling, the scheduler will schedule "
+"requests with lower priority integer values first."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--priority-scheduling-preemption-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Minimum difference in priorities for an incoming request to have to preempt "
+"running request(s)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`10`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--schedule-conservativeness`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"How conservative the schedule policy is. A larger value means more "
+"conservative scheduling. Use a larger value if you see requests being "
+"retracted frequently."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`1.0`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--page-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The number of tokens in a page."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hybrid-kvcache-ratio`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Mix ratio in [0,1] between uniform and hybrid kv buffers (0.0 = pure "
+"uniform: swa_size / full_size = 1)(1.0 = pure hybrid: swa_size / full_size = "
+"local_attention_size / context_length)"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Optional[float]"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--swa-full-tokens-ratio`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The ratio of SWA layer KV tokens / full layer KV tokens, regardless of the "
+"number of swa:full layers. It should be between 0 and 1. E.g. 0.5 means if "
+"each swa layer has 50 tokens, then each full layer has 100 tokens."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0.8`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-hybrid-swa-memory`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disable the hybrid SWA memory."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:139
+msgid "Runtime options"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--device`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The device to use ('cuda', 'xpu', 'hpu', 'npu', 'cpu'). Defaults to auto-"
+"detection if not specified."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--elastic-ep-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Select the collective communication backend for elastic EP. Currently "
+"supports 'mooncake'."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "None"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "N/A"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--mooncake-ib-device`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The InfiniBand devices for Mooncake Backend, accepts multiple comma-"
+"separated devices. Default is None, which triggers automatic device "
+"detection when Mooncake Backend is enabled."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tensor-parallel-size`<br>`--tp-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The tensor parallelism size."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--pipeline-parallel-size`<br>`--pp-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The pipeline parallelism size."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--pp-max-micro-batch-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The maximum micro batch size in pipeline parallelism."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--stream-interval`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The interval (or buffer size) for streaming in terms of the token length. A "
+"smaller value makes streaming smoother, while a larger value makes the "
+"throughput higher"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--stream-output`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Whether to output as a sequence of disjoint segments."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--random-seed`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The random seed."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--constrained-json-whitespace-pattern`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"(outlines and llguidance backends only) Regex pattern for syntactic "
+"whitespaces allowed in JSON constrained output. For example, to allow the "
+"model to generate consecutive whitespaces, set the pattern to [\\n\\t ]*"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--constrained-json-disable-any-whitespace`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"(xgrammar and llguidance backends only) Enforce compact representation in "
+"JSON constrained output."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--watchdog-timeout`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Set watchdog timeout in seconds. If a forward batch takes longer than this, "
+"the server will crash to prevent hanging."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`300`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--dist-timeout`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Set timeout for torch.distributed initialization."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--download-dir`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Model download directory for huggingface."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--base-gpu-id`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The base GPU ID to start allocating GPUs from. Useful when running multiple "
+"instances on the same machine."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--gpu-id-step`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The delta between consecutive GPU IDs that are used. For example, setting it "
+"to 2 will use GPU 0,2,4,..."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--sleep-on-idle`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Reduce CPU usage when sglang is idle."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:160
+msgid "Logging"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--log-level`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The logging level of all loggers."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`info`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--log-level-http`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The logging level of HTTP server. If not set, reuse --log-level by default."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--log-requests`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Log metadata, inputs, outputs of all requests. The verbosity is decided by --"
+"log-requests-level"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--log-requests-level`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"0: Log metadata (no sampling parameters). 1: Log metadata and sampling "
+"parameters. 2: Log metadata, sampling parameters and partial input/output. "
+"3: Log every input/output."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`2`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0`, `1`, `2`, `3`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--crash-dump-folder`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Folder path to dump requests from the last 5 min before a crash (if any). If "
+"not specified, crash dumping is disabled."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--crash-on-nan`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Crash the server on nan logprobs."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--show-time-cost`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Show time cost of custom marks."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-metrics`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable log prometheus metrics."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-metrics-for-all-schedulers`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable --enable-metrics-for-all-schedulers when you want schedulers on all "
+"TP ranks (not just TP 0) to record request metrics separately. This is "
+"especially useful when dp_attention is enabled, as otherwise all metrics "
+"appear to come from TP 0."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tokenizer-metrics-custom-labels-header`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Specify the HTTP header for passing custom labels for tokenizer metrics."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`x-custom-labels`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tokenizer-metrics-allowed-custom-labels`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The custom labels allowed for tokenizer metrics. The labels are specified "
+"via a dict in '--tokenizer-metrics-custom-labels-header' field in HTTP "
+"requests, e.g., {'label1': 'value1', 'label2': 'value2'} is allowed if '--"
+"tokenizer-metrics-allowed-custom-labels label1 label2' is set."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "List[str]"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--bucket-time-to-first-token`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The buckets of time to first token, specified as a list of floats."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "List[float]"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--bucket-inter-token-latency`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The buckets of inter-token latency, specified as a list of floats."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--bucket-e2e-request-latency`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The buckets of end-to-end request latency, specified as a list of floats."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--collect-tokens-histogram`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Collect prompt/generation tokens histogram."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--prompt-tokens-buckets`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The buckets rule of prompt tokens. Supports 3 rule types: 'default' uses "
+"predefined buckets; 'tse <middle> <base> <count>' generates two sides "
+"exponential distributed buckets (e.g., 'tse 1000 2 8' generates buckets "
+"[984.0, 992.0, 996.0, 998.0, 1000.0, 1002.0, 1004.0, 1008.0, 1016.0]).); "
+"'custom <value1> <value2> ...' uses custom bucket values (e.g., 'custom 10 "
+"50 100 500')."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:178
+#: ../../../advanced_features/server_arguments.md:179
+msgid "<middle>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:178
+#: ../../../advanced_features/server_arguments.md:179
+msgid "<base>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:178
+#: ../../../advanced_features/server_arguments.md:179
+msgid "<count>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:178
+#: ../../../advanced_features/server_arguments.md:179
+msgid "<value1>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:178
+#: ../../../advanced_features/server_arguments.md:179
+msgid "<value2>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--generation-tokens-buckets`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The buckets rule for generation tokens histogram. Supports 3 rule types: "
+"'default' uses predefined buckets; 'tse <middle> <base> <count>' generates "
+"two sides exponential distributed buckets (e.g., 'tse 1000 2 8' generates "
+"buckets [984.0, 992.0, 996.0, 998.0, 1000.0, 1002.0, 1004.0, 1008.0, "
+"1016.0]).); 'custom <value1> <value2> ...' uses custom bucket values (e.g., "
+"'custom 10 50 100 500')."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--gc-warning-threshold-secs`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The threshold for long GC warning. If a GC takes longer than this, a warning "
+"will be logged. Set to 0 to disable."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0.0`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--decode-log-interval`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The log interval of decode batch."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`40`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-request-time-stats-logging`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable per request time stats logging"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--kv-events-config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Config in json format for NVIDIA dynamo KV event publishing. Publishing will "
+"be enabled if this flag is used."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-trace`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable opentelemetry trace"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--oltp-traces-endpoint`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Config opentelemetry collector endpoint if --enable-trace is set. format: "
+"<ip>:<port>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:185
+msgid "<ip>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:185
+msgid "<port>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`localhost:4317`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:187
+msgid "API related"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--api-key`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Set API key of the server. It is also used in the OpenAI API compatible "
+"server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--served-model-name`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Override the model name returned by the v1/models endpoint in OpenAI API "
+"server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--weight-version`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Version identifier for the model weights. Defaults to 'default' if not "
+"specified."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`default`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--chat-template`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The buliltin chat template name or the path of the chat template file. This "
+"is only used for OpenAI-compatible API server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--completion-template`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The buliltin completion template name or the path of the completion template "
+"file. This is only used for OpenAI-compatible API server. only for code "
+"completion currently."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--file-storage-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The path of the file storage in backend."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`sglang_storage`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-cache-report`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Return number of cached tokens in usage.prompt_tokens_details for each "
+"openai request."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--reasoning-parser`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Specify the parser for reasoning models. Supported parsers: [deepseek-r1, "
+"deepseek-v3, glm45, gpt-oss, kimi, qwen3, qwen3-thinking, step3]."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`deepseek-r1`, `deepseek-v3`, `glm45`, `gpt-oss`, `kimi`, `qwen3`, `qwen3-"
+"thinking`, `step3`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tool-call-parser`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Specify the parser for handling tool-call interactions. Supported parsers: "
+"[deepseekv3, deepseekv31, glm, glm45, gpt-oss, kimi_k2, llama3, mistral, "
+"pythonic, qwen, qwen25, qwen3_coder, step3]."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`deepseekv3`, `deepseekv31`, `glm`, `glm45`, `gpt-oss`, `kimi_k2`, `llama3`, "
+"`mistral`, `pythonic`, `qwen`, `qwen25`, `qwen3_coder`, `step3`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--sampling-defaults`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Where to get default sampling parameters. 'openai' uses SGLang/OpenAI "
+"defaults (temperature=1.0, top_p=1.0, etc.). 'model' uses the model's "
+"generation_config.json to get the recommended sampling parameters if "
+"available. Default is 'model'."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`model`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`openai`, `model`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tool-server`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Either 'demo' or a comma-separated list of tool server urls to use for the "
+"model. If not specified, no tool server will be used."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:202
+msgid "Data parallelism"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--data-parallel-size`<br>`--dp-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The data parallelism size."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--load-balance-method`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The load balancing strategy for data parallelism. The Minimum Token "
+"algorithm can only be used when DP attention is applied. This algorithm "
+"performs load balancing based on the real-time token load of the DP workers."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`round_robin`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`round_robin`, `shortest_queue`, `minimum_tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--load-watch-interval`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The interval of load watching in seconds."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0.1`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--prefill-round-robin-balance`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Prefill is round robin balanced. This is used to promise decode server can "
+"get the correct dp rank."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:210
+msgid "Multi-node distributed serving"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--dist-init-addr`<br>`--nccl-init-addr`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The host address for initializing distributed backend (e.g., "
+"`192.168.0.2:25000`)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--nnodes`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The number of nodes."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--node-rank`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The node rank."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:217
+msgid "Model override args"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--json-model-override-args`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"A dictionary in JSON string format used to override default model "
+"configurations."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--preferred-sampling-params`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"json-formatted sampling settings that will be returned in /get_model_info"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:223
+msgid "LoRA"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-lora`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable LoRA support for the model. This argument is automatically set to "
+"`True` if `--lora-paths` is provided for backward compatibility."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Bool flag (set to enable)"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-lora-rank`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum LoRA rank that should be supported. If not specified, it will be "
+"automatically inferred from the adapters provided in `--lora-paths`. This "
+"argument is needed when you expect to dynamically load adapters of larger "
+"LoRA rank after server startup."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--lora-target-modules`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The union set of all target modules where LoRA should be applied (e.g., "
+"`q_proj`, `k_proj`, `gate_proj`). If not specified, it will be automatically "
+"inferred from the adapters provided in `--lora-paths`. You can also set it "
+"to `all` to enable LoRA for all supported modules; note this may introduce "
+"minor performance overhead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`, "
+"`qkv_proj`, `gate_up_proj`, `all`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--lora-paths`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The list of LoRA adapters to load. Each adapter must be specified in one of "
+"the following formats: `<PATH>` | `<NAME>=<PATH>` | JSON with schema "
+"`{\"lora_name\": str, \"lora_path\": str, \"pinned\": bool}`."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Type: List[str] / JSON objects"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-loras-per-batch`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Maximum number of adapters for a running batch, including base-only requests."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`8`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-loaded-loras`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"If specified, limits the maximum number of LoRA adapters loaded in CPU "
+"memory at a time. Must be ≥ `--max-loras-per-batch`."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--lora-eviction-policy`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "LoRA adapter eviction policy when the GPU memory pool is full."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`lru`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`lru`, `fifo`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--lora-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Choose the kernel backend for multi-LoRA serving."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`triton`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`triton`, `csgmv`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-lora-chunk-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Maximum chunk size for the ChunkedSGMV LoRA backend. Only used when `--lora-"
+"backend` is `csgmv`. Larger values may improve performance."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`16`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`16`, `32`, `64`, `128`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:236
+msgid "Kernel backend"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--attention-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Choose the kernels for attention layers."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`triton`, `torch_native`, `flex_attention`, `nsa`, `cutlass_mla`, `fa3`, "
+"`fa4`, `flashinfer`, `flashmla`, `trtllm_mla`, `trtllm_mha`, "
+"`dual_chunk_flash_attn`, `aiter`, `wave`, `intel_amx`, `ascend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--prefill-attention-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Choose the kernels for prefill attention layers (have priority over --"
+"attention-backend)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--decode-attention-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Choose the kernels for decode attention layers (have priority over --"
+"attention-backend)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--sampling-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Choose the kernels for sampling layers."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`flashinfer`, `pytorch`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--grammar-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Choose the backend for grammar-guided decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`xgrammar`, `outlines`, `llguidance`, `none`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--mm-attention-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Set multimodal attention backend."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`sdpa`, `fa3`, `triton_attn`, `ascend_attn`, `aiter_attn`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--nsa-prefill`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Choose the NSA backend for the prefill stage (overrides `--attention-"
+"backend` when running DeepSeek NSA-style attention)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`flashmla_sparse`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`flashmla_sparse`, `flashmla_decode`, `fa3`, `tilelang`, `aiter`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--nsa-decode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Choose the NSA backend for the decode stage when running DeepSeek NSA-style "
+"attention. Overrides `--attention-backend` for decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`flashmla_kv`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`flashmla_prefill`, `flashmla_kv`, `fa3`, `tilelang`, `aiter`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:248
+msgid "Speculative decoding"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-algorithm`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Speculative algorithm."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`EAGLE`, `EAGLE3`, `NEXTN`, `STANDALONE`, `NGRAM`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-draft-model-path`<br>`--speculative-draft-model`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The path of the draft model weights. This can be a local folder or a Hugging "
+"Face repo ID."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-draft-model-revision`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The specific draft model version to use. It can be a branch name, a tag "
+"name, or a commit id. If unspecified, will use the default version."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-num-steps`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The number of steps sampled from draft model in Speculative Decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-eagle-topk`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The number of tokens sampled from the draft model in eagle2 each step."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-num-draft-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The number of tokens sampled from the draft model in Speculative Decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-accept-threshold-single`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Accept a draft token if its probability in the target model is greater than "
+"this threshold."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-accept-threshold-acc`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The accept probability of a draft token is raised from its target "
+"probability p to min(1, p / threshold_acc)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-token-map`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The path of the draft model's small vocab table."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-attention-mode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Attention backend for speculative decoding operations (both target verify "
+"and draft extend). Can be one of 'prefill' (default) or 'decode'."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`prefill`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`prefill`, `decode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-moe-runner-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"MOE backend for EAGLE speculative decoding, see --moe-runner-backend for "
+"options. Same as moe runner backend if unset."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:263
+msgid "Ngram speculative decoding"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-min-match-window-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The minimum window size for pattern matching in ngram speculative decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-max-match-window-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum window size for pattern matching in ngram speculative decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`12`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-min-bfs-breadth`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The minimum breadth for BFS (Breadth-First Search) in ngram speculative "
+"decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-max-bfs-breadth`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The maximum breadth for BFS (Breadth-First Search) in ngram speculative "
+"decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-match-type`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The match type for cache tree."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`BFS`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`BFS`, `PROB`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-branch-length`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The branch length for ngram speculative decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`18`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--speculative-ngram-capacity`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The cache capacity for ngram speculative decoding."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`10000000`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:274
+msgid "Expert parallelism"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--expert-parallel-size`<br>`--ep-size`<br>`--ep`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The expert parallelism size."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--moe-a2a-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Select the backend for all-to-all communication for expert parallelism."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`none`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`none`, `deepep`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--moe-runner-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Choose the runner backend for MoE."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"`auto`, `deep_gemm`, `triton`, `triton_kernel`, `flashinfer_trtllm`, "
+"`flashinfer_cutlass`, `flashinfer_mxfp4`, `flashinfer_cutedsl`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--flashinfer-mxfp4-moe-precision`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Choose the computation precision of flashinfer mxfp4 moe"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`default`, `bf16`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-flashinfer-allreduce-fusion`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable FlashInfer allreduce fusion with Residual RMSNorm."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--deepep-mode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Select the mode when enable DeepEP MoE, could be `normal`, `low_latency` or "
+"`auto`. Default is `auto`, which means `low_latency` for decode batch and "
+"`normal` for prefill batch."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`normal`, `low_latency`, `auto`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ep-num-redundant-experts`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Allocate this number of redundant experts in expert parallel."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ep-dispatch-algorithm`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The algorithm to choose ranks for redundant experts in expert parallel."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--init-expert-location`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Initial location of EP experts."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`trivial`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-eplb`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable EPLB algorithm"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--eplb-algorithm`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Chosen EPLB algorithm"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--eplb-rebalance-num-iterations`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Number of iterations to automatically trigger a EPLB re-balance."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`1000`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--eplb-rebalance-layers-per-chunk`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Number of layers to rebalance per forward pass."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--eplb-min-rebalancing-utilization-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Minimum threshold for GPU average utilization to trigger EPLB rebalancing. "
+"Must be in the range [0.0, 1.0]."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--expert-distribution-recorder-mode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Mode of expert distribution recorder."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--expert-distribution-recorder-buffer-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Circular buffer size of expert distribution recorder. Set to -1 to denote "
+"infinite buffer."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-expert-distribution-metrics`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable logging metrics for expert balancedness"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--deepep-config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Tuned DeepEP config suitable for your own cluster. It can be either a string "
+"with JSON content or a file path."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--moe-dense-tp-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"TP size for MoE dense MLP layers. This flag is useful when, with large TP "
+"size, there are errors caused by weights in MLP layers having dimension "
+"smaller than the min dimension GEMM supports."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:297
+msgid "Mamba Cache"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--max-mamba-cache-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The maximum size of the mamba cache."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--mamba-ssm-dtype`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The data type of the SSM states in mamba cache."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`float32`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`float32`, `bfloat16`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--mamba-full-memory-ratio`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The ratio of mamba state memory to full kv cache memory."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0.2`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:304
+msgid "Args for multi-item scoring"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--multi-item-scoring-delimiter`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Delimiter token ID for multi-item scoring. Used to combine Query and Items "
+"into a single sequence: Query<delimiter>Item1<delimiter>Item2<delimiter>... "
+"This enables efficient batch processing of multiple items against a single "
+"query."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:307
+msgid "<delimiter>"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:309
+msgid "Hierarchical cache"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-hierarchical-cache`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable hierarchical cache"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-ratio`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The ratio of the size of host KV cache memory pool to the size of device "
+"pool."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`2.0`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The size of host KV cache memory pool in gigabytes, which will override the "
+"hicache_ratio if set."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-write-policy`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The write policy of hierarchical cache."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`write_through`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`write_back`, `write_through`, `write_through_selective`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--radix-eviction-policy`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The eviction policy of radix trees. 'lru' stands for Least Recently Used, "
+"'lfu' stands for Least Frequently Used."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`lru`, `lfu`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-io-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The IO backend for KV cache transfer between CPU and GPU"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`kernel`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`direct`, `kernel`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-mem-layout`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The layout of host memory pool for hierarchical cache."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`layer_first`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`layer_first`, `page_first`, `page_first_direct`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-storage-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The storage backend for hierarchical KV cache. Built-in backends: file, "
+"mooncake, hf3fs, nixl, aibrix. For dynamic backend, use --hicache-storage-"
+"backend-extra-config to specify: backend_name (custom name), module_path "
+"(Python module path), class_name (backend class name)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`file`, `mooncake`, `hf3fs`, `nixl`, `aibrix`, `dynamic`, `eic`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-storage-prefetch-policy`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Control when prefetching from the storage backend should stop."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`best_effort`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`best_effort`, `wait_complete`, `timeout`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--hicache-storage-backend-extra-config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"A dictionary in JSON string format containing extra configuration for the "
+"storage backend."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:323
+msgid "LMCache"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-lmcache`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Using LMCache as an alternative hierarchical cache solution"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:328
+msgid "Double Sparsity"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-double-sparsity`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable double sparsity attention"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ds-channel-config-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The path of the double sparsity channel config"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ds-heavy-channel-num`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The number of heavy channels in double sparsity attention"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`32`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ds-heavy-token-num`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The number of heavy tokens in double sparsity attention"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`256`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ds-heavy-channel-type`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The type of heavy channels in double sparsity attention"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`qk`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--ds-sparse-decode-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The minimum decode sequence length required before the double-sparsity "
+"backend switches from the dense fallback to the sparse decode kernel."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`4096`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:338
+msgid "Offloading"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--cpu-offload-gb`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "How many GBs of RAM to reserve for CPU offloading."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--offload-group-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Number of layers per group in offloading."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`-1`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--offload-num-in-group`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Number of layers to be offloaded within a group."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--offload-prefetch-step`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Steps to prefetch in offloading."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--offload-mode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Mode of offloading."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`cpu`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:347
+msgid "Optimization/debug options"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-radix-cache`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disable RadixAttention for prefix caching."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--cuda-graph-max-bs`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Set the maximum batch size for cuda graph. It will extend the cuda graph "
+"capture batch size to this value."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--cuda-graph-bs`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Set the list of batch sizes for cuda graph."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "List[int]"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-cuda-graph`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disable cuda graph."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-cuda-graph-padding`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Disable cuda graph when padding is needed. Still uses cuda graph when "
+"padding is not needed."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-profile-cuda-graph`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable profiling of cuda graph capture."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-cudagraph-gc`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable garbage collection during CUDA graph capture. If disabled (default), "
+"GC is frozen during capture to speed up the process."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-nccl-nvls`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable NCCL NVLS for prefill heavy requests when available."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-symm-mem`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable NCCL symmetric memory for fast collectives."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-flashinfer-cutlass-moe-fp4-allgather`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disables quantize before all-gather for flashinfer cutlass moe."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-tokenizer-batch-encode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable batch tokenization for improved performance when processing multiple "
+"text inputs. Do not use with image inputs, pre-tokenized input_ids, or "
+"input_embeds."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-outlines-disk-cache`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Disable disk cache of outlines to avoid possible crashes related to file "
+"system or high concurrency."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-custom-all-reduce`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disable the custom all-reduce kernel and fall back to NCCL."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-mscclpp`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable using mscclpp for small messages for all-reduce kernel and fall back "
+"to NCCL."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-torch-symm-mem`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable using torch symm mem for all-reduce kernel and fall back to NCCL. "
+"Only supports CUDA device SM90 and above. SM90 supports world size 4, 6, 8. "
+"SM10 supports world size 6, 8."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-overlap-schedule`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Disable the overlap scheduler, which overlaps the CPU scheduler with GPU "
+"model worker."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-mixed-chunk`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enabling mixing prefill and decode in a batch when using chunked prefill."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-dp-attention`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enabling data parallelism for attention and tensor parallelism for FFN. The "
+"dp size should be equal to the tp size. Currently DeepSeek-V2 and Qwen 2/3 "
+"MoE models are supported."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-dp-lm-head`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable vocabulary parallel across the attention TP group to avoid all-gather "
+"across DP groups, optimizing performance under DP attention."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-two-batch-overlap`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enabling two micro batches to overlap."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-single-batch-overlap`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Let computation and communication overlap within one micro batch."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--tbo-token-distribution-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The threshold of token distribution between two batches in micro-batch-"
+"overlap, determines whether to two-batch-overlap or two-chunk-overlap. Set "
+"to 0 denote disable two-chunk-overlap."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0.48`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-torch-compile`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Optimize the model with torch.compile. Experimental feature."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-piecewise-cuda-graph`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Optimize the model with piecewise cuda graph for extend/prefill only. "
+"Experimental feature."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--piecewise-cuda-graph-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Set the list of tokens when using piecewise cuda graph."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Type: JSON list"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--torch-compile-max-bs`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Set the maximum batch size when using torch compile."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--piecewise-cuda-graph-max-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Set the maximum tokens when using piecewise cuda graph."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--torchao-config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Optimize the model with torchao. Experimental feature. Current choices are: "
+"int8dq, int8wo, int4wo-<group_size>, fp8wo, fp8dq-per_tensor, fp8dq-per_row"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "``"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-nan-detection`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable the NaN detection for debugging purposes."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-p2p-check`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable P2P check for GPU access, otherwise the p2p access is allowed by "
+"default."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--triton-attention-reduce-in-fp32`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Cast the intermediate attention results to fp32 to avoid possible crashes "
+"related to fp16. This only affects Triton attention kernels."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--triton-attention-num-kv-splits`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The number of KV splits in flash decoding Triton kernel. Larger value is "
+"better in longer context scenarios. The default value is 8."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--triton-attention-split-tile-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The size of split KV tile in flash decoding Triton kernel. Used for "
+"deterministic inference."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--num-continuous-decode-steps`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Run multiple continuous decoding steps to reduce scheduling overhead. This "
+"can potentially increase throughput but may also increase time-to-first-"
+"token latency. The default value is 1, meaning only run one decoding step at "
+"a time."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--delete-ckpt-after-loading`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Delete the model checkpoint after loading the model."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-memory-saver`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Allow saving memory using release_memory_occupation and "
+"resume_memory_occupation"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-weights-cpu-backup`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Save model weights to CPU memory during release_weights_occupation and "
+"resume_weights_occupation"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--allow-auto-truncate`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Allow automatically truncating requests that exceed the maximum input length "
+"instead of returning an error."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-custom-logit-processor`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable users to pass custom logit processors to the server (disabled by "
+"default for security)"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--flashinfer-mla-disable-ragged`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Not using ragged prefill wrapper when running flashinfer mla"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-shared-experts-fusion`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disable shared experts fusion optimization for deepseek v3/r1."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-chunked-prefix-cache`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Disable chunked prefix cache feature for deepseek, which should save "
+"overhead for short sequences."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disable-fast-image-processor`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Adopt base image processor instead of fast image processor."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--keep-mm-feature-on-device`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Keep multimodal feature tensors on device after processing to save D2H copy."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-return-hidden-states`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable returning hidden states with responses."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--scheduler-recv-interval`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The interval to poll requests in scheduler. Can be set to >1 to reduce the "
+"overhead of this."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--numa-node`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Sets the numa node for the subprocesses. i-th element corresponds to i-th "
+"subprocess."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:398
+msgid "Debug tensor dumps"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--debug-tensor-dump-output-folder`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The output folder for dumping tensors."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--debug-tensor-dump-input-file`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The input filename for dumping tensors"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--debug-tensor-dump-inject`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Inject the outputs from jax as the input of every layer."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-dynamic-batch-tokenizer`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable async dynamic batch tokenizer for improved performance when multiple "
+"requests arrive concurrently."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--dynamic-batch-tokenizer-batch-size`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"[Only used if --enable-dynamic-batch-tokenizer is set] Maximum batch size "
+"for dynamic batch tokenizer."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--dynamic-batch-tokenizer-batch-timeout`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"[Only used if --enable-dynamic-batch-tokenizer is set] Timeout in seconds "
+"for batching tokenization requests."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`0.002`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:408
+msgid "PD disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-mode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Only used for PD disaggregation. \"prefill\" for prefill-only server, and "
+"\"decode\" for decode-only server. If not specified, it is not PD "
+"disaggregated"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`null`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`null`, `prefill`, `decode`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-transfer-backend`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The backend for disaggregation transfer. Default is mooncake."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`mooncake`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`mooncake`, `nixl`, `ascend`, `fake`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-bootstrap-port`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Bootstrap server port on the prefill server. Default is 8998."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`8998`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-decode-tp`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Decode tp size. If not set, it matches the tp size of the current engine. "
+"This is only set on the prefill server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-decode-dp`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Decode dp size. If not set, it matches the dp size of the current engine. "
+"This is only set on the prefill server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-prefill-pp`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Prefill pp size. If not set, it is default to 1. This is only set on the "
+"decode server."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-ib-device`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The InfiniBand devices for disaggregation transfer, accepts single device (e."
+"g., --disaggregation-ib-device mlx5_0) or multiple comma-separated devices "
+"(e.g., --disaggregation-ib-device mlx5_0,mlx5_1). Default is None, which "
+"triggers automatic device detection when mooncake backend is enabled."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-decode-enable-offload-kvcache`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable async KV cache offloading on decode server (PD mode)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--num-reserved-decode-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Number of decode tokens that will have memory reserved when adding new "
+"request to the running batch."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`512`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--disaggregation-decode-polling-interval`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The interval to poll requests in decode server. Can be set to >1 to reduce "
+"the overhead of this."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:422
+msgid "Custom weight loader"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--custom-weight-loader`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The custom dataloader which used to update the model. Should be set with a "
+"valid import path, such as my_package.weight_load_func"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--weight-loader-disable-mmap`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Disable mmap while loading weight using safetensors."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--remote-instance-weight-loader-seed-instance-ip`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The ip of the seed instance for loading weights from remote instance."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--remote-instance-weight-loader-seed-instance-service-port`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The service port of the seed instance for loading weights from remote "
+"instance."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--remote-instance-weight-loader-send-weights-group-ports`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The communication group ports for loading weights from remote instance."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:431
+msgid "For PD-Multiplexing"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-pdmux`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable PD-Multiplexing, PD running on greenctx stream."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--pdmux-config-path`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "The path of the PD-Multiplexing config file."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--sm-group-num`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Number of sm partition groups."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:438
+msgid "For deterministic inference"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-deterministic-inference`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Enable deterministic inference mode with batch invariant ops."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:443
+msgid "Deprecated arguments"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-ep-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-ep-moe is deprecated. Please set `--ep-size` to the same "
+"value as `--tp-size` instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-deepep-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-deepep-moe is deprecated. Please set `--moe-a2a-backend` to "
+"'deepep' instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-flashinfer-cutlass-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-flashinfer-cutlass-moe is deprecated. Please set `--moe-"
+"runner-backend` to 'flashinfer_cutlass' instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-flashinfer-cutedsl-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-flashinfer-cutedsl-moe is deprecated. Please set `--moe-"
+"runner-backend` to 'flashinfer_cutedsl' instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-flashinfer-trtllm-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-flashinfer-trtllm-moe is deprecated. Please set `--moe-runner-"
+"backend` to 'flashinfer_trtllm' instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-triton-kernel-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-triton-kernel-moe is deprecated. Please set `--moe-runner-"
+"backend` to 'triton_kernel' instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-flashinfer-mxfp4-moe`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"NOTE: --enable-flashinfer-mxfp4-moe is deprecated. Please set `--moe-runner-"
+"backend` to 'flashinfer_mxfp4' instead."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:454
+msgid "Configuration file support"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Read CLI options from a config file. Must be a YAML file with configuration "
+"options."
+msgstr ""

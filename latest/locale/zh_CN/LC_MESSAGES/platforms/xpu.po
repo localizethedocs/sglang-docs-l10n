@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/xpu.md:1
+msgid "XPU"
+msgstr ""
+
+#: ../../../platforms/xpu.md:3
+msgid ""
+"The document addresses how to set up the [SGLang](https://github.com/sgl-"
+"project/sglang) environment and run LLM inference on Intel GPU, [see more "
+"context about Intel GPU support within PyTorch ecosystem](https://docs."
+"pytorch.org/docs/stable/notes/get_start_xpu.html)."
+msgstr ""
+
+#: ../../../platforms/xpu.md:5
+msgid ""
+"Specifically, SGLang is optimized for [Intel® Arc™ Pro B-Series Graphics]"
+"(https://www.intel.com/content/www/us/en/ark/products/series/242616/intel-"
+"arc-pro-b-series-graphics.html) and [ Intel® Arc™ B-Series Graphics](https://"
+"www.intel.com/content/www/us/en/ark/products/series/240391/intel-arc-b-"
+"series-graphics.html)."
+msgstr ""
+
+#: ../../../platforms/xpu.md:8
+msgid "Optimized Model List"
+msgstr ""
+
+#: ../../../platforms/xpu.md:10
+msgid ""
+"A list of LLMs have been optimized on Intel GPU, and more are on the way:"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Model Name"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "BF16"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Llama-3.2-3B"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid ""
+"[meta-llama/Llama-3.2-3B-Instruct](https://huggingface.co/meta-llama/"
+"Llama-3.2-3B-Instruct)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Llama-3.1-8B"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid ""
+"[meta-llama/Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/"
+"Llama-3.1-8B-Instruct)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Qwen2.5-1.5B"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "[Qwen/Qwen2.5-1.5B](https://huggingface.co/Qwen/Qwen2.5-1.5B)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:18
+msgid ""
+"**Note:** The model identifiers listed in the table above have been verified "
+"on [Intel® Arc™ B580 Graphics](https://www.intel.com/content/www/us/en/"
+"products/sku/241598/intel-arc-b580-graphics/specifications.html)."
+msgstr ""
+
+#: ../../../platforms/xpu.md:21
+msgid "Installation"
+msgstr ""
+
+#: ../../../platforms/xpu.md:23
+msgid "Install From Source"
+msgstr ""
+
+#: ../../../platforms/xpu.md:25
+msgid ""
+"Currently SGLang XPU only supports installation from source. Please refer to "
+"[\"Getting Started on Intel GPU\"](https://docs.pytorch.org/docs/stable/"
+"notes/get_start_xpu.html) to install XPU dependency."
+msgstr ""
+
+#: ../../../platforms/xpu.md:27
+msgid ""
+"# Create and activate a conda environment\n"
+"conda create -n sgl-xpu python=3.12 -y\n"
+"conda activate sgl-xpu\n"
+"\n"
+"# Set PyTorch XPU as primary pip install channel to avoid installing the "
+"larger CUDA-enabled version and prevent potential runtime issues.\n"
+"pip3 install torch==2.9.0+xpu torchao torchvision torchaudio pytorch-triton-"
+"xpu==3.5.0 --index-url https://download.pytorch.org/whl/xpu\n"
+"pip3 install xgrammar --no-deps # xgrammar will introduce CUDA-enabled "
+"triton which might conflict with XPU\n"
+"\n"
+"# Clone the SGLang code\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"git checkout <YOUR-DESIRED-VERSION>\n"
+"\n"
+"# Use dedicated toml file\n"
+"cd python\n"
+"cp pyproject_xpu.toml pyproject.toml\n"
+"# Install SGLang dependent libs, and build SGLang main package\n"
+"pip install --upgrade pip setuptools\n"
+"pip install -v .\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:49
+msgid "Install Using Docker"
+msgstr ""
+
+#: ../../../platforms/xpu.md:51
+msgid "The docker for XPU is under active development. Please stay tuned."
+msgstr ""
+
+#: ../../../platforms/xpu.md:53
+msgid "Launch of the Serving Engine"
+msgstr ""
+
+#: ../../../platforms/xpu.md:55
+msgid "Example command to launch SGLang serving:"
+msgstr ""
+
+#: ../../../platforms/xpu.md:57
+msgid ""
+"python -m sglang.launch_server       \\\n"
+"    --model <MODEL_ID_OR_PATH>       \\\n"
+"    --trust-remote-code              \\\n"
+"    --disable-overlap-schedule       \\\n"
+"    --device xpu                     \\\n"
+"    --host 0.0.0.0                   \\\n"
+"    --tp 2                           \\   # using multi GPUs\n"
+"    --attention-backend intel_xpu    \\   # using intel optimized XPU "
+"attention backend\n"
+"    --page-size                      \\   # intel_xpu attention backend "
+"supports [32, 64, 128]\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:69
+msgid "Benchmarking with Requests"
+msgstr ""
+
+#: ../../../platforms/xpu.md:71
+msgid ""
+"You can benchmark the performance via the `bench_serving` script. Run the "
+"command in another terminal."
+msgstr ""
+
+#: ../../../platforms/xpu.md:74
+msgid ""
+"python -m sglang.bench_serving   \\\n"
+"    --dataset-name random        \\\n"
+"    --random-input-len 1024      \\\n"
+"    --random-output-len 1024     \\\n"
+"    --num-prompts 1              \\\n"
+"    --request-rate inf           \\\n"
+"    --random-range-ratio 1.0\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:84
+msgid ""
+"The detail explanations of the parameters can be looked up by the command:"
+msgstr ""
+
+#: ../../../platforms/xpu.md:86
+msgid "python -m sglang.bench_serving -h\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:90
+msgid ""
+"Additionally, the requests can be formed with [OpenAI Completions API]"
+"(https://docs.sglang.ai/basic_usage/openai_api_completions.html) and sent "
+"via the command line (e.g. using `curl`) or via your own script."
+msgstr ""

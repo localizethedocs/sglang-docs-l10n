@@ -1,0 +1,359 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../supported_models/classify_models.md:1
+msgid "Classification API"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:3
+msgid ""
+"This document describes the `/v1/classify` API endpoint implementation in "
+"SGLang, which is compatible with vLLM's classification API format."
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:5
+msgid "Overview"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:7
+msgid ""
+"The classification API allows you to classify text inputs using "
+"classification models. This implementation follows the same format as vLLM's "
+"0.7.0 classification API."
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:9
+msgid "API Endpoint"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:11
+msgid "POST /v1/classify\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:15
+msgid "Request Format"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:17
+msgid ""
+"{\n"
+"  \"model\": \"model_name\",\n"
+"  \"input\": \"text to classify\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:24
+msgid "Parameters"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:26
+msgid "`model` (string, required): The name of the classification model to use"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:27
+msgid "`input` (string, required): The text to classify"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:28
+msgid "`user` (string, optional): User identifier for tracking"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:29
+msgid "`rid` (string, optional): Request ID for tracking"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:30
+msgid "`priority` (integer, optional): Request priority"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:32
+msgid "Response Format"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:34
+msgid ""
+"{\n"
+"  \"id\": \"classify-9bf17f2847b046c7b2d5495f4b4f9682\",\n"
+"  \"object\": \"list\",\n"
+"  \"created\": 1745383213,\n"
+"  \"model\": \"jason9693/Qwen2.5-1.5B-apeach\",\n"
+"  \"data\": [\n"
+"    {\n"
+"      \"index\": 0,\n"
+"      \"label\": \"Default\",\n"
+"      \"probs\": [0.565970778465271, 0.4340292513370514],\n"
+"      \"num_classes\": 2\n"
+"    }\n"
+"  ],\n"
+"  \"usage\": {\n"
+"    \"prompt_tokens\": 10,\n"
+"    \"total_tokens\": 10,\n"
+"    \"completion_tokens\": 0,\n"
+"    \"prompt_tokens_details\": null\n"
+"  }\n"
+"}\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:57
+msgid "Response Fields"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:59
+msgid "`id`: Unique identifier for the classification request"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:60
+msgid "`object`: Always \"list\""
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:61
+msgid "`created`: Unix timestamp when the request was created"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:62
+msgid "`model`: The model used for classification"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:63
+msgid "`data`: Array of classification results"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:64
+msgid "`index`: Index of the result"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:65
+msgid "`label`: Predicted class label"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:66
+msgid "`probs`: Array of probabilities for each class"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:67
+msgid "`num_classes`: Total number of classes"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:68
+msgid "`usage`: Token usage information"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:69
+msgid "`prompt_tokens`: Number of input tokens"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:70
+msgid "`total_tokens`: Total number of tokens"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:71
+msgid ""
+"`completion_tokens`: Number of completion tokens (always 0 for "
+"classification)"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:72
+msgid "`prompt_tokens_details`: Additional token details (optional)"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:74
+msgid "Example Usage"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:76
+msgid "Using curl"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:78
+msgid ""
+"curl -v \"http://127.0.0.1:8000/v1/classify\" \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"    \"model\": \"jason9693/Qwen2.5-1.5B-apeach\",\n"
+"    \"input\": \"Loved the new café—coffee was great.\"\n"
+"  }'\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:87
+msgid "Using Python"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:89
+msgid ""
+"import requests\n"
+"import json\n"
+"\n"
+"# Make classification request\n"
+"response = requests.post(\n"
+"    \"http://127.0.0.1:8000/v1/classify\",\n"
+"    headers={\"Content-Type\": \"application/json\"},\n"
+"    json={\n"
+"        \"model\": \"jason9693/Qwen2.5-1.5B-apeach\",\n"
+"        \"input\": \"Loved the new café—coffee was great.\"\n"
+"    }\n"
+")\n"
+"\n"
+"# Parse response\n"
+"result = response.json()\n"
+"print(json.dumps(result, indent=2))\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:108
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:110
+msgid ""
+"The classification API works with any classification model supported by "
+"SGLang, including:"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:112
+msgid "Classification Models (Multi-class)"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:113
+msgid "`LlamaForSequenceClassification` - Multi-class classification"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:114
+msgid "`Qwen2ForSequenceClassification` - Multi-class classification"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:115
+msgid "`Qwen3ForSequenceClassification` - Multi-class classification"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:116
+msgid "`BertForSequenceClassification` - Multi-class classification"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:117
+msgid "`Gemma2ForSequenceClassification` - Multi-class classification"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:119
+msgid ""
+"**Label Mapping**: The API automatically uses the `id2label` mapping from "
+"the model's `config.json` file to provide meaningful label names instead of "
+"generic class names. If `id2label` is not available, it falls back to "
+"`LABEL_0`, `LABEL_1`, etc., or `Class_0`, `Class_1` as a last resort."
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:121
+msgid "Reward Models (Single score)"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:122
+msgid "`InternLM2ForRewardModel` - Single reward score"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:123
+msgid "`Qwen2ForRewardModel` - Single reward score"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:124
+msgid ""
+"`LlamaForSequenceClassificationWithNormal_Weights` - Special reward model"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:126
+msgid ""
+"**Note**: The `/classify` endpoint in SGLang was originally designed for "
+"reward models but now supports all non-generative models. Our `/v1/classify` "
+"endpoint provides a standardized vLLM-compatible interface for "
+"classification tasks."
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:128
+msgid "Error Handling"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:130
+msgid "The API returns appropriate HTTP status codes and error messages:"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:132
+msgid "`400 Bad Request`: Invalid request format or missing required fields"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:133
+msgid "`500 Internal Server Error`: Server-side processing error"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:135
+msgid "Error response format:"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:136
+msgid ""
+"{\n"
+"  \"error\": \"Error message\",\n"
+"  \"type\": \"error_type\",\n"
+"  \"code\": 400\n"
+"}\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:144
+msgid "Implementation Details"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:146
+msgid "The classification API is implemented using:"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:148
+msgid ""
+"**Rust Router**: Handles routing and request/response models in `sgl-router/"
+"src/protocols/spec.rs`"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:149
+msgid ""
+"**Python HTTP Server**: Implements the actual endpoint in `python/sglang/srt/"
+"entrypoints/http_server.py`"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:150
+msgid ""
+"**Classification Service**: Handles the classification logic in `python/"
+"sglang/srt/entrypoints/openai/serving_classify.py`"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:152
+msgid "Testing"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:154
+msgid "Use the provided test script to verify the implementation:"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:156
+msgid "python test_classify_api.py\n"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:160
+msgid "Compatibility"
+msgstr ""
+
+#: ../../../supported_models/classify_models.md:162
+msgid ""
+"This implementation is compatible with vLLM's classification API format, "
+"allowing seamless migration from vLLM to SGLang for classification tasks."
+msgstr ""
