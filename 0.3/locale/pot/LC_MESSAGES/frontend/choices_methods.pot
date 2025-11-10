@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../frontend/choices_methods.md:1
+msgid "Choices Methods in SGLang"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:2
+msgid "This doc describes the choices methods supported by SGLang."
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:4
+msgid ""
+"The optional `choices_method` arg determines how options supplied to "
+"SGLang's `choices` primitive are selected. Only the `RuntimeEndpoint` "
+"backend supports the `choices_method` arg. Other backends, such as `OpenAI`, "
+"have bespoke selection implementations due to API limitations."
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:6
+msgid "Methods"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:8
+msgid "Token Length Normalized"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:10
+msgid ""
+"Token length normalized is the default SGLang choices method. It selects the "
+"option with the highest average logprob across all of its tokens."
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:12
+msgid "Usage example (alternatively, simply omit the `choices_method` arg):"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:13
+msgid ""
+"@sgl.function\n"
+"def example(s):\n"
+"    s += sgl.user(\"What is the capital of France?\")\n"
+"    s += sgl.assistant(\n"
+"        sgl.gen(\n"
+"            \"answer\",\n"
+"            choices=[\"London\", \"Paris\", \"Berlin\"],\n"
+"            choices_method=sgl.token_length_normalized,\n"
+"        )\n"
+"    )\n"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:27
+msgid ""
+"This can perform poorly if an option contains many tokens, where its later "
+"tokens are predicted with high confidence based on its earlier tokens. For "
+"instance, even strong models will fail the above example if the specified "
+"options are `[\"Paris\", \"Antidisestablishmentarianism\"]`."
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:29
+msgid "Greedy Token Selection"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:31
+msgid ""
+"Greedy token selection simply selects the option with the highest logprob "
+"for its initial token. For overlapping options where one option is a subset "
+"of a longer option, the logprobs of the shorter option are extended using "
+"its average logprob for comparison against the longer option."
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:33
+#: ../../../frontend/choices_methods.md:65
+msgid "Usage example:"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:34
+msgid ""
+"@sgl.function\n"
+"def example(s):\n"
+"    s += sgl.user(\"What is the capital of France?\")\n"
+"    s += sgl.assistant(\n"
+"        sgl.gen(\n"
+"            \"answer\",\n"
+"            choices=[\"London\", \"Paris\", \"Berlin\"],\n"
+"            choices_method=sgl.greedy_token_selection,\n"
+"        )\n"
+"    )\n"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:47
+msgid ""
+"This can perform poorly if an option misleads the model down a bad path "
+"based on an attractive initial token. For instance, greedy selection will "
+"result in an incorrect response for this example:"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:48
+msgid ""
+"@sgl.function\n"
+"def us_president_example(s):\n"
+"    s += sgl.user(\"Name a US president.\")\n"
+"    s += sgl.assistant(\n"
+"        sgl.gen(\n"
+"            \"answer\",\n"
+"            choices=[\"Donald Duck\", \"Millard Fillmore\"],\n"
+"            choices_method=sgl.greedy_token_selection,\n"
+"        )\n"
+"    )\n"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:61
+msgid "Unconditional Likelihood Normalized"
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:63
+msgid ""
+"Unconditional likelihood normalized selects the option with the highest "
+"average token logprob once normalized by the unconditional token logprobs, "
+"as described in [this EleutherAI blogpost](https://blog.eleuther.ai/multiple-"
+"choice-normalization/). This method incurs an additional LLM call to obtain "
+"the unconditional likelihoods."
+msgstr ""
+
+#: ../../../frontend/choices_methods.md:66
+msgid ""
+"@sgl.function\n"
+"def example(s):\n"
+"    s += sgl.user(\"What is the capital of France?\")\n"
+"    s += sgl.assistant(\n"
+"        sgl.gen(\n"
+"            \"answer\",\n"
+"            choices=[\"London\", \"Paris\", \"Berlin\"],\n"
+"            choices_method=sgl.unconditional_likelihood_normalized,\n"
+"        )\n"
+"    )\n"
+msgstr ""
