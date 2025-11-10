@@ -1,0 +1,782 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../developer_guide/bench_serving.md:1
+msgid "Bench Serving Guide"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:3
+msgid ""
+"This guide explains how to benchmark online serving throughput and latency "
+"using `python -m sglang.bench_serving`. It supports multiple inference "
+"backends via OpenAI-compatible and native endpoints, and produces both "
+"console metrics and optional JSONL outputs."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:5
+msgid "What it does"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:7
+msgid ""
+"Generates synthetic or dataset-driven prompts and submits them to a target "
+"serving endpoint"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:8
+msgid ""
+"Measures throughput, time-to-first-token (TTFT), inter-token latency (ITL), "
+"per-request end-to-end latency, and more"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:9
+msgid ""
+"Supports streaming or non-streaming modes, rate control, and concurrency "
+"limits"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:11
+msgid "Supported backends and endpoints"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:13
+msgid "`sglang` / `sglang-native`: `POST /generate`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:14
+msgid "`sglang-oai`, `vllm`, `lmdeploy`: `POST /v1/completions`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:15
+msgid ""
+"`sglang-oai-chat`, `vllm-chat`, `lmdeploy-chat`: `POST /v1/chat/completions`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:16
+msgid "`trt` (TensorRT-LLM): `POST /v2/models/ensemble/generate_stream`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:17
+msgid "`gserver`: Custom server (Not Implemented yet in this script)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:18
+msgid "`truss`: `POST /v1/models/model:predict`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:20
+msgid ""
+"If `--base-url` is provided, requests are sent to it. Otherwise, `--host` "
+"and `--port` are used. When `--model` is not provided, the script will "
+"attempt to query `GET /v1/models` for an available model ID (OpenAI-"
+"compatible endpoints)."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:22
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:24
+msgid "Python 3.8+"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:25
+msgid ""
+"Dependencies typically used by this script: `aiohttp`, `numpy`, `requests`, "
+"`tqdm`, `transformers`, and for some datasets `datasets`, `pillow`, "
+"`pybase64`. Install as needed."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:26
+msgid "An inference server running and reachable via the endpoints above"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:27
+msgid ""
+"If your server requires authentication, set environment variable "
+"`OPENAI_API_KEY` (used as `Authorization: Bearer <key>`)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:29
+msgid "Quick start"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:31
+msgid "Run a basic benchmark against an sglang server exposing `/generate`:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:33
+msgid ""
+"python3 -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:37
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --num-prompts 1000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:45
+msgid "Or, using an OpenAI-compatible endpoint (completions):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:47
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend vllm \\\n"
+"  --base-url http://127.0.0.1:8000 \\\n"
+"  --num-prompts 1000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:55
+msgid "Datasets"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:57
+msgid "Select with `--dataset-name`:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:59
+msgid ""
+"`sharegpt` (default): loads ShareGPT-style pairs; optionally restrict with "
+"`--sharegpt-context-len` and override outputs with `--sharegpt-output-len`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:60
+msgid "`random`: random text lengths; sampled from ShareGPT token space"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:61
+msgid "`random-ids`: random token ids (can lead to gibberish)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:62
+msgid ""
+"`image`: generates images and wraps them in chat messages; supports custom "
+"resolutions, multiple formats, and different content types"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:63
+msgid ""
+"`generated-shared-prefix`: synthetic dataset with shared long system prompts "
+"and short questions"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:64
+msgid "`mmmu`: samples from MMMU (Math split) and includes images"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:66
+msgid "Common dataset flags:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:68
+msgid "`--num-prompts N`: number of requests"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:69
+msgid ""
+"`--random-input-len`, `--random-output-len`, `--random-range-ratio`: for "
+"random/random-ids/image"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:70
+msgid "`--image-count`: Number of images per request (for `image` dataset)."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:72
+msgid ""
+"`--apply-chat-template`: apply tokenizer chat template when constructing "
+"prompts"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:73
+msgid ""
+"`--dataset-path PATH`: file path for ShareGPT json; if blank and missing, it "
+"will be downloaded and cached"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:75
+msgid "Generated Shared Prefix flags (for `generated-shared-prefix`):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:77
+msgid "`--gsp-num-groups`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:78
+msgid "`--gsp-prompts-per-group`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:79
+msgid "`--gsp-system-prompt-len`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:80
+msgid "`--gsp-question-len`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:81
+msgid "`--gsp-output-len`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:83
+msgid "Image dataset flags (for `image`):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:85
+msgid "`--image-count`: Number of images per request"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:86
+msgid ""
+"`--image-resolution`: Image resolution; supports presets (4k, 1080p, 720p, "
+"360p) or custom 'heightxwidth' format (e.g., 1080x1920, 512x768)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:87
+msgid "`--image-format`: Image format (jpeg or png)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:88
+msgid "`--image-content`: Image content type (random or blank)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:90
+msgid "Examples"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:92
+msgid ""
+"To benchmark image dataset with 3 images per request, 500 prompts, 512 input "
+"length, and 512 output length, you can run:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:94
+msgid ""
+"python -m sglang.launch_server --model-path Qwen/Qwen2.5-VL-3B-Instruct --"
+"disable-radix-cache\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:98
+msgid ""
+"python -m sglang.bench_serving \\\n"
+"    --backend sglang-oai-chat \\\n"
+"    --dataset-name image \\\n"
+"    --num-prompts 500 \\\n"
+"    --image-count 3 \\\n"
+"    --image-resolution 720p \\\n"
+"    --random-input-len 512 \\\n"
+"    --random-output-len 512\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:109
+msgid ""
+"To benchmark random dataset with 3000 prompts, 1024 input length, and 1024 "
+"output length, you can run:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:111
+msgid "python -m sglang.launch_server --model-path Qwen/Qwen2.5-3B-Instruct\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:115
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"    --backend sglang \\\n"
+"    --dataset-name random \\\n"
+"    --num-prompts 3000 \\\n"
+"    --random-input 1024 \\\n"
+"    --random-output 1024 \\\n"
+"    --random-range-ratio 0.5\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:125
+msgid "Choosing model and tokenizer"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:127
+msgid ""
+"`--model` is required unless the backend exposes `GET /v1/models`, in which "
+"case the first model ID is auto-selected."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:128
+msgid ""
+"`--tokenizer` defaults to `--model`. Both can be HF model IDs or local paths."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:129
+msgid ""
+"For ModelScope workflows, setting `SGLANG_USE_MODELSCOPE=true` enables "
+"fetching via ModelScope (weights are skipped for speed)."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:130
+msgid ""
+"If your tokenizer lacks a chat template, the script warns because token "
+"counting can be less robust for gibberish outputs."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:132
+msgid "Rate, concurrency, and streaming"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:134
+msgid ""
+"`--request-rate`: requests per second. `inf` sends all immediately (burst). "
+"Non-infinite rate uses a Poisson process for arrival times."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:135
+msgid ""
+"`--max-concurrency`: caps concurrent in-flight requests regardless of "
+"arrival rate."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:136
+msgid ""
+"`--disable-stream`: switch to non-streaming mode when supported; TTFT then "
+"equals total latency for chat completions."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:138
+msgid "Other key options"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:140
+msgid ""
+"`--output-file FILE.jsonl`: append JSONL results to file; auto-named if "
+"unspecified"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:141
+msgid ""
+"`--output-details`: include per-request arrays (generated texts, errors, "
+"ttfts, itls, input/output lens)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:142
+msgid ""
+"`--extra-request-body '{\"top_p\":0.9,\"temperature\":0.6}'`: merged into "
+"payload (sampling params, etc.)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:143
+msgid "`--disable-ignore-eos`: pass through EOS behavior (varies by backend)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:144
+msgid ""
+"`--warmup-requests N`: run warmup requests with short output first (default "
+"1)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:145
+msgid "`--flush-cache`: call `/flush_cache` (sglang) before main run"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:146
+msgid ""
+"`--profile`: call `/start_profile` and `/stop_profile` (requires server to "
+"enable profiling, e.g., `SGLANG_TORCH_PROFILER_DIR`)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:147
+msgid ""
+"`--lora-name name1 name2 ...`: randomly pick one per request and pass to "
+"backend (e.g., `lora_path` for sglang)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:148
+msgid ""
+"`--tokenize-prompt`: send integer IDs instead of text (currently supports `--"
+"backend sglang` only)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:150
+msgid "Authentication"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:152
+msgid "If your target endpoint requires OpenAI-style auth, set:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:154
+msgid "export OPENAI_API_KEY=sk-...yourkey...\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:158
+msgid ""
+"The script will add `Authorization: Bearer $OPENAI_API_KEY` automatically "
+"for OpenAI-compatible routes."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:160
+msgid "Metrics explained"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:162
+msgid "Printed after each run:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:164
+msgid "Request throughput (req/s)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:165
+msgid "Input token throughput (tok/s) - includes both text and vision tokens"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:166
+msgid "Output token throughput (tok/s)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:167
+msgid "Total token throughput (tok/s) - includes both text and vision tokens"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:168
+msgid ""
+"Total input text tokens and Total input vision tokens - per-modality "
+"breakdown"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:169
+msgid "Concurrency: aggregate time of all requests divided by wall time"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:170
+msgid "End-to-End Latency (ms): mean/median/std/p99 per-request total latency"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:171
+msgid "Time to First Token (TTFT, ms): mean/median/std/p99 for streaming mode"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:172
+msgid ""
+"Inter-Token Latency (ITL, ms): mean/median/std/p95/p99/max between tokens"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:173
+msgid ""
+"TPOT (ms): Token processing time after first token, i.e., `(latency - ttft)/"
+"(tokens-1)`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:174
+msgid ""
+"Accept length (sglang-only, if available): speculative decoding accept length"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:176
+msgid ""
+"The script also retokenizes generated text with the configured tokenizer and "
+"reports \"retokenized\" counts."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:178
+msgid "JSONL output format"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:180
+msgid ""
+"When `--output-file` is set, one JSON object is appended per run. Base "
+"fields:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:182
+msgid ""
+"Arguments summary: backend, dataset, request_rate, max_concurrency, etc."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:183
+msgid ""
+"Duration and totals: completed, total_input_tokens, total_output_tokens, "
+"retokenized totals"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:184
+msgid "Throughputs and latency statistics as printed in the console"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:185
+msgid "`accept_length` when available (sglang)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:187
+msgid "With `--output-details`, an extended object also includes arrays:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:189
+msgid "`input_lens`, `output_lens`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:190
+msgid "`ttfts`, `itls` (per request: ITL arrays)"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:191
+msgid "`generated_texts`, `errors`"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:193
+msgid "End-to-end examples"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:195
+msgid "sglang native `/generate` (streaming):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:197
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --dataset-name random \\\n"
+"  --random-input-len 1024 --random-output-len 1024 --random-range-ratio 0.5 "
+"\\\n"
+"  --num-prompts 2000 \\\n"
+"  --request-rate 100 \\\n"
+"  --max-concurrency 512 \\\n"
+"  --output-file sglang_random.jsonl --output-details\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:210
+msgid "OpenAI-compatible Completions (e.g., vLLM):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:212
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend vllm \\\n"
+"  --base-url http://127.0.0.1:8000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --dataset-name sharegpt \\\n"
+"  --num-prompts 1000 \\\n"
+"  --sharegpt-output-len 256\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:222
+msgid "OpenAI-compatible Chat Completions (streaming):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:224
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend vllm-chat \\\n"
+"  --base-url http://127.0.0.1:8000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --dataset-name random \\\n"
+"  --num-prompts 500 \\\n"
+"  --apply-chat-template\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:234
+msgid "Images (VLM) with chat template:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:236
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model your-vlm-model \\\n"
+"  --dataset-name image \\\n"
+"  --image-count 2 \\\n"
+"  --image-resolution 720p \\\n"
+"  --random-input-len 128 --random-output-len 256 \\\n"
+"  --num-prompts 200 \\\n"
+"  --apply-chat-template\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:249
+msgid "4a) Images with custom resolution:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:251
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model your-vlm-model \\\n"
+"  --dataset-name image \\\n"
+"  --image-count 1 \\\n"
+"  --image-resolution 512x768 \\\n"
+"  --random-input-len 64 --random-output-len 128 \\\n"
+"  --num-prompts 100 \\\n"
+"  --apply-chat-template\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:264
+msgid "4b) 1080p images with PNG format and blank content:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:266
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model your-vlm-model \\\n"
+"  --dataset-name image \\\n"
+"  --image-count 1 \\\n"
+"  --image-resolution 1080p \\\n"
+"  --image-format png \\\n"
+"  --image-content blank \\\n"
+"  --random-input-len 64 --random-output-len 128 \\\n"
+"  --num-prompts 100 \\\n"
+"  --apply-chat-template\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:281
+msgid "Generated shared prefix (long system prompts + short questions):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:283
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --dataset-name generated-shared-prefix \\\n"
+"  --gsp-num-groups 64 --gsp-prompts-per-group 16 \\\n"
+"  --gsp-system-prompt-len 2048 --gsp-question-len 128 --gsp-output-len 256 "
+"\\\n"
+"  --num-prompts 1024\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:294
+msgid "Tokenized prompts (ids) for strict length control (sglang only):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:296
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --dataset-name random \\\n"
+"  --tokenize-prompt \\\n"
+"  --random-input-len 2048 --random-output-len 256 --random-range-ratio 0.2\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:306
+msgid "Profiling and cache flush (sglang):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:308
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --profile \\\n"
+"  --flush-cache\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:317
+msgid "TensorRT-LLM streaming endpoint:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:319
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend trt \\\n"
+"  --base-url http://127.0.0.1:8000 \\\n"
+"  --model your-trt-llm-model \\\n"
+"  --dataset-name random \\\n"
+"  --num-prompts 100 \\\n"
+"  --disable-ignore-eos\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:329
+msgid ""
+"Evaluating large-scale KVCache sharing with mooncake trace (sglang only):"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:331
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30000 \\\n"
+"  --model mode-name \\\n"
+"  --dataset-name mooncake \\\n"
+"  --mooncake-slowdown-factor 1.0 \\\n"
+"  --mooncake-num-rounds 1000 \\\n"
+"  --mooncake-workload conversation|mooncake|agent|synthetic\n"
+"  --use-trace-timestamps true \\\n"
+"  --random-output-len 256\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:344
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:346
+msgid ""
+"All requests failed: verify `--backend`, server URL/port, `--model`, and "
+"authentication. Check warmup errors printed by the script."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:347
+msgid ""
+"Throughput seems too low: adjust `--request-rate` and `--max-concurrency`; "
+"verify server batch size/scheduling; ensure streaming is enabled if "
+"appropriate."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:348
+msgid ""
+"Token counts look odd: prefer chat/instruct models with proper chat "
+"templates; otherwise tokenization of gibberish may be inconsistent."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:349
+msgid ""
+"Image/MMMU datasets: ensure you installed extra deps (`pillow`, `datasets`, "
+"`pybase64`)."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:350
+msgid ""
+"Authentication errors (401/403): set `OPENAI_API_KEY` or disable auth on "
+"your server."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:352
+msgid "Notes"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:354
+msgid ""
+"The script raises the file descriptor soft limit (`RLIMIT_NOFILE`) to help "
+"with many concurrent connections."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:355
+msgid ""
+"For sglang, `/get_server_info` is queried post-run to report speculative "
+"decoding accept length when available."
+msgstr ""
