@@ -1,0 +1,437 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/checkpoint_engine.md:1
+msgid "Checkpoint Engine Integration"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:3
+msgid ""
+"The SGLang checkpoint engine integration provides an efficient way to load "
+"model weights using a distributed checkpoint loading system. This feature "
+"significantly reduces model loading time, especially for large models and "
+"multi-node setups, by parallelizing the weight loading process across "
+"multiple processes and nodes."
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:5
+msgid "Overview"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:7
+msgid "The checkpoint engine integration allows SGLang to:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:8
+msgid "Load model weights in parallel using multiple processes"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:9
+msgid ""
+"Distribute weight loading across multiple nodes to increase effective disk "
+"bandwidth"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:10
+msgid ""
+"Overlap weight loading with other initialization tasks like CUDA graph "
+"capture"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:11
+msgid "Support both single-node and multi-node deployments"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:13
+msgid "Installation"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:15
+msgid "First, install the checkpoint engine package:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:17
+msgid "pip install 'checkpoint-engine[p2p]'\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:21
+msgid "Architecture"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:23
+msgid "The system consists of two main components:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:25
+msgid ""
+"**SGLang Server**: Runs with `--wait-for-initial-weights` flag to wait for "
+"weights before becoming ready"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:26
+msgid ""
+"**Checkpoint Engine Workers**: Separate processes (managed by torchrun) that "
+"load and distribute model weights"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:28
+msgid ""
+"The checkpoint engine uses a parameter server architecture with support for:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:29
+msgid ""
+"**Broadcast mode**: Weights are broadcast from loading processes to "
+"inference processes"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:30
+msgid "**P2P mode**: Direct peer-to-peer weight transfer between processes"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:31
+msgid "**All mode**: Combination of both broadcast and P2P methods"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:33
+msgid "Usage Examples"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:35
+msgid "Single Node Setup"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:37
+msgid "**Terminal 1 - Launch SGLang Server:**"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:38
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-8B \\\n"
+"    --tp 8 \\\n"
+"    --load-format dummy \\\n"
+"    --wait-for-initial-weights\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:46
+msgid "**Terminal 2 - Run Checkpoint Engine:**"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:48
+msgid "Using sglang entrypoint:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:49
+#: ../../../advanced_features/checkpoint_engine.md:82
+#: ../../../advanced_features/checkpoint_engine.md:117
+msgid ""
+"python -m sglang.srt.checkpoint_engine.update \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 8\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:56
+#: ../../../advanced_features/checkpoint_engine.md:89
+#: ../../../advanced_features/checkpoint_engine.md:124
+#: ../../../advanced_features/checkpoint_engine.md:164
+#: ../../../advanced_features/checkpoint_engine.md:202
+msgid "Using torchrun directly:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:57
+msgid ""
+"torchrun --nproc-per-node 8 \\\n"
+"    examples/checkpoint_engine/update.py \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 8\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:65
+msgid "Multi-Node Setup (2 Nodes)"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:67
+#: ../../../advanced_features/checkpoint_engine.md:139
+msgid "**Node 0:**"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:69
+#: ../../../advanced_features/checkpoint_engine.md:104
+#: ../../../advanced_features/checkpoint_engine.md:141
+#: ../../../advanced_features/checkpoint_engine.md:179
+msgid "Launch SGLang server:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:70
+#: ../../../advanced_features/checkpoint_engine.md:105
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-8B \\\n"
+"    --tp 8 \\\n"
+"    --load-format dummy \\\n"
+"    --wait-for-initial-weights \\\n"
+"    --host [IP]\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:79
+#: ../../../advanced_features/checkpoint_engine.md:114
+#: ../../../advanced_features/checkpoint_engine.md:154
+#: ../../../advanced_features/checkpoint_engine.md:192
+msgid "Run checkpoint engine:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:81
+#: ../../../advanced_features/checkpoint_engine.md:116
+#: ../../../advanced_features/checkpoint_engine.md:156
+#: ../../../advanced_features/checkpoint_engine.md:194
+msgid "Using sglang entrypoint (recommended):"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:90
+msgid ""
+"torchrun --nproc-per-node 8 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 0 \\\n"
+"    --master-addr [IP] \\\n"
+"    --master-port 29500 \\\n"
+"    examples/checkpoint_engine/update.py \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 8\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:102
+#: ../../../advanced_features/checkpoint_engine.md:177
+msgid "**Node 1:**"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:125
+msgid ""
+"torchrun --nproc-per-node 8 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 1 \\\n"
+"    --master-addr [IP] \\\n"
+"    --master-port 29500 \\\n"
+"    examples/checkpoint_engine/update.py \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 8\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:137
+msgid "Multi-Node Setup with Tensor Parallelism (TP=16)"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:142
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-8B \\\n"
+"    --tp 8 \\\n"
+"    --load-format dummy \\\n"
+"    --wait-for-initial-weights \\\n"
+"    --host [IP] \\\n"
+"    --dist-init-addr [IP]:9120 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 0\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:157
+#: ../../../advanced_features/checkpoint_engine.md:195
+msgid ""
+"python -m sglang.srt.checkpoint_engine.update \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 16\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:165
+msgid ""
+"torchrun --nproc-per-node 8 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 0 \\\n"
+"    --master-addr [IP] \\\n"
+"    --master-port 29500 \\\n"
+"    examples/checkpoint_engine/update.py \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 16\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:180
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-8B \\\n"
+"    --tp 8 \\\n"
+"    --load-format dummy \\\n"
+"    --wait-for-initial-weights \\\n"
+"    --host [IP] \\\n"
+"    --dist-init-addr [IP]:9120 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 1\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:203
+msgid ""
+"torchrun --nproc-per-node 8 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 1 \\\n"
+"    --master-addr [IP] \\\n"
+"    --master-port 29500 \\\n"
+"    examples/checkpoint_engine/update.py \\\n"
+"    --update-method broadcast \\\n"
+"    --checkpoint-path /path/to/Qwen/Qwen3-8B/ \\\n"
+"    --inference-parallel-size 16\n"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:215
+msgid "Configuration Options"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:217
+msgid "SGLang Server Options"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:219
+msgid ""
+"`--load-format dummy`: Use dummy format for initial loading (allows "
+"overlapping with other tasks)"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:220
+msgid ""
+"`--wait-for-initial-weights`: Wait for checkpoint engine to provide weights "
+"before becoming ready"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:221
+msgid "`--host`: Host address for multi-node setups"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:222
+msgid ""
+"`--dist-init-addr`: Distributed initialization address for tensor parallelism"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:224
+msgid "Checkpoint Engine Options"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:226
+msgid "`--update-method`: Weight update method (`broadcast`, `p2p`, or `all`)"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:227
+msgid "`--checkpoint-path`: Path to model checkpoint directory"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:228
+msgid "`--inference-parallel-size`: Number of inference parallel processes"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:229
+msgid ""
+"`--endpoint`: SGLang server endpoint (default: `http://localhost:19730`)"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:230
+msgid ""
+"`--checkpoint-name`: Name for the checkpoint (default: `my-checkpoint-"
+"iter-0`)"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:231
+msgid "`--save-metas-file`: File to save checkpoint metadata"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:232
+msgid "`--load-metas-file`: File to load checkpoint metadata from"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:233
+msgid "`--uds`: Unix domain socket path for communication"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:234
+msgid "`--weight-version`: Version identifier for weights"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:236
+msgid "Performance Benefits"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:238
+msgid ""
+"The checkpoint engine provides significant time savings in two main aspects:"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:240
+msgid ""
+"**Multi-node Loading**: Each node only loads a portion of weights from disk, "
+"effectively increasing disk bandwidth. More participating nodes provide "
+"greater acceleration. Preliminary tests show 20-second acceleration when "
+"loading DeepSeek-R1 on H20-3e with two nodes."
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:242
+msgid ""
+"**Single Process Optimization**: Using dummy format allows overlapping disk-"
+"to-CPU transfer with CUDA graph capture and other initialization tasks, "
+"providing additional time savings."
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:244
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:246
+msgid ""
+"Ensure checkpoint engine package is installed: `pip install 'checkpoint-"
+"engine[p2p]'`"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:247
+msgid "Verify network connectivity between nodes in multi-node setups"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:248
+msgid "Check that the checkpoint path contains valid model files"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:249
+msgid ""
+"Monitor logs for connection errors between SGLang server and checkpoint "
+"engine"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:250
+msgid "Use `--sleep-time` parameter to add delays if needed for debugging"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:252
+msgid "References"
+msgstr ""
+
+#: ../../../advanced_features/checkpoint_engine.md:254
+msgid ""
+"[Checkpoint Engine Repository](https://github.com/MoonshotAI/checkpoint-"
+"engine)"
+msgstr ""

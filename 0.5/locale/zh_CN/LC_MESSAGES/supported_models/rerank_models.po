@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../supported_models/rerank_models.md:1
+msgid "Rerank Models"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:3
+msgid ""
+"SGLang offers comprehensive support for rerank models by incorporating "
+"optimized serving frameworks with a flexible programming interface. This "
+"setup enables efficient processing of cross-encoder reranking tasks, "
+"improving the accuracy and relevance of search result ordering. SGLang’s "
+"design ensures high throughput and low latency during reranker model "
+"deployment, making it ideal for semantic-based result refinement in large-"
+"scale retrieval systems."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:6
+msgid ""
+"They are executed with `--is-embedding` and some may require `--trust-remote-"
+"code`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:9
+msgid "Example Launch Command"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:11
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path BAAI/bge-reranker-v2-m3 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --disable-radix-cache \\\n"
+"  --chunked-prefill-size -1 \\\n"
+"  --attention-backend triton \\\n"
+"  --is-embedding \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:22
+msgid "Example Client Request"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:24
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000/v1/rerank\"\n"
+"\n"
+"payload = {\n"
+"    \"model\": \"BAAI/bge-reranker-v2-m3\",\n"
+"    \"query\": \"what is panda?\",\n"
+"    \"documents\": [\n"
+"        \"hi\",\n"
+"        \"The giant panda (Ailuropoda melanoleuca), sometimes called a panda "
+"bear or simply panda, is a bear species endemic to China.\"\n"
+"    ]\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=payload)\n"
+"response_json = response.json()\n"
+"\n"
+"for item in response_json:\n"
+"    print(f\"Score: {item['score']:.2f} - Document: '{item['document']}'\")\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:45
+msgid "Supported rerank models"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Model Family (Rerank)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Example HuggingFace Identifier"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Chat Template"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Description"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "**BGE-Reranker (BgeRerankModel)**"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "`BAAI/bge-reranker-v2-m3`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "N/A"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid ""
+"Currently only support `attention-backend`   `triton` and `torch_native`.  "
+"high-performance cross-encoder reranker model from BAAI. Suitable for "
+"reranking search results based on semantic relevance."
+msgstr ""

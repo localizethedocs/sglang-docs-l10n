@@ -1,0 +1,264 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/gpt_oss.md:1
+msgid "GPT OSS Usage"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:3
+msgid ""
+"Please refer to [https://github.com/sgl-project/sglang/issues/8833](https://"
+"github.com/sgl-project/sglang/issues/8833)."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:5
+msgid "Responses API & Built-in Tools"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:7
+msgid "Responses API"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:9
+msgid ""
+"GPT‑OSS is compatible with the OpenAI Responses API. Use `client.responses."
+"create(...)` with `model`, `instructions`, `input`, and optional `tools` to "
+"enable built‑in tool use. You can set reasoning level via `instructions`, e."
+"g., \"Reasoning: high\" (also supports \"medium\" and \"low\") — levels: low "
+"(fast), medium (balanced), high (deep)."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:11
+msgid "Built-in Tools"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:13
+msgid ""
+"GPT‑OSS can call built‑in tools for web search and Python execution. You can "
+"use the demo tool server or connect to external MCP tool servers."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:15
+msgid "Python Tool"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:17
+msgid ""
+"Executes short Python snippets for calculations, parsing, and quick scripts."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:18
+msgid ""
+"By default runs in a Docker-based sandbox. To run on the host, set "
+"`PYTHON_EXECUTION_BACKEND=UV` (this executes model-generated code locally; "
+"use with care)."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:19
+msgid ""
+"Ensure Docker is available if you are not using the UV backend. It is "
+"recommended to run `docker pull python:3.11` in advance."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:21
+msgid "Web Search Tool"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:23
+msgid "Uses the Exa backend for web search."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:24
+msgid ""
+"Requires an Exa API key; set `EXA_API_KEY` in your environment. Create a key "
+"at `https://exa.ai`."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:26
+msgid "Tool & Reasoning Parser"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:28
+msgid ""
+"We support OpenAI Reasoning and Tool Call parser, as well as our SGLang "
+"native api for tool call and reasoning. Refer to [reasoning parser](../"
+"advanced_features/separate_reasoning.ipynb) and [tool call parser](../"
+"advanced_features/function_calling.ipynb) for more details."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:31
+msgid "Notes"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:33
+msgid ""
+"Use **Python 3.12** for the demo tools. And install the required `gpt-oss` "
+"packages."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:34
+msgid ""
+"The default demo integrates the web search tool (Exa backend) and a demo "
+"Python interpreter via Docker."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:35
+msgid ""
+"For search, set `EXA_API_KEY`. For Python execution, either have Docker "
+"available or set `PYTHON_EXECUTION_BACKEND=UV`."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:37
+msgid "Examples:"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:38
+msgid ""
+"export EXA_API_KEY=YOUR_EXA_KEY\n"
+"# Optional: run Python tool locally instead of Docker (use with care)\n"
+"export PYTHON_EXECUTION_BACKEND=UV\n"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:44
+msgid "Launch the server with the demo tool server:"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:46
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path openai/gpt-oss-120b \\\n"
+"  --tool-server demo \\\n"
+"  --tp 2\n"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:53
+msgid ""
+"For production usage, sglang can act as an MCP client for multiple services. "
+"An [example tool server](https://github.com/openai/gpt-oss/tree/main/gpt-oss-"
+"mcp-server) is provided. Start the servers and point sglang to them:"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:54
+msgid ""
+"mcp run -t sse browser_server.py:mcp\n"
+"mcp run -t sse python_server.py:mcp\n"
+"\n"
+"python -m sglang.launch_server ... --tool-server ip-1:port-1,ip-2:port-2\n"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:60
+msgid ""
+"The URLs should be MCP SSE servers that expose server information and well-"
+"documented tools. These tools are added to the system prompt so the model "
+"can use them."
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:62
+msgid "Quick Demo"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:64
+msgid ""
+"from openai import OpenAI\n"
+"\n"
+"client = OpenAI(\n"
+"    base_url=\"http://localhost:30000/v1\",\n"
+"    api_key=\"sk-123456\"\n"
+")\n"
+"\n"
+"tools = [\n"
+"    {\"type\": \"code_interpreter\"},\n"
+"    {\"type\": \"web_search_preview\"},\n"
+"]\n"
+"\n"
+"# Reasoning level example\n"
+"response = client.responses.create(\n"
+"    model=\"openai/gpt-oss-120b\",\n"
+"    instructions=\"You are a helpful assistant.\"\n"
+"    reasoning_effort=\"high\" # Supports high, medium, or low\n"
+"    input=\"In one sentence, explain the transformer architecture.\",\n"
+")\n"
+"print(\"====== reasoning: high ======\")\n"
+"print(response.output_text)\n"
+"\n"
+"# Test python tool\n"
+"response = client.responses.create(\n"
+"    model=\"openai/gpt-oss-120b\",\n"
+"    instructions=\"You are a helfpul assistant, you could use python tool to "
+"execute code.\",\n"
+"    input=\"Use python tool to calculate the sum of 29138749187 and "
+"29138749187\", # 58,277,498,374\n"
+"    tools=tools\n"
+")\n"
+"print(\"====== test python tool ======\")\n"
+"print(response.output_text)\n"
+"\n"
+"# Test browser tool\n"
+"response = client.responses.create(\n"
+"    model=\"openai/gpt-oss-120b\",\n"
+"    instructions=\"You are a helfpul assistant, you could use browser to "
+"search the web\",\n"
+"    input=\"Search the web for the latest news about Nvidia stock price\",\n"
+"    tools=tools\n"
+")\n"
+"print(\"====== test browser tool ======\")\n"
+"print(response.output_text)\n"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:108
+msgid "Example output:"
+msgstr ""
+
+#: ../../../basic_usage/gpt_oss.md:109
+msgid ""
+"====== test python tool ======\n"
+"The sum of 29,138,749,187 and 29,138,749,187 is **58,277,498,374**.\n"
+"====== test browser tool ======\n"
+"**Recent headlines on Nvidia (NVDA) stock**\n"
+"\n"
+"| Date (2025) | Source | Key news points | Stock‑price detail |\n"
+"|-------------|--------|----------------|--------------------|\n"
+"| **May 13** | Reuters | The market data page shows Nvidia trading “higher” "
+"at **$116.61** with no change from the previous close. | **$116.61** – "
+"latest trade (delayed ≈ 15 min)【14†L34-L38】 |\n"
+"| **Aug 18** | CNBC | Morgan Stanley kept an **overweight** rating and "
+"lifted its price target to **$206** (up from $200), implying a 14 % upside "
+"from the Friday close. The firm notes Nvidia shares have already **jumped "
+"34 % this year**. | No exact price quoted, but the article signals strong "
+"upside expectations【9†L27-L31】 |\n"
+"| **Aug 20** | The Motley Fool | Nvidia is set to release its Q2 earnings on "
+"Aug 27. The article lists the **current price of $175.36**, down 0.16 % on "
+"the day (as of 3:58 p.m. ET). | **$175.36** – current price on Aug 20"
+"【10†L12-L15】【10†L53-L57】 |\n"
+"\n"
+"**What the news tells us**\n"
+"\n"
+"* Nvidia’s share price has risen sharply this year – up roughly a third "
+"according to Morgan Stanley – and analysts are still raising targets (now "
+"$206).\n"
+"* The most recent market quote (Reuters, May 13) was **$116.61**, but the "
+"stock has surged since then, reaching **$175.36** by mid‑August.\n"
+"* Upcoming earnings on **Aug 27** are a focal point; both the Motley Fool "
+"and Morgan Stanley expect the results could keep the rally going.\n"
+"\n"
+"**Bottom line:** Nvidia’s stock is on a strong upward trajectory in 2025, "
+"with price targets climbing toward $200‑$210 and the market price already "
+"near $175 as of late August.\n"
+"\n"
+msgstr ""
