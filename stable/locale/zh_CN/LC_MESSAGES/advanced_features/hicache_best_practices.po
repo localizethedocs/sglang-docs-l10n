@@ -1,0 +1,352 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/hicache_best_practices.md:1
+msgid "SGLang HiCache Best Practices"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:3
+msgid "Why HiCache Matters"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:5
+msgid ""
+"SGLang HiCache extends the traditional RadixAttention with a three-tier "
+"hierarchical KV caching system that dramatically improves performance for "
+"long-context and multi-turn conversation scenarios. By intelligently "
+"managing KV caches across GPU memory, host memory, and external storage "
+"backends, HiCache addresses the fundamental capacity bottleneck that limits "
+"cache hit rates in conventional systems."
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:7
+msgid "Configuration Guidelines"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:9
+msgid "Core HiCache Parameters"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:11
+msgid ""
+"# Essential HiCache flags\n"
+"--page-size 64                        # Page size for cache management\n"
+"--enable-hierarchical-cache           # Enable HiCache\n"
+"--hicache-ratio 2                     # Host memory ratio (2x GPU memory)\n"
+"--hicache-size 100                    # Host memory size in GBs, will "
+"override the above ratio\n"
+"--hicache-io-backend kernel           # The I/O backend of moving data "
+"between CPU and GPU\n"
+"--hicache-write-policy write_through  # Cache write policy from GPU to CPU\n"
+"--hicache-storage-backend             # Optional storage backend (e.g., "
+"hf3fs, mooncake, etc.)\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:22
+msgid "Key Configurations with Storage Backends Enabled"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:24
+msgid "Memory Layout Optimization"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:26
+msgid ""
+"# Page-first: Optimized for I/O efficiency with zero-copy (recommended with "
+"kernel backend)\n"
+"--hicache-mem-layout page_first\n"
+"# Page-first-direct: Optimized for direct I/O operations (Compatible with "
+"fa3 and same zero-copy performance as page_first)\n"
+"--hicache-mem-layout page_first_direct\n"
+"# Layer-first\n"
+"--hicache-mem-layout layer_first\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:34
+msgid "**Layout Compatibility:**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:35
+msgid ""
+"`page_first`: Only compatible with `kernel` I/O backend, automatically "
+"switches to `layer_first` with `direct` backend"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:36
+msgid ""
+"`page_first_direct`: Specifically designed for `direct` I/O backend with "
+"optimized memory organization"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:38
+msgid "Prefetch Policies"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:40
+msgid ""
+"# Best-effort: Terminate prefetch when needed\n"
+"--hicache-storage-prefetch-policy best_effort\n"
+"# Wait-complete: Ensure complete prefetch, higher cache reuse\n"
+"--hicache-storage-prefetch-policy wait_complete\n"
+"# Timeout: Balance between completion and best-effort\n"
+"--hicache-storage-prefetch-policy timeout\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:49
+msgid "Integration with PD Disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:51
+msgid ""
+"HiCache works seamlessly with PD Disaggregation. You can choose between two "
+"configurations:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:53
+msgid ""
+"**Prefill-only HiCache**: Enable HiCache only on Prefill nodes, allowing KV "
+"cache sharing among Prefill instances"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:54
+msgid ""
+"**Full HiCache with async offloading**: Enable HiCache on Prefill nodes and "
+"async KV cache offloading on Decode nodes, allowing Prefill nodes to reuse "
+"KV caches from Decode nodes in multi-turn dialogue scenarios"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:56
+msgid ""
+"# Prefill node with HiCache enabled for cross-prefill sharing (ideal for "
+"SystemPrompt scenarios)\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path /xxx/DeepSeek-R1/ \\\n"
+"  --tp 8 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 10000 \\\n"
+"  --enable-metrics \\\n"
+"  --enable-cache-report \\\n"
+"  --mem-fraction-static 0.85 \\\n"
+"  --page-size 64 \\\n"
+"  --enable-hierarchical-cache \\\n"
+"  --hicache-ratio 2 \\\n"
+"  --hicache-size 0 \\\n"
+"  --hicache-mem-layout page_first_direct \\\n"
+"  --hicache-io-backend direct \\\n"
+"  --hicache-write-policy write_through \\\n"
+"  --hicache-storage-backend hf3fs \\\n"
+"  --hicache-storage-prefetch-policy wait_complete \\\n"
+"  --disaggregation-ib-device mlx5_0 \\\n"
+"  --disaggregation-mode prefill \\\n"
+"  --disaggregation-transfer-backend mooncake\n"
+"\n"
+"# Decode node with async offloading enabled for KV cache reuse by Prefill "
+"(ideal for multi-turn conversations)\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path /xxx/DeepSeek-R1/ \\\n"
+"  --tp 8 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 10000 \\\n"
+"  --enable-metrics \\\n"
+"  --enable-cache-report \\\n"
+"  --page-size 64 \\\n"
+"  --hicache-ratio 2 \\\n"
+"  --hicache-size 0 \\\n"
+"  --hicache-mem-layout page_first_direct \\\n"
+"  --hicache-io-backend direct \\\n"
+"  --hicache-write-policy write_through \\\n"
+"  --hicache-storage-backend hf3fs \\\n"
+"  --hicache-storage-prefetch-policy wait_complete \\\n"
+"  --disaggregation-decode-enable-offload-kvcache \\  # Enable async KV cache "
+"offloading in decode node\n"
+"  --disaggregation-ib-device mlx5_0 \\\n"
+"  --disaggregation-mode decode \\\n"
+"  --disaggregation-transfer-backend mooncake\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:102
+msgid "Deployment with HF3FS"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:104
+msgid ""
+"Here is an example of deploying DeepSeek-R1 with HiCache-HF3FS. For more "
+"details, see the [HF3FS Documentation](../../python/sglang/srt/mem_cache/"
+"storage/hf3fs/docs/README.md)."
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:106
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path /xxx/DeepSeek-R1/ \\\n"
+"  --log-level info \\\n"
+"  --tp 8 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 10000 \\\n"
+"  --enable-metrics \\\n"
+"  --enable-cache-report \\\n"
+"  --page-size 64 \\\n"
+"  --mem-fraction-static 0.85 \\\n"
+"  --enable-hierarchical-cache \\\n"
+"  --hicache-ratio 2 \\\n"
+"  --hicache-size 0 \\\n"
+"  --hicache-mem-layout page_first_direct \\\n"
+"  --hicache-io-backend direct \\\n"
+"  --hicache-write-policy write_through \\\n"
+"  --hicache-storage-backend hf3fs \\\n"
+"  --hicache-storage-prefetch-policy wait_complete \\\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:127
+msgid "Deployment with Mooncake"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:129
+msgid ""
+"Here is an example of deploying Qwen3-235B-A22B-Instruct-2507 with Mooncake. "
+"For more details, see the [Mooncake Documentation](../../python/sglang/srt/"
+"mem_cache/storage/mooncake_store/README.md)."
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:131
+msgid ""
+"# Set Mooncake environment variables\n"
+"export MOONCAKE_TE_META_DATA_SERVER=\"http://127.0.0.1:8080/metadata\"\n"
+"export MOONCAKE_GLOBAL_SEGMENT_SIZE=816043786240\n"
+"export MOONCAKE_PROTOCOL=\"rdma\"\n"
+"export MOONCAKE_DEVICE=\"$DEVICE_LIST\"\n"
+"export MOONCAKE_MASTER=127.0.0.1:50051\n"
+"\n"
+"# Launch SGLang server with Mooncake backend\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path $MODEL_PATH \\\n"
+"  --tp 8 \\\n"
+"  --page-size 64 \\\n"
+"  --enable-hierarchical-cache \\\n"
+"  --hicache-ratio 2 \\\n"
+"  --hicache-mem-layout page_first_direct \\\n"
+"  --hicache-io-backend direct \\\n"
+"  --hicache-storage-backend mooncake \\\n"
+"  --hicache-write-policy write_through \\\n"
+"  --hicache-storage-prefetch-policy timeout\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:154
+msgid "Custom Storage Backend Integration"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:156
+msgid "To integrate a new storage backend:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:158
+msgid "**Implement three core methods:**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:159
+msgid "`get(key)`: Retrieve value by key"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:160
+msgid "`exists(key)`: Check key existence"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:161
+msgid "`set(key, value)`: Store key-value pair"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:163
+msgid ""
+"**Register your backend:** Add your storage backend to the HiCache "
+"[BackendFactory](../../python/sglang/srt/mem_cache/storage/backend_factory."
+"py#L188)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:165
+msgid ""
+"The HiCache controller handles all scheduling and synchronization "
+"automatically."
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:167
+msgid "Dynamic Backend Loading"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:169
+msgid ""
+"Alternatively, you can use dynamic loading to avoid hard-coding your backend "
+"in the repository:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:171
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path your-model \\\n"
+"  --enable-hierarchical-cache \\\n"
+"  --hicache-storage-backend dynamic \\\n"
+"  --hicache-storage-backend-extra-config '{\"backend_name\":"
+"\"custom_backend_name\", \"module_path\": \"your_module_path\", "
+"\"class_name\": \"YourHiCacheClassName\"}'\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:179
+msgid "**Configuration Parameters:**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:180
+msgid "`--hicache-storage-backend`: Set to `dynamic`"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:181
+msgid "`--hicache-storage-backend-extra-config`: JSON configuration with:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:182
+msgid "`backend_name`: Custom backend identifier"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:183
+msgid "`module_path`: Python module path to your implementation"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:184
+msgid "`class_name`: Your HiCache implementation class name"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:187
+msgid "Community and Support"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:189
+msgid "**GitHub Issues**: Report bugs and feature requests"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:190
+msgid "**Slack Channel**: Join community discussions in #sgl-kv-cache-store"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:191
+msgid "**Documentation**: Refer to storage backend-specific guides"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:195
+msgid ""
+"*This document will be continuously updated based on community feedback and "
+"new features. Contributions and suggestions are welcome!*"
+msgstr ""

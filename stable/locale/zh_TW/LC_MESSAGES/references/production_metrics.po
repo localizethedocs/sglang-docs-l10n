@@ -1,0 +1,523 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/production_metrics.md:1
+msgid "Production Metrics"
+msgstr ""
+
+#: ../../../references/production_metrics.md:3
+msgid ""
+"SGLang exposes the following metrics via Prometheus. You can enable it by "
+"adding `--enable-metrics` when you launch the server."
+msgstr ""
+
+#: ../../../references/production_metrics.md:5
+msgid ""
+"An example of the monitoring dashboard is available in [examples/monitoring/"
+"grafana.json](https://github.com/sgl-project/sglang/blob/main/examples/"
+"monitoring/grafana/dashboards/json/sglang-dashboard.json)."
+msgstr ""
+
+#: ../../../references/production_metrics.md:7
+msgid "Here is an example of the metrics:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:9
+msgid ""
+"$ curl http://localhost:30000/metrics\n"
+"# HELP sglang:prompt_tokens_total Number of prefill tokens processed.\n"
+"# TYPE sglang:prompt_tokens_total counter\n"
+"sglang:prompt_tokens_total{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} "
+"8.128902e+06\n"
+"# HELP sglang:generation_tokens_total Number of generation tokens "
+"processed.\n"
+"# TYPE sglang:generation_tokens_total counter\n"
+"sglang:generation_tokens_total{model_name=\"meta-llama/Llama-3.1-8B-"
+"Instruct\"} 7.557572e+06\n"
+"# HELP sglang:token_usage The token usage\n"
+"# TYPE sglang:token_usage gauge\n"
+"sglang:token_usage{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} 0.28\n"
+"# HELP sglang:cache_hit_rate The cache hit rate\n"
+"# TYPE sglang:cache_hit_rate gauge\n"
+"sglang:cache_hit_rate{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} "
+"0.007507552643049313\n"
+"# HELP sglang:time_to_first_token_seconds Histogram of time to first token "
+"in seconds.\n"
+"# TYPE sglang:time_to_first_token_seconds histogram\n"
+"sglang:time_to_first_token_seconds_sum{model_name=\"meta-llama/Llama-3.1-8B-"
+"Instruct\"} 2.3518979474117756e+06\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.001\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 0.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.005\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 0.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.01\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 0.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.02\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 0.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.04\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.06\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 3.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.08\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.1\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.25\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.5\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"0.75\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"1.0\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 27.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"2.5\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 140.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"5.0\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 314.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"7.5\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 941.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"10.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1330.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"15.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1970.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"20.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 2326.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"25.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 2417.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"30.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 2513.0\n"
+"sglang:time_to_first_token_seconds_bucket{le=\"+Inf\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 11008.0\n"
+"sglang:time_to_first_token_seconds_count{model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 11008.0\n"
+"# HELP sglang:e2e_request_latency_seconds Histogram of End-to-end request "
+"latency in seconds\n"
+"# TYPE sglang:e2e_request_latency_seconds histogram\n"
+"sglang:e2e_request_latency_seconds_sum{model_name=\"meta-llama/Llama-3.1-8B-"
+"Instruct\"} 3.116093850019932e+06\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"0.3\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 0.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"0.5\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"0.8\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"1.0\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"1.5\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"2.0\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"2.5\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 6.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"5.0\",model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 7.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"10.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 10.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"15.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 11.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"20.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 14.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"30.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 247.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"40.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 486.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"50.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 845.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"60.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1513.0\n"
+"sglang:e2e_request_latency_seconds_bucket{le=\"+Inf\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 11228.0\n"
+"sglang:e2e_request_latency_seconds_count{model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 11228.0\n"
+"# HELP sglang:time_per_output_token_seconds Histogram of time per output "
+"token in seconds.\n"
+"# TYPE sglang:time_per_output_token_seconds histogram\n"
+"sglang:time_per_output_token_seconds_sum{model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 866964.5791549598\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.005\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.01\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 73.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.015\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 382.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.02\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 593.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.025\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 855.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.03\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1035.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.04\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 1815.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.05\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 11685.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.075\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 433413.0\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.1\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 4.950195e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.15\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.039435e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.2\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.171662e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.3\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.266055e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.4\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.296752e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.5\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.312226e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"0.75\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.339675e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"1.0\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.357747e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"2.5\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.389414e+06\n"
+"sglang:time_per_output_token_seconds_bucket{le=\"+Inf\",model_name=\"meta-"
+"llama/Llama-3.1-8B-Instruct\"} 7.400757e+06\n"
+"sglang:time_per_output_token_seconds_count{model_name=\"meta-llama/"
+"Llama-3.1-8B-Instruct\"} 7.400757e+06\n"
+"# HELP sglang:func_latency_seconds Function latency in seconds\n"
+"# TYPE sglang:func_latency_seconds histogram\n"
+"sglang:func_latency_seconds_sum{name=\"generate_request\"} "
+"4.514771912145079\n"
+"sglang:func_latency_seconds_bucket{le=\"0.05\",name=\"generate_request\"} "
+"14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.07500000000000001\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.1125\",name=\"generate_request\"} "
+"14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.16875\",name=\"generate_request\"} "
+"14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.253125\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.3796875\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.56953125\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"0.8542968750000001\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"1.2814453125\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"1.9221679687500002\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"2.8832519531250003\","
+"name=\"generate_request\"} 14006.0\n"
+"sglang:func_latency_seconds_bucket{le=\"4.3248779296875\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"6.487316894531251\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"9.730975341796876\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"14.596463012695313\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"21.89469451904297\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"32.84204177856446\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"49.26306266784668\","
+"name=\"generate_request\"} 14007.0\n"
+"sglang:func_latency_seconds_bucket{le=\"+Inf\",name=\"generate_request\"} "
+"14007.0\n"
+"sglang:func_latency_seconds_count{name=\"generate_request\"} 14007.0\n"
+"# HELP sglang:num_running_reqs The number of running requests\n"
+"# TYPE sglang:num_running_reqs gauge\n"
+"sglang:num_running_reqs{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} "
+"162.0\n"
+"# HELP sglang:num_used_tokens The number of used tokens\n"
+"# TYPE sglang:num_used_tokens gauge\n"
+"sglang:num_used_tokens{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} "
+"123859.0\n"
+"# HELP sglang:gen_throughput The generate throughput (token/s)\n"
+"# TYPE sglang:gen_throughput gauge\n"
+"sglang:gen_throughput{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} "
+"86.50814177726902\n"
+"# HELP sglang:num_queue_reqs The number of requests in the waiting queue\n"
+"# TYPE sglang:num_queue_reqs gauge\n"
+"sglang:num_queue_reqs{model_name=\"meta-llama/Llama-3.1-8B-Instruct\"} "
+"2826.0\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:128
+msgid "Setup Guide"
+msgstr ""
+
+#: ../../../references/production_metrics.md:130
+msgid ""
+"This section describes how to set up the monitoring stack (Prometheus + "
+"Grafana) provided in the `examples/monitoring` directory."
+msgstr ""
+
+#: ../../../references/production_metrics.md:132
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../references/production_metrics.md:134
+msgid "Docker and Docker Compose installed"
+msgstr ""
+
+#: ../../../references/production_metrics.md:135
+msgid "SGLang server running with metrics enabled"
+msgstr ""
+
+#: ../../../references/production_metrics.md:137
+msgid "Usage"
+msgstr ""
+
+#: ../../../references/production_metrics.md:139
+msgid "**Start your SGLang server with metrics enabled:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:141
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path <your_model_path> \\\n"
+"  --port 30000 \\\n"
+"  --enable-metrics\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:147
+msgid ""
+"Replace `<your_model_path>` with the actual path to your model (e.g., `meta-"
+"llama/Meta-Llama-3.1-8B-Instruct`). Ensure the server is accessible from the "
+"monitoring stack (you might need `--host 0.0.0.0` if running in Docker). By "
+"default, the metrics endpoint will be available at `http://"
+"<sglang_server_host>:30000/metrics`."
+msgstr ""
+
+#: ../../../references/production_metrics.md:149
+msgid "**Navigate to the monitoring example directory:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:150
+msgid "cd examples/monitoring\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:154
+msgid "**Start the monitoring stack:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:155
+msgid "docker compose up -d\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:158
+msgid "This command will start Prometheus and Grafana in the background."
+msgstr ""
+
+#: ../../../references/production_metrics.md:160
+msgid "**Access the monitoring interfaces:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:161
+msgid ""
+"**Grafana:** Open your web browser and go to [http://localhost:3000](http://"
+"localhost:3000)."
+msgstr ""
+
+#: ../../../references/production_metrics.md:162
+msgid ""
+"**Prometheus:** Open your web browser and go to [http://localhost:9090]"
+"(http://localhost:9090)."
+msgstr ""
+
+#: ../../../references/production_metrics.md:164
+msgid "**Log in to Grafana:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:165
+msgid "Default Username: `admin`"
+msgstr ""
+
+#: ../../../references/production_metrics.md:166
+msgid ""
+"Default Password: `admin` You will be prompted to change the password upon "
+"your first login."
+msgstr ""
+
+#: ../../../references/production_metrics.md:169
+msgid ""
+"**View the Dashboard:** The SGLang dashboard is pre-configured and should be "
+"available automatically. Navigate to `Dashboards` -> `Browse` -> `SGLang "
+"Monitoring` folder -> `SGLang Dashboard`."
+msgstr ""
+
+#: ../../../references/production_metrics.md:172
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../references/production_metrics.md:174
+msgid ""
+"**Port Conflicts:** If you encounter errors like \"port is already allocated,"
+"\" check if other services (including previous instances of Prometheus/"
+"Grafana) are using ports `9090` or `3000`. Use `docker ps` to find running "
+"containers and `docker stop <container_id>` to stop them, or use `lsof -i :"
+"<port>` to find other processes using the ports. You might need to adjust "
+"the ports in the `docker-compose.yaml` file if they permanently conflict "
+"with other essential services on your system."
+msgstr ""
+
+#: ../../../references/production_metrics.md:176
+msgid ""
+"To modify Grafana's port to the other one(like 3090) in your Docker Compose "
+"file, you need to explicitly specify the port mapping under the grafana "
+"service."
+msgstr ""
+
+#: ../../../references/production_metrics.md:178
+msgid ""
+"Option 1: Add GF_SERVER_HTTP_PORT to the environment section:\n"
+"```\n"
+"  environment:\n"
+"- GF_AUTH_ANONYMOUS_ENABLED=true\n"
+"- GF_SERVER_HTTP_PORT=3090  # <-- Add this line\n"
+"```\n"
+"Option 2: Use port mapping:\n"
+"```\n"
+"grafana:\n"
+"  image: grafana/grafana:latest\n"
+"  container_name: grafana\n"
+"  ports:\n"
+"  - \"3090:3000\"  # <-- Host:Container port mapping\n"
+"```\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:192
+msgid "**Connection Issues:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:193
+msgid ""
+"Ensure both Prometheus and Grafana containers are running (`docker ps`)."
+msgstr ""
+
+#: ../../../references/production_metrics.md:194
+msgid ""
+"Verify the Prometheus data source configuration in Grafana (usually auto-"
+"configured via `grafana/datasources/datasource.yaml`). Go to `Connections` -"
+"> `Data sources` -> `Prometheus`. The URL should point to the Prometheus "
+"service (e.g., `http://prometheus:9090`)."
+msgstr ""
+
+#: ../../../references/production_metrics.md:195
+msgid ""
+"Confirm that your SGLang server is running and the metrics endpoint (`http://"
+"<sglang_server_host>:30000/metrics`) is accessible *from the Prometheus "
+"container*. If SGLang is running on your host machine and Prometheus is in "
+"Docker, use `host.docker.internal` (on Docker Desktop) or your machine's "
+"network IP instead of `localhost` in the `prometheus.yaml` scrape "
+"configuration."
+msgstr ""
+
+#: ../../../references/production_metrics.md:196
+msgid "**No Data on Dashboard:**"
+msgstr ""
+
+#: ../../../references/production_metrics.md:197
+msgid ""
+"Generate some traffic to your SGLang server to produce metrics. For example, "
+"run a benchmark:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:198
+msgid ""
+"python3 -m sglang.bench_serving --backend sglang --dataset-name random --num-"
+"prompts 100 --random-input 128 --random-output 128\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:201
+msgid ""
+"Check the Prometheus UI (`http://localhost:9090`) under `Status` -> "
+"`Targets` to see if the SGLang endpoint is being scraped successfully."
+msgstr ""
+
+#: ../../../references/production_metrics.md:202
+msgid ""
+"Verify the `model_name` and `instance` labels in your Prometheus metrics "
+"match the variables used in the Grafana dashboard. You might need to adjust "
+"the Grafana dashboard variables or the labels in your Prometheus "
+"configuration."
+msgstr ""
+
+#: ../../../references/production_metrics.md:204
+msgid "Configuration Files"
+msgstr ""
+
+#: ../../../references/production_metrics.md:206
+msgid ""
+"The monitoring setup is defined by the following files within the `examples/"
+"monitoring` directory:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:208
+msgid "`docker-compose.yaml`: Defines the Prometheus and Grafana services."
+msgstr ""
+
+#: ../../../references/production_metrics.md:209
+msgid "`prometheus.yaml`: Prometheus configuration, including scrape targets."
+msgstr ""
+
+#: ../../../references/production_metrics.md:210
+msgid ""
+"`grafana/datasources/datasource.yaml`: Configures the Prometheus data source "
+"for Grafana."
+msgstr ""
+
+#: ../../../references/production_metrics.md:211
+msgid ""
+"`grafana/dashboards/config/dashboard.yaml`: Tells Grafana to load dashboards "
+"from the specified path."
+msgstr ""
+
+#: ../../../references/production_metrics.md:212
+msgid ""
+"`grafana/dashboards/json/sglang-dashboard.json`: The actual Grafana "
+"dashboard definition in JSON format."
+msgstr ""
+
+#: ../../../references/production_metrics.md:214
+msgid ""
+"You can customize the setup by modifying these files. For instance, you "
+"might need to update the `static_configs` target in `prometheus.yaml` if "
+"your SGLang server runs on a different host or port."
+msgstr ""
+
+#: ../../../references/production_metrics.md:216
+msgid "Check if the metrics are being collected"
+msgstr ""
+
+#: ../../../references/production_metrics.md:218
+msgid "Run:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:219
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --dataset-name random \\\n"
+"  --num-prompts 3000 \\\n"
+"  --random-input 1024 \\\n"
+"  --random-output 1024 \\\n"
+"  --random-range-ratio 0.5\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:229
+msgid "to generate some requests."
+msgstr ""
+
+#: ../../../references/production_metrics.md:231
+msgid "Then you should be able to see the metrics in the Grafana dashboard."
+msgstr ""

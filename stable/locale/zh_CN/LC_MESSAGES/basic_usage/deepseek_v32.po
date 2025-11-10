@@ -1,0 +1,341 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/deepseek_v32.md:1
+msgid "DeepSeek V3.2 Usage"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:3
+msgid ""
+"[DeepSeek-V3.2-Exp](https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp) "
+"equips DeepSeek-V3.1-Terminus with DeepSeek Sparse Attention (DSA) through "
+"continued training. With DSA, a fine-grained sparse attention mechanism "
+"powered by a lightning indexer, DeepSeek-V3.2 achieves efficiency "
+"improvements in long-context scenarios."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:5
+msgid ""
+"For reporting issues or tracking upcoming features, please refer to this "
+"[Roadmap](https://github.com/sgl-project/sglang/issues/11060)."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:7
+msgid "Installation"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:9
+msgid "Docker"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:11
+msgid ""
+"# H200/B200\n"
+"docker pull lmsysorg/sglang:latest\n"
+"\n"
+"# MI350/MI355\n"
+"docker pull lmsysorg/sglang:dsv32-rocm\n"
+"\n"
+"# NPUs\n"
+"docker pull lmsysorg/sglang:dsv32-a2\n"
+"docker pull lmsysorg/sglang:dsv32-a3\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:23
+msgid "Build From Source"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:25
+msgid ""
+"# Install SGLang\n"
+"git clone https://github.com/sgl-project/sglang\n"
+"cd sglang\n"
+"pip3 install pip --upgrade\n"
+"pip3 install -e \"python\"\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:32
+msgid "Launch DeepSeek V3.2 with SGLang"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:34
+msgid "To serve DeepSeek-V3.2-Exp on 8xH200/B200 GPUs:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:36
+msgid ""
+"# Launch with TP + DP\n"
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp --tp 8 "
+"--dp 8 --enable-dp-attention\n"
+"\n"
+"# Launch with EP + DP\n"
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp --tp 8 "
+"--ep 8 --dp 8 --enable-dp-attention\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:44
+msgid "Configuration Tips"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:45
+msgid ""
+"**DP Attention**: For DeepSeek V3.2 model, the kernels are customized for "
+"the use case of `dp_size=8`, so DP attention is enabled by default for "
+"better stability and performance. The feature of launching with pure TP is "
+"still under development."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:46
+msgid ""
+"**Choices of Attention Kernels**: The attention backend is automatically set "
+"to `nsa` attention backend for DeepSeek V3.2 model. In this backend, "
+"different kernels for sparse prefilling/decoding are implemented, which can "
+"be specified by `--nsa-prefill-backend` and `--nsa-decode-backend` server "
+"arguments. The choices of nsa prefill/decode attention kernels include:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:47
+msgid ""
+"`flashmla_sparse`: `flash_mla_sparse_fwd` kernel from `flash_mla` library. "
+"Can run on both Hopper and Blackwell GPUs. It requires bf16 q, kv inputs."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:48
+msgid ""
+"`flashmla_kv`: `flash_mla_with_kvcache` kernel from `flash_mla` library. Can "
+"run on both Hopper and Blackwell GPUs. It requires bf16 q, fp8 k_cache "
+"inputs."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:49
+msgid ""
+"`fa3`: `flash_attn_with_kvcache` kernel from `flash_attn` library. Can only "
+"run on Hopper GPUs. It requires bf16 q, kv inputs."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:50
+msgid "`tilelang`: `tilelang` implementation that can run on GPU, HPU and NPU."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:51
+msgid "`alter`: Alter kernel on AMD HPUs. Can only be used as decode kernel."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:52
+msgid ""
+"On the basis of performance benchmarks, the default configuration on H200 "
+"and B200 are set as follows :"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:53
+msgid ""
+"H200: `flashmla_sparse` prefill attention, `fa3` decode attention, `bf16` kv "
+"cache dtype."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:54
+msgid ""
+"B200: `flashmla_auto` prefill attention, `flashmla_kv` decode attention, "
+"`fp8_e4m3` kv cache dtype. `flashmla_auto` enables automatic selection of "
+"either `flashmla_sparse` or `flashmla_kv` kernel for prefill based on KV "
+"cache dtype, hardware, and heuristics. When FP8 KV cache is enabled and "
+"`total_kv_tokens < total_q_tokens * 512`, it uses the `flashmla_sparse` "
+"kernel; otherwise, it falls back to the `flashmla_kv` kernel. The heuristics "
+"may need to be tuned if the performance of either the `flashmla_sparse` or "
+"`flashmla_kv` kernel changes significantly."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:56
+msgid "Multi-token Prediction"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:57
+msgid ""
+"SGLang implements Multi-Token Prediction (MTP) for DeepSeek V3.2 based on "
+"[EAGLE speculative decoding](https://docs.sglang.ai/advanced_features/"
+"speculative_decoding.html#EAGLE-Decoding). With this optimization, the "
+"decoding speed can be improved significantly on small batch sizes. Please "
+"look at [this PR](https://github.com/sgl-project/sglang/pull/11652) for more "
+"information."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:59
+msgid "Example usage:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:60
+msgid ""
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp --tp 8 "
+"--dp 8 --enable-dp-attention --speculative-algorithm EAGLE --speculative-num-"
+"steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:63
+msgid ""
+"The best configuration for `--speculative-num-steps`, `--speculative-eagle-"
+"topk` and `--speculative-num-draft-tokens` can be searched with "
+"[bench_speculative.py](https://github.com/sgl-project/sglang/blob/main/"
+"scripts/playground/bench_speculative.py) script for given batch size. The "
+"minimum configuration is `--speculative-num-steps 1 --speculative-eagle-topk "
+"1 --speculative-num-draft-tokens 2`, which can achieve speedup for larger "
+"batch sizes."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:64
+msgid ""
+"The default value of  `--max-running-requests` is set to `48` for MTP. For "
+"larger batch sizes, this value should be increased beyond the default value."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:67
+msgid "Function Calling and Reasoning Parser"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:68
+msgid ""
+"The usage of function calling and reasoning parser is the same as DeepSeek "
+"V3.1. Please refer to [Reasoning Parser](https://docs.sglang.ai/"
+"advanced_features/separate_reasoning.html) and [Tool Parser](https://docs."
+"sglang.ai/advanced_features/tool_parser.html) documents."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:70
+msgid "PD Disaggregation"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:72
+msgid "Prefill Command:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:73
+msgid ""
+"python -m sglang.launch_server \\\n"
+"        --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
+"        --disaggregation-mode prefill \\\n"
+"        --host $LOCAL_IP \\\n"
+"        --port $PORT \\\n"
+"        --tp 8 \\\n"
+"        --dp 8 \\\n"
+"        --enable-dp-attention \\\n"
+"        --dist-init-addr ${HOST}:${DIST_PORT} \\\n"
+"        --trust-remote-code \\\n"
+"        --disaggregation-bootstrap-port 8998 \\\n"
+"        --mem-fraction-static 0.9 \\\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:88
+msgid "Decode command:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:89
+msgid ""
+"python -m sglang.launch_server \\\n"
+"        --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
+"        --disaggregation-mode decode \\\n"
+"        --host $LOCAL_IP \\\n"
+"        --port $PORT \\\n"
+"        --tp 8 \\\n"
+"        --dp 8 \\\n"
+"        --enable-dp-attention \\\n"
+"        --dist-init-addr ${HOST}:${DIST_PORT} \\\n"
+"        --trust-remote-code \\\n"
+"        --mem-fraction-static 0.9 \\\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:103
+msgid "Router command:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:104
+msgid ""
+"python -m sglang_router.launch_router --pd-disaggregation \\\n"
+"  --prefill $PREFILL_ADDR 8998 \\\n"
+"  --decode $DECODE_ADDR \\\n"
+"  --host 127.0.0.1 \\\n"
+"  --port 8000 \\\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:112
+msgid ""
+"If you need more advanced deployment methods or production-ready deployment "
+"methods, such as RBG or LWS-based deployment, please refer to [references/"
+"multi_node_deployment/rbg_pd/deepseekv32_pd.md](../references/"
+"multi_node_deployment/rbg_pd/deepseekv32_pd.md). Additionally, you can also "
+"find startup commands for DeepEP-based EP parallelism in the aforementioned "
+"documentation."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:115
+msgid "Benchmarking Results"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:117
+msgid "Accuracy Test with `gsm8k`"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:118
+msgid "A simple accuracy benchmark can be tested with `gsm8k` dataset:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:119
+msgid ""
+"python3 benchmark/gsm8k/bench_sglang.py --num-shots 8 --num-questions 1319 --"
+"parallel 1319\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:123
+msgid "The result is 0.956, which matches our expectation:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:124
+msgid ""
+"Accuracy: 0.956\n"
+"Invalid: 0.000\n"
+"Latency: 25.109 s\n"
+"Output throughput: 5226.235 token/s\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:132
+msgid "Accuracy Test with `gpqa-diamond`"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:134
+msgid ""
+"Accuracy benchmark on long context can be tested on GPQA-diamond dataset "
+"with long output tokens and thinking enabled:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:135
+msgid ""
+"python3 -m sglang.test.run_eval --port 30000 --eval-name gpqa --num-examples "
+"198 --max-tokens 120000 --repeat 8 --thinking-mode deepseek-v3\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:139
+msgid ""
+"The mean accuracy over 8 runs shows 0.797, which matches the number 79.9 in "
+"official tech report."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:140
+msgid ""
+"Repeat: 8, mean: 0.797\n"
+"Scores: ['0.808', '0.798', '0.808', '0.798', '0.783', '0.788', '0.803', "
+"'0.793']\n"
+msgstr ""

@@ -1,0 +1,362 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/ascend_npu.md:1
+msgid "Ascend NPUs"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:3
+msgid ""
+"You can install SGLang using any of the methods below. Please go through "
+"`System Settings` section to ensure the clusters are roaring at max "
+"performance. Feel free to leave an issue [here at sglang](https://github.com/"
+"sgl-project/sglang/issues) if you encounter any issues or have any problems."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:5
+msgid "System Settings"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:7
+msgid "CPU performance power scheme"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:9
+msgid ""
+"The default power scheme on Ascend hardware is `ondemand` which could affect "
+"performance, changing it to `performance` is recommended."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:11
+msgid ""
+"echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/"
+"scaling_governor\n"
+"\n"
+"# Make sure changes are applied successfully\n"
+"cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor # shows "
+"performance\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:18
+msgid "Disable NUMA balancing"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:20
+msgid ""
+"sudo sysctl -w kernel.numa_balancing=0\n"
+"\n"
+"# Check\n"
+"cat /proc/sys/kernel/numa_balancing # shows 0\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:27
+msgid "Prevent swapping out system memory"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:29
+msgid ""
+"sudo sysctl -w vm.swappiness=10\n"
+"\n"
+"# Check\n"
+"cat /proc/sys/vm/swappiness # shows 10\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:36
+msgid "Installing SGLang"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:38
+msgid "Method 1: Installing from source with prerequisites"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:40
+msgid "Python Version"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:42
+msgid ""
+"Only `python==3.11` is supported currently. If you don't want to break "
+"system pre-installed python, try installing with [conda](https://github.com/"
+"conda/conda)."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:44
+msgid ""
+"conda create --name sglang_npu python=3.11\n"
+"conda activate sglang_npu\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:49
+msgid "MemFabric Adaptor"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:51
+msgid ""
+"_TODO: MemFabric is still a working project yet open sourced til August/"
+"September, 2025. We will release it as prebuilt wheel package for now._"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:53
+msgid ""
+"_Notice: Prebuilt wheel package is based on `aarch64`, please leave an issue "
+"[here at sglang](https://github.com/sgl-project/sglang/issues) to let us "
+"know the requests for `amd64` build._"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:55
+msgid ""
+"MemFabric Adaptor is a drop-in replacement of Mooncake Transfer Engine that "
+"enables KV cache transfer on Ascend NPU clusters."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:57
+msgid ""
+"MF_WHL_NAME=\"mf_adapter-1.0.0-cp311-cp311-linux_aarch64.whl\"\n"
+"MEMFABRIC_URL=\"https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/sglang/"
+"${MF_WHL_NAME}\"\n"
+"wget -O \"${MF_WHL_NAME}\" \"${MEMFABRIC_URL}\" && pip install \"./"
+"${MF_WHL_NAME}\"\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:63
+msgid "Pytorch and Pytorch Framework Adaptor on Ascend"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:65
+msgid ""
+"Only `torch==2.6.0` is supported currently due to NPUgraph and Triton-on-"
+"Ascend's limitation, however a more generalized version will be release by "
+"the end of September, 2025."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:67
+msgid ""
+"PYTORCH_VERSION=2.6.0\n"
+"TORCHVISION_VERSION=0.21.0\n"
+"pip install torch==$PYTORCH_VERSION torchvision==$TORCHVISION_VERSION --"
+"index-url https://download.pytorch.org/whl/cpu\n"
+"\n"
+"PTA_VERSION=\"v7.1.0.1-pytorch2.6.0\"\n"
+"PTA_NAME=\"torch_npu-2.6.0.post1-cp311-cp311-manylinux_2_28_aarch64.whl\"\n"
+"PTA_URL=\"https://gitee.com/ascend/pytorch/releases/download/${PTA_VERSION}/"
+"${PTA_WHL_NAME}\"\n"
+"wget -O \"${PTA_NAME}\" \"${PTA_URL}\" && pip install \"./${PTA_NAME}\"\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:78
+msgid "vLLM"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:80
+msgid ""
+"vLLM is still a major prerequisite on Ascend NPU. Because of `torch==2.6.0` "
+"limitation, only vLLM v0.8.5 is supported."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:82
+msgid ""
+"VLLM_TAG=v0.8.5\n"
+"git clone --depth 1 https://github.com/vllm-project/vllm.git --branch "
+"$VLLM_TAG\n"
+"(cd vllm && VLLM_TARGET_DEVICE=\"empty\" pip install -v -e .)\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:88
+msgid "Triton on Ascend"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:90
+msgid ""
+"_Notice:_ We recommend installing triton-ascend from source due to its rapid "
+"development, the version on PYPI can't keep up for know. This problem will "
+"be solved on Sep. 2025, afterwards `pip install` would be the one and only "
+"installing method."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:92
+msgid ""
+"Please follow Triton-on-Ascend's [installation guide from source](https://"
+"gitee.com/ascend/triton-"
+"ascend#2%E6%BA%90%E4%BB%A3%E7%A0%81%E5%AE%89%E8%A3%85-triton-ascend) to "
+"install the latest `triton-ascend` package."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:94
+msgid "DeepEP-compatible Library"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:96
+msgid ""
+"We are also providing a DeepEP-compatible Library as a drop-in replacement "
+"of deepseek-ai's DeepEP library, check the [installation guide](https://"
+"github.com/sgl-project/sgl-kernel-npu/blob/main/python/deep_ep/README.md)."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:98
+msgid "Installing SGLang from source"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:100
+msgid ""
+"# Use the last release branch\n"
+"git clone -b v0.5.5 https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"pip install --upgrade pip\n"
+"pip install -e python[srt_npu]\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:109
+msgid "Method 2: Using docker"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:111
+msgid ""
+"__Notice:__ `--privileged` and `--network=host` are required by RDMA, which "
+"is typically needed by Ascend NPU clusters."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:113
+msgid ""
+"__Notice:__ The following docker command is based on Atlas 800I A3 machines. "
+"If you are using Atlas 800I A2, make sure only `davinci[0-7]` are mapped "
+"into container."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:115
+msgid ""
+"# Clone the SGLang repository\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang/docker\n"
+"\n"
+"# Build the docker image\n"
+"docker build -t <image_name> -f npu.Dockerfile .\n"
+"\n"
+"alias drun='docker run -it --rm --privileged --network=host --ipc=host --shm-"
+"size=16g \\\n"
+"    --device=/dev/davinci0 --device=/dev/davinci1 --device=/dev/davinci2 --"
+"device=/dev/davinci3 \\\n"
+"    --device=/dev/davinci4 --device=/dev/davinci5 --device=/dev/davinci6 --"
+"device=/dev/davinci7 \\\n"
+"    --device=/dev/davinci8 --device=/dev/davinci9 --device=/dev/davinci10 --"
+"device=/dev/davinci11 \\\n"
+"    --device=/dev/davinci12 --device=/dev/davinci13 --device=/dev/davinci14 "
+"--device=/dev/davinci15 \\\n"
+"    --device=/dev/davinci_manager --device=/dev/hisi_hdc \\\n"
+"    --volume /usr/local/sbin:/usr/local/sbin --volume /usr/local/Ascend/"
+"driver:/usr/local/Ascend/driver \\\n"
+"    --volume /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \\\n"
+"    --volume /etc/ascend_install.info:/etc/ascend_install.info \\\n"
+"    --volume /var/queue_schedule:/var/queue_schedule --volume ~/.cache/:/"
+"root/.cache/'\n"
+"\n"
+"drun --env \"HF_TOKEN=<secret>\" \\\n"
+"    <image_name> \\\n"
+"    python3 -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --attention-backend ascend --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:139
+msgid "Examples"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:141
+msgid "Running DeepSeek-V3"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:143
+msgid ""
+"Running DeepSeek with PD disaggregation on 2 x Atlas 800I A3. Model weights "
+"could be found [here](https://modelers.cn/models/State_Cloud/Deepseek-R1-"
+"bf16-hfd-w8a8)."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:146
+msgid "Prefill:"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:148
+msgid ""
+"export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
+"export ASCEND_MF_STORE_URL=\"tcp://<PREFILL_HOST_IP>:<PORT>\"\n"
+"\n"
+"drun <image_name> \\\n"
+"    python3 -m sglang.launch_server --model-path State_Cloud/DeepSeek-R1-"
+"bf16-hfd-w8a8 \\\n"
+"    --trust-remote-code \\\n"
+"    --attention-backend ascend \\\n"
+"    --mem-fraction-static 0.8 \\\n"
+"    --quantization w8a8_int8 \\\n"
+"    --tp-size 16 \\\n"
+"    --dp-size 1 \\\n"
+"    --nnodes 1 \\\n"
+"    --node-rank 0 \\\n"
+"    --disaggregation-mode prefill \\\n"
+"    --disaggregation-bootstrap-port 6657 \\\n"
+"    --disaggregation-transfer-backend ascend \\\n"
+"    --dist-init-addr <PREFILL_HOST_IP>:6688 \\\n"
+"    --host <PREFILL_HOST_IP> \\\n"
+"    --port 8000\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:170
+msgid "Decode:"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:172
+msgid ""
+"export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
+"export ASCEND_MF_STORE_URL=\"tcp://<PREFILL_HOST_IP>:<PORT>\"\n"
+"export HCCL_BUFFSIZE=200\n"
+"export SGLANG_DEEPEP_NUM_MAX_DISPATCH_TOKENS_PER_RANK=24\n"
+"export SGLANG_NPU_USE_MLAPO=1\n"
+"\n"
+"drun <image_name> \\\n"
+"    python3 -m sglang.launch_server --model-path State_Cloud/DeepSeek-R1-"
+"bf16-hfd-w8a8 \\\n"
+"    --trust-remote-code \\\n"
+"    --attention-backend ascend \\\n"
+"    --mem-fraction-static 0.8 \\\n"
+"    --quantization w8a8_int8 \\\n"
+"    --enable-deepep-moe \\\n"
+"    --deepep-mode low_latency \\\n"
+"    --tp-size 16 \\\n"
+"    --dp-size 1 \\\n"
+"    --ep-size 16 \\\n"
+"    --nnodes 1 \\\n"
+"    --node-rank 0 \\\n"
+"    --disaggregation-mode decode \\\n"
+"    --disaggregation-transfer-backend ascend \\\n"
+"    --dist-init-addr <DECODE_HOST_IP>:6688 \\\n"
+"    --host <DECODE_HOST_IP> \\\n"
+"    --port 8001\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:199
+msgid "Mini_LB:"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:201
+msgid ""
+"drun <image_name> \\\n"
+"    python -m sglang.srt.disaggregation.launch_lb \\\n"
+"    --prefill http://<PREFILL_HOST_IP>:8000 \\\n"
+"    --decode http://<DECODE_HOST_IP>:8001 \\\n"
+"    --host 127.0.0.1 --port 5000\n"
+msgstr ""

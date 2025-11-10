@@ -1,0 +1,356 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/deterministic_inference.md:1
+msgid "Deterministic Inference"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:3
+msgid "Why Deterministic Inference Matters"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:5
+msgid ""
+"Deterministic inference ensures consistent LLM outputs across runs, which is "
+"critical for:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:6
+msgid ""
+"**Reinforcement Learning**: Ensures consistent logprobs across runs, "
+"reducing stochastic noise and making RL training more stable, reproducible, "
+"and debuggable."
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:7
+msgid "**Testing & Debugging**: Enables reproducible validation"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:8
+msgid "**Production**: Improves reliability and user experience"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:10
+msgid ""
+"Even with `temperature=0`, standard LLM inference can produce different "
+"outputs due to dynamic batching and varying reduction orders in GPU kernels."
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:12
+msgid "The Root Cause of Non-Determinism"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:14
+msgid ""
+"The main source is **varying batch sizes**. Different batch sizes cause GPU "
+"kernels to split reduction operations differently, leading to different "
+"addition orders. Due to floating-point non-associativity (`(a + b) + c ≠ a + "
+"(b + c)`), this produces different results even for identical inputs."
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:17
+msgid "SGLang's Solution"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:19
+msgid ""
+"Building on [Thinking Machines Lab's batch-invariant operators](https://"
+"github.com/thinking-machines-lab/batch_invariant_ops), SGLang achieves fully "
+"deterministic inference while maintaining compatibility with chunked "
+"prefill, CUDA graphs, radix cache, and non-greedy sampling. The development "
+"roadmap for deterministic inference features can be found in this [issue]"
+"(https://github.com/sgl-project/sglang/issues/10278)."
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:21
+msgid "Supported Backends"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:23
+msgid ""
+"Deterministic inference is only supported with the following three attention "
+"backends: **FlashInfer**, **FlashAttention 3 (FA3)**, and **Triton**."
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:25
+msgid ""
+"The following table shows feature compatibility for deterministic inference "
+"across different attention backends:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Attention Backend"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "CUDA Graph"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Chunked Prefill"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Radix Cache"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Non-greedy Sampling (Temp > 0)"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "**FlashInfer**"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "✅ Yes"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "❌ No"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "**FlashAttention 3 (FA3)**"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "**Triton**"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:33
+msgid "Usage"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:35
+msgid "Basic Usage"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:37
+msgid ""
+"Enable deterministic inference by adding the `--enable-deterministic-"
+"inference` flag:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:39
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-8B \\\n"
+"    --attention-backend fa3 \\\n"
+"    --enable-deterministic-inference\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:46
+msgid "Server Arguments"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Argument"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Type/Default"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "`--enable-deterministic-inference`"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "flag; default: disabled"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Enable deterministic inference with batch-invariant operations"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "`--attention-backend`"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "string; default: fa3"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:0
+msgid "Choose attention backend (flashinfer, fa3, or triton)"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:53
+msgid "Example Configurations"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:55
+msgid "Qwen3-8B"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:56
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-8B \\\n"
+"    --attention-backend flashinfer \\\n"
+"    --enable-deterministic-inference\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:63
+msgid "Llama Models"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:64
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"    --attention-backend fa3 \\\n"
+"    --enable-deterministic-inference\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:71
+msgid "Qwen3-30B-A3B (MoE Model)"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:72
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen3-30B-A3B \\\n"
+"    --attention-backend fa3 \\\n"
+"    --enable-deterministic-inference\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:79
+msgid "Deterministic Inference with Non-Greedy Sampling (Temperature > 0)"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:81
+msgid ""
+"SGLang supports deterministic inference even with non-greedy sampling by "
+"using sampling seeds. This is particularly useful for reinforcement learning "
+"scenarios like GRPO (Group Relative Policy Optimization) where you need "
+"multiple diverse but reproducible responses."
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:83
+msgid "Default Behavior"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:85
+msgid ""
+"By default, SGLang uses a sampling seed of `42` for reproducible sampling:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:87
+msgid ""
+"import requests\n"
+"\n"
+"response = requests.post(\n"
+"    \"http://localhost:30000/generate\",\n"
+"    json={\n"
+"        \"text\": \"Tell me a joke\",\n"
+"        \"sampling_params\": {\n"
+"            \"temperature\": 0.8,  # Non-greedy sampling\n"
+"            \"max_new_tokens\": 128,\n"
+"        },\n"
+"    },\n"
+")\n"
+"print(response.json())\n"
+"# This will always produce the same response across runs\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:104
+msgid "Generating Multiple Reproducible Responses"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:106
+msgid ""
+"To sample different responses from the same prompt while maintaining "
+"reproducibility (e.g., for GRPO training), provide different sampling seeds "
+"in your requests:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:108
+msgid ""
+"import requests\n"
+"\n"
+"# Prepare a list of sampling seeds for different responses\n"
+"sampling_seeds = [42, 43, 44, 45, 46]\n"
+"\n"
+"responses = []\n"
+"for seed in sampling_seeds:\n"
+"    response = requests.post(\n"
+"        \"http://localhost:30000/generate\",\n"
+"        json={\n"
+"            \"text\": \"Tell me a joke\",\n"
+"            \"sampling_params\": {\n"
+"                \"temperature\": 0.8,\n"
+"                \"max_new_tokens\": 128,\n"
+"                \"sampling_seed\": seed,  # Specify sampling seed\n"
+"            },\n"
+"        },\n"
+"    )\n"
+"    responses.append(response.json())\n"
+"\n"
+"# Each seed will produce a different but reproducible response\n"
+"# Using the same seed will always produce the same response\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:133
+msgid "This approach ensures that:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:134
+msgid "Different seeds produce diverse responses"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:135
+msgid "The same seed always produces the same response across different runs"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:136
+msgid "Results are reproducible for debugging and evaluation"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:139
+msgid "Verification"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:141
+msgid "Run deterministic tests to verify consistent outputs:"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:143
+msgid ""
+"# Single test: same prompt, varying batch sizes\n"
+"python3 -m sglang.test.test_deterministic --test-mode single --n-trials 50\n"
+"\n"
+"# Prefix test: prompts with different prefix lengths\n"
+"python3 -m sglang.test.test_deterministic --test-mode prefix --n-trials 50\n"
+"\n"
+"# Radix Cache Consistency mode: test radix cache determinism (cached vs "
+"uncached prefill)\n"
+"python3 -m sglang.test.test_deterministic --test-mode radix_cache\n"
+msgstr ""
+
+#: ../../../advanced_features/deterministic_inference.md:154
+msgid ""
+"Expected result: All tests should show `Unique samples: 1` (perfectly "
+"deterministic)."
+msgstr ""
