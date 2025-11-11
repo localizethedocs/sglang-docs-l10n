@@ -1,0 +1,243 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-10 08:34+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/qwen3_vl.md:1
+msgid "Qwen3-VL Usage"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:3
+msgid ""
+"[Qwen3-VL](https://huggingface.co/collections/Qwen/qwen3-vl) is Alibaba’s "
+"latest multimodal large language model with strong text, vision, and "
+"reasoning capabilities. SGLang supports Qwen3-VL Family of models with Image "
+"and Video input support."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:7
+msgid "Launch commands for SGLang"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:9
+msgid ""
+"Below are suggested launch commands tailored for different hardware / "
+"precision modes"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:11
+msgid "FP8 (quantised) mode"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:12
+msgid ""
+"For high memory-efficiency and latency optimized deployments (e.g., on H100, "
+"H200) where FP8 checkpoint is supported:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:13
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-235B-A22B-Instruct-FP8 \\\n"
+"  --tp 8 \\\n"
+"  --ep 8 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000 \\\n"
+"  --keep-mm-feature-on-device\n"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:23
+msgid "Non-FP8 (BF16 / full precision) mode"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:24
+msgid ""
+"For deployments on A100/H100 where BF16 is used (or FP8 snapshot not used):"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:25
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-235B-A22B-Instruct \\\n"
+"  --tp 8 \\\n"
+"  --ep 8 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000 \\\n"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:34
+msgid "Hardware-specific notes / recommendations"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:36
+msgid "On H100 with FP8: Use the FP8 checkpoint for best memory efficiency."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:37
+msgid ""
+"On A100 / H100 with BF16 (non-FP8): It’s recommended to use `--mm-max-"
+"concurrent-calls` to control parallel throughput and GPU memory usage during "
+"image/video inference."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:38
+msgid ""
+"On H200 & B200: The model can be run “out of the box”, supporting full "
+"context length plus concurrent image + video processing."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:40
+msgid "Sending Image/Video Requests"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:42
+msgid "Image input:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:44
+msgid ""
+"import requests\n"
+"\n"
+"url = f\"http://localhost:30000/v1/chat/completions\"\n"
+"\n"
+"data = {\n"
+"    \"model\": \"Qwen/Qwen3-VL-30B-A3B-Instruct\",\n"
+"    \"messages\": [\n"
+"        {\n"
+"            \"role\": \"user\",\n"
+"            \"content\": [\n"
+"                {\"type\": \"text\", \"text\": \"What’s in this image?\"},\n"
+"                {\n"
+"                    \"type\": \"image_url\",\n"
+"                    \"image_url\": {\n"
+"                        \"url\": \"https://github.com/sgl-project/sglang/"
+"blob/main/test/lang/example_image.png?raw=true\"\n"
+"                    },\n"
+"                },\n"
+"            ],\n"
+"        }\n"
+"    ],\n"
+"    \"max_tokens\": 300,\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=data)\n"
+"print(response.text)\n"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:72
+msgid "Video Input:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:74
+msgid ""
+"import requests\n"
+"\n"
+"url = f\"http://localhost:30000/v1/chat/completions\"\n"
+"\n"
+"data = {\n"
+"    \"model\": \"Qwen/Qwen3-VL-30B-A3B-Instruct\",\n"
+"    \"messages\": [\n"
+"        {\n"
+"            \"role\": \"user\",\n"
+"            \"content\": [\n"
+"                {\"type\": \"text\", \"text\": \"What’s happening in this "
+"video?\"},\n"
+"                {\n"
+"                    \"type\": \"video_url\",\n"
+"                    \"video_url\": {\n"
+"                        \"url\": \"https://github.com/sgl-project/sgl-test-"
+"files/raw/refs/heads/main/videos/jobs_presenting_ipod.mp4\"\n"
+"                    },\n"
+"                },\n"
+"            ],\n"
+"        }\n"
+"    ],\n"
+"    \"max_tokens\": 300,\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=data)\n"
+"print(response.text)\n"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:102
+msgid "Important Server Parameters and Flags"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:104
+msgid ""
+"When launching the model server for **multimodal support**, you can use the "
+"following command-line arguments to fine-tune performance and behavior:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:106
+msgid ""
+"`--mm-attention-backend`: Specify multimodal attention backend. Eg. "
+"`fa3`(Flash Attention 3)"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:107
+msgid ""
+"`--mm-max-concurrent-calls <value>`: Specifies the **maximum number of "
+"concurrent asynchronous multimodal data processing calls** allowed on the "
+"server. Use this to control parallel throughput and GPU memory usage during "
+"image/video inference."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:108
+msgid ""
+"`--mm-per-request-timeout <seconds>`: Defines the **timeout duration (in "
+"seconds)** for each multimodal request. If a request exceeds this time limit "
+"(e.g., for very large video inputs), it will be automatically terminated."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:109
+msgid ""
+"`--keep-mm-feature-on-device`: Instructs the server to **retain multimodal "
+"feature tensors on the GPU** after processing. This avoids device-to-host "
+"(D2H) memory copies and improves performance for repeated or high-frequency "
+"inference workloads."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:110
+msgid ""
+"`SGLANG_USE_CUDA_IPC_TRANSPORT=1`: Shared memory pool based CUDA IPC for "
+"multi-modal data transport. For significantly improving e2e latency."
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:112
+msgid "Example usage with the above optimizations:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3_vl.md:113
+msgid ""
+"SGLANG_USE_CUDA_IPC_TRANSPORT=1 \\\n"
+"SGLANG_VLM_CACHE_SIZE_MB=0 \\\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-235B-A22B-Instruct \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000 \\\n"
+"  --trust-remote-code \\\n"
+"  --tp-size 8 \\\n"
+"  --enable-cache-report \\\n"
+"  --log-level info \\\n"
+"  --max-running-requests 64 \\\n"
+"  --mem-fraction-static 0.65 \\\n"
+"  --chunked-prefill-size 8192 \\\n"
+"  --attention-backend fa3 \\\n"
+"  --mm-attention-backend fa3 \\\n"
+"  --enable-metrics\n"
+msgstr ""
