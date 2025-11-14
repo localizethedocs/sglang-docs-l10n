@@ -1,4 +1,10 @@
 <div align="center">
+<picture>
+  <img height="100" src="https://cdn.jsdelivr.net/gh/localizethedocs/static/mark/sglang.svg">
+</picture>
+</div>
+
+<div align="center">
 <h1 id="localization-of-sglang-documentation">Localization of SGLang Documentation</h1>
 </div>
 
