@@ -1,0 +1,284 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../get_started/install.md:1
+msgid "Install SGLang"
+msgstr ""
+
+#: ../../../get_started/install.md:3
+msgid "You can install SGLang using one of the methods below."
+msgstr ""
+
+#: ../../../get_started/install.md:5
+msgid ""
+"This page primarily applies to common NVIDIA GPU platforms. For other or "
+"newer platforms, please refer to the dedicated pages for [AMD GPUs](../"
+"platforms/amd_gpu.md), [Intel Xeon CPUs](../platforms/cpu_server.md), [TPU]"
+"(../platforms/tpu.md), [NVIDIA DGX Spark](https://lmsys.org/blog/2025-10-13-"
+"nvidia-dgx-spark/), [NVIDIA Jetson](../platforms/nvidia_jetson.md), [Ascend "
+"NPUs](../platforms/ascend_npu.md)."
+msgstr ""
+
+#: ../../../get_started/install.md:8
+msgid "Method 1: With pip or uv"
+msgstr ""
+
+#: ../../../get_started/install.md:10
+msgid "It is recommended to use uv for faster installation:"
+msgstr ""
+
+#: ../../../get_started/install.md:12
+msgid ""
+"pip install --upgrade pip\n"
+"pip install uv\n"
+"uv pip install \"sglang\" --prerelease=allow\n"
+msgstr ""
+
+#: ../../../get_started/install.md:18 ../../../get_started/install.md:36
+msgid "**Quick fixes to common problems**"
+msgstr ""
+
+#: ../../../get_started/install.md:20
+msgid ""
+"If you encounter `OSError: CUDA_HOME environment variable is not set`. "
+"Please set it to your CUDA install root with either of the following "
+"solutions:"
+msgstr ""
+
+#: ../../../get_started/install.md:21
+msgid ""
+"Use `export CUDA_HOME=/usr/local/cuda-<your-cuda-version>` to set the "
+"`CUDA_HOME` environment variable."
+msgstr ""
+
+#: ../../../get_started/install.md:22
+msgid ""
+"Install FlashInfer first following [FlashInfer installation doc](https://"
+"docs.flashinfer.ai/installation.html), then install SGLang as described "
+"above."
+msgstr ""
+
+#: ../../../get_started/install.md:24
+msgid "Method 2: From source"
+msgstr ""
+
+#: ../../../get_started/install.md:26
+msgid ""
+"# Use the last release branch\n"
+"git clone -b v0.5.5 https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"# Install the python packages\n"
+"pip install --upgrade pip\n"
+"pip install -e \"python\"\n"
+msgstr ""
+
+#: ../../../get_started/install.md:38
+msgid ""
+"If you want to develop SGLang, it is recommended to use docker. Please refer "
+"to [setup docker container](../developer_guide/"
+"development_guide_using_docker.md#setup-docker-container). The docker image "
+"is `lmsysorg/sglang:dev`."
+msgstr ""
+
+#: ../../../get_started/install.md:40
+msgid "Method 3: Using docker"
+msgstr ""
+
+#: ../../../get_started/install.md:42
+msgid ""
+"The docker images are available on Docker Hub at [lmsysorg/sglang](https://"
+"hub.docker.com/r/lmsysorg/sglang/tags), built from [Dockerfile](https://"
+"github.com/sgl-project/sglang/tree/main/docker). Replace `<secret>` below "
+"with your huggingface hub [token](https://huggingface.co/docs/hub/en/"
+"security-tokens)."
+msgstr ""
+
+#: ../../../get_started/install.md:45
+msgid ""
+"docker run --gpus all \\\n"
+"    --shm-size 32g \\\n"
+"    -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    --ipc=host \\\n"
+"    lmsysorg/sglang:latest \\\n"
+"    python3 -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../get_started/install.md:56
+msgid ""
+"You can also find the nightly docker images [here](https://hub.docker.com/r/"
+"lmsysorg/sglang/tags?name=nightly)."
+msgstr ""
+
+#: ../../../get_started/install.md:58
+msgid "Method 4: Using Kubernetes"
+msgstr ""
+
+#: ../../../get_started/install.md:60
+msgid ""
+"Please check out [OME](https://github.com/sgl-project/ome), a Kubernetes "
+"operator for enterprise-grade management and serving of large language "
+"models (LLMs)."
+msgstr ""
+
+#: ../../../get_started/install.md:62 ../../../get_started/install.md:77
+#: ../../../get_started/install.md:89
+msgid ""
+"<details>\n"
+"<summary>More</summary>\n"
+msgstr ""
+
+#: ../../../get_started/install.md:65
+msgid ""
+"Option 1: For single node serving (typically when the model size fits into "
+"GPUs on one node)"
+msgstr ""
+
+#: ../../../get_started/install.md:67
+msgid ""
+"Execute command `kubectl apply -f docker/k8s-sglang-service.yaml`, to create "
+"k8s deployment and service, with llama-31-8b as example."
+msgstr ""
+
+#: ../../../get_started/install.md:69
+msgid ""
+"Option 2: For multi-node serving (usually when a large model requires more "
+"than one GPU node, such as `DeepSeek-R1`)"
+msgstr ""
+
+#: ../../../get_started/install.md:71
+msgid ""
+"Modify the LLM model path and arguments as necessary, then execute command "
+"`kubectl apply -f docker/k8s-sglang-distributed-sts.yaml`, to create two "
+"nodes k8s statefulset and serving service."
+msgstr ""
+
+#: ../../../get_started/install.md:73 ../../../get_started/install.md:85
+#: ../../../get_started/install.md:117 ../../../get_started/install.md:128
+msgid "</details>\n"
+msgstr ""
+
+#: ../../../get_started/install.md:75
+msgid "Method 5: Using docker compose"
+msgstr ""
+
+#: ../../../get_started/install.md:80
+msgid ""
+"This method is recommended if you plan to serve it as a service. A better "
+"approach is to use the [k8s-sglang-service.yaml](https://github.com/sgl-"
+"project/sglang/blob/main/docker/k8s-sglang-service.yaml)."
+msgstr ""
+
+#: ../../../get_started/install.md:83
+msgid ""
+"Copy the [compose.yml](https://github.com/sgl-project/sglang/blob/main/"
+"docker/compose.yaml) to your local machine"
+msgstr ""
+
+#: ../../../get_started/install.md:84
+msgid "Execute the command `docker compose up -d` in your terminal."
+msgstr ""
+
+#: ../../../get_started/install.md:87
+msgid "Method 6: Run on Kubernetes or Clouds with SkyPilot"
+msgstr ""
+
+#: ../../../get_started/install.md:92
+msgid ""
+"To deploy on Kubernetes or 12+ clouds, you can use [SkyPilot](https://github."
+"com/skypilot-org/skypilot)."
+msgstr ""
+
+#: ../../../get_started/install.md:94
+msgid ""
+"Install SkyPilot and set up Kubernetes cluster or cloud access: see "
+"[SkyPilot's documentation](https://skypilot.readthedocs.io/en/latest/getting-"
+"started/installation.html)."
+msgstr ""
+
+#: ../../../get_started/install.md:95
+msgid ""
+"Deploy on your own infra with a single command and get the HTTP API endpoint:"
+msgstr ""
+
+#: ../../../get_started/install.md:96
+msgid ""
+"<details>\n"
+"<summary>SkyPilot YAML: <code>sglang.yaml</code></summary>\n"
+msgstr ""
+
+#: ../../../get_started/install.md:99
+msgid ""
+"# sglang.yaml\n"
+"envs:\n"
+"  HF_TOKEN: null\n"
+"\n"
+"resources:\n"
+"  image_id: docker:lmsysorg/sglang:latest\n"
+"  accelerators: A100\n"
+"  ports: 30000\n"
+"\n"
+"run: |\n"
+"  conda deactivate\n"
+"  python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../get_started/install.md:119
+msgid ""
+"# Deploy on any cloud or Kubernetes cluster. Use --cloud <cloud> to select a "
+"specific cloud provider.\n"
+"HF_TOKEN=<secret> sky launch -c sglang --env HF_TOKEN sglang.yaml\n"
+"\n"
+"# Get the HTTP API endpoint\n"
+"sky status --endpoint 30000 sglang\n"
+msgstr ""
+
+#: ../../../get_started/install.md:127
+msgid ""
+"To further scale up your deployment with autoscaling and failure recovery, "
+"check out the [SkyServe + SGLang guide](https://github.com/skypilot-org/"
+"skypilot/tree/master/llm/sglang#serving-llama-2-with-sglang-for-more-traffic-"
+"using-skyserve)."
+msgstr ""
+
+#: ../../../get_started/install.md:130
+msgid "Common Notes"
+msgstr ""
+
+#: ../../../get_started/install.md:132
+msgid ""
+"[FlashInfer](https://github.com/flashinfer-ai/flashinfer) is the default "
+"attention kernel backend. It only supports sm75 and above. If you encounter "
+"any FlashInfer-related issues on sm75+ devices (e.g., T4, A10, A100, L4, "
+"L40S, H100), please switch to other kernels by adding `--attention-backend "
+"triton --sampling-backend pytorch` and open an issue on GitHub."
+msgstr ""
+
+#: ../../../get_started/install.md:133
+msgid ""
+"To reinstall flashinfer locally, use the following command: `pip3 install --"
+"upgrade flashinfer-python --force-reinstall --no-deps` and then delete the "
+"cache with `rm -rf ~/.cache/flashinfer`."
+msgstr ""
