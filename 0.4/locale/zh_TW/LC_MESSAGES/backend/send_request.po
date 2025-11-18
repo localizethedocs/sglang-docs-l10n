@@ -25,10 +25,15 @@ msgid ""
 "    }\n"
 "</style>"
 msgstr ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
 
 #: ../../../backend/send_request.ipynb:9
 msgid "Sending Requests"
-msgstr ""
+msgstr "發送請求"
 
 #: ../../../backend/send_request.ipynb:11
 msgid ""
@@ -91,7 +96,7 @@ msgstr ""
 
 #: ../../../backend/send_request.ipynb:67
 msgid "Using cURL"
-msgstr ""
+msgstr "使用 cURL"
 
 #: ../../../backend/send_request.ipynb:-1
 msgid ""
@@ -108,10 +113,22 @@ msgid ""
 "response = json.loads(subprocess.check_output(curl_command, shell=True))\n"
 "print_highlight(response)"
 msgstr ""
+"import subprocess, json\n"
+"\n"
+"curl_command = f\"\"\"\n"
+"curl -s http://localhost:{port}/v1/chat/completions \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{{\"model\": \"qwen/qwen2.5-0.5b-instruct\", \"messages\": "
+"[{{\"role\": \"user\", \"content\": \"What is the capital of France?"
+"\"}}]}}'\n"
+"\"\"\"\n"
+"\n"
+"response = json.loads(subprocess.check_output(curl_command, shell=True))\n"
+"print_highlight(response)"
 
 #: ../../../backend/send_request.ipynb:97
 msgid "Using Python Requests"
-msgstr ""
+msgstr "使用 Python Requests"
 
 #: ../../../backend/send_request.ipynb:-1
 msgid ""
@@ -128,10 +145,22 @@ msgid ""
 "response = requests.post(url, json=data)\n"
 "print_highlight(response.json())"
 msgstr ""
+"import requests\n"
+"\n"
+"url = f\"http://localhost:{port}/v1/chat/completions\"\n"
+"\n"
+"data = {\n"
+"    \"model\": \"qwen/qwen2.5-0.5b-instruct\",\n"
+"    \"messages\": [{\"role\": \"user\", \"content\": \"What is the capital "
+"of France?\"}],\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=data)\n"
+"print_highlight(response.json())"
 
 #: ../../../backend/send_request.ipynb:128
 msgid "Using OpenAI Python Client"
-msgstr ""
+msgstr "使用 OpenAI Python 客戶端"
 
 #: ../../../backend/send_request.ipynb:-1
 msgid ""
