@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-10 08:34+0000\n"
+"POT-Creation-Date: 2025-11-17 08:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,6 +190,7 @@ msgid ""
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:60
+#: ../../../basic_usage/deepseek_v32.md:151
 msgid "Example usage:"
 msgstr ""
 
@@ -330,6 +331,7 @@ msgid "Accuracy Test with `gpqa-diamond`"
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:135
+#: ../../../basic_usage/deepseek_v32.md:149
 msgid ""
 "Accuracy benchmark on long context can be tested on GPQA-diamond dataset "
 "with long output tokens and thinking enabled:"
@@ -352,4 +354,61 @@ msgid ""
 "Repeat: 8, mean: 0.797\n"
 "Scores: ['0.808', '0.798', '0.808', '0.798', '0.783', '0.788', '0.803', "
 "'0.793']\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:147
+msgid "DSA long sequence context parallel optimization(experimental)"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:152
+msgid ""
+"# Launch with EP + DP\n"
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp  --tp 8 "
+"--ep 8 --dp 2 --enable-dp-attention --enable-nsa-prefill-context-parallel --"
+"max-running-requests 32\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:156
+msgid "Context-parallel Tips"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:157
+msgid ""
+"`CP_size` reuses `atten_tp_size`, which is equal to `TP_size` / `DP_size`. "
+"Some features are still not supported at present."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:159
+msgid ""
+"**Multi-batch prefill**: Currently, only single-request processing is "
+"supported during the prefill process."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:160
+msgid "**disaggregation**: P/D disaggregation."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:161
+msgid ""
+"**Cross-machine support**: - Currently only tested on a single machine (TP=8,"
+"EP=8)."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:162
+msgid ""
+"**Other Args**: Currently only supports moe_dense_tp_size=1, kv_cache_dtype "
+"= \"bf16\", moe_a2a_backend = \"deepep\","
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:163
+msgid ""
+"**DP_size**: `CP_size` reuses `atten_tp_size`, which is equal to `TP_size` / "
+"`DP_size`. For the cp function to work correctly, `TP_size` must be "
+"divisible by `DP_size`, and TP_size / DP_size > 1 (to ensure CP_size > 1)."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:164
+msgid ""
+"**Detailed design reference**: https://github.com/sgl-project/sglang/"
+"pull/12065"
 msgstr ""
