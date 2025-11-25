@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:2
+msgid ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:9
+msgid "OpenAI APIs - Embedding"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:11
+msgid ""
+"SGLang provides OpenAI-compatible APIs to enable a smooth transition from "
+"OpenAI services to self-hosted local models. A complete reference for the "
+"API is available in the `OpenAI API Reference <https://platform.openai.com/"
+"docs/guides/embeddings>`__."
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:13
+msgid ""
+"This tutorial covers the embedding APIs for embedding models. For a list of "
+"the supported models see the `corresponding overview page <../"
+"supported_models/embedding_models.md>`__"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:25
+msgid "Launch A Server"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:27
+msgid ""
+"Launch the server in your terminal and wait for it to initialize. Remember "
+"to add ``--is-embedding`` to the command."
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid "[ ]:"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid ""
+"from sglang.test.doc_patch import launch_server_cmd\n"
+"from sglang.utils import wait_for_server, print_highlight, "
+"terminate_process\n"
+"\n"
+"embedding_process, port = launch_server_cmd(\n"
+"    \"\"\"\n"
+"python3 -m sglang.launch_server --model-path Alibaba-NLP/gte-Qwen2-1.5B-"
+"instruct \\\n"
+"    --host 0.0.0.0 --is-embedding --log-level warning\n"
+"\"\"\"\n"
+")\n"
+"\n"
+"wait_for_server(f\"http://localhost:{port}\")"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:58
+msgid "Using cURL"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid ""
+"import subprocess, json\n"
+"\n"
+"text = \"Once upon a time\"\n"
+"\n"
+"curl_text = f\"\"\"curl -s http://localhost:{port}/v1/embeddings \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{{\"model\": \"Alibaba-NLP/gte-Qwen2-1.5B-instruct\", \"input\": "
+"\"{text}\"}}'\"\"\"\n"
+"\n"
+"result = subprocess.check_output(curl_text, shell=True)\n"
+"\n"
+"print(result)\n"
+"\n"
+"text_embedding = json.loads(result)[\"data\"][0][\"embedding\"]\n"
+"\n"
+"print_highlight(f\"Text embedding (first 10): {text_embedding[:10]}\")"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:93
+msgid "Using Python Requests"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid ""
+"import requests\n"
+"\n"
+"text = \"Once upon a time\"\n"
+"\n"
+"response = requests.post(\n"
+"    f\"http://localhost:{port}/v1/embeddings\",\n"
+"    json={\"model\": \"Alibaba-NLP/gte-Qwen2-1.5B-instruct\", \"input\": "
+"text},\n"
+")\n"
+"\n"
+"text_embedding = response.json()[\"data\"][0][\"embedding\"]\n"
+"\n"
+"print_highlight(f\"Text embedding (first 10): {text_embedding[:10]}\")"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:125
+msgid "Using OpenAI Python Client"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid ""
+"import openai\n"
+"\n"
+"client = openai.Client(base_url=f\"http://127.0.0.1:{port}/v1\", "
+"api_key=\"None\")\n"
+"\n"
+"# Text embedding example\n"
+"response = client.embeddings.create(\n"
+"    model=\"Alibaba-NLP/gte-Qwen2-1.5B-instruct\",\n"
+"    input=text,\n"
+")\n"
+"\n"
+"embedding = response.data[0].embedding[:10]\n"
+"print_highlight(f\"Text embedding (first 10): {embedding}\")"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:157
+msgid "Using Input IDs"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:159
+msgid "SGLang also supports ``input_ids`` as input to get the embedding."
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid ""
+"import json\n"
+"import os\n"
+"from transformers import AutoTokenizer\n"
+"\n"
+"os.environ[\"TOKENIZERS_PARALLELISM\"] = \"false\"\n"
+"\n"
+"tokenizer = AutoTokenizer.from_pretrained(\"Alibaba-NLP/gte-Qwen2-1.5B-"
+"instruct\")\n"
+"input_ids = tokenizer.encode(text)\n"
+"\n"
+"curl_ids = f\"\"\"curl -s http://localhost:{port}/v1/embeddings \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{{\"model\": \"Alibaba-NLP/gte-Qwen2-1.5B-instruct\", \"input\": {json."
+"dumps(input_ids)}}}'\"\"\"\n"
+"\n"
+"input_ids_embedding = json.loads(subprocess.check_output(curl_ids, "
+"shell=True))[\"data\"][\n"
+"    0\n"
+"][\"embedding\"]\n"
+"\n"
+"print_highlight(f\"Input IDs embedding (first 10): "
+"{input_ids_embedding[:10]}\")"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:-1
+msgid "terminate_process(embedding_process)"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:206
+msgid "Multi-Modal Embedding Model"
+msgstr ""
+
+#: ../../../basic_usage/openai_api_embeddings.ipynb:208
+msgid ""
+"Please refer to `Multi-Modal Embedding Model <../supported_models/"
+"embedding_models.md>`__"
+msgstr ""
