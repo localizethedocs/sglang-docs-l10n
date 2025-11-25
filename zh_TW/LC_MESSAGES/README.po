@@ -1,0 +1,205 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../README.md:1
+msgid "SGLang Documentation"
+msgstr "SGLang 文件"
+
+#: ../../../README.md:3
+msgid ""
+"We recommend new contributors start from writing documentation, which helps "
+"you quickly understand SGLang codebase. Most documentation files are located "
+"under the `docs/` folder. We prefer **Jupyter Notebooks** over Markdown so "
+"that all examples can be executed and validated by our docs CI pipeline."
+msgstr ""
+
+#: ../../../README.md:5
+msgid "Docs Workflow"
+msgstr ""
+
+#: ../../../README.md:7
+msgid "Install Dependency"
+msgstr "安裝相依項"
+
+#: ../../../README.md:9
+msgid "pip install -r requirements.txt\n"
+msgstr ""
+
+#: ../../../README.md:13
+msgid "Update Documentation"
+msgstr "更新文件"
+
+#: ../../../README.md:15
+msgid ""
+"Update your Jupyter notebooks in the appropriate subdirectories under `docs/"
+"`. If you add new files, remember to update `index.rst` (or relevant `.rst` "
+"files) accordingly."
+msgstr ""
+
+#: ../../../README.md:17
+msgid ""
+"**`pre-commit run --all-files`** manually runs all configured checks, "
+"applying fixes if possible. If it fails the first time, re-run it to ensure "
+"lint errors are fully resolved. Make sure your code passes all checks "
+"**before** creating a Pull Request."
+msgstr ""
+
+#: ../../../README.md:18
+msgid ""
+"**Do not commit** directly to the `main` branch. Always create a new branch "
+"(e.g., `feature/my-new-feature`), push your changes, and open a PR from that "
+"branch."
+msgstr ""
+
+#: ../../../README.md:20
+msgid ""
+"# 1) Compile all Jupyter notebooks\n"
+"make compile\n"
+"\n"
+"# 2) Compile and Preview documentation locally with auto-build\n"
+"# This will automatically rebuild docs when files change\n"
+"# Open your browser at the displayed port to view the docs\n"
+"bash serve.sh\n"
+"\n"
+"# 2a) Alternative ways to serve documentation\n"
+"# Directly use make serve\n"
+"make serve\n"
+"# With custom port\n"
+"PORT=8080 make serve\n"
+"\n"
+"# 3) Clean notebook outputs\n"
+"# nbstripout removes notebook outputs so your PR stays clean\n"
+"pip install nbstripout\n"
+"find . -name '*.ipynb' -exec nbstripout {} \\;\n"
+"\n"
+"# 4) Pre-commit checks and create a PR\n"
+"# After these checks pass, push your changes and open a PR on your branch\n"
+"pre-commit run --all-files\n"
+msgstr ""
+
+#: ../../../README.md:46
+msgid "**Port Allocation and CI Efficiency**"
+msgstr ""
+
+#: ../../../README.md:48
+msgid "**To launch and kill the server:**"
+msgstr ""
+
+#: ../../../README.md:50
+msgid ""
+"from sglang.test.test_utils import is_in_ci\n"
+"from sglang.utils import wait_for_server, print_highlight, "
+"terminate_process\n"
+"\n"
+"if is_in_ci():\n"
+"    from patch import launch_server_cmd\n"
+"else:\n"
+"    from sglang.utils import launch_server_cmd\n"
+"\n"
+"server_process, port = launch_server_cmd(\n"
+"    \"\"\"\n"
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-"
+"Instruct \\\n"
+" --host 0.0.0.0\n"
+"\"\"\"\n"
+")\n"
+"\n"
+"wait_for_server(f\"http://localhost:{port}\")\n"
+"\n"
+"# Terminate Server\n"
+"terminate_process(server_process)\n"
+msgstr ""
+
+#: ../../../README.md:72
+msgid "**To launch and kill the engine:**"
+msgstr ""
+
+#: ../../../README.md:74
+msgid ""
+"# Launch Engine\n"
+"import sglang as sgl\n"
+"import asyncio\n"
+"from sglang.test.test_utils import is_in_ci\n"
+"\n"
+"if is_in_ci():\n"
+"    import patch\n"
+"\n"
+"llm = sgl.Engine(model_path=\"meta-llama/Meta-Llama-3.1-8B-Instruct\")\n"
+"\n"
+"# Terminalte Engine\n"
+"llm.shutdown()\n"
+msgstr ""
+
+#: ../../../README.md:89
+msgid "**Why this approach?**"
+msgstr ""
+
+#: ../../../README.md:91
+msgid ""
+"**Dynamic Port Allocation**: Avoids port conflicts by selecting an available "
+"port at runtime, enabling multiple server instances to run in parallel."
+msgstr ""
+
+#: ../../../README.md:92
+msgid ""
+"**Optimized for CI**: The `patch` version of `launch_server_cmd` and `sgl."
+"Engine()` in CI environments helps manage GPU memory dynamically, preventing "
+"conflicts and improving test parallelism."
+msgstr ""
+
+#: ../../../README.md:93
+msgid ""
+"**Better Parallel Execution**: Ensures smooth concurrent tests by avoiding "
+"fixed port collisions and optimizing memory usage."
+msgstr ""
+
+#: ../../../README.md:95
+msgid "**Model Selection**"
+msgstr ""
+
+#: ../../../README.md:97
+msgid ""
+"For demonstrations in the docs, **prefer smaller models** to reduce memory "
+"consumption and speed up inference. Running larger models in CI can lead to "
+"instability due to memory constraints."
+msgstr ""
+
+#: ../../../README.md:99
+msgid "**Prompt Alignment Example**"
+msgstr ""
+
+#: ../../../README.md:101
+msgid ""
+"When designing prompts, ensure they align with SGLang's structured "
+"formatting. For example:"
+msgstr ""
+
+#: ../../../README.md:103
+msgid ""
+"prompt = \"\"\"You are an AI assistant. Answer concisely and accurately.\n"
+"\n"
+"User: What is the capital of France?\n"
+"Assistant: The capital of France is Paris.\"\"\"\n"
+msgstr ""
+
+#: ../../../README.md:110
+msgid ""
+"This keeps responses aligned with expected behavior and improves reliability "
+"across different files."
+msgstr ""
