@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"POT-Creation-Date: 2025-12-09 11:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,9 +30,10 @@ msgid ""
 "This page primarily applies to common NVIDIA GPU platforms. For other or "
 "newer platforms, please refer to the dedicated pages for [AMD GPUs](../"
 "platforms/amd_gpu.md), [Intel Xeon CPUs](../platforms/cpu_server.md), [TPU]"
-"(../platforms/tpu.md), [NVIDIA DGX Spark](https://lmsys.org/blog/2025-10-13-"
-"nvidia-dgx-spark/), [NVIDIA Jetson](../platforms/nvidia_jetson.md), [Ascend "
-"NPUs](../platforms/ascend_npu.md)."
+"(../platforms/tpu.md), [NVIDIA DGX Spark](https://lmsys.org/blog/2025-11-03-"
+"gpt-oss-on-nvidia-dgx-spark/), [NVIDIA Jetson](../platforms/nvidia_jetson."
+"md), [Ascend NPUs](../platforms/ascend_npu.md), and [Intel XPU](../platforms/"
+"xpu.md)."
 msgstr ""
 
 #: ../../../get_started/install.md:8
@@ -80,7 +82,7 @@ msgstr ""
 #: ../../../get_started/install.md:26
 msgid ""
 "# Use the last release branch\n"
-"git clone -b v0.5.5 https://github.com/sgl-project/sglang.git\n"
+"git clone -b v0.5.6 https://github.com/sgl-project/sglang.git\n"
 "cd sglang\n"
 "\n"
 "# Install the python packages\n"
@@ -90,8 +92,8 @@ msgstr ""
 
 #: ../../../get_started/install.md:38
 msgid ""
-"If you want to develop SGLang, it is recommended to use docker. Please refer "
-"to [setup docker container](../developer_guide/"
+"If you want to develop SGLang, you can try the dev docker image. Please "
+"refer to [setup docker container](../developer_guide/"
 "development_guide_using_docker.md#setup-docker-container). The docker image "
 "is `lmsysorg/sglang:dev`."
 msgstr ""
@@ -140,7 +142,7 @@ msgid ""
 msgstr ""
 
 #: ../../../get_started/install.md:62 ../../../get_started/install.md:77
-#: ../../../get_started/install.md:89
+#: ../../../get_started/install.md:89 ../../../get_started/install.md:133
 msgid ""
 "<details>\n"
 "<summary>More</summary>\n"
@@ -172,7 +174,8 @@ msgid ""
 msgstr ""
 
 #: ../../../get_started/install.md:73 ../../../get_started/install.md:85
-#: ../../../get_started/install.md:117 ../../../get_started/install.md:128
+#: ../../../get_started/install.md:117 ../../../get_started/install.md:129
+#: ../../../get_started/install.md:172 ../../../get_started/install.md:180
 msgid "</details>\n"
 msgstr ""
 
@@ -262,11 +265,110 @@ msgid ""
 "using-skyserve)."
 msgstr ""
 
-#: ../../../get_started/install.md:130
+#: ../../../get_started/install.md:131
+msgid "Method 7: Run on AWS SageMaker"
+msgstr ""
+
+#: ../../../get_started/install.md:136
+msgid ""
+"To deploy on SGLang on AWS SageMaker, check out [AWS SageMaker Inference]"
+"(https://aws.amazon.com/sagemaker/ai/deploy)"
+msgstr ""
+
+#: ../../../get_started/install.md:138
+msgid "To host a model with your own container, follow the following steps:"
+msgstr ""
+
+#: ../../../get_started/install.md:140
+msgid ""
+"Build a docker container with [sagemaker.Dockerfile](https://github.com/sgl-"
+"project/sglang/blob/main/docker/sagemaker.Dockerfile) alongside the [serve]"
+"(https://github.com/sgl-project/sglang/blob/main/docker/serve) script."
+msgstr ""
+
+#: ../../../get_started/install.md:141
+msgid "Push your container onto AWS ECR."
+msgstr ""
+
+#: ../../../get_started/install.md:143
+msgid ""
+"<details>\n"
+"<summary>Dockerfile Build Script: <code>build-and-push.sh</code></summary>\n"
+msgstr ""
+
+#: ../../../get_started/install.md:146
+msgid ""
+"#!/bin/bash\n"
+"AWS_ACCOUNT=\"<YOUR_AWS_ACCOUNT>\"\n"
+"AWS_REGION=\"<YOUR_AWS_REGION>\"\n"
+"REPOSITORY_NAME=\"<YOUR_REPOSITORY_NAME>\"\n"
+"IMAGE_TAG=\"<YOUR_IMAGE_TAG>\"\n"
+"\n"
+"ECR_REGISTRY=\"${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com\"\n"
+"IMAGE_URI=\"${ECR_REGISTRY}/${REPOSITORY_NAME}:${IMAGE_TAG}\"\n"
+"\n"
+"echo \"Starting build and push process...\"\n"
+"\n"
+"# Login to ECR\n"
+"echo \"Logging into ECR...\"\n"
+"aws ecr get-login-password --region ${AWS_REGION} | docker login --username "
+"AWS --password-stdin ${ECR_REGISTRY}\n"
+"\n"
+"# Build the image\n"
+"echo \"Building Docker image...\"\n"
+"docker build -t ${IMAGE_URI} -f sagemaker.Dockerfile .\n"
+"\n"
+"echo \"Pushing ${IMAGE_URI}\"\n"
+"docker push ${IMAGE_URI}\n"
+"\n"
+"echo \"Build and push completed successfully!\"\n"
+msgstr ""
+
+#: ../../../get_started/install.md:174
+msgid ""
+"Deploy a model for serving on AWS Sagemaker, refer to "
+"[deploy_and_serve_endpoint.py](https://github.com/sgl-project/sglang/blob/"
+"main/examples/sagemaker/deploy_and_serve_endpoint.py). For more information, "
+"check out [sagemaker-python-sdk](https://github.com/aws/sagemaker-python-"
+"sdk)."
+msgstr ""
+
+#: ../../../get_started/install.md:175
+msgid ""
+"By default, the model server on SageMaker will run with the following "
+"command: `python3 -m sglang.launch_server --model-path opt/ml/model --host "
+"0.0.0.0 --port 8080`. This is optimal for hosting your own model with "
+"SageMaker."
+msgstr ""
+
+#: ../../../get_started/install.md:176
+msgid ""
+"To modify your model serving parameters, the [serve](https://github.com/sgl-"
+"project/sglang/blob/main/docker/serve) script allows for all available "
+"options within `python3 -m sglang.launch_server --help` cli by specifying "
+"environment variables with prefix `SM_SGLANG_`."
+msgstr ""
+
+#: ../../../get_started/install.md:177
+msgid ""
+"The serve script will automatically convert all environment variables with "
+"prefix `SM_SGLANG_` from `SM_SGLANG_INPUT_ARGUMENT` into `--input-argument` "
+"to be parsed into `python3 -m sglang.launch_server` cli."
+msgstr ""
+
+#: ../../../get_started/install.md:178
+msgid ""
+"For example, to run [Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/"
+"Qwen3-0.6B) with reasoning parser, simply add additional environment "
+"variables `SM_SGLANG_MODEL_PATH=Qwen/Qwen3-0.6B` and "
+"`SM_SGLANG_REASONING_PARSER=qwen3`."
+msgstr ""
+
+#: ../../../get_started/install.md:182
 msgid "Common Notes"
 msgstr ""
 
-#: ../../../get_started/install.md:132
+#: ../../../get_started/install.md:184
 msgid ""
 "[FlashInfer](https://github.com/flashinfer-ai/flashinfer) is the default "
 "attention kernel backend. It only supports sm75 and above. If you encounter "
@@ -275,7 +377,7 @@ msgid ""
 "triton --sampling-backend pytorch` and open an issue on GitHub."
 msgstr ""
 
-#: ../../../get_started/install.md:133
+#: ../../../get_started/install.md:185
 msgid ""
 "To reinstall flashinfer locally, use the following command: `pip3 install --"
 "upgrade flashinfer-python --force-reinstall --no-deps` and then delete the "
