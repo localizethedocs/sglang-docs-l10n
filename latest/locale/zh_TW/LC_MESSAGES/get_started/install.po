@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 08:30+0000\n"
+"POT-Creation-Date: 2025-12-08 08:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgstr ""
 #: ../../../get_started/install.md:26
 msgid ""
 "# Use the last release branch\n"
-"git clone -b v0.5.5.post3 https://github.com/sgl-project/sglang.git\n"
+"git clone -b v0.5.6 https://github.com/sgl-project/sglang.git\n"
 "cd sglang\n"
 "\n"
 "# Install the python packages\n"
@@ -126,109 +126,129 @@ msgstr ""
 
 #: ../../../get_started/install.md:56
 msgid ""
+"For production deployments, use the `runtime` variant which is significantly "
+"smaller (~40% reduction) by excluding build tools and development "
+"dependencies:"
+msgstr ""
+
+#: ../../../get_started/install.md:58
+msgid ""
+"docker run --gpus all \\\n"
+"    --shm-size 32g \\\n"
+"    -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    --ipc=host \\\n"
+"    lmsysorg/sglang:latest-runtime \\\n"
+"    python3 -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../get_started/install.md:69
+msgid ""
 "You can also find the nightly docker images [here](https://hub.docker.com/r/"
 "lmsysorg/sglang/tags?name=nightly)."
 msgstr ""
 
-#: ../../../get_started/install.md:58
+#: ../../../get_started/install.md:71
 msgid "Method 4: Using Kubernetes"
 msgstr ""
 
-#: ../../../get_started/install.md:60
+#: ../../../get_started/install.md:73
 msgid ""
 "Please check out [OME](https://github.com/sgl-project/ome), a Kubernetes "
 "operator for enterprise-grade management and serving of large language "
 "models (LLMs)."
 msgstr ""
 
-#: ../../../get_started/install.md:62 ../../../get_started/install.md:77
-#: ../../../get_started/install.md:89 ../../../get_started/install.md:133
+#: ../../../get_started/install.md:75 ../../../get_started/install.md:90
+#: ../../../get_started/install.md:102 ../../../get_started/install.md:146
 msgid ""
 "<details>\n"
 "<summary>More</summary>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:65
+#: ../../../get_started/install.md:78
 msgid ""
 "Option 1: For single node serving (typically when the model size fits into "
 "GPUs on one node)"
 msgstr ""
 
-#: ../../../get_started/install.md:67
+#: ../../../get_started/install.md:80
 msgid ""
 "Execute command `kubectl apply -f docker/k8s-sglang-service.yaml`, to create "
 "k8s deployment and service, with llama-31-8b as example."
 msgstr ""
 
-#: ../../../get_started/install.md:69
+#: ../../../get_started/install.md:82
 msgid ""
 "Option 2: For multi-node serving (usually when a large model requires more "
 "than one GPU node, such as `DeepSeek-R1`)"
 msgstr ""
 
-#: ../../../get_started/install.md:71
+#: ../../../get_started/install.md:84
 msgid ""
 "Modify the LLM model path and arguments as necessary, then execute command "
 "`kubectl apply -f docker/k8s-sglang-distributed-sts.yaml`, to create two "
 "nodes k8s statefulset and serving service."
 msgstr ""
 
-#: ../../../get_started/install.md:73 ../../../get_started/install.md:85
-#: ../../../get_started/install.md:117 ../../../get_started/install.md:129
-#: ../../../get_started/install.md:172 ../../../get_started/install.md:180
+#: ../../../get_started/install.md:86 ../../../get_started/install.md:98
+#: ../../../get_started/install.md:130 ../../../get_started/install.md:142
+#: ../../../get_started/install.md:185 ../../../get_started/install.md:193
 msgid "</details>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:75
+#: ../../../get_started/install.md:88
 msgid "Method 5: Using docker compose"
 msgstr "方法五：使用 docker compose"
 
-#: ../../../get_started/install.md:80
+#: ../../../get_started/install.md:93
 msgid ""
 "This method is recommended if you plan to serve it as a service. A better "
 "approach is to use the [k8s-sglang-service.yaml](https://github.com/sgl-"
 "project/sglang/blob/main/docker/k8s-sglang-service.yaml)."
 msgstr ""
 
-#: ../../../get_started/install.md:83
+#: ../../../get_started/install.md:96
 msgid ""
 "Copy the [compose.yml](https://github.com/sgl-project/sglang/blob/main/"
 "docker/compose.yaml) to your local machine"
 msgstr ""
 
-#: ../../../get_started/install.md:84
+#: ../../../get_started/install.md:97
 msgid "Execute the command `docker compose up -d` in your terminal."
 msgstr ""
 
-#: ../../../get_started/install.md:87
+#: ../../../get_started/install.md:100
 msgid "Method 6: Run on Kubernetes or Clouds with SkyPilot"
 msgstr ""
 
-#: ../../../get_started/install.md:92
+#: ../../../get_started/install.md:105
 msgid ""
 "To deploy on Kubernetes or 12+ clouds, you can use [SkyPilot](https://github."
 "com/skypilot-org/skypilot)."
 msgstr ""
 
-#: ../../../get_started/install.md:94
+#: ../../../get_started/install.md:107
 msgid ""
 "Install SkyPilot and set up Kubernetes cluster or cloud access: see "
 "[SkyPilot's documentation](https://skypilot.readthedocs.io/en/latest/getting-"
 "started/installation.html)."
 msgstr ""
 
-#: ../../../get_started/install.md:95
+#: ../../../get_started/install.md:108
 msgid ""
 "Deploy on your own infra with a single command and get the HTTP API endpoint:"
 msgstr ""
 
-#: ../../../get_started/install.md:96
+#: ../../../get_started/install.md:109
 msgid ""
 "<details>\n"
 "<summary>SkyPilot YAML: <code>sglang.yaml</code></summary>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:99
+#: ../../../get_started/install.md:112
 msgid ""
 "# sglang.yaml\n"
 "envs:\n"
@@ -247,7 +267,7 @@ msgid ""
 "    --port 30000\n"
 msgstr ""
 
-#: ../../../get_started/install.md:119
+#: ../../../get_started/install.md:132
 msgid ""
 "# Deploy on any cloud or Kubernetes cluster. Use --cloud <cloud> to select a "
 "specific cloud provider.\n"
@@ -257,7 +277,7 @@ msgid ""
 "sky status --endpoint 30000 sglang\n"
 msgstr ""
 
-#: ../../../get_started/install.md:127
+#: ../../../get_started/install.md:140
 msgid ""
 "To further scale up your deployment with autoscaling and failure recovery, "
 "check out the [SkyServe + SGLang guide](https://github.com/skypilot-org/"
@@ -265,38 +285,38 @@ msgid ""
 "using-skyserve)."
 msgstr ""
 
-#: ../../../get_started/install.md:131
+#: ../../../get_started/install.md:144
 msgid "Method 7: Run on AWS SageMaker"
 msgstr ""
 
-#: ../../../get_started/install.md:136
+#: ../../../get_started/install.md:149
 msgid ""
 "To deploy on SGLang on AWS SageMaker, check out [AWS SageMaker Inference]"
 "(https://aws.amazon.com/sagemaker/ai/deploy)"
 msgstr ""
 
-#: ../../../get_started/install.md:138
+#: ../../../get_started/install.md:151
 msgid "To host a model with your own container, follow the following steps:"
 msgstr ""
 
-#: ../../../get_started/install.md:140
+#: ../../../get_started/install.md:153
 msgid ""
 "Build a docker container with [sagemaker.Dockerfile](https://github.com/sgl-"
 "project/sglang/blob/main/docker/sagemaker.Dockerfile) alongside the [serve]"
 "(https://github.com/sgl-project/sglang/blob/main/docker/serve) script."
 msgstr ""
 
-#: ../../../get_started/install.md:141
+#: ../../../get_started/install.md:154
 msgid "Push your container onto AWS ECR."
 msgstr ""
 
-#: ../../../get_started/install.md:143
+#: ../../../get_started/install.md:156
 msgid ""
 "<details>\n"
 "<summary>Dockerfile Build Script: <code>build-and-push.sh</code></summary>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:146
+#: ../../../get_started/install.md:159
 msgid ""
 "#!/bin/bash\n"
 "AWS_ACCOUNT=\"<YOUR_AWS_ACCOUNT>\"\n"
@@ -324,7 +344,7 @@ msgid ""
 "echo \"Build and push completed successfully!\"\n"
 msgstr ""
 
-#: ../../../get_started/install.md:174
+#: ../../../get_started/install.md:187
 msgid ""
 "Deploy a model for serving on AWS Sagemaker, refer to "
 "[deploy_and_serve_endpoint.py](https://github.com/sgl-project/sglang/blob/"
@@ -333,7 +353,7 @@ msgid ""
 "sdk)."
 msgstr ""
 
-#: ../../../get_started/install.md:175
+#: ../../../get_started/install.md:188
 msgid ""
 "By default, the model server on SageMaker will run with the following "
 "command: `python3 -m sglang.launch_server --model-path opt/ml/model --host "
@@ -341,7 +361,7 @@ msgid ""
 "SageMaker."
 msgstr ""
 
-#: ../../../get_started/install.md:176
+#: ../../../get_started/install.md:189
 msgid ""
 "To modify your model serving parameters, the [serve](https://github.com/sgl-"
 "project/sglang/blob/main/docker/serve) script allows for all available "
@@ -349,14 +369,14 @@ msgid ""
 "environment variables with prefix `SM_SGLANG_`."
 msgstr ""
 
-#: ../../../get_started/install.md:177
+#: ../../../get_started/install.md:190
 msgid ""
 "The serve script will automatically convert all environment variables with "
 "prefix `SM_SGLANG_` from `SM_SGLANG_INPUT_ARGUMENT` into `--input-argument` "
 "to be parsed into `python3 -m sglang.launch_server` cli."
 msgstr ""
 
-#: ../../../get_started/install.md:178
+#: ../../../get_started/install.md:191
 msgid ""
 "For example, to run [Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/"
 "Qwen3-0.6B) with reasoning parser, simply add additional environment "
@@ -364,11 +384,11 @@ msgid ""
 "`SM_SGLANG_REASONING_PARSER=qwen3`."
 msgstr ""
 
-#: ../../../get_started/install.md:182
+#: ../../../get_started/install.md:195
 msgid "Common Notes"
 msgstr ""
 
-#: ../../../get_started/install.md:184
+#: ../../../get_started/install.md:197
 msgid ""
 "[FlashInfer](https://github.com/flashinfer-ai/flashinfer) is the default "
 "attention kernel backend. It only supports sm75 and above. If you encounter "
@@ -377,7 +397,7 @@ msgid ""
 "triton --sampling-backend pytorch` and open an issue on GitHub."
 msgstr ""
 
-#: ../../../get_started/install.md:185
+#: ../../../get_started/install.md:198
 msgid ""
 "To reinstall flashinfer locally, use the following command: `pip3 install --"
 "upgrade flashinfer-python --force-reinstall --no-deps` and then delete the "
