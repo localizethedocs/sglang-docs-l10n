@@ -1,0 +1,529 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-09 11:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/forward_hooks.md:1
+msgid "Model Hooks"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:3
+msgid ""
+"SGLang supports attaching PyTorch forward hooks to specific submodules in "
+"the loaded model, configured entirely via `server_args` JSON."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:5
+msgid "This is useful for:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:7
+msgid "Logging intermediate activations"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:8
+msgid "Debugging model internals"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:9
+msgid "Exporting hidden states to external tooling"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:11
+msgid ""
+"Hooks are attached once during `ModelRunner.initialize` and run on every "
+"forward pass."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:15
+msgid "Configuration overview"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:17
+msgid "Hooks are configured via a `ServerArgs` field:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:19
+msgid ""
+"class ServerArgs:\n"
+"    ...\n"
+"    # For forward hooks\n"
+"    forward_hooks: Optional[List[dict[str, Any]]] = None\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:26
+msgid "In JSON form, a minimal configuration looks like:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:28
+msgid ""
+"{\n"
+"  \"forward_hooks\": [\n"
+"    {\n"
+"      \"name\": \"outer_linear_hooks\",\n"
+"      \"target_modules\": [\"outer.0\", \"outer.1\"],\n"
+"      \"hook_factory\": \"my_project.hooks:dummy_hook_factory\",\n"
+"      \"config\": {\n"
+"        \"tag\": \"outer-layer\"\n"
+"      }\n"
+"    }\n"
+"  ]\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:43
+msgid "Top-level fields"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:45
+msgid ""
+"`forward_hooks` (optional list of objects) Each element is a hook spec "
+"describing:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:48
+msgid "Which modules to target"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:49
+msgid "Which Python factory to call"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:50
+msgid "What configuration to pass into that factory"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:54
+msgid "Hook spec schema"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:56
+msgid ""
+"Each entry in `forward_hooks` is a JSON object with the following shape:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:58
+msgid ""
+"{\n"
+"  \"name\": \"optional-descriptive-name\",\n"
+"  \"target_modules\": [\"pattern1\", \"pattern2\", \"...\"],\n"
+"  \"hook_factory\": \"module.submodule:factory_name\",\n"
+"  \"config\": {\n"
+"    \"...\": \"arbitrary JSON\"\n"
+"  }\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:69
+msgid "`name` (optional)"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:71
+msgid "Human-readable name for logging."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:72
+msgid "Used only in log messages such as:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:74
+msgid "Registered forward hook 'outer_linear_hooks' on outer.0\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:78
+msgid "`target_modules` (required)"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:80
+msgid ""
+"List of **module name patterns** used to match entries in `model."
+"named_modules()`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:81
+msgid "Patterns are matched using `fnmatch.fnmatch`, so:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:83
+msgid "`\"outer.0\"` matches exactly `\"outer.0\"`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:84
+msgid ""
+"`\"outer.*\"` matches `\"outer.0\"`, `\"outer.1\"`, `\"outer.inner\"`, etc."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:85
+msgid "`\"outer.inner.*\"` matches children under `outer.inner`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:87
+msgid ""
+"If no modules match the given patterns, hook registration does **not** fail. "
+"Instead, SGLang logs a warning and continues:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:90
+msgid "No modules matched hook spec 'name' patterns=['...']\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:94
+msgid "`hook_factory` (required)"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:96
+msgid "String path to the Python factory function that creates the hook."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:97
+msgid "Supported formats:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:99
+msgid "`\"package.module:factory_name\"`"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:100
+msgid "`\"package.module.submodule.factory_name\"`"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:102
+msgid "The path is resolved via:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:104
+msgid ""
+"def resolve_callable(path: Optional[str]) -> Optional[Callable]:\n"
+"    if path is None:\n"
+"        return None\n"
+"\n"
+"    if \":\" in path:\n"
+"        module_name, fn_name = path.split(\":\", 1)\n"
+"    else:\n"
+"        parts = path.split(\".\")\n"
+"        if len(parts) < 2:\n"
+"            raise ValueError(\n"
+"                f\"Invalid hook callable path '{path}'. \"\n"
+"                \"Expected 'module.submodule:factory' or 'module.submodule."
+"factory'.\"\n"
+"            )\n"
+"        *mod_parts, fn_name = parts\n"
+"        module_name = \".\".join(mod_parts)\n"
+"\n"
+"    module = importlib.import_module(module_name)\n"
+"    try:\n"
+"        return getattr(module, fn_name)\n"
+"    except AttributeError as e:\n"
+"        raise AttributeError(\n"
+"            f\"Module '{module_name}' has no attribute '{fn_name}' \"\n"
+"            f\"(from hook path '{path}')\"\n"
+"        ) from e\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:131
+msgid "**Failure modes**:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:133
+msgid ""
+"If the path is malformed (not enough dots and no `:`), a `ValueError` is "
+"raised at startup."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:134
+msgid ""
+"If the module imports but the attribute is missing, an `AttributeError` is "
+"raised with a clear error message."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:135
+msgid ""
+"If the hook factory returns `None`, a warning is logged and no hook is "
+"registered for that spec (initialization continues)."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:137
+msgid ""
+"The first two cause initialization to fail fast with a descriptive error; "
+"the last one is non-fatal."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:139
+msgid "`config` (optional)"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:141
+msgid "Arbitrary JSON object."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:142
+msgid "Passed directly to the hook factory as a Python `dict`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:143
+msgid ""
+"This lets you parameterize hook behavior from config (e.g. tags, log levels, "
+"sampling rates, etc.)."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:147
+msgid "Hook lifecycle and behavior"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:149
+msgid "Hooks are registered in `ModelRunner.initialize()`:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:151
+msgid ""
+"if server_args.forward_hooks:\n"
+"    register_forward_hooks(self.model, server_args.forward_hooks)\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:156
+msgid ""
+"The actual registration logic is implemented by `register_forward_hooks`:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:158
+msgid ""
+"def register_forward_hooks(model: nn.Module, hook_specs: List[dict[str, "
+"Any]]) -> None:\n"
+"    \"\"\"\n"
+"    hook_specs is a list of dicts from server_args.forward_hooks.\n"
+"    Attaches forward hooks to the matching modules.\n"
+"    \"\"\"\n"
+"    name_to_module = dict(model.named_modules())\n"
+"\n"
+"    for spec in hook_specs:\n"
+"        spec_name = spec.get(\"name\", \"\")\n"
+"        target_patterns = spec.get(\"target_modules\", [])\n"
+"        if not target_patterns:\n"
+"            logger.warning(\n"
+"                f\"Hook spec '{spec_name}' has no 'target_modules', "
+"skipping\"\n"
+"            )\n"
+"            continue\n"
+"\n"
+"        hook_factory_path = spec.get(\"hook_factory\")\n"
+"        if not hook_factory_path:\n"
+"            logger.warning(\n"
+"                f\"Hook spec '{spec_name}' has no 'hook_factory', "
+"skipping\"\n"
+"            )\n"
+"            continue\n"
+"\n"
+"        config = spec.get(\"config\") or {}\n"
+"        hook_factory = resolve_callable(hook_factory_path)\n"
+"\n"
+"        hook = hook_factory(config) if hook_factory else None\n"
+"        if hook is None:\n"
+"            logger.warning(\n"
+"                f\"Hook factory '{hook_factory_path}' for spec '{spec_name}' "
+"\"\n"
+"                \"returned None, not registering any hook\"\n"
+"            )\n"
+"            continue\n"
+"\n"
+"        # Resolve patterns like \"model.layers.*.mlp\"\n"
+"        matched = []\n"
+"        for name, module in name_to_module.items():\n"
+"            if any(fnmatch.fnmatch(name, pattern) for pattern in "
+"target_patterns):\n"
+"                matched.append((name, module))\n"
+"\n"
+"        if not matched:\n"
+"            logger.warning(\n"
+"                f\"No modules matched hook spec '{spec_name}' \"\n"
+"                f\"patterns={target_patterns}\"\n"
+"            )\n"
+"            continue\n"
+"\n"
+"        for module_name, module in matched:\n"
+"            if hook:\n"
+"                _ = module.register_forward_hook(hook)\n"
+"                logger.info(\n"
+"                    f\"Registered forward hook '{spec_name}' \"\n"
+"                    f\"on {module_name}\"\n"
+"                )\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:215
+msgid "Key points:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:217
+msgid "Hooks are **forward hooks only** (via `module.register_forward_hook`)."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:218
+msgid "They are attached once at initialization."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:219
+msgid ""
+"Hook handles are currently not stored on `ModelRunner` (they cannot be "
+"removed later via this API)."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:220
+msgid "Failure to match any modules is non-fatal; a warning is logged instead."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:221
+msgid ""
+"If a hook factory returns `None`, a warning is logged and that spec is "
+"skipped."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:225
+msgid "Writing a hook factory"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:227
+msgid "A hook factory is a regular Python function:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:229
+msgid "Takes a `config: dict` (from JSON)"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:230
+msgid ""
+"Returns a forward hook function with signature `(module, inputs, output)`"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:232
+msgid "Example:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:234
+msgid ""
+"HOOK_CALLS = []\n"
+"\n"
+"def dummy_hook_factory(config):\n"
+"    \"\"\"Factory that returns a forward hook capturing a tag from config."
+"\"\"\"\n"
+"    tag = config.get(\"tag\", \"default\")\n"
+"\n"
+"    def hook(module, inputs, output):\n"
+"        HOOK_CALLS.append(\n"
+"            {\n"
+"                \"module_type\": type(module).__name__,\n"
+"                \"tag\": tag,\n"
+"                \"shape\": tuple(output.shape),\n"
+"            }\n"
+"        )\n"
+"        return output  # must return output if you don’t want to modify the "
+"tensor\n"
+"\n"
+"    return hook\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:254
+msgid "In JSON:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:256
+msgid ""
+"{\n"
+"  \"forward_hooks\": [\n"
+"    {\n"
+"      \"name\": \"capture_outer\",\n"
+"      \"target_modules\": [\"outer.0\", \"outer.1\"],\n"
+"      \"hook_factory\": \"my_project.hooks:dummy_hook_factory\",\n"
+"      \"config\": {\n"
+"        \"tag\": \"outer\"\n"
+"      }\n"
+"    }\n"
+"  ]\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:271
+msgid "This will:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:273
+msgid "Resolve `my_project.hooks:dummy_hook_factory` to a Python callable."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:274
+msgid "Call it with `config = {\"tag\": \"outer\"}`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:275
+msgid "Use the returned hook for all modules matching `outer.0` and `outer.1`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:276
+msgid "Append metadata about each call to `HOOK_CALLS`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:280
+msgid "Summary"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:282
+msgid ""
+"Define `forward_hooks` as a list of specs in `ServerArgs` to turn on the "
+"feature."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:284
+msgid "Each spec:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:286
+msgid ""
+"selects modules via `target_modules` (glob patterns over `model."
+"named_modules()`),"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:287
+msgid "points to a hook factory via `hook_factory`,"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:288
+msgid "passes arbitrary `config` into that factory."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:290
+msgid ""
+"Hook factories are resolved via `resolve_callable`, which supports `module:"
+"factory` and `module.submodule.factory`."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:292
+msgid ""
+"Hooks are standard PyTorch forward hooks, attached once at startup and "
+"invoked on every forward pass."
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:294
+msgid "Misconfiguration is either:"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:296
+msgid "**fatal and explicit** (bad path / missing attribute), or"
+msgstr ""
+
+#: ../../../advanced_features/forward_hooks.md:297
+msgid ""
+"**non-fatal with clear warnings** (no targets matched, or factory returned "
+"`None`)."
+msgstr ""

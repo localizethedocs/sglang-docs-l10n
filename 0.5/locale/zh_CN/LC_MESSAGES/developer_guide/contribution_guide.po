@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"POT-Creation-Date: 2025-12-09 11:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -175,71 +175,136 @@ msgid ""
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:66
-msgid "Request a review"
+msgid "Requesting a review for merge"
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:67
 msgid ""
-"You can identify potential reviewers for your code by checking the [code "
-"owners](https://github.com/sgl-project/sglang/blob/main/.github/CODEOWNERS) "
-"and [reviewers](https://github.com/sgl-project/sglang/blob/main/.github/"
-"REVIEWERS.md) files. Another effective strategy is to review the file "
-"modification history and contact individuals who have frequently edited the "
-"files. If you modify files protected by code owners, their approval is "
-"required to merge the code."
+"You can follow the pull request merge process described in [MAINTAINER.md]"
+"(https://github.com/sgl-project/sglang/blob/main/.github/MAINTAINER.md). You "
+"will need to work with the Merge Oncall, Codeowner, and other reviewers to "
+"get their approvals. Then your PR can be merged."
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:71
-msgid "How to trigger CI"
+msgid "How to Trigger CI Tests"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:72
-msgid "To trigger CI, the pull request must have the \"run-ci\" label."
-msgstr ""
-
-#: ../../../developer_guide/contribution_guide.md:74
+#: ../../../developer_guide/contribution_guide.md:73
 msgid ""
-"If you have write access to sgl-project/sglang, your pull request will be "
-"automatically tagged by @sglang-bot."
-msgstr ""
-
-#: ../../../developer_guide/contribution_guide.md:75
-msgid ""
-"If you have triage access to sgl-project/sglang, you can manually add the "
-"label by clicking \"Labels\" on the right side of your pull request page."
+"We have a lot of open PRs but limited CI machines, so only top and trusted "
+"contributors have permission to trigger CI tests. Users with permission are "
+"listed in the [CI_PERMISSIONS.json](https://github.com/sgl-project/sglang/"
+"blob/main/.github/CI_PERMISSIONS.json)"
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:76
 msgid ""
-"If you do not have the above access, please request a review and ask other "
-"maintainers to add the label for you."
+"For CI to run on a pull request, it must have the \"run-ci\" label. "
+"Authorized users can add the label or rerun failed tests by commenting on "
+"the PR with one of these commands:"
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:78
-msgid "General code style"
+msgid ""
+"`/tag-run-ci-label`: Adds the \"run-ci\" label. Every future commit will "
+"trigger CI."
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:79
+msgid ""
+"`/rerun-failed-ci`: Reruns the failed or flaky tests from the most recent "
+"commit."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:80
+msgid ""
+"`/tag-and-rerun-ci`: A single command that performs both `/tag-run-ci-label` "
+"and `/rerun-failed-ci`."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:82
+msgid ""
+"If you have permission, the [Slash Command Handler](https://github.com/sgl-"
+"project/sglang/actions/workflows/slash-command-handler.yml) will run your "
+"command and react with a 👍 to your comment. It may take up to a few minutes "
+"for the reaction to appear. Here’s a usage [example](https://github.com/sgl-"
+"project/sglang/pull/14253#issuecomment-3599509302)."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:84
+msgid ""
+"To avoid spamming a PR with too many `/rerun-failed-ci` comments, you can "
+"also trigger the command by editing an existing comment and adding any "
+"suffix (e.g., `/rerun-failed-ci try again`)."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:86
+msgid ""
+"If you don’t have permission, please ask maintainers to trigger CI for you."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:88
+msgid "CI rate limits"
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:90
+msgid ""
+"We apply CI rate limits to prevent abuse and ensure fair usage of our CI "
+"resources."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:92
+msgid ""
+"Each CI workflow has a default limit defined in its workflow configuration "
+"file. For example, in [pr-gate.yml](https://github.com/sgl-project/sglang/"
+"blob/main/.github/workflows/pr-gate.yml), the default cooldown period is 120 "
+"minutes, and each workflow can override it via the `cool-down-minutes` input "
+"parameter:"
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:94
+msgid ""
+"cool-down-minutes:\n"
+"  description: \"Default cooldown period in minutes; 0 disables rate "
+"limiting\"\n"
+"  type: number\n"
+"  default: 120\n"
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:101
+msgid ""
+"Users listed in [CI_PERMISSIONS.json](https://github.com/sgl-project/sglang/"
+"blob/main/.github/CI_PERMISSIONS.json) may have a per-user cooldown "
+"interval. In practice, we use the minimum of the workflow’s default window "
+"and the user-specific interval."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:104
+msgid "Code style guidance"
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:105
 msgid ""
 "Avoid code duplication. If the same code snippet (more than five lines) "
 "appears multiple times, extract it into a shared function."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:80
+#: ../../../developer_guide/contribution_guide.md:106
 msgid ""
 "Minimize device synchronization. Reduce expensive CPU-GPU synchronization "
 "operations, such as `tensor.item()` or `tensor.cpu()`, whenever possible. "
 "Use vectorized code."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:81
+#: ../../../developer_guide/contribution_guide.md:107
 msgid ""
 "Prioritize extreme efficiency. SGLang is a runtime, and most of your code "
 "runs on the critical path for every request. Optimize all minor overheads as "
 "much as possible, especially in the model forward code."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:82
+#: ../../../developer_guide/contribution_guide.md:108
 msgid ""
 "A common pattern is some runtime checks in the model forward pass (e.g., "
 "[this](https://github.com/sgl-project/sglang/blob/"
@@ -248,63 +313,63 @@ msgid ""
 "Please cache the result as a single boolean value whenever possible."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:83
+#: ../../../developer_guide/contribution_guide.md:109
 msgid ""
 "Make functions as pure as possible. Avoid in-place modification of arguments."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:84
+#: ../../../developer_guide/contribution_guide.md:110
 msgid ""
 "Keep files concise. If a file exceeds 2,000 lines of code, split it into "
 "multiple smaller files. (e.g., `scheduler.py`, "
 "`scheduler_output_processor_mixin.py`)"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:85
+#: ../../../developer_guide/contribution_guide.md:111
 msgid "Keep tests run fast."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:86
+#: ../../../developer_guide/contribution_guide.md:112
 msgid ""
 "If a single test file run longer than 500 seconds, split it into multiple "
 "smaller files (e.g., `test_eagle_infer_a.py`, `test_eagle_infer_b.py`)."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:87
+#: ../../../developer_guide/contribution_guide.md:113
 msgid ""
 "If a single job in a github workflow runs longer than 30 mins, split it into "
 "smaller jobs/steps."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:88
+#: ../../../developer_guide/contribution_guide.md:114
 msgid "Reuse server launches in your unit tests to make tests run faster."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:89
+#: ../../../developer_guide/contribution_guide.md:115
 msgid "When supporting new hardware or features, follow these guidelines:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:90
+#: ../../../developer_guide/contribution_guide.md:116
 msgid "Do not drastically change existing code."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:91
+#: ../../../developer_guide/contribution_guide.md:117
 msgid ""
 "Always prefer new files to introduce specific components for your new "
 "hardware (e.g., `allocator_ascend.py`)."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:92
+#: ../../../developer_guide/contribution_guide.md:118
 msgid ""
 "If you write multiple if/else blocks for new features, ensure the common "
 "path (e.g., NVIDIA hardware or the existing code path) is the first branch."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:94
+#: ../../../developer_guide/contribution_guide.md:120
 msgid "How to update sgl-kernel"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:95
+#: ../../../developer_guide/contribution_guide.md:121
 msgid ""
 "Since sglang and sgl-kernel are separate Python packages, our current GitHub "
 "CI infrastructure does not support updating a kernel and using it "
@@ -312,54 +377,54 @@ msgid ""
 "an existing one in the sgl-kernel package, you must use multiple PRs."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:98
+#: ../../../developer_guide/contribution_guide.md:124
 msgid "Follow these steps:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:100
+#: ../../../developer_guide/contribution_guide.md:126
 msgid ""
 "Submit a PR to update the sgl-kernel source code without using it in sglang "
 "python package (e.g., [#8884](https://github.com/sgl-project/sglang/"
 "pull/8884/files))."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:101
+#: ../../../developer_guide/contribution_guide.md:127
 msgid ""
 "Bump the version of sgl-kernel (e.g., [#9220](https://github.com/sgl-project/"
 "sglang/pull/9220/files))."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:102
+#: ../../../developer_guide/contribution_guide.md:128
 msgid ""
 "Once merged, this will trigger an automatic release of the sgl-kernel wheel "
 "to PyPI."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:103
+#: ../../../developer_guide/contribution_guide.md:129
 msgid ""
 "If not urgent, you can wait for other people to release the wheel. A new "
 "version will typically be released within one week."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:104
+#: ../../../developer_guide/contribution_guide.md:130
 msgid "Apply the changes:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:105
+#: ../../../developer_guide/contribution_guide.md:131
 msgid ""
 "Update the sgl-kernel version in `sglang/python/pyproject.toml` to use the "
 "modified kernels."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:106
+#: ../../../developer_guide/contribution_guide.md:132
 msgid "Update the related caller code in the sglang to use the new kernel."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:108
+#: ../../../developer_guide/contribution_guide.md:134
 msgid "Tips for newcomers"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:110
+#: ../../../developer_guide/contribution_guide.md:136
 msgid ""
 "If you want to contribute but don’t have a specific idea in mind, pick "
 "issues labeled [“good first issue” or “help wanted”](https://github.com/sgl-"
@@ -371,12 +436,12 @@ msgid ""
 "for a deeper look into SGLang’s workflow."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:112
+#: ../../../developer_guide/contribution_guide.md:138
 msgid ""
 "If you have any questions or want to start a discussion, please feel free to "
 "ask in our [Slack channel](https://slack.sglang.ai)."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:114
+#: ../../../developer_guide/contribution_guide.md:140
 msgid "Thank you for your interest in SGLang. Happy coding!"
 msgstr ""
