@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"POT-Creation-Date: 2025-12-09 11:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -71,41 +72,75 @@ msgstr ""
 
 #: ../../../basic_usage/llama4.md:24
 msgid ""
-"**Chat Template**: Add `--chat-template llama-4` for chat completion tasks."
+"**Attention Backend Auto-Selection**: SGLang automatically selects the "
+"optimal attention backend for Llama 4 based on your hardware. You typically "
+"don't need to specify `--attention-backend` manually:"
 msgstr ""
 
 #: ../../../basic_usage/llama4.md:25
+msgid "**Blackwell GPUs (B200/GB200)**: `trtllm_mha`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:26
+msgid "**Hopper GPUs (H100/H200)**: `fa3`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:27
+msgid "**AMD GPUs**: `aiter`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:28
+msgid "**Intel XPU**: `intel_xpu`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:29
+msgid "**Other platforms**: `triton` (fallback)"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:31
+msgid ""
+"To override the auto-selection, explicitly specify `--attention-backend` "
+"with one of the supported backends: `fa3`, `aiter`, `triton`, `trtllm_mha`, "
+"or `intel_xpu`."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:33
+msgid ""
+"**Chat Template**: Add `--chat-template llama-4` for chat completion tasks."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:34
 msgid ""
 "**Enable Multi-Modal**: Add `--enable-multimodal` for multi-modal "
 "capabilities."
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:26
+#: ../../../basic_usage/llama4.md:35
 msgid ""
 "**Enable Hybrid-KVCache**: Add `--hybrid-kvcache-ratio` for hybrid kv cache. "
 "Details can be seen in [this PR](https://github.com/sgl-project/sglang/"
 "pull/6563)"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:29
+#: ../../../basic_usage/llama4.md:38
 msgid "EAGLE Speculative Decoding"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:30
+#: ../../../basic_usage/llama4.md:39
 msgid ""
 "**Description**: SGLang has supported Llama 4 Maverick (400B) with [EAGLE "
-"speculative decoding](https://docs.sglang.ai/backend/speculative_decoding."
-"html#EAGLE-Decoding)."
+"speculative decoding](https://docs.sglang.io/advanced_features/"
+"speculative_decoding.html#EAGLE-Decoding)."
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:32
+#: ../../../basic_usage/llama4.md:41
 msgid ""
 "**Usage**: Add arguments `--speculative-draft-model-path`, `--speculative-"
 "algorithm`, `--speculative-num-steps`, `--speculative-eagle-topk` and `--"
 "speculative-num-draft-tokens` to enable this feature. For example:"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:34
+#: ../../../basic_usage/llama4.md:43
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path meta-llama/Llama-4-Maverick-17B-128E-Instruct \\\n"
@@ -119,28 +154,28 @@ msgid ""
 "  --context-length 1000000\n"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:47
+#: ../../../basic_usage/llama4.md:56
 msgid ""
 "**Note** The Llama 4 draft model *nvidia/Llama-4-Maverick-17B-128E-Eagle3* "
 "can only recognize conversations in chat mode."
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:49
+#: ../../../basic_usage/llama4.md:58
 msgid "Benchmarking Results"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:51
+#: ../../../basic_usage/llama4.md:60
 msgid "Accuracy Test with `lm_eval`"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:53
+#: ../../../basic_usage/llama4.md:62
 msgid ""
 "The accuracy on SGLang for both Llama4 Scout and Llama4 Maverick can match "
 "the [official benchmark numbers](https://ai.meta.com/blog/llama-4-multimodal-"
 "intelligence/)."
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:55
+#: ../../../basic_usage/llama4.md:64
 msgid "Benchmark results on MMLU Pro dataset with 8*H100:"
 msgstr ""
 
@@ -176,11 +211,11 @@ msgstr ""
 msgid "80.7"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:61
+#: ../../../basic_usage/llama4.md:70
 msgid "Commands:"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:63
+#: ../../../basic_usage/llama4.md:72
 msgid ""
 "# Llama-4-Scout-17B-16E-Instruct model\n"
 "python -m sglang.launch_server \\\n"
@@ -207,7 +242,7 @@ msgid ""
 "mmlu_pro --batch_size 128 --apply_chat_template --num_fewshot 0\n"
 msgstr ""
 
-#: ../../../basic_usage/llama4.md:83
+#: ../../../basic_usage/llama4.md:92
 msgid ""
 "Details can be seen in [this PR](https://github.com/sgl-project/sglang/"
 "pull/5092)."
