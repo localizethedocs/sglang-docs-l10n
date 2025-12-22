@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"POT-Creation-Date: 2025-12-22 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,7 +167,7 @@ msgid "`tilelang`: `tilelang` implementation that can run on GPU, HPU and NPU."
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:59
-msgid "`alter`: Alter kernel on AMD HPUs. Can only be used as decode kernel."
+msgid "`aiter`: Aiter kernel on AMD HPUs. Can only be used as decode kernel."
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:60
@@ -210,8 +210,7 @@ msgid ""
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:67
-#: ../../../basic_usage/deepseek_v32.md:269
-msgid "Example usage:"
+msgid "Example usage with DP Attention:"
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:68
@@ -221,7 +220,18 @@ msgid ""
 "steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:71
+#: ../../../basic_usage/deepseek_v32.md:72
+msgid "Example usage with Pure TP:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:73
+msgid ""
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp --tp 8 "
+"--speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-"
+"topk 1 --speculative-num-draft-tokens 4\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:77
 msgid ""
 "The best configuration for `--speculative-num-steps`, `--speculative-eagle-"
 "topk` and `--speculative-num-draft-tokens` can be searched with "
@@ -232,17 +242,25 @@ msgid ""
 "batch sizes."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:72
+#: ../../../basic_usage/deepseek_v32.md:78
 msgid ""
 "The default value of  `--max-running-requests` is set to `48` for MTP. For "
 "larger batch sizes, this value should be increased beyond the default value."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:75
+#: ../../../basic_usage/deepseek_v32.md:81
+msgid ""
+"To enable the experimental overlap scheduler for EAGLE speculative decoding, "
+"set the environment variable `SGLANG_ENABLE_SPEC_V2=1`. This can improve "
+"performance by enabling overlap scheduling between draft and verification "
+"stages."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:85
 msgid "Function Calling and Reasoning Parser"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:76
+#: ../../../basic_usage/deepseek_v32.md:86
 msgid ""
 "The usage of function calling and reasoning parser is the same as DeepSeek "
 "V3.1. Please refer to [Reasoning Parser](https://docs.sglang.io/"
@@ -250,18 +268,18 @@ msgid ""
 "sglang.io/advanced_features/tool_parser.html) documents."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:78
+#: ../../../basic_usage/deepseek_v32.md:88
 msgid ""
 "To launch `DeepSeek-V3.2-Exp` with function calling and reasoning parser:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:79
+#: ../../../basic_usage/deepseek_v32.md:89
 msgid ""
 "Note: It is recommended to specify the chat-template, ensuring that you are "
 "within the sglang's root directory."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:80
+#: ../../../basic_usage/deepseek_v32.md:90
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
@@ -273,11 +291,11 @@ msgid ""
 "jinja\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:90
+#: ../../../basic_usage/deepseek_v32.md:100
 msgid "To launch `DeepSeek-V3.2` with function calling and reasoning parser:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:91
+#: ../../../basic_usage/deepseek_v32.md:101
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path deepseek-ai/DeepSeek-V3.2 \\\n"
@@ -287,13 +305,13 @@ msgid ""
 "  --reasoning-parser deepseek-v3\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:100
+#: ../../../basic_usage/deepseek_v32.md:110
 msgid ""
 "`DeepSeek-V3.2-Speciale` doesn't support tool calling, so can only be "
 "launched with reasoning parser:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:101
+#: ../../../basic_usage/deepseek_v32.md:111
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path deepseek-ai/DeepSeek-V3.2-Speciale \\\n"
@@ -302,15 +320,15 @@ msgid ""
 "  --reasoning-parser deepseek-v3\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:110
+#: ../../../basic_usage/deepseek_v32.md:120
 msgid "PD Disaggregation"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:112
+#: ../../../basic_usage/deepseek_v32.md:122
 msgid "Prefill Command:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:113
+#: ../../../basic_usage/deepseek_v32.md:123
 msgid ""
 "python -m sglang.launch_server \\\n"
 "        --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
@@ -326,11 +344,11 @@ msgid ""
 "        --mem-fraction-static 0.9 \\\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:128
+#: ../../../basic_usage/deepseek_v32.md:138
 msgid "Decode command:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:129
+#: ../../../basic_usage/deepseek_v32.md:139
 msgid ""
 "python -m sglang.launch_server \\\n"
 "        --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
@@ -345,11 +363,11 @@ msgid ""
 "        --mem-fraction-static 0.9 \\\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:143
+#: ../../../basic_usage/deepseek_v32.md:153
 msgid "Router command:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:144
+#: ../../../basic_usage/deepseek_v32.md:154
 msgid ""
 "python -m sglang_router.launch_router --pd-disaggregation \\\n"
 "  --prefill $PREFILL_ADDR 8998 \\\n"
@@ -358,7 +376,7 @@ msgid ""
 "  --port 8000 \\\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:152
+#: ../../../basic_usage/deepseek_v32.md:162
 msgid ""
 "If you need more advanced deployment methods or production-ready deployment "
 "methods, such as RBG or LWS-based deployment, please refer to [references/"
@@ -368,29 +386,29 @@ msgid ""
 "documentation."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:155
+#: ../../../basic_usage/deepseek_v32.md:165
 msgid "Benchmarking Results"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:157
+#: ../../../basic_usage/deepseek_v32.md:167
 msgid "Accuracy Test with `gsm8k`"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:158
+#: ../../../basic_usage/deepseek_v32.md:168
 msgid "A simple accuracy benchmark can be tested with `gsm8k` dataset:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:159
+#: ../../../basic_usage/deepseek_v32.md:169
 msgid ""
 "python3 benchmark/gsm8k/bench_sglang.py --num-shots 8 --num-questions 1319 --"
 "parallel 1319\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:163
+#: ../../../basic_usage/deepseek_v32.md:173
 msgid "The result is 0.956, which matches our expectation:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:164
+#: ../../../basic_usage/deepseek_v32.md:174
 msgid ""
 "Accuracy: 0.956\n"
 "Invalid: 0.000\n"
@@ -398,13 +416,13 @@ msgid ""
 "Output throughput: 5226.235 token/s\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:171
+#: ../../../basic_usage/deepseek_v32.md:181
 msgid ""
 "To test long-context accuracy, run gsm8k with `--num-shots 20`. The results "
 "are very close to the 8 shots results:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:172
+#: ../../../basic_usage/deepseek_v32.md:182
 msgid ""
 "Accuracy: 0.956\n"
 "Invalid: 0.000\n"
@@ -412,78 +430,78 @@ msgid ""
 "Output throughput: 4418.617 token/s\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:179
+#: ../../../basic_usage/deepseek_v32.md:189
 msgid "Accuracy Test with `gpqa-diamond`"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:181
-#: ../../../basic_usage/deepseek_v32.md:267
+#: ../../../basic_usage/deepseek_v32.md:191
+#: ../../../basic_usage/deepseek_v32.md:277
 msgid ""
 "Accuracy benchmark on long context can be tested on GPQA-diamond dataset "
 "with long output tokens and thinking enabled:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:182
+#: ../../../basic_usage/deepseek_v32.md:192
 msgid ""
 "python3 -m sglang.test.run_eval --port 30000 --eval-name gpqa --num-examples "
 "198 --max-tokens 120000 --repeat 8 --thinking-mode deepseek-v3\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:186
+#: ../../../basic_usage/deepseek_v32.md:196
 msgid ""
 "The mean accuracy over 8 runs shows 0.797, which matches the number 79.9 in "
 "official tech report."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:187
+#: ../../../basic_usage/deepseek_v32.md:197
 msgid ""
 "Repeat: 8, mean: 0.797\n"
 "Scores: ['0.808', '0.798', '0.808', '0.798', '0.783', '0.788', '0.803', "
 "'0.793']\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:192
+#: ../../../basic_usage/deepseek_v32.md:202
 msgid "Accuracy Test with `aime 2025`"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:194
+#: ../../../basic_usage/deepseek_v32.md:204
 msgid ""
 "Prepare the environment by installing NeMo-Skills in the docker or your own "
 "virtual environment:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:196
+#: ../../../basic_usage/deepseek_v32.md:206
 msgid ""
 "pip install git+https://github.com/NVIDIA/NeMo-Skills.git --ignore-installed "
 "blinker\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:200
+#: ../../../basic_usage/deepseek_v32.md:210
 msgid "Then launch the SGLang server:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:201
+#: ../../../basic_usage/deepseek_v32.md:211
 msgid ""
 "python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp --tp 8 "
 "--dp 8 --enable-dp-attention\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:205
+#: ../../../basic_usage/deepseek_v32.md:215
 msgid "**For `DeepSeek-V3.2` and `DeepSeek-V3.2-Speciale`**:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:207
+#: ../../../basic_usage/deepseek_v32.md:217
 msgid ""
 "python3 -m sglang.launch_server   --model-path deepseek-ai/DeepSeek-V3.2   --"
 "trust-remote-code   --tp-size 8 --dp-size 8 --enable-dp-attention   --tool-"
 "call-parser deepseekv32   --reasoning-parser deepseek-v3\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:211
+#: ../../../basic_usage/deepseek_v32.md:221
 msgid "Run the following script to evaluate AIME 2025:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:212
+#: ../../../basic_usage/deepseek_v32.md:222
 msgid ""
 "#! /bin/bash\n"
 "export NEMO_SKILLS_DISABLE_UNCOMMITTED_CHANGES_CHECK=1\n"
@@ -512,127 +530,131 @@ msgid ""
 "  # ++inference.tokens_to_generate=120000 for Speciale model\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:237
+#: ../../../basic_usage/deepseek_v32.md:247
 msgid "Test results (8*B200):"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:239
+#: ../../../basic_usage/deepseek_v32.md:249
 msgid "DeepSeek-V3.2-Exp："
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "evaluation_mode"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "num_entries"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "avg_tokens"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "gen_seconds"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "symbolic_correct"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "no_answer"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "pass@1[avg-of-4]"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "30"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "15040"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "1673"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "87.50% ± 1.67%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "0.00%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "majority@4"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "90.00%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "pass@4"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:248
+#: ../../../basic_usage/deepseek_v32.md:258
 msgid "DeepSeek-V3.2:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "13550"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "1632"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "92.50% ± 1.67%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "94.71%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "96.67%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:256
+#: ../../../basic_usage/deepseek_v32.md:266
 msgid "DeepSeek-V3.2-Speciale:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "24155"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "3583"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "95.00% ± 1.92%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "95.83%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:0
+#: ../../../basic_usage/deepseek_v32.md:80
 msgid "100.00%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:265
+#: ../../../basic_usage/deepseek_v32.md:275
 msgid "DSA long sequence context parallel optimization(experimental)"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:270
+#: ../../../basic_usage/deepseek_v32.md:279
+msgid "Example usage:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:280
 msgid ""
 "# Launch with EP + DP\n"
 "python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp  --tp 8 "
@@ -640,46 +662,46 @@ msgid ""
 "max-running-requests 32\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:274
+#: ../../../basic_usage/deepseek_v32.md:284
 msgid "Context-parallel Tips"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:275
+#: ../../../basic_usage/deepseek_v32.md:285
 msgid ""
 "`CP_size` reuses `atten_tp_size`, which is equal to `TP_size` / `DP_size`. "
 "Some features are still not supported at present."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:277
+#: ../../../basic_usage/deepseek_v32.md:287
 msgid ""
 "**Multi-batch prefill**: Currently, only single-request processing is "
 "supported during the prefill process."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:278
+#: ../../../basic_usage/deepseek_v32.md:288
 msgid "**disaggregation**: P/D disaggregation."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:279
+#: ../../../basic_usage/deepseek_v32.md:289
 msgid ""
 "**Cross-machine support**: - Currently only tested on a single machine (TP=8,"
 "EP=8)."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:280
+#: ../../../basic_usage/deepseek_v32.md:290
 msgid ""
 "**Other Args**: Currently only supports moe_dense_tp_size=1, kv_cache_dtype "
 "= \"bf16\", moe_a2a_backend = \"deepep\","
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:281
+#: ../../../basic_usage/deepseek_v32.md:291
 msgid ""
 "**DP_size**: `CP_size` reuses `atten_tp_size`, which is equal to `TP_size` / "
 "`DP_size`. For the cp function to work correctly, `TP_size` must be "
 "divisible by `DP_size`, and TP_size / DP_size > 1 (to ensure CP_size > 1)."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:282
+#: ../../../basic_usage/deepseek_v32.md:292
 msgid ""
 "**Detailed design reference**: https://github.com/sgl-project/sglang/"
 "pull/12065"

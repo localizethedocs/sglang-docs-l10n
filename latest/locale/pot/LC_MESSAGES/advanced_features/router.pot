@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"POT-Creation-Date: 2025-12-22 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,7 +200,7 @@ msgstr ""
 #: ../../../advanced_features/router.md:49
 msgid ""
 "**Job Queue** serializes add/remove requests and exposes status (`/workers/"
-"{url}`) so clients can track onboarding progress."
+"{worker_id}`) so clients can track onboarding progress."
 msgstr ""
 
 #: ../../../advanced_features/router.md:50
@@ -439,26 +439,30 @@ msgid ""
 "# Inspect registry\n"
 "curl http://localhost:30000/workers\n"
 "\n"
-"# Remove a worker\n"
-"curl -X DELETE http://localhost:30000/workers/grpc://0.0.0.0:31000\n"
+"# Remove a worker (RESTful: delete by UUID)\n"
+"# Tip: POST /workers returns a JSON body containing worker_id and a Location "
+"header.\n"
+"WORKER_ID=\"$(curl -s http://localhost:30000/workers | jq -r '.workers[0]."
+"id')\"\n"
+"curl -X DELETE \"http://localhost:30000/workers/${WORKER_ID}\"\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:178
+#: ../../../advanced_features/router.md:180
 msgid ""
 "Legacy endpoints (`/add_worker`, `/remove_worker`, `/list_workers`) remain "
-"available but will be deprecated. `/workers/{url}` returns both registry "
-"data and queued job status."
-msgstr ""
-
-#: ../../../advanced_features/router.md:182
-msgid "Reliability & Flow Control"
+"available but will be deprecated. `/workers/{worker_id}` returns both "
+"registry data and queued job status."
 msgstr ""
 
 #: ../../../advanced_features/router.md:184
+msgid "Reliability & Flow Control"
+msgstr ""
+
+#: ../../../advanced_features/router.md:186
 msgid "Retries"
 msgstr ""
 
-#: ../../../advanced_features/router.md:185
+#: ../../../advanced_features/router.md:187
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
@@ -469,11 +473,11 @@ msgid ""
 "  --retry-jitter-factor 0.2\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:195
+#: ../../../advanced_features/router.md:197
 msgid "Circuit Breaker"
 msgstr ""
 
-#: ../../../advanced_features/router.md:196
+#: ../../../advanced_features/router.md:198
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
@@ -483,11 +487,11 @@ msgid ""
 "  --cb-window-duration-secs 60\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:205
+#: ../../../advanced_features/router.md:207
 msgid "Rate Limiting & Queuing"
 msgstr ""
 
-#: ../../../advanced_features/router.md:206
+#: ../../../advanced_features/router.md:208
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
@@ -497,14 +501,14 @@ msgid ""
 "  --queue-timeout-secs 30\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:215
+#: ../../../advanced_features/router.md:217
 msgid ""
 "Requests beyond the concurrency limit wait in a FIFO queue (up to `queue-"
 "size`). A `429` is returned when the queue is full; `408` is returned when "
 "`queue-timeout-secs` expires."
 msgstr ""
 
-#: ../../../advanced_features/router.md:219
+#: ../../../advanced_features/router.md:221
 msgid "Load Balancing Policies"
 msgstr ""
 
@@ -570,11 +574,11 @@ msgstr ""
 msgid "`--policy cache_aware` + tuning flags"
 msgstr ""
 
-#: ../../../advanced_features/router.md:228
+#: ../../../advanced_features/router.md:230
 msgid "Key tuning flags:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:229
+#: ../../../advanced_features/router.md:231
 msgid ""
 "--cache-threshold 0.5 \\\n"
 "--balance-abs-threshold 32 \\\n"
@@ -583,15 +587,15 @@ msgid ""
 "--max-tree-size 67108864\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:239
+#: ../../../advanced_features/router.md:241
 msgid "Service Discovery (Kubernetes)"
 msgstr ""
 
-#: ../../../advanced_features/router.md:241
+#: ../../../advanced_features/router.md:243
 msgid "Enable automatic worker discovery via Kubernetes pod selectors."
 msgstr ""
 
-#: ../../../advanced_features/router.md:243
+#: ../../../advanced_features/router.md:245
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --service-discovery \\\n"
@@ -600,36 +604,36 @@ msgid ""
 "  --service-discovery-port 8000\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:251
+#: ../../../advanced_features/router.md:253
 msgid ""
 "PD deployments can specify `--prefill-selector` and `--decode-selector` plus "
 "the `sglang.ai/bootstrap-port` annotation for prefill bootstrap ports. "
 "Ensure RBAC grants `get/list/watch` on pods."
 msgstr ""
 
-#: ../../../advanced_features/router.md:255
+#: ../../../advanced_features/router.md:257
 msgid "Security & Authentication"
 msgstr ""
 
-#: ../../../advanced_features/router.md:257
+#: ../../../advanced_features/router.md:259
 msgid ""
 "**Router API key (`--api-key`)**: clients must supply `Authorization: Bearer "
 "<key>`."
 msgstr ""
 
-#: ../../../advanced_features/router.md:258
+#: ../../../advanced_features/router.md:260
 msgid ""
 "**Worker API keys**: when adding workers dynamically, include `api_key` in "
 "the payload; workers listed via CLI inherit the router key."
 msgstr ""
 
-#: ../../../advanced_features/router.md:259
+#: ../../../advanced_features/router.md:261
 msgid ""
 "**Full-stack auth**: start router with `--api-key`, then add workers with "
 "their own keys:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:260
+#: ../../../advanced_features/router.md:262
 msgid ""
 "curl -H \"Authorization: Bearer router-key\" \\\n"
 "  -X POST http://localhost:30000/workers \\\n"
@@ -637,14 +641,14 @@ msgid ""
 "  -d '{\"url\":\"http://worker:8000\",\"api_key\":\"worker-key\"}'\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:266
+#: ../../../advanced_features/router.md:268
 msgid ""
 "**Privacy**: All conversation history, `/v1/responses` state, and MCP "
 "sessions stay inside the router. Nothing is persisted at remote model "
 "vendors unless explicitly proxied."
 msgstr ""
 
-#: ../../../advanced_features/router.md:270
+#: ../../../advanced_features/router.md:272
 msgid "History & Data Connectors"
 msgstr ""
 
@@ -700,14 +704,14 @@ msgstr ""
 msgid "`--history-backend postgres`"
 msgstr ""
 
-#: ../../../advanced_features/router.md:279
+#: ../../../advanced_features/router.md:281
 msgid ""
 "Oracle configuration (choose DSN *or* TNS alias): Install the Oracle Instant "
 "Client and set `LD_LIBRARY_PATH` accordingly. Choose **one** connection "
 "method:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:282
+#: ../../../advanced_features/router.md:284
 msgid ""
 "# Option 1: Full connection descriptor\n"
 "export ATP_DSN=\"(description=(address=(protocol=tcps)(port=1522)(host=adb."
@@ -718,11 +722,11 @@ msgid ""
 "export ATP_WALLET_PATH=\"/path/to/wallet\"\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:290
+#: ../../../advanced_features/router.md:292
 msgid "Provide database credentials and optional pool sizing:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:291
+#: ../../../advanced_features/router.md:293
 msgid ""
 "export ATP_USER=\"admin\"\n"
 "export ATP_PASSWORD=\"secret\"\n"
@@ -735,52 +739,52 @@ msgid ""
 "  --history-backend oracle\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:303
+#: ../../../advanced_features/router.md:305
 msgid ""
 "History backends currently apply to OpenAI router mode. gRPC parity for `/v1/"
 "responses` is on the roadmap."
 msgstr ""
 
-#: ../../../advanced_features/router.md:307
+#: ../../../advanced_features/router.md:309
 msgid "MCP & Advanced Tooling"
 msgstr ""
 
-#: ../../../advanced_features/router.md:309
+#: ../../../advanced_features/router.md:311
 msgid ""
 "Native MCP client supports **STDIO**, **HTTP**, **SSE**, and **Streamable** "
 "transports—no external config files required."
 msgstr ""
 
-#: ../../../advanced_features/router.md:310
+#: ../../../advanced_features/router.md:312
 msgid ""
 "Tool-call parsers cover JSON, Pythonic, XML, and custom schemas with "
 "streaming/non-streaming execution loops."
 msgstr ""
 
-#: ../../../advanced_features/router.md:311
+#: ../../../advanced_features/router.md:313
 msgid ""
 "Reasoning parsers ship for DeepSeek-R1, Qwen3, Step-3, GLM4, Llama families, "
 "Kimi K2, GPT-OSS, Mistral, and more (`src/reasoning_parser`)."
 msgstr ""
 
-#: ../../../advanced_features/router.md:312
+#: ../../../advanced_features/router.md:314
 msgid ""
 "Tokenizer factory accepts HuggingFace IDs, local directories, and explicit "
 "`tokenizer.json` files with chat template overrides (`src/tokenizer`)."
 msgstr ""
 
-#: ../../../advanced_features/router.md:314
+#: ../../../advanced_features/router.md:316
 msgid "Use CLI flags to select parsers:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:315
+#: ../../../advanced_features/router.md:317
 msgid ""
 "--reasoning-parser deepseek-r1 \\\n"
 "--tool-call-parser json \\\n"
 "--chat-template /path/to/template.json\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:323
+#: ../../../advanced_features/router.md:325
 msgid "API Surface"
 msgstr ""
 
@@ -913,15 +917,15 @@ msgid "Queue worker registration."
 msgstr ""
 
 #: ../../../advanced_features/router.md:0
-msgid "`DELETE`"
+msgid "`GET`/`PUT`/`DELETE`"
 msgstr ""
 
 #: ../../../advanced_features/router.md:0
-msgid "`/workers/{url}`"
+msgid "`/workers/{worker_id}`"
 msgstr ""
 
 #: ../../../advanced_features/router.md:0
-msgid "Queue worker removal."
+msgid "Get/update/remove a worker by UUID."
 msgstr ""
 
 #: ../../../advanced_features/router.md:0
@@ -948,11 +952,11 @@ msgstr ""
 msgid "Health probes."
 msgstr ""
 
-#: ../../../advanced_features/router.md:347
+#: ../../../advanced_features/router.md:349
 msgid "Configuration Reference"
 msgstr ""
 
-#: ../../../advanced_features/router.md:349
+#: ../../../advanced_features/router.md:351
 msgid "Core Settings"
 msgstr ""
 
@@ -1065,7 +1069,7 @@ msgstr ""
 msgid "Maximum request payload."
 msgstr ""
 
-#: ../../../advanced_features/router.md:361
+#: ../../../advanced_features/router.md:363
 msgid "Cache-Aware Tuning"
 msgstr ""
 
@@ -1133,7 +1137,7 @@ msgstr ""
 msgid "Max nodes in cache tree."
 msgstr ""
 
-#: ../../../advanced_features/router.md:371
+#: ../../../advanced_features/router.md:373
 msgid "Fault Tolerance"
 msgstr ""
 
@@ -1257,7 +1261,7 @@ msgstr ""
 msgid "Disable circuit breaker."
 msgstr ""
 
-#: ../../../advanced_features/router.md:387
+#: ../../../advanced_features/router.md:389
 msgid "Prefill/Decode"
 msgstr ""
 
@@ -1321,7 +1325,7 @@ msgstr ""
 msgid "Polling interval."
 msgstr ""
 
-#: ../../../advanced_features/router.md:399
+#: ../../../advanced_features/router.md:401
 msgid "Kubernetes Discovery"
 msgstr ""
 
@@ -1373,15 +1377,15 @@ msgstr ""
 msgid "Prefill bootstrap annotation (default `sglang.ai/bootstrap-port`)."
 msgstr ""
 
-#: ../../../advanced_features/router.md:412
+#: ../../../advanced_features/router.md:414
 msgid "Observability"
 msgstr ""
 
-#: ../../../advanced_features/router.md:414
+#: ../../../advanced_features/router.md:416
 msgid "Enable Prometheus metrics:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:415
+#: ../../../advanced_features/router.md:417
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
@@ -1389,7 +1393,7 @@ msgid ""
 "  --prometheus-port 29000\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:422
+#: ../../../advanced_features/router.md:424
 msgid "Key metrics:"
 msgstr ""
 
@@ -1457,22 +1461,22 @@ msgstr ""
 msgid "Request latency distribution."
 msgstr ""
 
-#: ../../../advanced_features/router.md:433
+#: ../../../advanced_features/router.md:435
 msgid "Enable request ID propagation:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:434
+#: ../../../advanced_features/router.md:436
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 \\\n"
 "  --request-id-headers x-request-id x-trace-id\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:440
+#: ../../../advanced_features/router.md:442
 msgid "Enable opentelmetry tracing:"
 msgstr ""
 
-#: ../../../advanced_features/router.md:441
+#: ../../../advanced_features/router.md:443
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 \\\n"
@@ -1480,46 +1484,46 @@ msgid ""
 "  --otlp-traces-endpoint 0.0.0.0:4317\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:450
+#: ../../../advanced_features/router.md:452
 msgid "Troubleshooting"
 msgstr ""
 
-#: ../../../advanced_features/router.md:452
+#: ../../../advanced_features/router.md:454
 msgid ""
 "**Workers never ready** Increase `--worker-startup-timeout-secs` or ensure "
 "health probes respond before router startup."
 msgstr ""
 
-#: ../../../advanced_features/router.md:455
+#: ../../../advanced_features/router.md:457
 msgid ""
 "**Load imbalance / hot workers** Inspect "
 "`sgl_router_processed_requests_total` and tune cache-aware thresholds (`--"
 "balance-*`, `--cache-threshold`)."
 msgstr ""
 
-#: ../../../advanced_features/router.md:458
+#: ../../../advanced_features/router.md:460
 msgid ""
 "**Circuit breaker flapping** Increase `--cb-failure-threshold` or extend the "
 "timeout/window durations. Consider temporarily disabling retries."
 msgstr ""
 
-#: ../../../advanced_features/router.md:461
+#: ../../../advanced_features/router.md:463
 msgid ""
 "**Queue overflow (429)** Increase `--queue-size` or reduce client "
 "concurrency. Ensure `--max-concurrent-requests` matches downstream capacity."
 msgstr ""
 
-#: ../../../advanced_features/router.md:464
+#: ../../../advanced_features/router.md:466
 msgid ""
 "**Memory growth** Reduce `--max-tree-size` or lower `--eviction-interval-"
 "secs` for more aggressive cache pruning."
 msgstr ""
 
-#: ../../../advanced_features/router.md:467
+#: ../../../advanced_features/router.md:469
 msgid "**Debugging**"
 msgstr ""
 
-#: ../../../advanced_features/router.md:468
+#: ../../../advanced_features/router.md:470
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "  --worker-urls http://worker1:8000 \\\n"
@@ -1527,7 +1531,7 @@ msgid ""
 "  --log-dir ./router_logs\n"
 msgstr ""
 
-#: ../../../advanced_features/router.md:477
+#: ../../../advanced_features/router.md:479
 msgid ""
 "SGLang Model Gateway continues to evolve alongside the SGLang runtime. Keep "
 "CLI flags, integrations, and documentation aligned when adopting new "
