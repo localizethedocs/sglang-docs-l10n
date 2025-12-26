@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"POT-Creation-Date: 2025-12-22 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,6 +30,7 @@ msgid "Running Qwen3-32B on 1 x Atlas 800I A3."
 msgstr ""
 
 #: ../../../platforms/ascend_npu_qwen3_examples.md:7
+#: ../../../platforms/ascend_npu_qwen3_examples.md:28
 msgid ""
 "Model weights could be found [here](https://huggingface.co/Qwen/Qwen3-32B)"
 msgstr ""
@@ -53,16 +54,50 @@ msgid ""
 msgstr ""
 
 #: ../../../platforms/ascend_npu_qwen3_examples.md:26
+msgid "Running Qwen3-32B on 1 x Atlas 800I A3 with Qwen3-32B-Eagle3."
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_examples.md:30
+msgid ""
+"Speculative model weights could be found [here](https://huggingface.co/Zhihu-"
+"ai/Zhi-Create-Qwen3-32B-Eagle3)"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_examples.md:32
+msgid ""
+"export SGLANG_SET_CPU_AFFINITY=1\n"
+"export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
+"export STREAMS_PER_DEVICE=32\n"
+"export HCCL_OP_EXPANSION_MODE=AIV\n"
+"export SGLANG_ENABLE_OVERLAP_PLAN_STREAM=1\n"
+"export SGLANG_ENABLE_SPEC_V2=1\n"
+"\n"
+"python -m sglang.launch_server \\\n"
+"   --device npu \\\n"
+"   --attention-backend ascend \\\n"
+"   --trust-remote-code \\\n"
+"   --tp-size 4 \\\n"
+"   --model-path Qwen/Qwen3-32B \\\n"
+"   --port 30111 \\\n"
+"   --mem-fraction-static 0.8 \\\n"
+"   --speculative-algorithm EAGLE3 \\\n"
+"   --speculative-draft-model-path Qwen/Qwen3-32B-Eagle3 \\\n"
+"   --speculative-num-steps 1 \\\n"
+"   --speculative-eagle-topk 1 \\\n"
+"   --speculative-num-draft-tokens 2\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_examples.md:55
 msgid "Running Qwen3-30B-A3B MOE on 1 x Atlas 800I A3."
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:28
+#: ../../../platforms/ascend_npu_qwen3_examples.md:57
 msgid ""
 "Model weights could be found [here](https://huggingface.co/Qwen/Qwen3-30B-"
 "A3B)"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:30
+#: ../../../platforms/ascend_npu_qwen3_examples.md:59
 msgid ""
 "export SGLANG_SET_CPU_AFFINITY=1\n"
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
@@ -83,17 +118,17 @@ msgid ""
 "   --mem-fraction-static 0.8\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:50
+#: ../../../platforms/ascend_npu_qwen3_examples.md:79
 msgid "Running Qwen3-235B-A22B-Instruct-2507 MOE on 1 x Atlas 800I A3."
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:52
+#: ../../../platforms/ascend_npu_qwen3_examples.md:81
 msgid ""
 "Model weights could be found [here](https://huggingface.co/Qwen/Qwen3-235B-"
 "A22B-Instruct-2507)"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:54
+#: ../../../platforms/ascend_npu_qwen3_examples.md:83
 msgid ""
 "export SGLANG_SET_CPU_AFFINITY=1\n"
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
@@ -114,17 +149,17 @@ msgid ""
 "   --mem-fraction-static 0.8\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:74
+#: ../../../platforms/ascend_npu_qwen3_examples.md:103
 msgid "Running Qwen3-VL-8B-Instruct on 1 x Atlas 800I A3."
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:76
+#: ../../../platforms/ascend_npu_qwen3_examples.md:105
 msgid ""
 "Model weights could be found [here](https://huggingface.co/Qwen/Qwen3-VL-8B-"
 "Instruct)"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_qwen3_examples.md:78
+#: ../../../platforms/ascend_npu_qwen3_examples.md:107
 msgid ""
 "export SGLANG_SET_CPU_AFFINITY=1\n"
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
