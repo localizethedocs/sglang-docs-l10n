@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-22 08:33+0000\n"
+"POT-Creation-Date: 2025-12-29 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 
 #: ../../../platforms/ascend_npu.md:6
-msgid "Installing SGLang"
+msgid "Preparing the Running Environment"
 msgstr ""
 
 #: ../../../platforms/ascend_npu.md:8
@@ -223,20 +223,34 @@ msgstr ""
 msgid "Method 2: Using docker"
 msgstr ""
 
+#: ../../../platforms/ascend_npu.md:101
+msgid "Obtain Image"
+msgstr ""
+
 #: ../../../platforms/ascend_npu.md:102
 msgid ""
-"__Notice:__ `--privileged` and `--network=host` are required by RDMA, which "
-"is typically needed by Ascend NPU clusters."
+"You can download the SGLang image or build an image based on Dockerfile to "
+"obtain the Ascend NPU image."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:103
+msgid "Download SGLang image"
 msgstr ""
 
 #: ../../../platforms/ascend_npu.md:104
 msgid ""
-"__Notice:__ The following docker command is based on Atlas 800I A3 machines. "
-"If you are using Atlas 800I A2, make sure only `davinci[0-7]` are mapped "
-"into container."
+"dockerhub: docker.io/lmsysorg/sglang:$tag\n"
+"# Main-based tag, change main to specific version like v0.5.6,\n"
+"# you can get image for specific version\n"
+"Atlas 800I A3 : {main}-cann8.3.rc2-a3\n"
+"Atlas 800I A2: {main}-cann8.3.rc2-910b\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:106
+#: ../../../platforms/ascend_npu.md:111
+msgid "Build an image based on Dockerfile"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:112
 msgid ""
 "# Clone the SGLang repository\n"
 "git clone https://github.com/sgl-project/sglang.git\n"
@@ -244,6 +258,27 @@ msgid ""
 "\n"
 "# Build the docker image\n"
 "docker build -t <image_name> -f npu.Dockerfile .\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:121
+msgid "Create Docker"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:122
+msgid ""
+"__Notice:__ `--privileged` and `--network=host` are required by RDMA, which "
+"is typically needed by Ascend NPU clusters."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:124
+msgid ""
+"__Notice:__ The following docker command is based on Atlas 800I A3 machines. "
+"If you are using Atlas 800I A2, make sure only `davinci[0-7]` are mapped "
+"into container."
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:126
+msgid ""
 "\n"
 "alias drun='docker run -it --rm --privileged --network=host --ipc=host --shm-"
 "size=16g \\\n"
@@ -263,27 +298,28 @@ msgid ""
 "    --volume /var/queue_schedule:/var/queue_schedule --volume ~/.cache/:/"
 "root/.cache/'\n"
 "\n"
+"# Add HF_TOKEN env for download model by SGLang\n"
 "drun --env \"HF_TOKEN=<secret>\" \\\n"
 "    <image_name> \\\n"
 "    python3 -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
 "Instruct --attention-backend ascend --host 0.0.0.0 --port 30000\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:130
+#: ../../../platforms/ascend_npu.md:145
 msgid "System Settings"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:132
+#: ../../../platforms/ascend_npu.md:147
 msgid "CPU performance power scheme"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:134
+#: ../../../platforms/ascend_npu.md:149
 msgid ""
 "The default power scheme on Ascend hardware is `ondemand` which could affect "
 "performance, changing it to `performance` is recommended."
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:136
+#: ../../../platforms/ascend_npu.md:151
 msgid ""
 "echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/"
 "scaling_governor\n"
@@ -293,11 +329,11 @@ msgid ""
 "performance\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:143
+#: ../../../platforms/ascend_npu.md:158
 msgid "Disable NUMA balancing"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:145
+#: ../../../platforms/ascend_npu.md:160
 msgid ""
 "sudo sysctl -w kernel.numa_balancing=0\n"
 "\n"
@@ -305,14 +341,122 @@ msgid ""
 "cat /proc/sys/kernel/numa_balancing # shows 0\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:152
+#: ../../../platforms/ascend_npu.md:167
 msgid "Prevent swapping out system memory"
 msgstr ""
 
-#: ../../../platforms/ascend_npu.md:154
+#: ../../../platforms/ascend_npu.md:169
 msgid ""
 "sudo sysctl -w vm.swappiness=10\n"
 "\n"
 "# Check\n"
 "cat /proc/sys/vm/swappiness # shows 10\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:176
+msgid "Running SGLang Service"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:177
+msgid "Running Service For Large Language Models"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:178 ../../../platforms/ascend_npu.md:233
+msgid "PD Mixed Scene"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:179
+msgid ""
+"python3 -m sglang.launch_server --model-path meta-llama/Llama-3.1-8B-"
+"Instruct --attention-backend ascend --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:182
+msgid "PD Separation Scene"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:183
+msgid "Launch prefill server"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:184
+msgid ""
+"export SGLANG_SET_CPU_AFFINITY=1\n"
+"# PIP: recommended to config first Prefill Server IP, all server need to be "
+"config the same ip, PORT: one free port\n"
+"export ASCEND_MF_STORE_URL=\"tcp://PIP:PORT\"\n"
+"# if you are Atlas 800I A2 hardware and use rdma for kv cache transfer, add "
+"this parameter\n"
+"export ASCEND_MF_TRANSFER_PROTOCOL=\"device_rdma\"\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"    --disaggregation-mode prefill \\\n"
+"    --disaggregation-transfer-backend ascend \\\n"
+"    --disaggregation-bootstrap-port 8995 \\\n"
+"    --attention-backend ascend \\\n"
+"    --device npu \\\n"
+"    --base-gpu-id 0 \\\n"
+"    --tp-size 1 \\\n"
+"    --host 127.0.0.1  \\\n"
+"    --port 8000\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:202
+msgid "Launch Decode server"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:203
+msgid ""
+"export SGLANG_SET_CPU_AFFINITY=1\n"
+"# PIP: recommended to config first Prefill Server IP, all server need to be "
+"config the same ip, PORT: one free port\n"
+"export ASCEND_MF_STORE_URL=\"tcp://PIP:PORT\"\n"
+"# if you are Atlas 800I A2 hardware and use rdma for kv cache transfer, add "
+"this parameter\n"
+"export ASCEND_MF_TRANSFER_PROTOCOL=\"device_rdma\"\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"    --disaggregation-mode decode \\\n"
+"    --disaggregation-transfer-backend ascend \\\n"
+"    --attention-backend ascend \\\n"
+"    --device npu \\\n"
+"    --base-gpu-id 1 \\\n"
+"    --tp-size 1 \\\n"
+"    --host 127.0.0.1 \\\n"
+"    --port 8001\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:221
+msgid "Launch Router"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:222
+msgid ""
+"python3 -m sglang_router.launch_router \\\n"
+"    --pd-disaggregation \\\n"
+"    --policy cache_aware \\\n"
+"    --prefill http://127.0.0.1:8000 8995 \\\n"
+"    --decode http://127.0.0.1:8001 \\\n"
+"    --host 127.0.0.1 \\\n"
+"    --port 6688\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:232
+msgid "Running Service For Multimodal Language Models"
+msgstr ""
+
+#: ../../../platforms/ascend_npu.md:234
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen3-VL-30B-A3B-Instruct \\\n"
+"    --host 127.0.0.1 \\\n"
+"    --port 8000 \\\n"
+"    --tp 4 \\\n"
+"    --device npu \\\n"
+"    --attention-backend ascend \\\n"
+"    --mm-attention-backend ascend_attn \\\n"
+"    --disable-radix-cache \\\n"
+"    --trust-remote-code \\\n"
+"    --enable-multimodal \\\n"
+"    --sampling-backend ascend\n"
 msgstr ""
