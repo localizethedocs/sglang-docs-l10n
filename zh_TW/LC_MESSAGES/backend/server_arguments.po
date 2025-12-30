@@ -1,0 +1,1844 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../backend/server_arguments.md:1
+msgid "Server Arguments"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:3
+msgid ""
+"This page provides a list of server arguments used in the command line to "
+"configure the behavior and performance of the language model server during "
+"deployment. These arguments enable users to customize key aspects of the "
+"server, including model selection, parallelism policies, memory management, "
+"and optimization techniques. You can find all arguments by `python3 -m "
+"sglang.launch_server --help`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:9
+msgid "Common launch commands"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:11
+msgid ""
+"To enable multi-GPU tensor parallelism, add `--tp 2`. If it reports the "
+"error \"peer access is not supported between these two devices\", add `--"
+"enable-p2p-check` to the server launch command."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:13
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --tp 2\n"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:17
+msgid ""
+"To enable multi-GPU data parallelism, add `--dp 2`. Data parallelism is "
+"better for throughput if there is enough memory. It can also be used "
+"together with tensor parallelism. The following command uses 4 GPUs in "
+"total. We recommend [SGLang Router](../router/router.md) for data "
+"parallelism."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:19
+msgid ""
+"python -m sglang_router.launch_server --model-path meta-llama/Meta-"
+"Llama-3-8B-Instruct --dp 2 --tp 2\n"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:23
+msgid ""
+"If you see out-of-memory errors during serving, try to reduce the memory "
+"usage of the KV cache pool by setting a smaller value of `--mem-fraction-"
+"static`. The default value is `0.9`."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:25
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --mem-fraction-static 0.7\n"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:29
+msgid ""
+"See [hyperparameter tuning](hyperparameter_tuning.md) on tuning "
+"hyperparameters for better performance."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:30
+msgid ""
+"For docker and Kubernetes runs, you need to set up shared memory which is "
+"used for communication between processes. See `--shm-size` for docker and `/"
+"dev/shm` size update for Kubernetes manifests."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:31
+msgid ""
+"If you see out-of-memory errors during prefill for long prompts, try to set "
+"a smaller chunked prefill size."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:33
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --chunked-prefill-size 4096\n"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:37
+msgid ""
+"To enable `torch.compile` acceleration, add `--enable-torch-compile`. It "
+"accelerates small models on small batch sizes. By default, the cache path is "
+"located at `/tmp/torchinductor_root`, you can customize it using environment "
+"variable `TORCHINDUCTOR_CACHE_DIR`. For more details, please refer to "
+"[PyTorch official documentation](https://pytorch.org/tutorials/recipes/"
+"torch_compile_caching_tutorial.html) and [Enabling cache for torch.compile]"
+"(https://docs.sglang.ai/backend/hyperparameter_tuning.html#enabling-cache-"
+"for-torch-compile)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:38
+msgid ""
+"To enable torchao quantization, add `--torchao-config int4wo-128`. It "
+"supports other [quantization strategies (INT8/FP8)](https://github.com/sgl-"
+"project/sglang/blob/v0.3.6/python/sglang/srt/server_args.py#L671) as well."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:39
+msgid ""
+"To enable fp8 weight quantization, add `--quantization fp8` on a fp16 "
+"checkpoint or directly load a fp8 checkpoint without specifying any "
+"arguments."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:40
+msgid "To enable fp8 kv cache quantization, add `--kv-cache-dtype fp8_e5m2`."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:41
+msgid ""
+"If the model does not have a chat template in the Hugging Face tokenizer, "
+"you can specify a [custom chat template](custom_chat_template.md)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:42
+msgid ""
+"To run tensor parallelism on multiple nodes, add `--nnodes 2`. If you have "
+"two nodes with two GPUs on each node and want to run TP=4, let `sgl-dev-0` "
+"be the hostname of the first node and `50000` be an available port, you can "
+"use the following commands. If you meet deadlock, please try to add `--"
+"disable-cuda-graph`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:44
+msgid ""
+"# Node 0\n"
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --tp 4 --dist-init-addr sgl-dev-0:50000 --nnodes 2 --node-rank 0\n"
+"\n"
+"# Node 1\n"
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --tp 4 --dist-init-addr sgl-dev-0:50000 --nnodes 2 --node-rank 1\n"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:52
+msgid ""
+"Please consult the documentation below and [server_args.py](https://github."
+"com/sgl-project/sglang/blob/main/python/sglang/srt/server_args.py) to learn "
+"more about the arguments you may provide when launching a server."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:54
+msgid "Model and tokenizer"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Arguments"
+msgstr "引數"
+
+#: ../../../backend/server_arguments.md:0
+msgid "Description"
+msgstr "描述"
+
+#: ../../../backend/server_arguments.md:0
+msgid "Defaults"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--model-path`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The path of the model weights. This can be a local folder or a Hugging Face "
+"repo ID."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "None"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--tokenizer-path`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The path of the tokenizer."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--tokenizer-mode`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Tokenizer mode. 'auto' will use the fast tokenizer if available, and 'slow' "
+"will always use the slow tokenizer."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "auto"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--skip-tokenizer-init`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "If set, skip init tokenizer and pass input_ids in generate request."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "False"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--load-format`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The format of the model weights to load. 'auto' will try to load the weights "
+"in the safetensors format and fall back to the pytorch bin format if "
+"safetensors format is not available. 'pt' will load the weights in the "
+"pytorch bin format. 'safetensors' will load the weights in the safetensors "
+"format. 'npcache' will load the weights in pytorch format and store a numpy "
+"cache to speed up the loading. 'dummy' will initialize the weights with "
+"random values, which is mainly for profiling. 'gguf' will load the weights "
+"in the gguf format. 'bitsandbytes' will load the weights using bitsandbytes "
+"quantization. 'layered' loads weights layer by layer so that one can "
+"quantize a layer before loading another to make the peak memory envelope "
+"smaller."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--trust-remote-code`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Whether or not to allow for custom models defined on the Hub in their own "
+"modeling files."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--context-length`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The model's maximum context length. Defaults to None (will use the value "
+"from the model's config.json instead)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--is-embedding`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Whether to use a CausalLM as an embedding model."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-multimodal`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable the multimodal functionality for the served model. If the model being "
+"served is not multimodal, nothing will happen."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--revision`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The specific model version to use. It can be a branch name, a tag name, or a "
+"commit id. If unspecified, will use the default version."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--model-impl`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Which implementation of the model to use. 'auto' will try to use the SGLang "
+"implementation if it exists and fall back to the Transformers implementation "
+"if no SGLang implementation is available. 'sglang' will use the SGLang model "
+"implementation. 'transformers' will use the Transformers model "
+"implementation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:70
+msgid "HTTP server"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--host`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The host address for the server."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "127.0.0.1"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--port`"
+msgstr "`--port`"
+
+#: ../../../backend/server_arguments.md:0
+msgid "The port number for the server."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "30000"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--skip-server-warmup`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "If set, skip the server warmup process."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--warmups`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Warmup configurations."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--nccl-port`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The port for NCCL initialization."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:80
+msgid "Quantization and data type"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--dtype`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Data type for model weights and activations. 'auto' will use FP16 precision "
+"for FP32 and FP16 models, and BF16 precision for BF16 models. 'half' for "
+"FP16. Recommended for AWQ quantization. 'float16' is the same as 'half'. "
+"'bfloat16' for a balance between precision and range. 'float' is shorthand "
+"for FP32 precision. 'float32' for FP32 precision."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--quantization`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The quantization method."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--quantization-param-path`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Path to the JSON file containing the KV cache scaling factors. This should "
+"generally be supplied, when KV cache dtype is FP8. Otherwise, KV cache "
+"scaling factors default to 1.0, which may cause accuracy issues."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--kv-cache-dtype`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Data type for kv cache storage. 'auto' will use model data type. 'fp8_e5m2' "
+"and 'fp8_e4m3' is supported for CUDA 11.8+."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:89
+msgid "Memory and scheduling"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--mem-fraction-static`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The fraction of the memory used for static allocation (model weights and KV "
+"cache memory pool). Use a smaller value if you see out-of-memory errors."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--max-running-requests`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The maximum number of running requests."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--max-total-tokens`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The maximum number of tokens in the memory pool. If not specified, it will "
+"be automatically calculated based on the memory usage fraction. This option "
+"is typically used for development and debugging purposes."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--chunked-prefill-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The maximum number of tokens in a chunk for the chunked prefill. Setting "
+"this to -1 means disabling chunked prefill."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--max-prefill-tokens`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The maximum number of tokens in a prefill batch. The real bound will be the "
+"maximum of this value and the model's maximum context length."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "16384"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--schedule-policy`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The scheduling policy of the requests."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "fcfs"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--schedule-conservativeness`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"How conservative the schedule policy is. A larger value means more "
+"conservative scheduling. Use a larger value if you see requests being "
+"retracted frequently."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "1.0"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--cpu-offload-gb`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "How many GBs of RAM to reserve for CPU offloading."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "0"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--page-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The number of tokens in a page."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "1"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:103
+msgid "Runtime options"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--device`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The device to use ('cuda', 'xpu', 'hpu', 'npu', 'cpu'). Defaults to auto-"
+"detection if not specified."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--tp-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The tensor parallelism size."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--pp-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The pipeline parallelism size."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--max-micro-batch-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The maximum micro batch size in pipeline parallelism."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--stream-interval`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The interval (or buffer size) for streaming in terms of the token length. A "
+"smaller value makes streaming smoother, while a larger value makes the "
+"throughput higher."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--stream-output`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Whether to output as a sequence of disjoint segments."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--random-seed`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The random seed."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--constrained-json-whitespace-pattern`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Regex pattern for syntactic whitespaces allowed in JSON constrained output. "
+"For example, to allow the model generate consecutive whitespaces, set the "
+"pattern to [\\n\\t ]*."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--watchdog-timeout`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Set watchdog timeout in seconds. If a forward batch takes longer than this, "
+"the server will crash to prevent hanging."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "300"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--dist-timeout`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Set timeout for torch.distributed initialization."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--download-dir`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Model download directory for huggingface."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--base-gpu-id`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The base GPU ID to start allocating GPUs from. Useful when running multiple "
+"instances on the same machine."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--gpu-id-step`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The delta between consecutive GPU IDs that are used. For example, setting it "
+"to 2 will use GPU 0,2,4,...."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--sleep-on-idle`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Reduce CPU usage when sglang is idle."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:122
+msgid "Logging"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--log-level`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The logging level of all loggers."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "info"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--log-level-http`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The logging level of HTTP server. If not set, reuse --log-level by default."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--log-requests`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Log metadata, inputs, outputs of all requests. The verbosity is decided by --"
+"log-requests-level."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--log-requests-level`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"0: Log metadata (no sampling parameters). 1: Log metadata and sampling "
+"parameters. 2: Log metadata, sampling parameters and partial input/output. "
+"3: Log every input/output."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--show-time-cost`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Show time cost of custom marks."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-metrics`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable log prometheus metrics."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--bucket-time-to-first-token`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The buckets of time to first token, specified as a list of floats."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--bucket-inter-token-latency`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The buckets of inter-token latency, specified as a list of floats."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--bucket-e2e-request-latency`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The buckets of end-to-end request latency, specified as a list of floats."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--collect-tokens-histogram`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Collect prompt/generation tokens histogram."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--kv-events-config`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Config in json format for NVIDIA dynamo KV event publishing. Publishing will "
+"be enabled if this flag is used."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--decode-log-interval`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The log interval of decode batch."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "40"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-request-time-stats-logging`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable per request time stats logging."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:140
+msgid "API related"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--api-key`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Set API key of the server. It is also used in the OpenAI API compatible "
+"server."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--served-model-name`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Override the model name returned by the v1/models endpoint in OpenAI API "
+"server."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--chat-template`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The buliltin chat template name or the path of the chat template file. This "
+"is only used for OpenAI-compatible API server."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--completion-template`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The buliltin completion template name or the path of the completion template "
+"file. This is only used for OpenAI-compatible API server. only for code "
+"completion currently."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--file-storage-path`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The path of the file storage in backend."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "sglang_storage"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-cache-report`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Return number of cached tokens in usage.prompt_tokens_details for each "
+"openai request."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--reasoning-parser`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Specify the parser for reasoning models, supported parsers are: "
+"{list(ReasoningParser.DetectorMap.keys())}."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--tool-call-parser`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Specify the parser for handling tool-call interactions. Options include: "
+"'qwen25', 'mistral', 'llama3', 'deepseekv3', 'pythonic', 'kimi_k2', "
+"'qwen3_coder', 'glm45', and 'step3'."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:153
+msgid "Data parallelism"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--dp-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The data parallelism size."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--load-balance-method`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The load balancing strategy for data parallelism."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "round_robin"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:160
+msgid "Multi-node distributed serving"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--dist-init-addr`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The host address for initializing distributed backend (e.g., "
+"`192.168.0.2:25000`)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--nnodes`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The number of nodes."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--node-rank`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The node rank."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:168
+msgid "Model override args in JSON"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--json-model-override-args`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"A dictionary in JSON string format used to override default model "
+"configurations."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "{}"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--preferred-sampling-params`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"json-formatted sampling settings that will be returned in /get_model_info."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:175
+msgid "LoRA"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-lora`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable LoRA support for the model. This argument is automatically set to "
+"True if `--lora-paths` is provided for backward compatibility."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--max-lora-rank`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The maximum LoRA rank that should be supported. If not specified, it will be "
+"automatically inferred from the adapters provided in `--lora-paths`. This "
+"argument is needed when you expect to dynamically load adapters of larger "
+"LoRA rank after server startup."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--lora-target-modules`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The union set of all target modules where LoRA should be applied (e.g., "
+"`q_proj`, `k_proj`, `gate_proj`). If not specified, it will be automatically "
+"inferred from the adapters provided in `--lora-paths`. This argument is "
+"needed when you expect to dynamically load adapters of different target "
+"modules after server startup. You can also set it to `all` to enable LoRA "
+"for all supported modules. However, enabling LoRA on additional modules "
+"introduces a minor performance overhead. If your application is performance-"
+"sensitive, we recommend only specifying the modules for which you plan to "
+"load adapters."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--lora-paths`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The list of LoRA adapters. You can provide a list of either path in str or "
+"renamed path in the format {name}={path}."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--max-loras-per-batch`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Maximum number of adapters for a running batch, include base-only request."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "8"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--lora-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Choose the kernel backend for multi-LoRA serving."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "triton"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:186
+msgid "Kernel backend"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--attention-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Choose the kernels for attention layers."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`decode_attention_backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"(Experimental) This argument specifies the backend for decode attention "
+"computation. Note that this argument has priority over `attention_backend`."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`prefill_attention_backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"(Experimental) This argument specifies the backend for prefill attention "
+"computation. Note that this argument has priority over `attention_backend`."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--sampling-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Choose the kernels for sampling layers."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--grammar-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Choose the backend for grammar-guided decoding."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--mm-attention-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Set multimodal attention backend."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:197
+msgid "Speculative decoding"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-algorithm`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Speculative algorithm."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-draft-model-path`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The path of the draft model weights. This can be a local folder or a Hugging "
+"Face repo ID."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-num-steps`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The number of steps sampled from draft model in Speculative Decoding."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-eagle-topk`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The number of tokens sampled from the draft model in eagle2 each step."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-num-draft-tokens`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The number of tokens sampled from the draft model in Speculative Decoding."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-accept-threshold-single`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Accept a draft token if its probability in the target model is greater than "
+"this threshold."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-accept-threshold-acc`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The accept probability of a draft token is raised from its target "
+"probability p to min(1, p / threshold_acc)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--speculative-token-map`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The path of the draft model's small vocab table."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:210
+msgid "Expert parallelism"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--ep-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The expert parallelism size."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-ep-moe`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enabling expert parallelism for moe. The ep size is equal to the tp size."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-deepep-moe`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enabling DeepEP MoE implementation for EP MoE."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-flashinfer-cutlass-moe`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enabling Flashinfer Cutlass MoE implementation for high throughput."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-flashinfer-trtllm-moe`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enabling Flashinfer Trtllm MoE implementation for low latency."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--deepep-mode`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Select the mode when enable DeepEP MoE, could be `normal`, `low_latency` or "
+"`auto`. Default is `auto`, which means `low_latency` for decode batch and "
+"`normal` for prefill batch."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--ep-num-redundant-experts`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Allocate this number of redundant experts in expert parallel."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--ep-dispatch-algorithm`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The algorithm to choose ranks for redundant experts in expert parallel."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--init-expert-location`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Initial location of EP experts."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "trivial"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-eplb`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable EPLB algorithm."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--eplb-algorithm`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Chosen EPLB algorithm."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--eplb-rebalance-num-iterations`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Number of iterations to automatically trigger a EPLB re-balance."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "1000"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--eplb-rebalance-layers-per-chunk`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Number of layers to rebalance per forward pass."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--expert-distribution-recorder-mode`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Mode of expert distribution recorder."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--expert-distribution-recorder-buffer-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Circular buffer size of expert distribution recorder. Set to -1 to denote "
+"infinite buffer."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-expert-distribution-metrics`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable logging metrics for expert balancedness."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--deepep-config`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Tuned DeepEP config suitable for your own cluster. It can be either a string "
+"with JSON content or a file path."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--moe-dense-tp-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"TP size for MoE dense MLP layers. This flag is useful when, with large TP "
+"size, there are errors caused by weights in MLP layers having dimension "
+"smaller than the min dimension GEMM supports."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:233
+msgid "Hierarchical cache"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-hierarchical-cache`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable hierarchical cache."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--hicache-ratio`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The ratio of the size of host KV cache memory pool to the size of device "
+"pool."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "2.0"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--hicache-size`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The size of the hierarchical cache."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--hicache-write-policy`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The write policy for hierarchical cache."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "write_through_selective"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--hicache-io-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The IO backend for hierarchical cache."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--hicache-storage-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The storage backend for hierarchical cache."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:244
+msgid "Optimization/debug options"
+msgstr "最佳化/除錯選項"
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-radix-cache`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable RadixAttention for prefix caching."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--cuda-graph-max-bs`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Set the maximum batch size for cuda graph. It will extend the cuda graph "
+"capture batch size to this value."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--cuda-graph-bs`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Set the list of batch sizes for cuda graph."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-cuda-graph`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable cuda graph."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-cuda-graph-padding`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Disable cuda graph when padding is needed. Still uses cuda graph when "
+"padding is not needed."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-profile-cuda-graph`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable profiling of cuda graph capture."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-nccl-nvls`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable NCCL NVLS for prefill heavy requests when available."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-tokenizer-batch-encode`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable batch tokenization for improved performance when processing multiple "
+"text inputs. Do not use with image inputs, pre-tokenized input_ids, or "
+"input_embeds."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-outlines-disk-cache`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Disable disk cache of outlines to avoid possible crashes related to file "
+"system or high concurrency."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-custom-all-reduce`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable the custom all-reduce kernel and fall back to NCCL."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-mscclpp`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable using mscclpp for small messages for all-reduce kernel and fall back "
+"to NCCL."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-overlap-schedule`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Disable the overlap scheduler, which overlaps the CPU scheduler with GPU "
+"model worker."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-mixed-chunk`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enabling mixing prefill and decode in a batch when using chunked prefill."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-dp-attention`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enabling data parallelism for attention and tensor parallelism for FFN. The "
+"dp size should be equal to the tp size. Currently DeepSeek-V2 and Qwen 2/3 "
+"MoE models are supported."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-dp-lm-head`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable vocabulary parallel across the attention TP group to avoid all-gather "
+"across DP groups, optimizing performance under DP attention."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-two-batch-overlap`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enabling two micro batches to overlap."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-torch-compile`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Optimize the model with torch.compile. Experimental feature."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--torch-compile-max-bs`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Set the maximum batch size when using torch compile."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "32"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--torchao-config`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Optimize the model with torchao. Experimental feature. Current choices are: "
+"int8dq, int8wo, int4wo-<group_size>, fp8wo, fp8dq-per_tensor, fp8dq-per_row."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-nan-detection`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable the NaN detection for debugging purposes."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-p2p-check`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable P2P check for GPU access, otherwise the p2p access is allowed by "
+"default."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--triton-attention-reduce-in-fp32`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Cast the intermediate attention results to fp32 to avoid possible crashes "
+"related to fp16. This only affects Triton attention kernels."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--triton-attention-num-kv-splits`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"The number of KV splits in flash decoding Triton kernel. Larger value is "
+"better in longer context scenarios. The default value is 8."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--num-continuous-decode-steps`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Run multiple continuous decoding steps to reduce scheduling overhead. This "
+"can potentially increase throughput but may also increase time-to-first-"
+"token latency. The default value is 1, meaning only run one decoding step at "
+"a time."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--delete-ckpt-after-loading`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Delete the model checkpoint after loading the model."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-memory-saver`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Allow saving memory using release_memory_occupation and "
+"resume_memory_occupation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--allow-auto-truncate`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Allow automatically truncating requests that exceed the maximum input length "
+"instead of returning an error."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-custom-logit-processor`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"Enable users to pass custom logit processors to the server (disabled by "
+"default for security)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--flashinfer-mla-disable-ragged`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable ragged processing in Flashinfer MLA."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-shared-experts-fusion`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable shared experts fusion."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-chunked-prefix-cache`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable chunked prefix cache."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disable-fast-image-processor`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable fast image processor."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-return-hidden-states`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable returning hidden states."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-triton-kernel-moe`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable Triton kernel for MoE."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:283
+msgid "Debug tensor dumps"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--debug-tensor-dump-output-folder`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The output folder for debug tensor dumps."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--debug-tensor-dump-input-file`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The input file for debug tensor dumps."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--debug-tensor-dump-inject`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable injection of debug tensor dumps."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--debug-tensor-dump-prefill-only`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable prefill-only mode for debug tensor dumps."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:292
+msgid "PD disaggregation"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disaggregation-mode`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid ""
+"PD disaggregation mode: \"null\" (not disaggregated), \"prefill\" (prefill-"
+"only), or \"decode\" (decode-only)."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "null"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disaggregation-transfer-backend`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The transfer backend for PD disaggregation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "mooncake"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disaggregation-bootstrap-port`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The bootstrap port for PD disaggregation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "8998"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disaggregation-decode-tp`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The decode TP for PD disaggregation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disaggregation-decode-dp`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The decode DP for PD disaggregation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--disaggregation-prefill-pp`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "The prefill PP for PD disaggregation."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:303
+msgid "Model weight update"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--custom-weight-loader`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Custom weight loader paths."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--weight-loader-disable-mmap`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Disable mmap for weight loader."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:310
+msgid "PD-Multiplexing"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--enable-pdmux`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Enable PD-Multiplexing."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "`--sm-group-num`"
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "Number of SM groups for PD-Multiplexing."
+msgstr ""
+
+#: ../../../backend/server_arguments.md:0
+msgid "3"
+msgstr ""
