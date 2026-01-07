@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-22 08:33+0000\n"
+"POT-Creation-Date: 2026-01-05 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -261,6 +261,14 @@ msgid ""
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DATA_PARALLEL_BUDGET_INTERVAL`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Interval for DPBudget updates"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_SCHEDULER_RECV_SKIPPER_WEIGHT_DEFAULT`"
 msgstr ""
 
@@ -317,7 +325,7 @@ msgstr ""
 msgid "Enable precomputing of hash values for MultimodalDataItem"
 msgstr ""
 
-#: ../../../references/environment_variables.md:42
+#: ../../../references/environment_variables.md:43
 msgid "DeepGEMM Configuration (Advanced Optimization)"
 msgstr ""
 
@@ -400,7 +408,7 @@ msgstr ""
 msgid "Use DeepGEMM for Batched Matrix Multiplication (BMM) operations"
 msgstr ""
 
-#: ../../../references/environment_variables.md:54
+#: ../../../references/environment_variables.md:55
 msgid "DeepEP Configuration"
 msgstr ""
 
@@ -410,16 +418,6 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Use Bfloat16 for dispatch"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_MOE_NVFP4_DISPATCH`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Use nvfp4 for moe dispatch (on flashinfer_cutlass or flashinfer_cutedsl moe "
-"runner backend)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -484,37 +482,14 @@ msgid "Default value based on system"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK`"
+msgid "`SGLANG_ENABLE_TP_MEMORY_INBALANCE_CHECK`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "Disable checks for memory imbalance across Tensor Parallel ranks"
+msgid "Enable checks for memory imbalance across Tensor Parallel ranks"
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "Not set (defaults to enabled check)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_NVFP4_CKPT_FP8_GEMM_IN_ATTN`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Quantize q_b_proj from BF16 to FP8 when launching DeepSeek NVFP4 checkpoint"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_PER_TOKEN_GROUP_QUANT_8BIT_V2`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Apply per token group quantization kernel with fused silu and mul and masked "
-"m"
-msgstr ""
-
-#: ../../../references/environment_variables.md:74
+#: ../../../references/environment_variables.md:72
 msgid "Model-Specific Options"
 msgstr ""
 
@@ -524,14 +499,6 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Use AITER optimize implementation"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_INT4_WEIGHT`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "Enable INT4 weight quantization"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -545,21 +512,43 @@ msgid ""
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_CUTLASS_MOE` (deprecated)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use Cutlass FP8 MoE kernel on Blackwell GPUs (deprecated, use --moe-runner-"
+"backend=cutlass)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:80
+msgid "Quantization"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_INT4_WEIGHT`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Enable INT4 weight quantization"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_PER_TOKEN_GROUP_QUANT_8BIT_V2`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Apply per token group quantization kernel with fused silu and mul and masked "
+"m"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_FORCE_FP8_MARLIN`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Force using FP8 MARLIN kernels even if other FP8 kernels are available"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_ENABLE_FLASHINFER_FP8_GEMM` (deprecated)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Use flashinfer kernels when running blockwise fp8 GEMM on Blackwell GPUs. "
-"**DEPRECATED**: Please use `--fp8-gemm-backend=flashinfer_trtllm` instead."
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -575,6 +564,45 @@ msgid "``"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_NVFP4_CKPT_FP8_GEMM_IN_ATTN`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Quantize q_b_proj from BF16 to FP8 when launching DeepSeek NVFP4 checkpoint"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MOE_NVFP4_DISPATCH`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use nvfp4 for moe dispatch (on flashinfer_cutlass or flashinfer_cutedsl moe "
+"runner backend)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_NVFP4_CKPT_FP8_NEXTN_MOE`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Quantize moe of nextn layer from BF16 to FP8 when launching DeepSeek NVFP4 "
+"checkpoint"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_ENABLE_FLASHINFER_FP8_GEMM` (deprecated)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use flashinfer kernels when running blockwise fp8 GEMM on Blackwell GPUs. "
+"**DEPRECATED**: Please use `--fp8-gemm-backend=flashinfer_trtllm` instead."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_SUPPORT_CUTLASS_BLOCK_FP8` (deprecated)"
 msgstr ""
 
@@ -584,17 +612,7 @@ msgid ""
 "GPUs. **DEPRECATED**: Please use `--fp8-gemm-backend=cutlass` instead."
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_CUTLASS_MOE` (deprecated)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Use Cutlass FP8 MoE kernel on Blackwell GPUs (deprecated, use --moe-runner-"
-"backend=cutlass)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:88
+#: ../../../references/environment_variables.md:95
 msgid "Distributed Computing"
 msgstr ""
 
@@ -630,11 +648,11 @@ msgstr ""
 msgid "Set one visible device per process for distributed computing"
 msgstr ""
 
-#: ../../../references/environment_variables.md:97
+#: ../../../references/environment_variables.md:104
 msgid "Testing & Debugging (Internal/CI)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:99
+#: ../../../references/environment_variables.md:106
 msgid ""
 "*These variables are primarily used for internal testing, continuous "
 "integration, or debugging.*"
@@ -694,15 +712,7 @@ msgstr ""
 msgid "Test request time statistics"
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_CI_SMALL_KV_SIZE`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "Use small KV cache size in CI"
-msgstr ""
-
-#: ../../../references/environment_variables.md:111
+#: ../../../references/environment_variables.md:117
 msgid "Profiling & Benchmarking"
 msgstr ""
 
@@ -759,7 +769,7 @@ msgstr ""
 msgid "`64`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:121
+#: ../../../references/environment_variables.md:127
 msgid "Storage & Caching"
 msgstr ""
 
@@ -793,7 +803,7 @@ msgid ""
 "(automatically enabled on CUDA)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:129
+#: ../../../references/environment_variables.md:135
 msgid "Function Calling / Tool Use"
 msgstr ""
 
@@ -811,6 +821,6 @@ msgid ""
 "`strict=True` set"
 msgstr ""
 
-#: ../../../references/environment_variables.md:133
+#: ../../../references/environment_variables.md:139
 msgid "<br>"
 msgstr ""

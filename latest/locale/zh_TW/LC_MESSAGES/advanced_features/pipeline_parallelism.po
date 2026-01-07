@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-22 08:33+0000\n"
+"POT-Creation-Date: 2026-01-05 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,11 +120,139 @@ msgid ""
 "identical to the traditional way with a fixed chunked prefill size."
 msgstr ""
 
-#: ../../../advanced_features/pipeline_parallelism.md:28
-msgid "Best Practice for Pipeline Parallelism with PD Disaggregation"
+#: ../../../advanced_features/pipeline_parallelism.md:27
+msgid "Best Practice for Pipeline Parallelism"
 msgstr ""
 
 #: ../../../advanced_features/pipeline_parallelism.md:29
+msgid "Tuning the Chunked Prefill Size"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:30
+msgid ""
+"Optimizing the chunked prefill size is crucial for balancing pipeline "
+"efficiency and resource utilization. The ideal size depends on factors "
+"including model architecture, hardware configuration, and typical input "
+"lengths. We recommend starting with a small chunk size, such as 4K, and "
+"gradually increasing it until you find the optimal size for your specific "
+"use case. Alternatively, you can analyze the hardware capacity and determine "
+"the optimal chunk size based on the roofline model."
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:32
+msgid ""
+"Enable Dynamic Chunking and Adjust Smoothing Factor (Experimental feature)"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:33
+msgid ""
+"SGLang also offers a dynamic chunking solution that could further improve "
+"performance. This feature is currently an experimental feature that requires "
+"a certain amount of tuning experimentation and may not be suitable for all "
+"workloads. In addition, fine-tuning the smoothing factor can help optimize "
+"performance for specific workloads and model characteristics."
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:35
+msgid "Case Study on NVIDIA H20"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:37
+msgid ""
+"When evaluating pipeline parallelism with fixed chunked prefill sizes from "
+"2K to 16K, experiment results show that a 4K chunk size delivered optimal "
+"prefill TTFT performance for the DeepSeek-V3.1, and a 6K chunk size "
+"delivered optimal prefill TTFT performance for the Qwen3-235B-A22B-"
+"Thinking-2507-FP8."
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:39
+msgid ""
+"When enabling dynamic chunking, we first scale the optimal fixed chunked "
+"prefill size by a factor of 3 as the initial chunk size. Through "
+"experimentation, we found that a multiplier of 2-3 provides an appropriate "
+"balance—avoiding excessive initial pipeline bubbles while ensuring that "
+"subsequent chunks don't become too small as context length increases. With "
+"the default dynamic chunking smoothing factor of 0.75, we performed "
+"parameter tuning and determined that a value of 0.65 works optimally with "
+"the 12K initial chunk size for the DeepSeek-V3.1, while a value of 0.8 works "
+"optimally with the 18K initial chunk size for the Qwen3-235B-A22B-"
+"Thinking-2507-FP8."
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:41
+msgid "DeepSeek-V3.1 with 128K Input Token Length"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:42
+msgid ""
+"# prefill node 0 (fixed chunked prefill size)\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-V3.1 --trust-remote-code \\\n"
+"  --nnodes 4 --node-rank 0 --tp 8 --pp-size 4 \\\n"
+"  --port 30000 --dist-init-addr 192.168.0.137:62001 \\\n"
+"  --disable-radix-cache --mem-fraction-static 0.8  \\\n"
+"  --attention-backend fa3 --host 0.0.0.0 --watchdog-timeout 3600 \\\n"
+"  --max-running-requests 128 --chunked-prefill-size 4096\n"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:53
+msgid ""
+"# prefill node 0 (with dynamic chunking)\n"
+"export SGLANG_DYNAMIC_CHUNKING_SMOOTH_FACTOR=0.65\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-V3.1 --trust-remote-code \\\n"
+"  --nnodes 4 --node-rank 0 --tp 8 --pp-size 4 \\\n"
+"  --port 30000 --dist-init-addr 192.168.0.137:62001 \\\n"
+"  --disable-radix-cache --mem-fraction-static 0.8  \\\n"
+"  --attention-backend fa3 --host 0.0.0.0 --watchdog-timeout 3600 \\\n"
+"  --max-running-requests 128 --chunked-prefill-size 12288 --enable-dynamic-"
+"chunking\n"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:65
+msgid "Qwen3-235B-A22B-Thinking-2507-FP8 with 128K Input Token Length"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:66
+msgid ""
+"# prefill node 0 (fixed chunked prefill size)\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-235B-A22B-Thinking-2507-FP8 --trust-remote-code "
+"\\\n"
+"  --nnodes 2 --node-rank 0 --tp 4 --pp-size 2 \\\n"
+"  --port 30000 --dist-init-addr 192.168.0.137:62001 \\\n"
+"  --disable-radix-cache --mem-fraction-static 0.8  \\\n"
+"  --attention-backend fa3 --host 0.0.0.0 --watchdog-timeout 3600 \\\n"
+"  --max-running-requests 128 --chunked-prefill-size 6144\n"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:77
+msgid ""
+"# prefill node 0 (with dynamic chunking)\n"
+"export SGLANG_DYNAMIC_CHUNKING_SMOOTH_FACTOR=0.8\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-235B-A22B-Thinking-2507-FP8 --trust-remote-code "
+"\\\n"
+"  --nnodes 2 --node-rank 0 --tp 4 --pp-size 2 \\\n"
+"  --port 30000 --dist-init-addr 192.168.0.137:62001 \\\n"
+"  --disable-radix-cache --mem-fraction-static 0.8  \\\n"
+"  --attention-backend fa3 --host 0.0.0.0 --watchdog-timeout 3600 \\\n"
+"  --max-running-requests 128 --chunked-prefill-size 18432 --enable-dynamic-"
+"chunking\n"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:89
+msgid ""
+"Note: `--disable-radix-cache` is enabled only for reproducible benchmarking "
+"purposes. It is not recommended to use it in production."
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:91
+msgid "Best Practice for Pipeline Parallelism with PD Disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/pipeline_parallelism.md:92
 msgid ""
 "To be added. Stay tuned for the latest updates on Pipeline Parallelism with "
 "PD Disaggregation."

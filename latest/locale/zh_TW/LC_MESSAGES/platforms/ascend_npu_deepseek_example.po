@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-22 08:33+0000\n"
+"POT-Creation-Date: 2026-01-05 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,11 +26,11 @@ msgid "Running DeepSeek-V3"
 msgstr ""
 
 #: ../../../platforms/ascend_npu_deepseek_example.md:5
-msgid "Running DeepSeek on 1 x Atlas 800I A3."
+msgid "Running DeepSeek in PD mixed mode on 1 x Atlas 800I A3."
 msgstr ""
 
 #: ../../../platforms/ascend_npu_deepseek_example.md:7
-#: ../../../platforms/ascend_npu_deepseek_example.md:58
+#: ../../../platforms/ascend_npu_deepseek_example.md:56
 msgid ""
 "W4A8 Model weights could be found [here](https://modelers.cn/models/"
 "Modelers_Park/DeepSeek-R1-0528-w4a8)."
@@ -63,15 +63,13 @@ msgid ""
 "    --device npu \\\n"
 "    --quantization modelslim \\\n"
 "    --watchdog-timeout 9000 \\\n"
-"    --host 127.0.0.1 \\\n"
-"    --port 6688 \\\n"
 "    --cuda-graph-bs 8 16 24 28 32 \\\n"
 "    --mem-fraction-static 0.68 \\\n"
 "    --max-running-requests 128 \\\n"
 "    --context-length 8188 \\\n"
 "    --disable-radix-cache \\\n"
 "    --chunked-prefill-size -1 \\\n"
-"    --max-prefill-tokens 6000 \\\n"
+"    --max-prefill-tokens 16384 \\\n"
 "    --moe-a2a-backend deepep \\\n"
 "    --deepep-mode auto \\\n"
 "    --enable-dp-attention \\\n"
@@ -84,20 +82,21 @@ msgid ""
 "    --dtype bfloat16\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:56
-msgid "Running DeepSeek with PD disaggregation on 2 x Atlas 800I A3."
+#: ../../../platforms/ascend_npu_deepseek_example.md:54
+msgid "Running DeepSeek with PD disaggregation mode on 2 x Atlas 800I A3."
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:61
-#: ../../../platforms/ascend_npu_deepseek_example.md:183
+#: ../../../platforms/ascend_npu_deepseek_example.md:58
+#: ../../../platforms/ascend_npu_deepseek_example.md:181
 msgid "Prefill:"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:63
+#: ../../../platforms/ascend_npu_deepseek_example.md:60
 msgid ""
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
 "export STREAMS_PER_DEVICE=32\n"
-"#PD\n"
+"\n"
+"#memfabric config store\n"
 "export ASCEND_MF_STORE_URL=\"tcp://<PREFILL_HOST_IP>:<PORT>\"\n"
 "\n"
 "#Deepep communication settings\n"
@@ -112,10 +111,11 @@ msgid ""
 "\n"
 "python -m sglang.launch_server \\\n"
 "    --model-path ${MODEL_PATH} \\\n"
-"    --disaggregation-mode prefill \\\n"
 "    --host $PREFILL_HOST_IP \\\n"
 "    --port 8000 \\\n"
+"    --disaggregation-mode prefill \\\n"
 "    --disaggregation-bootstrap-port 8996 \\\n"
+"    --disaggregation-transfer-backend ascend \\\n"
 "    --trust-remote-code \\\n"
 "    --nnodes 1 \\\n"
 "    --node-rank 0 \\\n"
@@ -124,7 +124,6 @@ msgid ""
 "    --attention-backend ascend \\\n"
 "    --device npu \\\n"
 "    --quantization modelslim \\\n"
-"    --disaggregation-transfer-backend ascend \\\n"
 "    --max-running-requests 8 \\\n"
 "    --context-length 8192 \\\n"
 "    --disable-radix-cache \\\n"
@@ -142,16 +141,17 @@ msgid ""
 "    --dtype bfloat16\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:111
-#: ../../../platforms/ascend_npu_deepseek_example.md:237
+#: ../../../platforms/ascend_npu_deepseek_example.md:109
+#: ../../../platforms/ascend_npu_deepseek_example.md:238
 msgid "Decode:"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:113
+#: ../../../platforms/ascend_npu_deepseek_example.md:111
 msgid ""
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
 "export STREAMS_PER_DEVICE=32\n"
-"#PD\n"
+"\n"
+"#memfabric config store\n"
 "export ASCEND_MF_STORE_URL=\"tcp://<PREFILL_HOST_IP>:<PORT>\"\n"
 "\n"
 "#Deepep communication settings\n"
@@ -197,18 +197,16 @@ msgid ""
 "    --speculative-num-steps 3 \\\n"
 "    --speculative-eagle-topk 1 \\\n"
 "    --speculative-num-draft-tokens 4 \\\n"
-"    --prefill-round-robin-balance \\\n"
 "    --disable-shared-experts-fusion \\\n"
 "    --dtype bfloat16 \\\n"
 "    --tokenizer-worker-num 4\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:167
-#: ../../../platforms/ascend_npu_deepseek_example.md:298
-msgid "sglang router:"
+#: ../../../platforms/ascend_npu_deepseek_example.md:165
+msgid "SGLang Router"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:169
+#: ../../../platforms/ascend_npu_deepseek_example.md:167
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "    --pd-disaggregation \\\n"
@@ -219,22 +217,22 @@ msgid ""
 "    --port 6688\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:179
+#: ../../../platforms/ascend_npu_deepseek_example.md:177
 msgid "Running DeepSeek with PD disaggregation on 4 x Atlas 800I A3."
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:181
+#: ../../../platforms/ascend_npu_deepseek_example.md:179
 msgid ""
 "W8A8 Model weights could be found [here](https://modelers.cn/models/"
 "State_Cloud/Deepseek-R1-bf16-hfd-w8a8)."
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:185
+#: ../../../platforms/ascend_npu_deepseek_example.md:183
 msgid ""
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
 "export STREAMS_PER_DEVICE=32\n"
-"#PD\n"
-"P_HOST_IP=('xx,xx,xx,xx' 'xx,xx,xx,xx')\n"
+"\n"
+"#memfabric config store\n"
 "export ASCEND_MF_STORE_URL=\"tcp://<P_HOST_IP[0]>:<PORT>\"\n"
 "\n"
 "#Deepep communication settings\n"
@@ -247,14 +245,18 @@ msgid ""
 "export ENABLE_MOE_NZ=1\n"
 "export TASK_QUEUE_ENABLE=2\n"
 "\n"
+"#Please list all host ips of Prefill instance\n"
+"P_HOST_IP=('xx,xx,xx,xx' 'xx,xx,xx,xx')\n"
+"\n"
 "for i in \"${!P_HOST_IP[@]}\";\n"
 "do\n"
 "  python -m sglang.launch_server \\\n"
 "      --model-path ${MODEL_PATH} \\\n"
-"      --disaggregation-mode prefill \\\n"
 "      --host ${P_HOST_IP[$i]} \\\n"
 "      --port 8000 \\\n"
+"      --disaggregation-mode prefill \\\n"
 "      --disaggregation-bootstrap-port $((8996+$i)) \\\n"
+"      --disaggregation-transfer-backend ascend \\\n"
 "      --trust-remote-code \\\n"
 "      --nnodes 1 \\\n"
 "      --node-rank 0 \\\n"
@@ -263,7 +265,6 @@ msgid ""
 "      --attention-backend ascend \\\n"
 "      --device npu \\\n"
 "      --quantization modelslim \\\n"
-"      --disaggregation-transfer-backend ascend \\\n"
 "      --max-running-requests 8 \\\n"
 "      --context-length 8192 \\\n"
 "      --disable-radix-cache \\\n"
@@ -282,11 +283,12 @@ msgid ""
 "done\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:239
+#: ../../../platforms/ascend_npu_deepseek_example.md:240
 msgid ""
 "export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True\n"
 "export STREAMS_PER_DEVICE=32\n"
-"#PD\n"
+"\n"
+"#memfabric config store\n"
 "export ASCEND_MF_STORE_URL=\"tcp://<P_HOST_IP[0]>:<PORT>\"\n"
 "\n"
 "#Deepep communication settings\n"
@@ -303,6 +305,7 @@ msgid ""
 "export SGLANG_USE_FIA_NZ=1\n"
 "export ENABLE_MOE_NZ=1\n"
 "\n"
+"#please list all host ips of Prefill instance\n"
 "D_HOST_IP=('xx,xx,xx,xx' 'xx,xx,xx,xx')\n"
 "\n"
 "for i in \"${!D_HOST_IP[@]}\";\n"
@@ -310,6 +313,7 @@ msgid ""
 "  python -m sglang.launch_server\n"
 "      --model-path ${MODEL_PATH} \\\n"
 "      --disaggregation-mode decode \\\n"
+"      --disaggregation-transfer-backend ascend \\\n"
 "      --host ${D_HOST_IP[$i]} \\\n"
 "      --port 8001 \\\n"
 "      --trust-remote-code \\\n"
@@ -328,7 +332,6 @@ msgid ""
 "      --deepep-mode low_latency \\\n"
 "      --enable-dp-lm-head \\\n"
 "      --cuda-graph-bs  8 10 12 14 16 18 20 22 24 26 \\\n"
-"      --disaggregation-transfer-backend ascend \\\n"
 "      --watchdog-timeout 9000 \\\n"
 "      --context-length 8192 \\\n"
 "      --speculative-algorithm NEXTN \\\n"
@@ -336,13 +339,16 @@ msgid ""
 "      --speculative-eagle-topk 1 \\\n"
 "      --speculative-num-draft-tokens 3  \\\n"
 "      --tokenizer-worker-num 4 \\\n"
-"      --prefill-round-robin-balance \\\n"
 "      --disable-shared-experts-fusion \\\n"
 "      --dtype bfloat16\n"
 "done\n"
 msgstr ""
 
 #: ../../../platforms/ascend_npu_deepseek_example.md:300
+msgid "SGLang Router:"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_deepseek_example.md:302
 msgid ""
 "python -m sglang_router.launch_router \\\n"
 "    --pd-disaggregation \\\n"
@@ -354,11 +360,11 @@ msgid ""
 "    --port 6688\n"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:311
+#: ../../../platforms/ascend_npu_deepseek_example.md:313
 msgid "test gsm8k"
 msgstr ""
 
-#: ../../../platforms/ascend_npu_deepseek_example.md:313
+#: ../../../platforms/ascend_npu_deepseek_example.md:315
 msgid ""
 "from types import SimpleNamespace\n"
 "from sglang.test.few_shot_gsm8k import run_eval\n"
