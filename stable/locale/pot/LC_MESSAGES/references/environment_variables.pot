@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-09 11:06+0000\n"
+"POT-Creation-Date: 2026-01-06 08:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,7 +205,7 @@ msgid "Skip P2P (peer-to-peer) access check"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_CHUNKED_PREFIX_CACHE_THRESHOLD`"
+msgid "`SGLANG_CHUNKED_PREFIX_CACHE_THRESHOLD`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -261,6 +261,14 @@ msgid ""
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DATA_PARALLEL_BUDGET_INTERVAL`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Interval for DPBudget updates"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_SCHEDULER_RECV_SKIPPER_WEIGHT_DEFAULT`"
 msgstr ""
 
@@ -309,7 +317,15 @@ msgid ""
 "specific forward mode is active."
 msgstr ""
 
-#: ../../../references/environment_variables.md:41
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MM_PRECOMPUTE_HASH`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Enable precomputing of hash values for MultimodalDataItem"
+msgstr ""
+
+#: ../../../references/environment_variables.md:43
 msgid "DeepGEMM Configuration (Advanced Optimization)"
 msgstr ""
 
@@ -318,7 +334,10 @@ msgid "`SGLANG_ENABLE_JIT_DEEPGEMM`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "Enable Just-In-Time compilation of DeepGEMM kernels"
+msgid ""
+"Enable Just-In-Time compilation of DeepGEMM kernels (enabled by default on "
+"NVIDIA Hopper (SM90) and Blackwell (SM100) GPUs when the DeepGEMM package is "
+"installed; set to `\"0\"` to disable)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -346,7 +365,7 @@ msgid "`4`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_IN_DEEPGEMM_PRECOMPILE_STAGE`"
+msgid "`SGLANG_IN_DEEPGEMM_PRECOMPILE_STAGE`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -389,7 +408,7 @@ msgstr ""
 msgid "Use DeepGEMM for Batched Matrix Multiplication (BMM) operations"
 msgstr ""
 
-#: ../../../references/environment_variables.md:53
+#: ../../../references/environment_variables.md:55
 msgid "DeepEP Configuration"
 msgstr ""
 
@@ -402,14 +421,31 @@ msgid "Use Bfloat16 for dispatch"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_MOE_NVFP4_DISPATCH`"
+msgid "`SGLANG_DEEPEP_NUM_MAX_DISPATCH_TOKENS_PER_RANK`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "Use nvfp4 for moe dispatch"
+msgid "The maximum number of dispatched tokens on each GPU"
 msgstr ""
 
-#: ../../../references/environment_variables.md:60
+#: ../../../references/environment_variables.md:0
+msgid "`\"128\"`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DEEPEP_LL_COMBINE_SEND_NUM_SMS`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Number of SMs used for DeepEP combine when single batch overlap is enabled"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`\"32\"`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:63
 msgid "Memory Management"
 msgstr ""
 
@@ -446,18 +482,14 @@ msgid "Default value based on system"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK`"
+msgid "`SGLANG_ENABLE_TP_MEMORY_INBALANCE_CHECK`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "Disable checks for memory imbalance across Tensor Parallel ranks"
+msgid "Enable checks for memory imbalance across Tensor Parallel ranks"
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "Not set (defaults to enabled check)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:69
+#: ../../../references/environment_variables.md:72
 msgid "Model-Specific Options"
 msgstr ""
 
@@ -467,14 +499,6 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Use AITER optimize implementation"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_INT4_WEIGHT`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "Enable INT4 weight quantization"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -488,20 +512,43 @@ msgid ""
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_CUTLASS_MOE` (deprecated)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use Cutlass FP8 MoE kernel on Blackwell GPUs (deprecated, use --moe-runner-"
+"backend=cutlass)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:80
+msgid "Quantization"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_INT4_WEIGHT`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Enable INT4 weight quantization"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_PER_TOKEN_GROUP_QUANT_8BIT_V2`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Apply per token group quantization kernel with fused silu and mul and masked "
+"m"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_FORCE_FP8_MARLIN`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Force using FP8 MARLIN kernels even if other FP8 kernels are available"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_ENABLE_FLASHINFER_FP8_GEMM`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Use flashinfer kernels when running blockwise fp8 GEMM on Blackwell GPUs"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -517,26 +564,55 @@ msgid "``"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_SUPPORT_CUTLASS_BLOCK_FP8`"
+msgid "`SGLANG_NVFP4_CKPT_FP8_GEMM_IN_ATTN`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Quantize q_b_proj from BF16 to FP8 when launching DeepSeek NVFP4 checkpoint"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MOE_NVFP4_DISPATCH`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use nvfp4 for moe dispatch (on flashinfer_cutlass or flashinfer_cutedsl moe "
+"runner backend)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_NVFP4_CKPT_FP8_NEXTN_MOE`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Quantize moe of nextn layer from BF16 to FP8 when launching DeepSeek NVFP4 "
+"checkpoint"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_ENABLE_FLASHINFER_FP8_GEMM` (deprecated)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use flashinfer kernels when running blockwise fp8 GEMM on Blackwell GPUs. "
+"**DEPRECATED**: Please use `--fp8-gemm-backend=flashinfer_trtllm` instead."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_SUPPORT_CUTLASS_BLOCK_FP8` (deprecated)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid ""
 "Use Cutlass kernels when running blockwise fp8 GEMM on Hopper or Blackwell "
-"GPUs"
+"GPUs. **DEPRECATED**: Please use `--fp8-gemm-backend=cutlass` instead."
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_CUTLASS_MOE` (deprecated)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Use Cutlass FP8 MoE kernel on Blackwell GPUs (deprecated, use --moe-runner-"
-"backend=cutlass)"
-msgstr ""
-
-#: ../../../references/environment_variables.md:83
+#: ../../../references/environment_variables.md:95
 msgid "Distributed Computing"
 msgstr ""
 
@@ -549,7 +625,7 @@ msgid "Control blocking of non-zero rank children processes"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_IS_FIRST_RANK_ON_NODE`"
+msgid "`SGLANG_IS_FIRST_RANK_ON_NODE`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -572,11 +648,11 @@ msgstr ""
 msgid "Set one visible device per process for distributed computing"
 msgstr ""
 
-#: ../../../references/environment_variables.md:92
+#: ../../../references/environment_variables.md:104
 msgid "Testing & Debugging (Internal/CI)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:94
+#: ../../../references/environment_variables.md:106
 msgid ""
 "*These variables are primarily used for internal testing, continuous "
 "integration, or debugging.*"
@@ -636,15 +712,7 @@ msgstr ""
 msgid "Test request time statistics"
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_CI_SMALL_KV_SIZE`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "Use small KV cache size in CI"
-msgstr ""
-
-#: ../../../references/environment_variables.md:106
+#: ../../../references/environment_variables.md:117
 msgid "Profiling & Benchmarking"
 msgstr ""
 
@@ -701,7 +769,7 @@ msgstr ""
 msgid "`64`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:116
+#: ../../../references/environment_variables.md:127
 msgid "Storage & Caching"
 msgstr ""
 
@@ -725,7 +793,17 @@ msgstr ""
 msgid "Disable Outlines disk cache"
 msgstr ""
 
-#: ../../../references/environment_variables.md:123
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_USE_CUSTOM_TRITON_KERNEL_CACHE`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use SGLang's custom Triton kernel cache implementation for lower overheads "
+"(automatically enabled on CUDA)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:135
 msgid "Function Calling / Tool Use"
 msgstr ""
 
@@ -743,6 +821,6 @@ msgid ""
 "`strict=True` set"
 msgstr ""
 
-#: ../../../references/environment_variables.md:127
+#: ../../../references/environment_variables.md:139
 msgid "<br>"
 msgstr ""
