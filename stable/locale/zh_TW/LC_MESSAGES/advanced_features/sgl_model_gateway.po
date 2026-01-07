@@ -1,0 +1,3981 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-06 08:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/sgl_model_gateway.md:1
+msgid "SGLang Model Gateway"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:3
+msgid ""
+"SGLang Model Gateway is a high-performance model-routing gateway for large-"
+"scale LLM deployments. It centralizes worker lifecycle management, balances "
+"traffic across heterogeneous protocols (HTTP, gRPC, OpenAI-compatible), and "
+"provides enterprise-ready control over history storage, MCP tooling, and "
+"privacy-sensitive workflows. The gateway is deeply optimized for the SGLang "
+"serving runtime, but can route to any OpenAI-compatible backend."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:7
+msgid "Table of Contents"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:9
+msgid "[Overview](#overview)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:10
+msgid "[Architecture](#architecture)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:11
+msgid "[Control Plane](#control-plane)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:12
+msgid "[Data Plane](#data-plane)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:13
+msgid "[Storage and Privacy](#storage-and-privacy)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:14
+msgid "[Installation](#installation)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:15
+msgid "[Quick Start](#quick-start)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:16
+msgid "[Deployment Modes](#deployment-modes)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:17
+msgid "[Co-launch Router and Workers](#co-launch-router-and-workers)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:18
+msgid "[Separate Launch (HTTP)](#separate-launch-http)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:19
+msgid "[gRPC Launch](#grpc-launch)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:20
+msgid "[Prefill-Decode Disaggregation](#prefill-decode-disaggregation)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:21
+msgid "[OpenAI Backend Proxy](#openai-backend-proxy)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:22
+msgid "[Multi-Model Inference Gateway](#multi-model-inference-gateway)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:23
+msgid "[API Reference](#api-reference)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:24
+msgid "[Inference Endpoints](#inference-endpoints)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:25
+msgid "[Tokenization Endpoints](#tokenization-endpoints)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:26
+msgid "[Parser Endpoints](#parser-endpoints)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:27
+msgid "[Conversation and Response APIs](#conversation-and-response-apis)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:28
+msgid "[Worker Management APIs](#worker-management-apis)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:29
+msgid "[Admin and Health Endpoints](#admin-and-health-endpoints)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:30
+msgid "[Load Balancing Policies](#load-balancing-policies)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:31
+msgid "[Reliability and Flow Control](#reliability-and-flow-control)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:32
+msgid "[Retries](#retries)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:33
+msgid "[Circuit Breaker](#circuit-breaker)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:34
+msgid "[Rate Limiting and Queuing](#rate-limiting-and-queuing)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:35
+msgid "[Health Checks](#health-checks)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:36
+msgid "[Reasoning Parser Integration](#reasoning-parser-integration)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:37
+msgid "[Tool Call Parsing](#tool-call-parsing)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:38
+msgid "[Tokenizer Management](#tokenizer-management)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:39
+msgid "[MCP Integration](#mcp-integration)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:40
+msgid "[Service Discovery (Kubernetes)](#service-discovery-kubernetes)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:41
+msgid "[History and Data Connectors](#history-and-data-connectors)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:42
+msgid "[WASM Middleware](#wasm-middleware)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:43
+msgid "[Language Bindings](#language-bindings)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:44
+msgid "[Security and Authentication](#security-and-authentication)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:45
+msgid "[TLS (HTTPS) for Gateway Server](#tls-https-for-gateway-server)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:46
+msgid "[mTLS for Worker Communication](#mtls-for-worker-communication)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:47
+msgid "[Observability](#observability)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:48
+msgid "[Prometheus Metrics](#prometheus-metrics)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:49
+msgid "[OpenTelemetry Tracing](#opentelemetry-tracing)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:50
+msgid "[Logging](#logging)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:51
+msgid "[Production Recommendations](#production-recommendations)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:52
+msgid "[Security Best Practices](#security-best-practices)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:53
+msgid "[High Availability](#high-availability)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:54
+msgid "[Performance](#performance)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:55
+msgid "[Kubernetes Deployment](#kubernetes-deployment)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:56
+msgid "[Monitoring with PromQL](#monitoring-with-promql)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:57
+msgid "[Configuration Reference](#configuration-reference)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:58
+msgid "[Troubleshooting](#troubleshooting)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:62
+#: ../../../advanced_features/sgl_model_gateway.md:847
+msgid "Overview"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:64
+msgid ""
+"**Unified control plane** for registering, monitoring, and orchestrating "
+"regular, prefill, and decode workers across heterogeneous model fleets."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:65
+msgid ""
+"**Multi-protocol data plane** that routes traffic across HTTP, PD (prefill/"
+"decode), gRPC, and OpenAI-compatible backends with shared reliability "
+"primitives."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:66
+msgid ""
+"**Industry-first gRPC pipeline** with native Rust tokenization, reasoning "
+"parsers, and tool-call execution for high-throughput, OpenAI-compatible "
+"serving; supports both single-stage and PD topologies."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:67
+msgid ""
+"**Inference Gateway Mode (`--enable-igw`)** dynamically instantiates "
+"multiple router stacks (HTTP regular/PD, gRPC) and applies per-model "
+"policies for multi-tenant deployments."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:68
+msgid ""
+"**Conversation & responses connectors** centralize chat history inside the "
+"router so the same context can be reused across models and MCP loops without "
+"leaking data to upstream vendors (memory, none, Oracle ATP, PostgreSQL)."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:69
+msgid ""
+"**Enterprise privacy**: agentic multi-turn `/v1/responses`, native MCP "
+"client (STDIO/HTTP/SSE/Streamable), and history storage all operate within "
+"the router boundary."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:70
+msgid ""
+"**Reliability core**: retries with jitter, worker-scoped circuit breakers, "
+"token-bucket rate limiting with queuing, background health checks, and cache-"
+"aware load monitoring."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:71
+msgid ""
+"**Comprehensive observability**: 40+ Prometheus metrics, OpenTelemetry "
+"distributed tracing, structured logging, and request ID propagation."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:75
+#: ../../../advanced_features/sgl_model_gateway.md:966
+msgid "Architecture"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:77
+msgid "Control Plane"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:79
+msgid ""
+"**Worker Manager** discovers capabilities (`/get_server_info`, `/"
+"get_model_info`), tracks load, and registers/removes workers in the shared "
+"registry."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:80
+msgid ""
+"**Job Queue** serializes add/remove requests and exposes status (`/workers/"
+"{worker_id}`) so clients can track onboarding progress."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:81
+msgid ""
+"**Load Monitor** feeds cache-aware and power-of-two policies with live "
+"worker load statistics."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:82
+msgid ""
+"**Health Checker** continuously probes workers and updates readiness, "
+"circuit breaker state, and router metrics."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:83
+msgid ""
+"**Tokenizer Registry** manages dynamically registered tokenizers with async "
+"loading from HuggingFace or local paths."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:85
+msgid "Data Plane"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:87
+msgid ""
+"**HTTP routers** (regular & PD) implement `/generate`, `/v1/chat/"
+"completions`, `/v1/completions`, `/v1/responses`, `/v1/embeddings`, `/v1/"
+"rerank`, `/v1/classify`, `/v1/tokenize`, `/v1/detokenize`, and associated "
+"admin endpoints."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:88
+msgid ""
+"**gRPC router** streams tokenized requests directly to SRT gRPC workers, "
+"running fully in Rust—tokenizer, reasoning parser, and tool parser all "
+"reside in-process. Supports both single-stage and PD routing, including "
+"embeddings."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:89
+msgid ""
+"**OpenAI router** proxies OpenAI-compatible endpoints to external vendors "
+"(OpenAI, xAI, etc.) while keeping chat history and multi-turn orchestration "
+"local."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:91
+msgid "Storage and Privacy"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:93
+msgid ""
+"Conversation and response history is stored at the router tier (memory, "
+"none, Oracle ATP, or PostgreSQL). The same history can power multiple models "
+"or MCP loops without sending data to upstream vendors."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:94
+msgid ""
+"`/v1/responses` agentic flows, MCP sessions, and conversation APIs share the "
+"same storage layer, enabling compliance for regulated workloads."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:98
+#: ../../../advanced_features/sgl_model_gateway.md:938
+#: ../../../advanced_features/sgl_model_gateway.md:986
+msgid "Installation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:100
+msgid "Docker"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:102
+msgid ""
+"Pre-built Docker images are available on Docker Hub with multi-architecture "
+"support (x86_64 and ARM64):"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:104
+msgid "docker pull lmsysorg/sgl-model-gateway:latest\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:108
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:110
+msgid "**Rust and Cargo**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:111
+msgid ""
+"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh\n"
+"source \"$HOME/.cargo/env\"\n"
+"rustc --version\n"
+"cargo --version\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:117
+msgid "**Python** with `pip` and virtualenv tooling available."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:119
+msgid "Rust Binary"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:121
+msgid ""
+"cd sgl-model-gateway\n"
+"cargo build --release\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:126
+msgid "Python Package"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:128
+msgid ""
+"pip install maturin\n"
+"\n"
+"# Fast development mode\n"
+"cd sgl-model-gateway/bindings/python\n"
+"maturin develop\n"
+"\n"
+"# Production build\n"
+"maturin build --release --out dist --features vendored-openssl\n"
+"pip install --force-reinstall dist/*.whl\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:142
+msgid "Quick Start"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:144
+msgid "Regular HTTP Routing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:146
+msgid ""
+"# Rust binary\n"
+"./target/release/sgl-model-gateway \\\n"
+"  --worker-urls http://worker1:8000 http://worker2:8000 \\\n"
+"  --policy cache_aware\n"
+"\n"
+"# Python launcher\n"
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 http://worker2:8000 \\\n"
+"  --policy cache_aware\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:158
+msgid "gRPC Routing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:160
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls grpc://127.0.0.1:20000 \\\n"
+"  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --reasoning-parser deepseek-r1 \\\n"
+"  --tool-call-parser json \\\n"
+"  --host 0.0.0.0 --port 8080\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:171
+msgid "Deployment Modes"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:173
+msgid "Co-launch Router and Workers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:175
+msgid "Launch the router and a fleet of SGLang workers in one process:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:177
+msgid ""
+"python -m sglang_router.launch_server \\\n"
+"  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"  --dp-size 4 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:185
+msgid ""
+"Comprehensive example with router arguments (prefixed with `--router-`):"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:187
+msgid ""
+"python -m sglang_router.launch_server \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 8080 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --tp-size 1 \\\n"
+"  --dp-size 8 \\\n"
+"  --grpc-mode \\\n"
+"  --log-level debug \\\n"
+"  --router-prometheus-port 10001 \\\n"
+"  --router-tool-call-parser llama \\\n"
+"  --router-model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --router-policy round_robin \\\n"
+"  --router-log-level debug\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:203
+msgid "Separate Launch (HTTP)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:205
+msgid "Run workers independently and point the router at their HTTP endpoints:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:207
+msgid ""
+"# Worker nodes\n"
+"python -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-Instruct "
+"--port 8000\n"
+"python -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-Instruct "
+"--port 8001\n"
+"\n"
+"# Router node\n"
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
+"  --policy cache_aware \\\n"
+"  --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:219
+msgid "gRPC Launch"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:221
+msgid ""
+"Use SRT gRPC workers to unlock the highest throughput and access native "
+"reasoning/tool pipelines:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:223
+msgid ""
+"# Workers expose gRPC endpoints\n"
+"python -m sglang.launch_server \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --grpc-mode \\\n"
+"  --port 20000\n"
+"\n"
+"# Router\n"
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls grpc://127.0.0.1:20000 \\\n"
+"  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --reasoning-parser deepseek-r1 \\\n"
+"  --tool-call-parser json \\\n"
+"  --host 0.0.0.0 --port 8080\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:239
+msgid ""
+"The gRPC router supports both regular HTTP-equivalent serving and PD "
+"(prefill/decode) serving. Provide `--tokenizer-path` or `--model-path` "
+"(HuggingFace ID or local directory) whenever connection mode resolves to "
+"gRPC."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:241
+msgid "Prefill-Decode Disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:243
+msgid "Split prefill and decode workers for PD-aware caching and balancing:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:245
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --pd-disaggregation \\\n"
+"  --prefill http://prefill1:30001 9001 \\\n"
+"  --decode http://decode1:30011 \\\n"
+"  --prefill-policy cache_aware \\\n"
+"  --decode-policy power_of_two\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:254
+msgid ""
+"Prefill entries accept an optional bootstrap port. PD mode merges prefill "
+"metadata with decode outputs and streams results back to the client."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:256
+msgid "OpenAI Backend Proxy"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:258
+msgid ""
+"Proxy OpenAI-compatible endpoints while keeping history and MCP sessions "
+"local:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:260
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --backend openai \\\n"
+"  --worker-urls https://api.openai.com \\\n"
+"  --history-backend memory\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:267
+msgid ""
+"OpenAI backend mode expects exactly one `--worker-urls` entry per router "
+"instance."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:269
+msgid "Multi-Model Inference Gateway"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:271
+msgid "Enable IGW mode to route multiple models through a single router:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:273
+msgid ""
+"./target/release/sgl-model-gateway \\\n"
+"  --enable-igw \\\n"
+"  --policy cache_aware \\\n"
+"  --max-concurrent-requests 512\n"
+"\n"
+"# Register workers dynamically\n"
+"curl -X POST http://localhost:30000/workers \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"        \"url\": \"http://worker-a:8000\",\n"
+"        \"model_id\": \"mistral\",\n"
+"        \"priority\": 10,\n"
+"        \"labels\": {\"tier\": \"gold\"}\n"
+"      }'\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:292
+msgid "API Reference"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:294
+msgid "Inference Endpoints"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Method"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Path"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`POST`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/generate`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "SGLang generate API"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/chat/completions`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "OpenAI-compatible chat completions (streaming/tool calls)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/completions`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "OpenAI-compatible text completions"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/embeddings`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Embedding generation (HTTP and gRPC)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/rerank`, `/rerank`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Reranking requests"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/classify`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Text classification"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:305
+msgid "Tokenization Endpoints"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:307
+msgid ""
+"The gateway provides HTTP endpoints for text tokenization with batch "
+"support, designed to mirror the SGLang Python tokenization API."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/tokenize`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Tokenize text to token IDs (single or batch)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/detokenize`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Convert token IDs back to text (single or batch)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/tokenizers`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Register a new tokenizer (async, returns job status)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`GET`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "List all registered tokenizers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/tokenizers/{id}`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Get tokenizer info by UUID"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/tokenizers/{id}/status`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Check async tokenizer loading status"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`DELETE`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Remove a tokenizer from the registry"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:319
+msgid "Tokenize Request"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:321
+msgid ""
+"{\n"
+"  \"model\": \"meta-llama/Llama-3.1-8B-Instruct\",\n"
+"  \"prompt\": \"Hello, world!\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:328
+msgid "Batch Tokenize Request"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:330
+msgid ""
+"{\n"
+"  \"model\": \"meta-llama/Llama-3.1-8B-Instruct\",\n"
+"  \"prompt\": [\"Hello\", \"World\", \"How are you?\"]\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:337
+msgid "Tokenize Response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:339
+msgid ""
+"{\n"
+"  \"tokens\": [15339, 11, 1917, 0],\n"
+"  \"count\": 4,\n"
+"  \"char_count\": 13\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:347
+msgid "Detokenize Request"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:349
+msgid ""
+"{\n"
+"  \"model\": \"meta-llama/Llama-3.1-8B-Instruct\",\n"
+"  \"tokens\": [15339, 11, 1917, 0],\n"
+"  \"skip_special_tokens\": true\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:357
+msgid "Detokenize Response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:359
+msgid ""
+"{\n"
+"  \"text\": \"Hello, world!\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:365
+msgid "Add Tokenizer (Async)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:367
+msgid ""
+"curl -X POST http://localhost:30000/v1/tokenizers \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\"name\": \"llama3\", \"source\": \"meta-llama/Llama-3.1-8B-"
+"Instruct\"}'\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:373
+#: ../../../advanced_features/sgl_model_gateway.md:465
+msgid "Response:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:374
+msgid ""
+"{\n"
+"  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n"
+"  \"status\": \"pending\",\n"
+"  \"message\": \"Tokenizer registration queued\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:382
+msgid "Check status:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:383
+msgid ""
+"curl http://localhost:30000/v1/tokenizers/550e8400-e29b-41d4-"
+"a716-446655440000/status\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:387
+msgid "Parser Endpoints"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:389
+msgid ""
+"The gateway provides admin endpoints for parsing reasoning content and "
+"function calls from LLM outputs."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/parse/reasoning`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Separate reasoning (`<think>`) from normal text"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/parse/function_call`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Parse function/tool calls from text"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:396
+msgid "Separate Reasoning Request"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:398
+msgid ""
+"{\n"
+"  \"text\": \"<think>Let me analyze this step by step...</think>The answer "
+"is 42.\",\n"
+"  \"parser\": \"deepseek-r1\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:405
+msgid "Response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:407
+msgid ""
+"{\n"
+"  \"normal_text\": \"The answer is 42.\",\n"
+"  \"reasoning_text\": \"Let me analyze this step by step...\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:414
+msgid "Function Call Parsing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:416
+msgid ""
+"{\n"
+"  \"text\": \"{\\\"name\\\": \\\"get_weather\\\", \\\"arguments\\\": {\\"
+"\"city\\\": \\\"NYC\\\"}}\",\n"
+"  \"parser\": \"json\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:423
+msgid "Conversation and Response APIs"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/responses`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Create background responses (agentic loops)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/responses/{id}`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Retrieve stored response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/responses/{id}/cancel`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Cancel background response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Delete response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/responses/{id}/input_items`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "List response input items"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/conversations`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Create conversation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/conversations/{id}`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Get conversation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Update conversation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Delete conversation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/conversations/{id}/items`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "List conversation items"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Add items to conversation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/conversations/{id}/items/{item_id}`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Get conversation item"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Delete conversation item"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:441
+msgid "Worker Management APIs"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/workers`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Queue worker registration (returns 202 Accepted)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "List workers with health, load, and policy metadata"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/workers/{worker_id}`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Inspect specific worker or job queue entry"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`PUT`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Queue worker update"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Queue worker removal"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:451
+msgid "Add Worker"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:453
+msgid ""
+"curl -X POST http://localhost:30000/workers \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\"url\":\"grpc://0.0.0.0:31000\",\"worker_type\":\"regular\"}'\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:459
+msgid "List Workers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:461
+msgid "curl http://localhost:30000/workers\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:466
+msgid ""
+"{\n"
+"  \"workers\": [\n"
+"    {\n"
+"      \"id\": \"2f3a0c3e-3a7b-4c3f-8c70-1b7d4c3a6e1f\",\n"
+"      \"url\": \"http://0.0.0.0:31378\",\n"
+"      \"model_id\": \"mistral\",\n"
+"      \"priority\": 50,\n"
+"      \"cost\": 1.0,\n"
+"      \"worker_type\": \"regular\",\n"
+"      \"is_healthy\": true,\n"
+"      \"load\": 0,\n"
+"      \"connection_mode\": \"Http\"\n"
+"    }\n"
+"  ],\n"
+"  \"total\": 1,\n"
+"  \"stats\": {\n"
+"    \"prefill_count\": 0,\n"
+"    \"decode_count\": 0,\n"
+"    \"regular_count\": 1\n"
+"  }\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:490
+msgid "Admin and Health Endpoints"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/liveness`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Health check (always returns OK)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/readiness`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Readiness check (checks healthy worker availability)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/health`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Alias for liveness"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/health_generate`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Health generate test"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/engine_metrics`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Engine-level metrics from workers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/v1/models`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "List available models"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/get_model_info`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Get model information"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/get_server_info`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Get server information"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/flush_cache`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Clear all caches"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/get_loads`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Get all worker loads"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/wasm`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Upload WASM module"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "List WASM modules"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`/wasm/{module_uuid}`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Remove WASM module"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:510
+msgid "Load Balancing Policies"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Policy"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+#: ../../../advanced_features/sgl_model_gateway.md:636
+#: ../../../advanced_features/sgl_model_gateway.md:665
+#: ../../../advanced_features/sgl_model_gateway.md:949
+msgid "Usage"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`random`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Uniform random selection"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--policy random`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`round_robin`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Cycles through workers in order"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--policy round_robin`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`power_of_two`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Samples two workers and picks the lighter one"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--policy power_of_two`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`cache_aware`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Combines cache locality with load balancing (default)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--policy cache_aware`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`bucket`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Divides workers into load buckets with dynamic boundaries"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--policy bucket`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:520
+msgid "Cache-Aware Policy Tuning"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:522
+msgid ""
+"--cache-threshold 0.5 \\\n"
+"--balance-abs-threshold 32 \\\n"
+"--balance-rel-threshold 1.5 \\\n"
+"--eviction-interval-secs 120 \\\n"
+"--max-tree-size 67108864\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Parameter"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--cache-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "0.3"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Minimum prefix match ratio for cache hit"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--balance-abs-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "64"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Absolute load difference before rebalancing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--balance-rel-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "1.5"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Relative load ratio before rebalancing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--eviction-interval-secs`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "120"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Cache eviction cadence in seconds"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--max-tree-size`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "67108864"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Maximum nodes in cache tree"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:540
+msgid "Reliability and Flow Control"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:542
+msgid "Retries"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:544
+msgid "Configure exponential backoff retries:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:546
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
+"  --retry-max-retries 5 \\\n"
+"  --retry-initial-backoff-ms 50 \\\n"
+"  --retry-max-backoff-ms 30000 \\\n"
+"  --retry-backoff-multiplier 1.5 \\\n"
+"  --retry-jitter-factor 0.2\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--retry-max-retries`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "5"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Maximum retry attempts"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--retry-initial-backoff-ms`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "50"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Initial backoff duration (ms)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--retry-max-backoff-ms`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "5000"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Maximum backoff duration (ms)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--retry-backoff-multiplier`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "2.0"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Exponential backoff multiplier"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--retry-jitter-factor`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "0.1"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Random jitter factor (0.0-1.0)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--disable-retries`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "false"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Disable retries entirely"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:565
+msgid "**Retryable Status Codes:** 408, 429, 500, 502, 503, 504"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+#: ../../../advanced_features/sgl_model_gateway.md:567
+msgid "Circuit Breaker"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:569
+msgid "Per-worker circuit breakers prevent cascading failures:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:571
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
+"  --cb-failure-threshold 5 \\\n"
+"  --cb-success-threshold 2 \\\n"
+"  --cb-timeout-duration-secs 30 \\\n"
+"  --cb-window-duration-secs 60\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--cb-failure-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Consecutive failures to open circuit"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--cb-success-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "2"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Successes to close from half-open"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--cb-timeout-duration-secs`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "30"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Time before half-open attempt"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--cb-window-duration-secs`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "60"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Failure counting window"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--disable-circuit-breaker`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Disable circuit breaker"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:588
+msgid "**Circuit Breaker States:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:589
+msgid "**Closed**: Normal operation, requests allowed"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:590
+msgid "**Open**: Failing, requests rejected immediately"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:591
+msgid "**Half-Open**: Testing recovery, limited requests allowed"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:593
+msgid "Rate Limiting and Queuing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:595
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 http://worker2:8001 \\\n"
+"  --max-concurrent-requests 256 \\\n"
+"  --rate-limit-tokens-per-second 512 \\\n"
+"  --queue-size 128 \\\n"
+"  --queue-timeout-secs 30\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:604
+msgid "Requests beyond the concurrency limit wait in a FIFO queue. Returns:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:605
+msgid "`429 Too Many Requests` when queue is full"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:606
+msgid "`408 Request Timeout` when queue timeout expires"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:608
+msgid "Health Checks"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:610
+msgid ""
+"--health-check-interval-secs 30 \\\n"
+"--health-check-timeout-secs 10 \\\n"
+"--health-success-threshold 2 \\\n"
+"--health-failure-threshold 3 \\\n"
+"--health-check-endpoint /health\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:620
+msgid "Reasoning Parser Integration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:622
+msgid ""
+"The gateway includes built-in reasoning parsers for models that use Chain-of-"
+"Thought (CoT) reasoning with explicit thinking blocks."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:624
+msgid "Supported Parsers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Parser ID"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Model Family"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Think Tokens"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`deepseek-r1`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "DeepSeek-R1"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`<think>...</think>` (initial reasoning)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`qwen3`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Qwen-3"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`<think>...</think>`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`qwen3-thinking`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Qwen-3 Thinking"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`kimi`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Kimi K2"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Unicode think tokens"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`glm45`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "GLM-4.5/4.6/4.7"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`step3`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Step-3"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`minimax`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "MiniMax"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:638
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls grpc://127.0.0.1:20000 \\\n"
+"  --model-path deepseek-ai/DeepSeek-R1 \\\n"
+"  --reasoning-parser deepseek-r1\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:645
+msgid "The gRPC router automatically:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:646
+msgid "Detects reasoning blocks in streaming output"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:647
+msgid "Separates reasoning content from normal text"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:648
+msgid "Applies incremental streaming parsing with buffer management"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:649
+msgid "Handles partial token detection for correct streaming behavior"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:653
+msgid "Tool Call Parsing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:655
+msgid ""
+"The gateway supports parsing function/tool calls from LLM outputs in "
+"multiple formats."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:657
+msgid "Supported Formats"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Parser"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Format"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`json`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "JSON"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Standard JSON tool calls"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`python`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Pythonic"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Python function call syntax"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`xml`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "XML"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "XML-formatted tool calls"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:667
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls grpc://127.0.0.1:20000 \\\n"
+"  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --tool-call-parser json\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:676
+msgid "Tokenizer Management"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:678
+msgid "Tokenizer Sources"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:680
+msgid "The gateway supports multiple tokenizer backends:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:681
+msgid "**HuggingFace**: Load from HuggingFace Hub by model ID"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:682
+msgid "**Local**: Load from local `tokenizer.json` or directory"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:683
+msgid "**Tiktoken**: Auto-detect OpenAI GPT models (gpt-4, davinci, etc.)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:685
+#: ../../../advanced_features/sgl_model_gateway.md:728
+msgid "Configuration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:687
+msgid ""
+"# HuggingFace model\n"
+"--model-path meta-llama/Llama-3.1-8B-Instruct\n"
+"\n"
+"# Local tokenizer\n"
+"--tokenizer-path /path/to/tokenizer.json\n"
+"\n"
+"# With chat template override\n"
+"--chat-template /path/to/template.jinja\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:698
+msgid "Tokenizer Caching"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:700
+msgid "Two-level caching for optimal performance:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Cache"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Type"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "L0"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Exact match"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Whole-string caching for repeated prompts"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "L1"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Prefix match"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Prefix boundary matching for incremental prompts"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:707
+msgid ""
+"--enable-l0-cache \\\n"
+"--l0-max-entries 10000 \\\n"
+"--enable-l1-cache \\\n"
+"--l1-max-memory 52428800  # 50MB\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:716
+msgid "MCP Integration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:718
+msgid ""
+"The gateway provides native Model Context Protocol (MCP) client integration "
+"for tool execution."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:720
+msgid "Supported Transports"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Transport"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "STDIO"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Local process execution"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "SSE"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Server-Sent Events (HTTP)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Streamable"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Bidirectional streaming"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:730
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --mcp-config-path /path/to/mcp-config.yaml \\\n"
+"  --worker-urls http://worker1:8000\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:736
+msgid "MCP Configuration File"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:738
+msgid ""
+"servers:\n"
+"  - name: \"filesystem\"\n"
+"    command: \"npx\"\n"
+"    args: [\"-y\", \"@modelcontextprotocol/server-filesystem\", \"/tmp\"]\n"
+"    protocol: \"stdio\"\n"
+"    required: false\n"
+"\n"
+"  - name: \"github\"\n"
+"    url: \"https://api.github.com/mcp\"\n"
+"    token: \"ghp_xxxxx\"\n"
+"    protocol: \"sse\"\n"
+"    required: false\n"
+"\n"
+"  - name: \"custom-tools\"\n"
+"    url: \"https://tools.example.com/mcp\"\n"
+"    protocol: \"streamable\"\n"
+"    required: true\n"
+"\n"
+"pool:\n"
+"  max_connections: 100\n"
+"  idle_timeout: 300\n"
+"\n"
+"proxy:\n"
+"  http: \"http://proxy.internal:8080\"\n"
+"  https: \"https://proxy.internal:8443\"\n"
+"  no_proxy: \"localhost,127.0.0.1,*.internal\"\n"
+"\n"
+"inventory:\n"
+"  enable_refresh: true\n"
+"  tool_ttl: 300\n"
+"  refresh_interval: 300\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:774
+msgid "Service Discovery (Kubernetes)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:776
+msgid "Enable automatic worker discovery via Kubernetes pod selectors:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:778
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --service-discovery \\\n"
+"  --selector app=sglang-worker role=inference \\\n"
+"  --service-discovery-namespace production \\\n"
+"  --service-discovery-port 8000\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:786
+msgid "PD Mode Discovery"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:788
+msgid ""
+"--pd-disaggregation \\\n"
+"--prefill-selector app=sglang component=prefill \\\n"
+"--decode-selector app=sglang component=decode \\\n"
+"--service-discovery\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:795
+msgid ""
+"Prefill pods can expose bootstrap ports via the `sglang.ai/bootstrap-port` "
+"annotation. RBAC must allow `get`, `list`, and `watch` on pods."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:799
+msgid "History and Data Connectors"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Backend"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`memory`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "In-memory storage (default)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--history-backend memory`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`none`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "No persistence"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--history-backend none`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`oracle`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Oracle Autonomous Database"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--history-backend oracle`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`postgres`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "PostgreSQL Database"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--history-backend postgres`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:808
+msgid "Oracle Configuration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:810
+msgid ""
+"# Connection descriptor\n"
+"export ATP_DSN=\"(description=(address=(protocol=tcps)(port=1522)(host=adb."
+"region.oraclecloud.com))(connect_data=(service_name=service_name)))\"\n"
+"\n"
+"# Or TNS alias (requires wallet)\n"
+"export ATP_TNS_ALIAS=\"sglroutertestatp_high\"\n"
+"export ATP_WALLET_PATH=\"/path/to/wallet\"\n"
+"\n"
+"# Credentials\n"
+"export ATP_USER=\"admin\"\n"
+"export ATP_PASSWORD=\"secret\"\n"
+"export ATP_POOL_MIN=4\n"
+"export ATP_POOL_MAX=32\n"
+"\n"
+"python -m sglang_router.launch_router \\\n"
+"  --backend openai \\\n"
+"  --worker-urls https://api.openai.com \\\n"
+"  --history-backend oracle\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:830
+msgid "PostgreSQL Configuration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:832
+msgid ""
+"export POSTGRES_DB_URL=\"postgres://user:password@host:5432/dbname\"\n"
+"\n"
+"python -m sglang_router.launch_router \\\n"
+"  --backend openai \\\n"
+"  --worker-urls https://api.openai.com \\\n"
+"  --history-backend postgres\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:843
+msgid "WASM Middleware"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:845
+msgid ""
+"The gateway supports WebAssembly (WASM) middleware modules for custom "
+"request/response processing. This enables organization-specific logic for "
+"authentication, rate limiting, billing, logging, and more—without modifying "
+"or recompiling the gateway."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:849
+msgid ""
+"WASM middleware runs in a sandboxed environment with memory isolation, no "
+"network/filesystem access, and configurable resource limits."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Attach Point"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "When Executed"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Use Cases"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`OnRequest`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Before forwarding to workers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Auth, rate limiting, request modification"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`OnResponse`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "After receiving worker response"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Logging, response modification, error handling"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Action"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`Continue`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Proceed without modification"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`Reject(status)`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Reject request with HTTP status code"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`Modify(...)`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Modify headers, body, or status"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:862
+#: ../../../advanced_features/sgl_model_gateway.md:999
+msgid "Examples"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:864
+msgid "Complete working examples are available in `examples/wasm/`:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Example"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`auth/`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "API key authentication for protected routes"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`rate_limit/`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Per-client rate limiting (requests/minute)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`logging/`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Request tracking headers and response modification"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:872
+msgid "The interface definition is located at `src/wasm/interface`."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:874
+msgid "Building Modules"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:876
+msgid ""
+"# Prerequisites\n"
+"rustup target add wasm32-wasip2\n"
+"cargo install wasm-tools\n"
+"\n"
+"# Build\n"
+"cargo build --target wasm32-wasip2 --release\n"
+"\n"
+"# Convert to component format\n"
+"wasm-tools component new \\\n"
+"  target/wasm32-wasip2/release/my_middleware.wasm \\\n"
+"  -o my_middleware.component.wasm\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:890
+msgid "Deploying Modules"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:892
+msgid ""
+"# Enable WASM support\n"
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 \\\n"
+"  --enable-wasm\n"
+"\n"
+"# Upload module\n"
+"curl -X POST http://localhost:30000/wasm \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"    \"modules\": [{\n"
+"      \"name\": \"auth-middleware\",\n"
+"      \"file_path\": \"/absolute/path/to/auth.component.wasm\",\n"
+"      \"module_type\": \"Middleware\",\n"
+"      \"attach_points\": [{\"Middleware\": \"OnRequest\"}]\n"
+"    }]\n"
+"  }'\n"
+"\n"
+"# List modules\n"
+"curl http://localhost:30000/wasm\n"
+"\n"
+"# Remove module\n"
+"curl -X DELETE http://localhost:30000/wasm/{module_uuid}\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:917
+msgid "Runtime Configuration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`max_memory_pages`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "1024 (64MB)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Maximum WASM memory"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`max_execution_time_ms`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "1000"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Execution timeout"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`max_stack_size`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "1MB"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Stack size limit"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`module_cache_size`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "10"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Cached modules per worker"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:926
+msgid ""
+"**Note:** Rate limiting state is per-worker thread and not shared across "
+"gateway replicas. For production, consider implementing rate limiting at a "
+"shared layer (e.g., Redis)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:930
+msgid "Language Bindings"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:932
+msgid ""
+"SGLang Model Gateway provides official language bindings for Python and Go, "
+"enabling integration with different technology stacks and organizational "
+"requirements."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:934
+msgid "Python Bindings"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:936
+msgid ""
+"The Python bindings provide a PyO3-based wrapper around the Rust gateway "
+"library. This is a straightforward binding that calls the gateway server "
+"startup from Python."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:940
+msgid ""
+"# From PyPI\n"
+"pip install sglang-router\n"
+"\n"
+"# Development build\n"
+"cd sgl-model-gateway/bindings/python\n"
+"pip install maturin && maturin develop --features vendored-openssl\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:951
+msgid ""
+"The Python bindings are used throughout this documentation. See the [Quick "
+"Start](#quick-start) and [Deployment Modes](#deployment-modes) sections for "
+"detailed examples."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:953
+msgid "Key components:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:954
+msgid "`RouterArgs` dataclass with 50+ configuration options"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:955
+msgid "`Router.from_args()` for programmatic startup"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:956
+msgid ""
+"CLI commands: `smg launch`, `smg server`, `python -m sglang_router."
+"launch_router`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:958
+msgid "Go Bindings"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:960
+msgid ""
+"The Go bindings provide a high-performance gRPC client library for "
+"organizations with Go-based infrastructure. This is ideal for:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:962
+msgid "Integration with internal Go services and tooling"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:963
+msgid "High-performance client applications"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:964
+msgid "Building custom OpenAI-compatible proxy servers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:968
+msgid ""
+"┌─────────────────────────────────────────┐\n"
+"│         High-Level Go API               │\n"
+"│   (client.go - OpenAI-style interface)  │\n"
+"├─────────────────────────────────────────┤\n"
+"│         gRPC Layer                      │\n"
+"├─────────────────────────────────────────┤\n"
+"│         Rust FFI Layer                  │\n"
+"│   (Tokenization, Parsing, Conversion)   │\n"
+"└─────────────────────────────────────────┘\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:980
+msgid "**Key Features:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:981
+msgid "Native Rust tokenization via FFI (thread-safe, lock-free)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:982
+msgid "Full streaming support with context cancellation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:983
+msgid "Configurable channel buffer sizes for high concurrency"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:984
+msgid "Built-in tool call parsing and chat template application"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:988
+msgid ""
+"# Build the FFI library first\n"
+"cd sgl-model-gateway/bindings/golang\n"
+"make build && make lib\n"
+"\n"
+"# Then use in your Go project\n"
+"go get github.com/sgl-project/sgl-go-sdk\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:997
+msgid "**Requirements:** Go 1.24+, Rust toolchain"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1001
+msgid "Complete working examples are available in `bindings/golang/examples/`:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`simple/`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Non-streaming chat completion"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`streaming/`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Streaming chat completion with SSE"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`oai_server/`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Full OpenAI-compatible HTTP server"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1009
+msgid ""
+"# Run examples\n"
+"cd sgl-model-gateway/bindings/golang/examples/simple && ./run.sh\n"
+"cd sgl-model-gateway/bindings/golang/examples/streaming && ./run.sh\n"
+"cd sgl-model-gateway/bindings/golang/examples/oai_server && ./run.sh\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1016
+msgid "Testing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1018
+msgid ""
+"cd sgl-model-gateway/bindings/golang\n"
+"\n"
+"# Unit tests\n"
+"go test -v ./...\n"
+"\n"
+"# Integration tests (requires running SGLang server)\n"
+"export SGL_GRPC_ENDPOINT=grpc://localhost:20000\n"
+"export SGL_TOKENIZER_PATH=/path/to/tokenizer\n"
+"go test -tags=integration -v ./...\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1030
+msgid "Comparison"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Feature"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Python"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Go"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "**Primary Use**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Gateway server launcher"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "gRPC client library"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "**CLI Support**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Full CLI (smg, sglang-router)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Library only"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "**K8s Discovery**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Native support"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "N/A (client library)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "**PD Mode**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Built-in"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1039
+msgid ""
+"**When to Use Python:** Launching and managing the gateway server, service "
+"discovery, PD disaggregation."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1041
+msgid ""
+"**When to Use Go:** Building custom client applications, integration with Go "
+"microservices, OpenAI-compatible proxy servers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1045
+msgid "Security and Authentication"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1047
+msgid "Router API Key"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1049
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --api-key \"your-router-api-key\" \\\n"
+"  --worker-urls http://worker1:8000\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1055
+msgid ""
+"Clients must supply `Authorization: Bearer <key>` for protected endpoints."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1057
+msgid "Worker API Keys"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1059
+msgid ""
+"# Add worker with explicit key\n"
+"curl -H \"Authorization: Bearer router-key\" \\\n"
+"  -X POST http://localhost:8080/workers \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\"url\":\"http://worker:8000\",\"api_key\":\"worker-key\"}'\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1067
+msgid "Security Configurations"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1069
+msgid "**No Authentication** (default): Use only in trusted environments"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1070
+msgid "**Router-only Authentication**: Clients authenticate to router"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1071
+msgid "**Worker-only Authentication**: Router open, workers require keys"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1072
+msgid "**Full Authentication**: Both router and workers protected"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1074
+msgid "TLS (HTTPS) for Gateway Server"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1076
+msgid "Enable TLS to serve the gateway over HTTPS:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1078
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 \\\n"
+"  --tls-cert-path /path/to/server.crt \\\n"
+"  --tls-key-path /path/to/server.key\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--tls-cert-path`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Path to server certificate (PEM format)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--tls-key-path`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Path to server private key (PEM format)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1090
+msgid ""
+"Both parameters must be provided together. The gateway uses rustls with the "
+"ring crypto provider for TLS termination. If TLS is not configured, the "
+"gateway falls back to plain HTTP."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1092
+msgid "mTLS for Worker Communication"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1094
+msgid ""
+"Enable mutual TLS (mTLS) for secure communication with workers in HTTP mode:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1096
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls https://worker1:8443 https://worker2:8443 \\\n"
+"  --client-cert-path /path/to/client.crt \\\n"
+"  --client-key-path /path/to/client.key \\\n"
+"  --ca-cert-path /path/to/ca.crt\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--client-cert-path`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Path to client certificate for mTLS (PEM format)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--client-key-path`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Path to client private key for mTLS (PEM format)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--ca-cert-path`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"Path to CA certificate for verifying worker TLS (PEM format, repeatable)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1110
+msgid "**Key Points:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1111
+msgid "Client certificate and key must be provided together"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1112
+msgid ""
+"Multiple CA certificates can be added with multiple `--ca-cert-path` flags"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1113
+msgid "Uses rustls backend when TLS is configured"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1114
+msgid ""
+"Single HTTP client is created for all workers (assumes single security "
+"domain)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1115
+msgid "TCP keepalive (30 seconds) is enabled for long-lived connections"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1117
+msgid "Full TLS Configuration Example"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1119
+msgid "Gateway HTTPS + Worker mTLS + API Key authentication:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1121
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls https://worker1:8443 https://worker2:8443 \\\n"
+"  --tls-cert-path /etc/certs/server.crt \\\n"
+"  --tls-key-path /etc/certs/server.key \\\n"
+"  --client-cert-path /etc/certs/client.crt \\\n"
+"  --client-key-path /etc/certs/client.key \\\n"
+"  --ca-cert-path /etc/certs/ca.crt \\\n"
+"  --api-key \"secure-api-key\" \\\n"
+"  --policy cache_aware\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1135
+msgid "Observability"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1137
+msgid "Prometheus Metrics"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1139
+msgid ""
+"Enable with `--prometheus-host`/`--prometheus-port` (defaults to "
+"`0.0.0.0:29000`)."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1141
+msgid "Metric Categories (40+ metrics)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Layer"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Prefix"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Metrics"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "HTTP"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_http_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`requests_total`, `request_duration_seconds`, `responses_total`, "
+"`connections_active`, `rate_limit_total`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Router"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_router_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`requests_total`, `request_duration_seconds`, `request_errors_total`, "
+"`stage_duration_seconds`, `upstream_responses_total`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Inference"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`ttft_seconds`, `tpot_seconds`, `tokens_total`, `generation_duration_seconds`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Worker"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_worker_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`pool_size`, `connections_active`, `requests_active`, `health_checks_total`, "
+"`selection_total`, `errors_total`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_worker_cb_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`state`, `transitions_total`, `outcomes_total`, `consecutive_failures`, "
+"`consecutive_successes`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Retry"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`retries_total`, `retries_exhausted_total`, `retry_backoff_seconds`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Discovery"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_discovery_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`registrations_total`, `deregistrations_total`, `sync_duration_seconds`, "
+"`workers_discovered`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "MCP"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_mcp_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`tool_calls_total`, `tool_duration_seconds`, `servers_active`, "
+"`tool_iterations_total`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Database"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_db_*`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid ""
+"`operations_total`, `operation_duration_seconds`, `connections_active`, "
+"`items_stored`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1155
+msgid "Key Inference Metrics (gRPC mode)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Metric"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_router_ttft_seconds`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Histogram"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Time to first token"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_router_tpot_seconds`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Time per output token"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_router_tokens_total`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Counter"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Total tokens (input/output)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`smg_router_generation_duration_seconds`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "End-to-end generation time"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1164
+msgid "Duration Buckets"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1166
+msgid ""
+"1ms, 5ms, 10ms, 25ms, 50ms, 100ms, 250ms, 500ms, 1s, 2.5s, 5s, 10s, 15s, "
+"30s, 45s, 60s, 90s, 120s, 180s, 240s"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1168
+msgid "OpenTelemetry Tracing"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1170
+msgid "Enable distributed tracing with OTLP export:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1172
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 \\\n"
+"  --enable-trace \\\n"
+"  --otlp-traces-endpoint localhost:4317\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1179
+msgid "Features"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1181
+msgid "OTLP/gRPC exporter (default port 4317)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1182
+msgid "W3C Trace Context propagation for HTTP and gRPC"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1183
+msgid "Batch span processing (500ms delay, 64 span batch size)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1184
+msgid "Custom filtering to reduce noise"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1185
+msgid "Trace context injection into upstream worker requests"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1186
+msgid "Service name: `sgl-router`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1188
+msgid "Logging"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1190
+#: ../../../advanced_features/sgl_model_gateway.md:1637
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls http://worker1:8000 \\\n"
+"  --log-level debug \\\n"
+"  --log-dir ./router_logs\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1197
+msgid ""
+"Structured tracing with optional file sink. Log levels: `debug`, `info`, "
+"`warn`, `error`."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1199
+msgid "Request ID Propagation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1201
+msgid "--request-id-headers x-request-id x-trace-id x-correlation-id\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1205
+msgid "Responses include `x-request-id` header for correlation."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1209
+msgid "Production Recommendations"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1211
+msgid ""
+"This section provides guidance for deploying SGLang Model Gateway in "
+"production environments."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1213
+msgid "Security Best Practices"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1215
+msgid "**Always enable TLS in production:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1217
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls https://worker1:8443 https://worker2:8443 \\\n"
+"  --tls-cert-path /etc/certs/server.crt \\\n"
+"  --tls-key-path /etc/certs/server.key \\\n"
+"  --client-cert-path /etc/certs/client.crt \\\n"
+"  --client-key-path /etc/certs/client.key \\\n"
+"  --ca-cert-path /etc/certs/ca.crt \\\n"
+"  --api-key \"${ROUTER_API_KEY}\"\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1228
+msgid "**Security Checklist:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1229
+msgid "Enable TLS for gateway HTTPS termination"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1230
+msgid ""
+"Enable mTLS for worker communication when workers are on untrusted networks"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1231
+msgid "Set `--api-key` to protect router endpoints"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1232
+msgid "Use Kubernetes Secrets or a secrets manager for credentials"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1233
+msgid "Rotate certificates and API keys periodically"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1234
+msgid "Restrict network access with firewalls or network policies"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1236
+msgid "High Availability"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1238
+msgid "**Scaling Strategy:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1240
+msgid ""
+"The gateway supports running multiple replicas behind a load balancer for "
+"high availability. However, there are important considerations:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Component"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Shared Across Replicas"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Impact"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Worker Registry"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "No (independent)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Each replica discovers workers independently"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Radix Cache Tree"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Cache hits may decrease by 10-20%"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Circuit Breaker State"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Each replica tracks failures independently"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Rate Limiting"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Limits apply per-replica, not globally"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1249
+msgid "**Recommendations:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1251
+msgid ""
+"**Prefer horizontal scaling over vertical scaling**: Deploy multiple smaller "
+"gateway replicas rather than one large instance with excessive CPU and "
+"memory. This provides:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1252
+msgid ""
+"Better fault tolerance (single replica failure doesn't take down the gateway)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1253
+msgid "More predictable resource usage"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1254
+msgid "Easier capacity planning"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1256
+msgid ""
+"**Use Kubernetes Service Discovery**: Let the gateway automatically discover "
+"and manage workers:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1257
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --service-discovery \\\n"
+"  --selector app=sglang-worker \\\n"
+"  --service-discovery-namespace production\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1264
+msgid ""
+"**Accept cache efficiency trade-off**: With multiple replicas, the cache-"
+"aware routing policy's radix tree is not synchronized across replicas. This "
+"means:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1265
+msgid "Each replica builds its own cache tree"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1266
+msgid "Requests from the same user may hit different replicas"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1267
+msgid "Expected cache hit rate reduction: **10-20%**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1268
+msgid "This is often acceptable given the HA benefits"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1270
+msgid ""
+"**Configure session affinity (optional)**: If cache efficiency is critical, "
+"configure your load balancer for session affinity based on a consistent hash "
+"of the request (e.g., user ID or API key)."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1272
+msgid "**Example HA Architecture:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1273
+msgid ""
+"                    ┌─────────────────┐\n"
+"                    │  Load Balancer  │\n"
+"                    │   (L4/L7)       │\n"
+"                    └────────┬────────┘\n"
+"              ┌──────────────┼──────────────┐\n"
+"              │              │              │\n"
+"        ┌─────▼─────┐  ┌─────▼─────┐  ┌─────▼─────┐\n"
+"        │  Gateway  │  │  Gateway  │  │  Gateway  │\n"
+"        │ Replica 1 │  │ Replica 2 │  │ Replica 3 │\n"
+"        └─────┬─────┘  └─────┬─────┘  └─────┬─────┘\n"
+"              │              │              │\n"
+"              └──────────────┼──────────────┘\n"
+"                             │\n"
+"              ┌──────────────┼──────────────┐\n"
+"              │              │              │\n"
+"        ┌─────▼─────┐  ┌─────▼─────┐  ┌─────▼─────┐\n"
+"        │  Worker   │  │  Worker   │  │  Worker   │\n"
+"        │  Pod 1    │  │  Pod 2    │  │  Pod N    │\n"
+"        └───────────┘  └───────────┘  └───────────┘\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1295
+msgid "Performance"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1297
+msgid "**Use gRPC mode for high throughput:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1299
+msgid "gRPC mode provides the highest performance for SGLang workers:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1301
+msgid ""
+"# Start workers in gRPC mode\n"
+"python -m sglang.launch_server \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --grpc-mode \\\n"
+"  --port 20000\n"
+"\n"
+"# Configure gateway for gRPC\n"
+"python -m sglang_router.launch_router \\\n"
+"  --worker-urls grpc://worker1:20000 grpc://worker2:20000 \\\n"
+"  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --policy cache_aware\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1315
+msgid "**Performance Benefits of gRPC:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1316
+msgid "Native Rust tokenization (no Python overhead)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1317
+msgid "Streaming with lower latency"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1318
+msgid "Built-in reasoning parser execution"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1319
+msgid "Tool call parsing in the gateway"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1320
+msgid "Reduced serialization overhead"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1322
+msgid "**Tuning Recommendations:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Recommendation"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Reason"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--policy`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Best for repeated prompts, ~30% latency reduction"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--max-concurrent-requests`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "2-4x worker count"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Prevent overload while maximizing throughput"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--queue-size`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "2x max-concurrent"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Buffer for burst traffic"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--request-timeout-secs`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Based on max generation length"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Prevent stuck requests"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1331
+msgid "Kubernetes Deployment"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1333
+msgid "**Pod Labeling for Service Discovery:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1335
+msgid ""
+"For the gateway to discover workers automatically, label your worker pods "
+"consistently:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1337
+msgid ""
+"# Worker Deployment (Regular Mode)\n"
+"apiVersion: apps/v1\n"
+"kind: Deployment\n"
+"metadata:\n"
+"  name: sglang-worker\n"
+"  namespace: production\n"
+"spec:\n"
+"  replicas: 4\n"
+"  selector:\n"
+"    matchLabels:\n"
+"      app: sglang-worker\n"
+"      component: inference\n"
+"  template:\n"
+"    metadata:\n"
+"      labels:\n"
+"        app: sglang-worker\n"
+"        component: inference\n"
+"        model: llama-3-8b\n"
+"    spec:\n"
+"      containers:\n"
+"      - name: worker\n"
+"        image: lmsysorg/sglang:latest\n"
+"        ports:\n"
+"        - containerPort: 8000\n"
+"          name: http\n"
+"        - containerPort: 20000\n"
+"          name: grpc\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1367
+msgid "**Gateway configuration for discovery:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1368
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --service-discovery \\\n"
+"  --selector app=sglang-worker component=inference \\\n"
+"  --service-discovery-namespace production \\\n"
+"  --service-discovery-port 8000\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1376
+msgid "**PD (Prefill/Decode) Mode Labeling:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1378
+msgid ""
+"# Prefill Worker\n"
+"metadata:\n"
+"  labels:\n"
+"    app: sglang-worker\n"
+"    component: prefill\n"
+"  annotations:\n"
+"    sglang.ai/bootstrap-port: \"9001\"\n"
+"\n"
+"# Decode Worker\n"
+"metadata:\n"
+"  labels:\n"
+"    app: sglang-worker\n"
+"    component: decode\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1394
+msgid "**Gateway configuration for PD discovery:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1395
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"  --service-discovery \\\n"
+"  --pd-disaggregation \\\n"
+"  --prefill-selector app=sglang-worker component=prefill \\\n"
+"  --decode-selector app=sglang-worker component=decode \\\n"
+"  --service-discovery-namespace production\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1404
+msgid "**RBAC Requirements:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1406
+msgid "The gateway needs permissions to watch pods:"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1408
+msgid ""
+"apiVersion: rbac.authorization.k8s.io/v1\n"
+"kind: Role\n"
+"metadata:\n"
+"  name: sglang-gateway\n"
+"  namespace: production\n"
+"rules:\n"
+"- apiGroups: [\"\"]\n"
+"  resources: [\"pods\"]\n"
+"  verbs: [\"get\", \"list\", \"watch\"]\n"
+"---\n"
+"apiVersion: rbac.authorization.k8s.io/v1\n"
+"kind: RoleBinding\n"
+"metadata:\n"
+"  name: sglang-gateway\n"
+"  namespace: production\n"
+"subjects:\n"
+"- kind: ServiceAccount\n"
+"  name: sglang-gateway\n"
+"  namespace: production\n"
+"roleRef:\n"
+"  kind: Role\n"
+"  name: sglang-gateway\n"
+"  apiGroup: rbac.authorization.k8s.io\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1434
+msgid "Monitoring with PromQL"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1436
+msgid ""
+"Configure Prometheus to scrape the gateway metrics endpoint (default: "
+"`:29000/metrics`)."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1438
+msgid "**Essential Dashboards:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1440
+msgid "**1. Request Rate and Latency:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1441
+msgid ""
+"# Request rate by endpoint\n"
+"sum(rate(smg_http_requests_total[5m])) by (path, method)\n"
+"\n"
+"# P50 latency\n"
+"histogram_quantile(0.50, "
+"sum(rate(smg_http_request_duration_seconds_bucket[5m])) by (le))\n"
+"\n"
+"# P99 latency\n"
+"histogram_quantile(0.99, "
+"sum(rate(smg_http_request_duration_seconds_bucket[5m])) by (le))\n"
+"\n"
+"# Error rate\n"
+"sum(rate(smg_http_responses_total{status=~\"5..\"}[5m])) / "
+"sum(rate(smg_http_responses_total[5m]))\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1455
+msgid "**2. Worker Health:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1456
+msgid ""
+"# Healthy workers\n"
+"sum(smg_worker_pool_size)\n"
+"\n"
+"# Active connections per worker\n"
+"smg_worker_connections_active\n"
+"\n"
+"# Worker health check failures\n"
+"sum(rate(smg_worker_health_checks_total{result=\"failure\"}[5m])) by "
+"(worker_id)\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1467
+msgid "**3. Circuit Breaker Status:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1468
+msgid ""
+"# Circuit breaker states (0=closed, 1=open, 2=half-open)\n"
+"smg_worker_cb_state\n"
+"\n"
+"# Circuit breaker transitions\n"
+"sum(rate(smg_worker_cb_transitions_total[5m])) by (worker_id, from_state, "
+"to_state)\n"
+"\n"
+"# Workers with open circuits\n"
+"count(smg_worker_cb_state == 1)\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1479
+msgid "**4. Inference Performance (gRPC mode):**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1480
+msgid ""
+"# Time to first token (P50)\n"
+"histogram_quantile(0.50, sum(rate(smg_router_ttft_seconds_bucket[5m])) by "
+"(le, model))\n"
+"\n"
+"# Time per output token (P99)\n"
+"histogram_quantile(0.99, sum(rate(smg_router_tpot_seconds_bucket[5m])) by "
+"(le, model))\n"
+"\n"
+"# Token throughput\n"
+"sum(rate(smg_router_tokens_total[5m])) by (model, direction)\n"
+"\n"
+"# Generation duration P95\n"
+"histogram_quantile(0.95, "
+"sum(rate(smg_router_generation_duration_seconds_bucket[5m])) by (le))\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1494
+msgid "**5. Rate Limiting and Queuing:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1495
+msgid ""
+"# Rate limit rejections\n"
+"sum(rate(smg_http_rate_limit_total{decision=\"rejected\"}[5m]))\n"
+"\n"
+"# Queue depth (if using concurrency limiting)\n"
+"smg_worker_requests_active\n"
+"\n"
+"# Retry attempts\n"
+"sum(rate(smg_worker_retries_total[5m])) by (worker_id)\n"
+"\n"
+"# Exhausted retries (failures after all retries)\n"
+"sum(rate(smg_worker_retries_exhausted_total[5m]))\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1509
+msgid "**6. MCP Tool Execution:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1510
+msgid ""
+"# Tool call rate\n"
+"sum(rate(smg_mcp_tool_calls_total[5m])) by (server, tool)\n"
+"\n"
+"# Tool latency P95\n"
+"histogram_quantile(0.95, sum(rate(smg_mcp_tool_duration_seconds_bucket[5m])) "
+"by (le, tool))\n"
+"\n"
+"# Active MCP server connections\n"
+"smg_mcp_servers_active\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1521
+msgid "**Alerting Rules Example:**"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1523
+msgid ""
+"groups:\n"
+"- name: sglang-gateway\n"
+"  rules:\n"
+"  - alert: HighErrorRate\n"
+"    expr: |\n"
+"      sum(rate(smg_http_responses_total{status=~\"5..\"}[5m]))\n"
+"      / sum(rate(smg_http_responses_total[5m])) > 0.05\n"
+"    for: 5m\n"
+"    labels:\n"
+"      severity: critical\n"
+"    annotations:\n"
+"      summary: \"High error rate on SGLang Gateway\"\n"
+"\n"
+"  - alert: CircuitBreakerOpen\n"
+"    expr: count(smg_worker_cb_state == 1) > 0\n"
+"    for: 2m\n"
+"    labels:\n"
+"      severity: warning\n"
+"    annotations:\n"
+"      summary: \"Worker circuit breaker is open\"\n"
+"\n"
+"  - alert: HighLatency\n"
+"    expr: |\n"
+"      histogram_quantile(0.99, "
+"sum(rate(smg_http_request_duration_seconds_bucket[5m])) by (le)) > 30\n"
+"    for: 5m\n"
+"    labels:\n"
+"      severity: warning\n"
+"    annotations:\n"
+"      summary: \"P99 latency exceeds 30 seconds\"\n"
+"\n"
+"  - alert: NoHealthyWorkers\n"
+"    expr: sum(smg_worker_pool_size) == 0\n"
+"    for: 1m\n"
+"    labels:\n"
+"      severity: critical\n"
+"    annotations:\n"
+"      summary: \"No healthy workers available\"\n"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1565
+msgid "Configuration Reference"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1567
+msgid "Core Settings"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--host`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "str"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "127.0.0.1"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Router host"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--port`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "int"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "30000"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Router port"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--worker-urls`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "list"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "[]"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Worker URLs (HTTP or gRPC)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "cache_aware"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Routing policy"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "-1"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Concurrency limit (-1 disables)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "600"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Request timeout"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--max-payload-size`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "256MB"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Maximum request payload"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1579
+msgid "Prefill/Decode"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--pd-disaggregation`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "flag"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Enable PD mode"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--prefill`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Prefill URLs + optional bootstrap ports"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--decode`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Decode URLs"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--prefill-policy`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "None"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Override policy for prefill nodes"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--decode-policy`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Override policy for decode nodes"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--worker-startup-timeout-secs`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Worker init timeout"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1590
+msgid "Kubernetes Discovery"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--service-discovery`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Enable discovery"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--selector`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Label selectors (key=value)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--prefill-selector` / `--decode-selector`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "PD mode selectors"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--service-discovery-namespace`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Namespace to watch"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--service-discovery-port`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Worker port (default 80)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "`--bootstrap-port-annotation`"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Annotation for bootstrap ports"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1601
+msgid "TLS Configuration"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Server certificate for gateway HTTPS (PEM)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Server private key for gateway HTTPS (PEM)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Client certificate for worker mTLS (PEM)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "Client private key for worker mTLS (PEM)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:0
+msgid "CA certificate for verifying workers (PEM, repeatable)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1613
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1615
+msgid "Workers Never Ready"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1617
+msgid ""
+"Increase `--worker-startup-timeout-secs` or ensure health probes respond "
+"before router startup."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1619
+msgid "Load Imbalance / Hot Workers"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1621
+msgid ""
+"Inspect `smg_router_requests_total` by worker and tune cache-aware "
+"thresholds (`--balance-*`, `--cache-threshold`)."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1623
+msgid "Circuit Breaker Flapping"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1625
+msgid ""
+"Increase `--cb-failure-threshold` or extend the timeout/window durations. "
+"Consider temporarily disabling retries."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1627
+msgid "Queue Overflow (429)"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1629
+msgid ""
+"Increase `--queue-size` or reduce client concurrency. Ensure `--max-"
+"concurrent-requests` matches downstream capacity."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1631
+msgid "Memory Growth"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1633
+msgid ""
+"Reduce `--max-tree-size` or lower `--eviction-interval-secs` for more "
+"aggressive cache pruning."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1635
+msgid "Debugging"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1644
+msgid "gRPC Connection Issues"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1646
+msgid ""
+"Ensure workers are started with `--grpc-mode` and verify `--model-path` or "
+"`--tokenizer-path` is provided to the router."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1648
+msgid "Tokenizer Loading Failures"
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1650
+msgid ""
+"Check HuggingFace Hub credentials (`HF_TOKEN` environment variable) for "
+"private models. Verify local paths are accessible."
+msgstr ""
+
+#: ../../../advanced_features/sgl_model_gateway.md:1654
+msgid ""
+"SGLang Model Gateway continues to evolve alongside the SGLang runtime. Keep "
+"CLI flags, integrations, and documentation aligned when adopting new "
+"features or contributing improvements."
+msgstr ""

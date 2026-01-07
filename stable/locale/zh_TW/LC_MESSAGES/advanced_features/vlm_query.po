@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-09 11:06+0000\n"
+"POT-Creation-Date: 2026-01-06 08:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,11 +27,115 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:9
-msgid "Query Vision Language Model"
+msgid "Query VLM with Offline Engine"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:21
-msgid "Querying Qwen-VL"
+#: ../../../advanced_features/vlm_query.ipynb:11
+msgid ""
+"This tutorial demonstrates how to use SGLang's **offline Engine API** to "
+"query VLMs. We will demonstrate usage with Qwen2.5-VL and Llama 4. This "
+"section demonstrates three different calling approaches:"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:13
+msgid "**Basic Call**: Directly pass images and text."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:14
+msgid "**Processor Output**: Use HuggingFace processor for data preprocessing."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:15
+msgid ""
+"**Precomputed Embeddings**: Pre-calculate image features to improve "
+"inference efficiency."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:27
+msgid "Understanding the Three Input Formats"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:29
+msgid ""
+"SGLang supports three ways to pass visual data, each optimized for different "
+"scenarios:"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:32
+msgid "1. **Raw Images** - Simplest approach"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:34
+msgid "Pass PIL Images, file paths, URLs, or base64 strings directly"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:35
+msgid "SGLang handles all preprocessing automatically"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:36
+msgid "Best for: Quick prototyping, simple applications"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:39
+msgid "2. **Processor Output** - For custom preprocessing"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:41
+msgid "Pre-process images with HuggingFace processor"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:42
+msgid ""
+"Pass the complete processor output dict with ``format: \"processor_output\"``"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:43
+msgid ""
+"Best for: Custom image transformations, integration with existing pipelines"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:44
+msgid "Requirement: Must use ``input_ids`` instead of text prompt"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:47
+msgid "3. **Precomputed Embeddings** - For maximum performance"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:49
+msgid "Pre-calculate visual embeddings using the vision encoder"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:50
+msgid "Pass embeddings with ``format: \"precomputed_embedding\"``"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:51
+msgid ""
+"Best for: Repeated queries on same images, caching, high-throughput serving"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:52
+msgid ""
+"Performance gain: Avoids redundant vision encoder computation (30-50% "
+"speedup)"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:54
+msgid ""
+"**Key Rule**: Within a single request, use only one format for all images. "
+"Don't mix formats."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:56
+msgid ""
+"The examples below demonstrate all three approaches with both Qwen2.5-VL and "
+"Llama 4 models."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:68
+msgid "Querying Qwen2.5-VL Model"
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
@@ -42,7 +146,7 @@ msgstr ""
 msgid ""
 "import nest_asyncio\n"
 "\n"
-"nest_asyncio.apply()  # Run this first.\n"
+"nest_asyncio.apply()\n"
 "\n"
 "model_path = \"Qwen/Qwen2.5-VL-3B-Instruct\"\n"
 "chat_template = \"qwen2-vl\""
@@ -50,8 +154,6 @@ msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
 msgid ""
-"# Lets create a prompt.\n"
-"\n"
 "from io import BytesIO\n"
 "import requests\n"
 "from PIL import Image\n"
@@ -73,40 +175,73 @@ msgid ""
 "conv.append_message(conv.roles[1], \"\")\n"
 "conv.image_data = [image]\n"
 "\n"
+"print(\"Generated prompt text:\")\n"
 "print(conv.get_prompt())\n"
+"print(f\"\\nImage size: {image.size}\")\n"
 "image"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:78
-#: ../../../advanced_features/vlm_query.ipynb:224
-msgid "Query via the offline Engine API"
+#: ../../../advanced_features/vlm_query.ipynb:125
+msgid "Basic Offline Engine API Call"
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
 msgid ""
 "from sglang import Engine\n"
 "\n"
-"llm = Engine(\n"
-"    model_path=model_path, chat_template=chat_template, "
-"mem_fraction_static=0.8\n"
-")"
+"\n"
+"llm = Engine(model_path=model_path, chat_template=chat_template, "
+"log_level=\"warning\")"
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
 msgid ""
 "out = llm.generate(prompt=conv.get_prompt(), image_data=[image])\n"
+"print(\"Model response:\")\n"
 "print(out[\"text\"])"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:113
-#: ../../../advanced_features/vlm_query.ipynb:269
-msgid "Query via the offline Engine API, but send precomputed embeddings"
+#: ../../../advanced_features/vlm_query.ipynb:160
+#: ../../../advanced_features/vlm_query.ipynb:324
+msgid "Call with Processor Output"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:162
+msgid ""
+"Using a HuggingFace processor to preprocess text and images, and passing the "
+"``processor_output`` directly into ``Engine.generate``."
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
 msgid ""
-"# Compute the image embeddings using Huggingface.\n"
+"from transformers import AutoProcessor\n"
 "\n"
+"processor = AutoProcessor.from_pretrained(model_path, use_fast=True)\n"
+"processor_output = processor(\n"
+"    images=[image], text=conv.get_prompt(), return_tensors=\"pt\"\n"
+")\n"
+"\n"
+"out = llm.generate(\n"
+"    input_ids=processor_output[\"input_ids\"][0].detach().cpu().tolist(),\n"
+"    image_data=[dict(processor_output, format=\"processor_output\")],\n"
+")\n"
+"print(\"Response using processor output:\")\n"
+"print(out[\"text\"])"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:195
+#: ../../../advanced_features/vlm_query.ipynb:354
+msgid "Call with Precomputed Embeddings"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:197
+msgid ""
+"You can pre-calculate image features to avoid repeated visual encoding "
+"processes."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:-1
+msgid ""
 "from transformers import AutoProcessor\n"
 "from transformers import Qwen2_5_VLForConditionalGeneration\n"
 "\n"
@@ -119,41 +254,38 @@ msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
 msgid ""
-"processed_prompt = processor(\n"
+"processor_output = processor(\n"
 "    images=[image], text=conv.get_prompt(), return_tensors=\"pt\"\n"
 ")\n"
-"input_ids = processed_prompt[\"input_ids\"][0].detach().cpu().tolist()\n"
+"\n"
+"input_ids = processor_output[\"input_ids\"][0].detach().cpu().tolist()\n"
+"\n"
 "precomputed_embeddings = vision(\n"
-"    processed_prompt[\"pixel_values\"].cuda(), "
-"processed_prompt[\"image_grid_thw\"].cuda()\n"
+"    processor_output[\"pixel_values\"].cuda(), "
+"processor_output[\"image_grid_thw\"].cuda()\n"
 ")\n"
 "\n"
-"mm_item = dict(\n"
-"    modality=\"IMAGE\",\n"
-"    image_grid_thw=processed_prompt[\"image_grid_thw\"],\n"
-"    precomputed_embeddings=precomputed_embeddings,\n"
+"multi_modal_item = dict(\n"
+"    processor_output,\n"
+"    format=\"precomputed_embedding\",\n"
+"    feature=precomputed_embeddings,\n"
 ")\n"
-"out = llm.generate(input_ids=input_ids, image_data=[mm_item])\n"
-"print(out[\"text\"])"
+"\n"
+"out = llm.generate(input_ids=input_ids, image_data=[multi_modal_item])\n"
+"print(\"Response using precomputed embeddings:\")\n"
+"print(out[\"text\"])\n"
+"\n"
+"llm.shutdown()"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:165
-msgid "Querying Llama 4 (Vision)"
+#: ../../../advanced_features/vlm_query.ipynb:253
+msgid "Querying Llama 4 Vision Model"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:-1
+#: ../../../advanced_features/vlm_query.ipynb:255
 msgid ""
-"import nest_asyncio\n"
-"\n"
-"nest_asyncio.apply()  # Run this first.\n"
-"\n"
 "model_path = \"meta-llama/Llama-4-Scout-17B-16E-Instruct\"\n"
-"chat_template = \"llama-4\""
-msgstr ""
-
-#: ../../../advanced_features/vlm_query.ipynb:-1
-msgid ""
-"# Lets create a prompt.\n"
+"chat_template = \"llama-4\"\n"
 "\n"
 "from io import BytesIO\n"
 "import requests\n"
@@ -161,6 +293,7 @@ msgid ""
 "\n"
 "from sglang.srt.parser.conversation import chat_templates\n"
 "\n"
+"# Download the same example image\n"
 "image = Image.open(\n"
 "    BytesIO(\n"
 "        requests.get(\n"
@@ -176,72 +309,100 @@ msgid ""
 "conv.append_message(conv.roles[1], \"\")\n"
 "conv.image_data = [image]\n"
 "\n"
+"print(\"Llama 4 generated prompt text:\")\n"
 "print(conv.get_prompt())\n"
 "print(f\"Image size: {image.size}\")\n"
 "\n"
 "image"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:-1
-msgid ""
-"from sglang.test.test_utils import is_in_ci\n"
-"\n"
-"if not is_in_ci():\n"
-"    from sglang import Engine\n"
-"\n"
-"    llm = Engine(\n"
-"        model_path=model_path,\n"
-"        trust_remote_code=True,\n"
-"        enable_multimodal=True,\n"
-"        mem_fraction_static=0.8,\n"
-"        tp_size=4,\n"
-"        attention_backend=\"fa3\",\n"
-"        context_length=65536,\n"
-"    )"
+#: ../../../advanced_features/vlm_query.ipynb:296
+msgid "Llama 4 Basic Call"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:-1
+#: ../../../advanced_features/vlm_query.ipynb:298
 msgid ""
-"if not is_in_ci():\n"
-"    out = llm.generate(prompt=conv.get_prompt(), image_data=[image])\n"
-"    print(out[\"text\"])"
+"Llama 4 requires more computational resources, so it's configured with multi-"
+"GPU parallelism (tp_size=4) and larger context length."
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:-1
+#: ../../../advanced_features/vlm_query.ipynb:300
 msgid ""
-"if not is_in_ci():\n"
-"    # Compute the image embeddings using Huggingface.\n"
+"llm = Engine(\n"
+"    model_path=model_path,\n"
+"    enable_multimodal=True,\n"
+"    attention_backend=\"fa3\",\n"
+"    tp_size=4,\n"
+"    context_length=65536,\n"
+")\n"
 "\n"
-"    from transformers import AutoProcessor\n"
-"    from transformers import Llama4ForConditionalGeneration\n"
-"\n"
-"    processor = AutoProcessor.from_pretrained(model_path, use_fast=True)\n"
-"    model = Llama4ForConditionalGeneration.from_pretrained(\n"
-"        model_path, torch_dtype=\"auto\"\n"
-"    ).eval()\n"
-"    vision = model.vision_model.cuda()\n"
-"    multi_modal_projector = model.multi_modal_projector.cuda()"
+"out = llm.generate(prompt=conv.get_prompt(), image_data=[image])\n"
+"print(\"Llama 4 response:\")\n"
+"print(out[\"text\"])"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:-1
+#: ../../../advanced_features/vlm_query.ipynb:326
 msgid ""
-"if not is_in_ci():\n"
-"    processed_prompt = processor(\n"
-"        images=[image], text=conv.get_prompt(), return_tensors=\"pt\"\n"
-"    )\n"
-"    print(f'{processed_prompt[\"pixel_values\"].shape=}')\n"
-"    input_ids = processed_prompt[\"input_ids\"][0].detach().cpu().tolist()\n"
+"Using HuggingFace processor to preprocess data can reduce computational "
+"overhead during inference."
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:328
+msgid ""
+"from transformers import AutoProcessor\n"
 "\n"
-"    image_outputs = vision(\n"
-"        processed_prompt[\"pixel_values\"].to(\"cuda\"), "
-"output_hidden_states=False\n"
-"    )\n"
-"    image_features = image_outputs.last_hidden_state\n"
-"    vision_flat = image_features.view(-1, image_features.size(-1))\n"
-"    precomputed_embeddings = multi_modal_projector(vision_flat)\n"
+"processor = AutoProcessor.from_pretrained(model_path, use_fast=True)\n"
+"processor_output = processor(\n"
+"    images=[image], text=conv.get_prompt(), return_tensors=\"pt\"\n"
+")\n"
 "\n"
-"    mm_item = dict(modality=\"IMAGE\", "
-"precomputed_embeddings=precomputed_embeddings)\n"
-"    out = llm.generate(input_ids=input_ids, image_data=[mm_item])\n"
-"    print(out[\"text\"])"
+"out = llm.generate(\n"
+"    input_ids=processor_output[\"input_ids\"][0].detach().cpu().tolist(),\n"
+"    image_data=[dict(processor_output, format=\"processor_output\")],\n"
+")\n"
+"print(\"Response using processor output:\")\n"
+"print(out)"
+msgstr ""
+
+#: ../../../advanced_features/vlm_query.ipynb:356
+msgid ""
+"from transformers import AutoProcessor\n"
+"from transformers import Llama4ForConditionalGeneration\n"
+"\n"
+"processor = AutoProcessor.from_pretrained(model_path, use_fast=True)\n"
+"model = Llama4ForConditionalGeneration.from_pretrained(\n"
+"    model_path, torch_dtype=\"auto\"\n"
+").eval()\n"
+"\n"
+"vision = model.vision_model.cuda()\n"
+"multi_modal_projector = model.multi_modal_projector.cuda()\n"
+"\n"
+"print(f'Image pixel values shape: {processor_output[\"pixel_values\"]."
+"shape}')\n"
+"input_ids = processor_output[\"input_ids\"][0].detach().cpu().tolist()\n"
+"\n"
+"# Process image through vision encoder\n"
+"image_outputs = vision(\n"
+"    processor_output[\"pixel_values\"].to(\"cuda\"),\n"
+"    aspect_ratio_ids=processor_output[\"aspect_ratio_ids\"].to(\"cuda\"),\n"
+"    aspect_ratio_mask=processor_output[\"aspect_ratio_mask\"].to(\"cuda\"),\n"
+"    output_hidden_states=False\n"
+")\n"
+"image_features = image_outputs.last_hidden_state\n"
+"\n"
+"# Flatten image features and pass through multimodal projector\n"
+"vision_flat = image_features.view(-1, image_features.size(-1))\n"
+"precomputed_embeddings = multi_modal_projector(vision_flat)\n"
+"\n"
+"# Build precomputed embedding data item\n"
+"mm_item = dict(\n"
+"    processor_output,\n"
+"    format=\"precomputed_embedding\",\n"
+"    feature=precomputed_embeddings\n"
+")\n"
+"\n"
+"# Use precomputed embeddings for efficient inference\n"
+"out = llm.generate(input_ids=input_ids, image_data=[mm_item])\n"
+"print(\"Llama 4 precomputed embedding response:\")\n"
+"print(out[\"text\"])"
 msgstr ""
