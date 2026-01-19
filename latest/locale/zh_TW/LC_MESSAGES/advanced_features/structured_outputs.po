@@ -25,6 +25,11 @@ msgid ""
 "    }\n"
 "</style>"
 msgstr ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
 
 #: ../../../advanced_features/structured_outputs.ipynb:9
 msgid "Structured Outputs"
@@ -133,7 +138,7 @@ msgstr ""
 #: ../../../advanced_features/structured_outputs.ipynb:465
 #: ../../../advanced_features/structured_outputs.ipynb:815
 msgid "**Using Pydantic**"
-msgstr ""
+msgstr "**使用 Pydantic**"
 
 #: ../../../advanced_features/structured_outputs.ipynb:-1
 msgid ""
@@ -251,12 +256,37 @@ msgid ""
 "\n"
 "print_highlight(response.choices[0].message.content)"
 msgstr ""
+"ebnf_grammar = \"\"\"\n"
+"root ::= city | description\n"
+"city ::= \"London\" | \"Paris\" | \"Berlin\" | \"Rome\"\n"
+"description ::= city \" is \" status\n"
+"status ::= \"the capital of \" country\n"
+"country ::= \"England\" | \"France\" | \"Germany\" | \"Italy\"\n"
+"\"\"\"\n"
+"\n"
+"response = client.chat.completions.create(\n"
+"    model=\"meta-llama/Meta-Llama-3.1-8B-Instruct\",\n"
+"    messages=[\n"
+"        {\"role\": \"system\", \"content\": \"You are a helpful geography "
+"bot.\"},\n"
+"        {\n"
+"            \"role\": \"user\",\n"
+"            \"content\": \"Give me the information of the capital of France."
+"\",\n"
+"        },\n"
+"    ],\n"
+"    temperature=0,\n"
+"    max_tokens=32,\n"
+"    extra_body={\"ebnf\": ebnf_grammar},\n"
+")\n"
+"\n"
+"print_highlight(response.choices[0].message.content)"
 
 #: ../../../advanced_features/structured_outputs.ipynb:237
 #: ../../../advanced_features/structured_outputs.ipynb:623
 #: ../../../advanced_features/structured_outputs.ipynb:948
 msgid "Regular expression"
-msgstr ""
+msgstr "常規表達式"
 
 #: ../../../advanced_features/structured_outputs.ipynb:-1
 msgid ""
@@ -273,6 +303,18 @@ msgid ""
 "\n"
 "print_highlight(response.choices[0].message.content)"
 msgstr ""
+"response = client.chat.completions.create(\n"
+"    model=\"meta-llama/Meta-Llama-3.1-8B-Instruct\",\n"
+"    messages=[\n"
+"        {\"role\": \"user\", \"content\": \"What is the capital of France?"
+"\"},\n"
+"    ],\n"
+"    temperature=0,\n"
+"    max_tokens=128,\n"
+"    extra_body={\"regex\": \"(Paris|London)\"},\n"
+")\n"
+"\n"
+"print_highlight(response.choices[0].message.content)"
 
 #: ../../../advanced_features/structured_outputs.ipynb:268
 #: ../../../advanced_features/structured_outputs.ipynb:664
@@ -686,11 +728,11 @@ msgstr ""
 
 #: ../../../advanced_features/structured_outputs.ipynb:-1
 msgid "terminate_process(server_process)"
-msgstr ""
+msgstr "terminate_process(server_process)"
 
 #: ../../../advanced_features/structured_outputs.ipynb:779
 msgid "Offline Engine API"
-msgstr ""
+msgstr "離線引擎 API"
 
 #: ../../../advanced_features/structured_outputs.ipynb:-1
 msgid ""
