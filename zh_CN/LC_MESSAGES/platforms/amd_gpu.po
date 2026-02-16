@@ -1,0 +1,320 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-22 08:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/amd_gpu.md:1
+msgid "AMD GPUs"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:3
+msgid ""
+"This document describes how run SGLang on AMD GPUs. If you encounter issues "
+"or have questions, please [open an issue](https://github.com/sgl-project/"
+"sglang/issues)."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:5
+msgid "System Configuration"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:7
+msgid ""
+"When using AMD GPUs (such as MI300X), certain system-level optimizations "
+"help ensure stable performance. Here we take MI300X as an example. AMD "
+"provides official documentation for MI300X optimization and system tuning:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:9
+msgid ""
+"[AMD MI300X Tuning Guides](https://rocm.docs.amd.com/en/latest/how-to/tuning-"
+"guides/mi300x/index.html)"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:10
+msgid ""
+"[LLM inference performance validation on AMD Instinct MI300X](https://rocm."
+"docs.amd.com/en/latest/how-to/rocm-for-ai/inference/vllm-benchmark.html)"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:11
+msgid ""
+"[AMD Instinct MI300X System Optimization](https://rocm.docs.amd.com/en/"
+"latest/how-to/system-optimization/mi300x.html)"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:12
+msgid ""
+"[AMD Instinct MI300X Workload Optimization](https://rocm.docs.amd.com/en/"
+"latest/how-to/rocm-for-ai/inference-optimization/workload.html)"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:13
+msgid ""
+"[Supercharge DeepSeek-R1 Inference on AMD Instinct MI300X](https://rocm."
+"blogs.amd.com/artificial-intelligence/DeepSeekR1-Part2/README.html)"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:15
+msgid ""
+"**NOTE:** We strongly recommend reading these docs and guides entirely to "
+"fully utilize your system."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:17
+msgid "Below are a few key settings to confirm or enable for SGLang:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:19
+msgid "Update GRUB Settings"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:21
+msgid "In `/etc/default/grub`, append the following to `GRUB_CMDLINE_LINUX`:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:23
+msgid "pci=realloc=off iommu=pt\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:27
+msgid ""
+"Afterward, run `sudo update-grub` (or your distro’s equivalent) and reboot."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:29
+msgid "Disable NUMA Auto-Balancing"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:31
+msgid "sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:35
+msgid ""
+"You can automate or verify this change using [this helpful script](https://"
+"github.com/ROCm/triton/blob/rocm_env/scripts/amd/env_check.sh)."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:37
+msgid ""
+"Again, please go through the entire documentation to confirm your system is "
+"using the recommended configuration."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:39
+msgid "Install SGLang"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:41
+msgid "You can install SGLang using one of the methods below."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:43
+msgid "Install from Source"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:45
+msgid ""
+"# Use the last release branch\n"
+"git clone -b v0.5.6.post2 https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"# Compile sgl-kernel\n"
+"pip install --upgrade pip\n"
+"cd sgl-kernel\n"
+"python setup_rocm.py install\n"
+"\n"
+"# Install sglang python package\n"
+"cd ..\n"
+"rm -rf python/pyproject.toml && mv python/pyproject_other.toml python/"
+"pyproject.toml\n"
+"pip install -e \"python[all_hip]\"\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:61
+msgid "Install Using Docker (Recommended)"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:63
+msgid ""
+"The docker images are available on Docker Hub at [lmsysorg/sglang](https://"
+"hub.docker.com/r/lmsysorg/sglang/tags), built from [rocm.Dockerfile](https://"
+"github.com/sgl-project/sglang/tree/main/docker)."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:65
+msgid "The steps below show how to build and use an image."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:67
+msgid ""
+"Build the docker image. If you use pre-built images, you can skip this step "
+"and replace `sglang_image` with the pre-built image names in the steps below."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:70
+msgid "docker build -t sglang_image -f rocm.Dockerfile .\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:74
+msgid "Create a convenient alias."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:76
+msgid ""
+"alias drun='docker run -it --rm --network=host --privileged --device=/dev/"
+"kfd --device=/dev/dri \\\n"
+"    --ipc=host --shm-size 16G --group-add video --cap-add=SYS_PTRACE \\\n"
+"    --security-opt seccomp=unconfined \\\n"
+"    -v $HOME/dockerx:/dockerx \\\n"
+"    -v /data:/data'\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:84
+msgid "If you are using RDMA, please note that:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:85
+msgid ""
+"`--network host` and `--privileged` are required by RDMA. If you don't need "
+"RDMA, you can remove them."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:86
+msgid ""
+"You may need to set `NCCL_IB_GID_INDEX` if you are using RoCE, for example: "
+"`export NCCL_IB_GID_INDEX=3`."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:88
+msgid "Launch the server."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:90
+msgid ""
+"**NOTE:** Replace `<secret>` below with your [huggingface hub token](https://"
+"huggingface.co/docs/hub/en/security-tokens)."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:92
+msgid ""
+"drun -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    sglang_image \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path NousResearch/Meta-Llama-3.1-8B \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:103
+msgid ""
+"To verify the utility, you can run a benchmark in another terminal or refer "
+"to [other docs](https://docs.sglang.io/basic_usage/openai_api_completions."
+"html) to send requests to the engine."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:105
+msgid ""
+"drun sglang_image \\\n"
+"    python3 -m sglang.bench_serving \\\n"
+"    --backend sglang \\\n"
+"    --dataset-name random \\\n"
+"    --num-prompts 4000 \\\n"
+"    --random-input 128 \\\n"
+"    --random-output 128\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:115
+msgid ""
+"With your AMD system properly configured and SGLang installed, you can now "
+"fully leverage AMD hardware to power SGLang’s machine learning capabilities."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:117
+msgid "Examples"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:119
+msgid "Running DeepSeek-V3"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:121
+msgid ""
+"The only difference when running DeepSeek-V3 is in how you start the server. "
+"Here's an example command:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:123
+msgid ""
+"drun -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --ipc=host \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    sglang_image \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path deepseek-ai/DeepSeek-V3 \\ # <- here\n"
+"    --tp 8 \\\n"
+"    --trust-remote-code \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:137
+msgid ""
+"[Running DeepSeek-R1 on a single NDv5 MI300X VM](https://techcommunity."
+"microsoft.com/blog/azurehighperformancecomputingblog/running-deepseek-r1-on-"
+"a-single-ndv5-mi300x-vm/4372726) could also be a good reference."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:139
+msgid "Running Llama3.1"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:141
+msgid ""
+"Running Llama3.1 is nearly identical to running DeepSeek-V3. The only "
+"difference is in the model specified when starting the server, shown by the "
+"following example command:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:143
+msgid ""
+"drun -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --ipc=host \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    sglang_image \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\ # <- here\n"
+"    --tp 8 \\\n"
+"    --trust-remote-code \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:157
+msgid "Warmup Step"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:159
+msgid ""
+"When the server displays `The server is fired up and ready to roll!`, it "
+"means the startup is successful."
+msgstr ""

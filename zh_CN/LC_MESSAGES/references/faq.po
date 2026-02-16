@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-24 08:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/faq.md:1
+msgid "Troubleshooting and Frequently Asked Questions"
+msgstr ""
+
+#: ../../../references/faq.md:3
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../references/faq.md:5
+msgid "This page lists common errors and tips for resolving them."
+msgstr ""
+
+#: ../../../references/faq.md:7
+msgid "CUDA Out of Memory"
+msgstr ""
+
+#: ../../../references/faq.md:8
+msgid ""
+"If you encounter out-of-memory (OOM) errors, you can adjust the following "
+"parameters:"
+msgstr ""
+
+#: ../../../references/faq.md:10
+msgid ""
+"If OOM occurs during prefill, try reducing `--chunked-prefill-size` to "
+"`4096` or `2048`. This saves memory but slows down the prefill speed for "
+"long prompts."
+msgstr ""
+
+#: ../../../references/faq.md:11
+msgid "If OOM occurs during decoding, try lowering `--max-running-requests`."
+msgstr ""
+
+#: ../../../references/faq.md:12
+msgid ""
+"You can also decrease `--mem-fraction-static` to a smaller value, such as "
+"0.8 or 0.7. This decreases the memory usage of the KV cache memory pool and "
+"helps prevent OOM errors during both prefill and decoding. However, it "
+"limits maximum concurrency and reduces peak throughput."
+msgstr ""
+
+#: ../../../references/faq.md:13
+msgid ""
+"Another common case for OOM is requesting input logprobs for a long prompt "
+"as it requires significant memory. To address this, set `logprob_start_len` "
+"in your sampling parameters to include only the necessary parts. If you do "
+"need input logprobs for a long prompt, try reducing `--mem-fraction-static`."
+msgstr ""
+
+#: ../../../references/faq.md:15
+msgid "CUDA Error: Illegal Memory Access Encountered"
+msgstr ""
+
+#: ../../../references/faq.md:16
+msgid "This error may result from kernel errors or out-of-memory issues:"
+msgstr ""
+
+#: ../../../references/faq.md:17
+msgid ""
+"If it is a kernel error, resolving it may be challenging. Please file an "
+"issue on GitHub."
+msgstr ""
+
+#: ../../../references/faq.md:18
+msgid ""
+"If it is an out-of-memory issue, it may sometimes be reported as this error "
+"instead of \"Out of Memory.\" Refer to the section above for guidance on "
+"avoiding OOM issues."
+msgstr ""
+
+#: ../../../references/faq.md:20
+msgid "The server hangs"
+msgstr ""
+
+#: ../../../references/faq.md:21
+msgid ""
+"If the server hangs during initialization or running, it can be memory "
+"issues (out of memory), network issues (nccl errors), or other bugs in "
+"sglang."
+msgstr ""
+
+#: ../../../references/faq.md:22
+msgid ""
+"If it is out of memory, you might see that `avail mem` is very low during "
+"the initialization or right after initialization. In this case, you can try "
+"to decrease `--mem-fraction-static`, decrease `--cuda-graph-max-bs`, or "
+"decrease `--chunked-prefill-size`."
+msgstr ""
+
+#: ../../../references/faq.md:24
+msgid "Other bugs, please file an issue on GitHub."
+msgstr ""
+
+#: ../../../references/faq.md:27
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: ../../../references/faq.md:29
+msgid "The results are not deterministic, even with a temperature of 0"
+msgstr ""
+
+#: ../../../references/faq.md:31
+msgid ""
+"You may notice that when you send the same request twice, the results from "
+"the engine will be slightly different, even when the temperature is set to 0."
+msgstr ""
+
+#: ../../../references/faq.md:33
+msgid ""
+"From our initial investigation, this indeterminism arises from two factors: "
+"dynamic batching and prefix caching. Roughly speaking, dynamic batching "
+"accounts for about 95% of the indeterminism, while prefix caching accounts "
+"for the remaining portion. The server runs dynamic batching under the hood. "
+"Different batch sizes can cause PyTorch/CuBLAS to dispatch to different CUDA "
+"kernels, which can lead to slight numerical differences. This difference "
+"accumulates across many layers, resulting in nondeterministic output when "
+"the batch size changes. Similarly, when prefix caching is enabled, it can "
+"also dispatch to different kernels. Even when the computations are "
+"mathematically equivalent, small numerical differences from different kernel "
+"implementations lead to the final nondeterministic outputs."
+msgstr ""
+
+#: ../../../references/faq.md:35
+msgid ""
+"To achieve more deterministic outputs in the current code, you can add `--"
+"disable-radix-cache` and send only one request at a time. The results will "
+"be mostly deterministic under this setting."
+msgstr ""
+
+#: ../../../references/faq.md:37
+msgid ""
+"**Update**: Recently, we also introduced a deterministic mode, you can "
+"enable it with `--enable-deterministic-inference`. Please find more details "
+"in this blog post: https://lmsys.org/blog/2025-09-22-sglang-deterministic/"
+msgstr ""
