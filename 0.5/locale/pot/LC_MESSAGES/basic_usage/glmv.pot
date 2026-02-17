@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2023-2025, SGLang
+# Copyright (C) 2023-2026, SGLang
 # This file is distributed under the same license as the SGLang package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -12,110 +12,101 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../../basic_usage/qwen3_vl.md:1
-msgid "Qwen3-VL Usage"
+#: ../../../basic_usage/glmv.md:1
+msgid "GLM-4.6V / GLM-4.5V Usage"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:3
-msgid ""
-"[Qwen3-VL](https://huggingface.co/collections/Qwen/qwen3-vl) is Alibaba’s "
-"latest multimodal large language model with strong text, vision, and "
-"reasoning capabilities. SGLang supports Qwen3-VL Family of models with Image "
-"and Video input support."
-msgstr ""
-
-#: ../../../basic_usage/qwen3_vl.md:7
+#: ../../../basic_usage/glmv.md:3
 msgid "Launch commands for SGLang"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:9
+#: ../../../basic_usage/glmv.md:5
 msgid ""
 "Below are suggested launch commands tailored for different hardware / "
 "precision modes"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:11
+#: ../../../basic_usage/glmv.md:7
 msgid "FP8 (quantised) mode"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:12
+#: ../../../basic_usage/glmv.md:9
 msgid ""
 "For high memory-efficiency and latency optimized deployments (e.g., on H100, "
 "H200) where FP8 checkpoint is supported:"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:13
+#: ../../../basic_usage/glmv.md:11
 msgid ""
 "python3 -m sglang.launch_server \\\n"
-"  --model-path Qwen/Qwen3-VL-235B-A22B-Instruct-FP8 \\\n"
-"  --tp 8 \\\n"
-"  --ep 8 \\\n"
+"  --model-path zai-org/GLM-4.6V-FP8 \\\n"
+"  --tp 2 \\\n"
+"  --ep 2 \\\n"
 "  --host 0.0.0.0 \\\n"
 "  --port 30000 \\\n"
 "  --keep-mm-feature-on-device\n"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:23
+#: ../../../basic_usage/glmv.md:21
 msgid "Non-FP8 (BF16 / full precision) mode"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:24
+#: ../../../basic_usage/glmv.md:22
 msgid ""
 "For deployments on A100/H100 where BF16 is used (or FP8 snapshot not used):"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:25
+#: ../../../basic_usage/glmv.md:23
 msgid ""
 "python3 -m sglang.launch_server \\\n"
-"  --model-path Qwen/Qwen3-VL-235B-A22B-Instruct \\\n"
-"  --tp 8 \\\n"
-"  --ep 8 \\\n"
+"  --model-path zai-org/GLM-4.6V \\\n"
+"  --tp 4 \\\n"
+"  --ep 4 \\\n"
 "  --host 0.0.0.0 \\\n"
-"  --port 30000 \\\n"
+"  --port 30000\n"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:34
+#: ../../../basic_usage/glmv.md:32
 msgid "Hardware-specific notes / recommendations"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:36
+#: ../../../basic_usage/glmv.md:34
 msgid "On H100 with FP8: Use the FP8 checkpoint for best memory efficiency."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:37
+#: ../../../basic_usage/glmv.md:35
 msgid ""
 "On A100 / H100 with BF16 (non-FP8): It’s recommended to use `--mm-max-"
 "concurrent-calls` to control parallel throughput and GPU memory usage during "
 "image/video inference."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:38
+#: ../../../basic_usage/glmv.md:36
 msgid ""
 "On H200 & B200: The model can be run “out of the box”, supporting full "
 "context length plus concurrent image + video processing."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:40
+#: ../../../basic_usage/glmv.md:38
 msgid "Sending Image/Video Requests"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:42
+#: ../../../basic_usage/glmv.md:40
 msgid "Image input:"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:44
+#: ../../../basic_usage/glmv.md:42
 msgid ""
 "import requests\n"
 "\n"
 "url = f\"http://localhost:30000/v1/chat/completions\"\n"
 "\n"
 "data = {\n"
-"    \"model\": \"Qwen/Qwen3-VL-30B-A3B-Instruct\",\n"
+"    \"model\": \"zai-org/GLM-4.6V\",\n"
 "    \"messages\": [\n"
 "        {\n"
 "            \"role\": \"user\",\n"
@@ -138,18 +129,18 @@ msgid ""
 "print(response.text)\n"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:72
+#: ../../../basic_usage/glmv.md:70
 msgid "Video Input:"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:74
+#: ../../../basic_usage/glmv.md:72
 msgid ""
 "import requests\n"
 "\n"
 "url = f\"http://localhost:30000/v1/chat/completions\"\n"
 "\n"
 "data = {\n"
-"    \"model\": \"Qwen/Qwen3-VL-30B-A3B-Instruct\",\n"
+"    \"model\": \"zai-org/GLM-4.6V\",\n"
 "    \"messages\": [\n"
 "        {\n"
 "            \"role\": \"user\",\n"
@@ -173,23 +164,23 @@ msgid ""
 "print(response.text)\n"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:102
+#: ../../../basic_usage/glmv.md:100
 msgid "Important Server Parameters and Flags"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:104
+#: ../../../basic_usage/glmv.md:102
 msgid ""
 "When launching the model server for **multimodal support**, you can use the "
 "following command-line arguments to fine-tune performance and behavior:"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:106
+#: ../../../basic_usage/glmv.md:104
 msgid ""
 "`--mm-attention-backend`: Specify multimodal attention backend. Eg. "
 "`fa3`(Flash Attention 3)"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:107
+#: ../../../basic_usage/glmv.md:105
 msgid ""
 "`--mm-max-concurrent-calls <value>`: Specifies the **maximum number of "
 "concurrent asynchronous multimodal data processing calls** allowed on the "
@@ -197,14 +188,14 @@ msgid ""
 "image/video inference."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:108
+#: ../../../basic_usage/glmv.md:106
 msgid ""
 "`--mm-per-request-timeout <seconds>`: Defines the **timeout duration (in "
 "seconds)** for each multimodal request. If a request exceeds this time limit "
 "(e.g., for very large video inputs), it will be automatically terminated."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:109
+#: ../../../basic_usage/glmv.md:107
 msgid ""
 "`--keep-mm-feature-on-device`: Instructs the server to **retain multimodal "
 "feature tensors on the GPU** after processing. This avoids device-to-host "
@@ -212,22 +203,29 @@ msgid ""
 "inference workloads."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:110
+#: ../../../basic_usage/glmv.md:108
+msgid ""
+"`--mm-enable-dp-encoder`: Placing the ViT in data parallel while keeping the "
+"LLM in tensor parallel consistently lowers TTFT and boosts end-to-end "
+"throughput."
+msgstr ""
+
+#: ../../../basic_usage/glmv.md:109
 msgid ""
 "`SGLANG_USE_CUDA_IPC_TRANSPORT=1`: Shared memory pool based CUDA IPC for "
 "multi-modal data transport. For significantly improving e2e latency."
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:112
+#: ../../../basic_usage/glmv.md:111
 msgid "Example usage with the above optimizations:"
 msgstr ""
 
-#: ../../../basic_usage/qwen3_vl.md:113
+#: ../../../basic_usage/glmv.md:112
 msgid ""
 "SGLANG_USE_CUDA_IPC_TRANSPORT=1 \\\n"
 "SGLANG_VLM_CACHE_SIZE_MB=0 \\\n"
 "python -m sglang.launch_server \\\n"
-"  --model-path Qwen/Qwen3-VL-235B-A22B-Instruct \\\n"
+"  --model-path zai-org/GLM-4.6V \\\n"
 "  --host 0.0.0.0 \\\n"
 "  --port 30000 \\\n"
 "  --trust-remote-code \\\n"
@@ -239,5 +237,22 @@ msgid ""
 "  --chunked-prefill-size 8192 \\\n"
 "  --attention-backend fa3 \\\n"
 "  --mm-attention-backend fa3 \\\n"
+"  --mm-enable-dp-encoder \\\n"
 "  --enable-metrics\n"
+msgstr ""
+
+#: ../../../basic_usage/glmv.md:132
+msgid "Thinking Budget for GLM-4.5V / GLM-4.6V"
+msgstr ""
+
+#: ../../../basic_usage/glmv.md:134
+msgid ""
+"In SGLang, we can implement thinking budget with `CustomLogitProcessor`."
+msgstr ""
+
+#: ../../../basic_usage/glmv.md:136
+msgid ""
+"Launch a server with `--enable-custom-logit-processor` flag on. and using "
+"`Glm4MoeThinkingBudgetLogitProcessor` in the request likes `GLM-4.6` example "
+"in [glm45.md](./glm45.md)."
 msgstr ""

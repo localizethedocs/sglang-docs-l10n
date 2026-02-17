@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-09 11:10+0000\n"
+"POT-Creation-Date: 2026-02-10 09:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,25 +59,58 @@ msgid ""
 "is `float32`."
 msgstr ""
 
-#: ../../../basic_usage/qwen3.md:17
-msgid "EAGLE Speculative Decoding"
+#: ../../../basic_usage/qwen3.md:16
+msgid ""
+"`--mamba-full-memory-ratio`: The ratio of mamba state memory to full kv "
+"cache memory. The default is 0.9."
 msgstr ""
 
 #: ../../../basic_usage/qwen3.md:18
+msgid "Mamba Radix Cache"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:19
+msgid ""
+"SGLang supports prefix caching for Qwen3-Next models named "
+"`MambaRadixCache`, which improves inference speed by reusing computation "
+"results. There are two versions of `MambaRadixCache`:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:20
+msgid ""
+"`no_buffer`: The default version, which is also other hybrid linear models' "
+"choice. When it is enabled, SGLang will automatically close overlap schedule "
+"for compatibility reasons."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:21
+msgid ""
+"`extra_buffer`: An optimized version that is compatible with features like "
+"page size > 1, overlap schedule, and speculative decoding. It also supports "
+"storing mamba state in branching positions. However, it requires two extra "
+"mamba spaces for a ping-pong buffer for each request. To enable it, add the "
+"argument `--mamba-scheduler-strategy extra_buffer` when launching the server."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:23
+msgid "EAGLE Speculative Decoding"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:24
 msgid ""
 "**Description**: SGLang has supported Qwen3-Next models with [EAGLE "
 "speculative decoding](https://docs.sglang.io/advanced_features/"
 "speculative_decoding.html#EAGLE-Decoding)."
 msgstr ""
 
-#: ../../../basic_usage/qwen3.md:20
+#: ../../../basic_usage/qwen3.md:26
 msgid ""
 "**Usage**: Add arguments `--speculative-algorithm`, `--speculative-num-"
 "steps`, `--speculative-eagle-topk` and `--speculative-num-draft-tokens` to "
 "enable this feature. For example:"
 msgstr ""
 
-#: ../../../basic_usage/qwen3.md:23
+#: ../../../basic_usage/qwen3.md:29
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model Qwen/Qwen3-Next-80B-A3B-Instruct \\\n"
@@ -88,7 +121,7 @@ msgid ""
 "  --speculative-algo NEXTN\n"
 msgstr ""
 
-#: ../../../basic_usage/qwen3.md:33
+#: ../../../basic_usage/qwen3.md:39
 msgid ""
 "Details can be seen in [this PR](https://github.com/sgl-project/sglang/"
 "pull/10233)."
