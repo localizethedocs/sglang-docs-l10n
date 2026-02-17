@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 08:37+0000\n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -430,78 +430,101 @@ msgid ""
 "Output throughput: 4418.617 token/s\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:189
+#: ../../../basic_usage/deepseek_v32.md:190
 msgid "Accuracy Test with `gpqa-diamond`"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:191
-#: ../../../basic_usage/deepseek_v32.md:277
+#: ../../../basic_usage/deepseek_v32.md:192
 msgid ""
 "Accuracy benchmark on long context can be tested on GPQA-diamond dataset "
 "with long output tokens and thinking enabled:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:192
+#: ../../../basic_usage/deepseek_v32.md:193
 msgid ""
 "python3 -m sglang.test.run_eval --port 30000 --eval-name gpqa --num-examples "
-"198 --max-tokens 120000 --repeat 8 --thinking-mode deepseek-v3\n"
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:196
-msgid ""
-"The mean accuracy over 8 runs shows 0.797, which matches the number 79.9 in "
-"official tech report."
+"198 --max-tokens 128000 --repeat 8 --thinking-mode deepseek-v3\n"
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:197
+msgid ""
+"The mean accuracy over 8 runs shows 0.797, which matches the number 0.799 in "
+"official tech report."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:198
 msgid ""
 "Repeat: 8, mean: 0.797\n"
 "Scores: ['0.808', '0.798', '0.808', '0.798', '0.783', '0.788', '0.803', "
 "'0.793']\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:202
+#: ../../../basic_usage/deepseek_v32.md:203
+msgid ""
+"For Deepseek V3.2, Deepseek recommends setting the sampling parameters to "
+"temperature = 1.0, top_p = 0.95:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:205
+msgid ""
+"python3 -m sglang.test.run_eval --port 30000 --eval-name gpqa --num-examples "
+"198 --max-tokens 128000 --repeat 8 --top-p 0.95 --temperature 1.0 --thinking-"
+"mode deepseek-v3\n"
+"\n"
+"Repeat: 8, mean: 0.840\n"
+"Scores: ['0.848', '0.808', '0.848', '0.838', '0.879', '0.813', '0.838', "
+"'0.848']\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:211
+msgid ""
+"which matches the official score, 0.824, as reported in the [Deepseek-V3.2 "
+"technical report](https://huggingface.co/deepseek-ai/DeepSeek-V3.2/blob/main/"
+"assets/paper.pdf)."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:213
 msgid "Accuracy Test with `aime 2025`"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:204
+#: ../../../basic_usage/deepseek_v32.md:215
 msgid ""
 "Prepare the environment by installing NeMo-Skills in the docker or your own "
 "virtual environment:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:206
+#: ../../../basic_usage/deepseek_v32.md:217
 msgid ""
 "pip install git+https://github.com/NVIDIA/NeMo-Skills.git --ignore-installed "
 "blinker\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:210
+#: ../../../basic_usage/deepseek_v32.md:221
 msgid "Then launch the SGLang server:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:211
+#: ../../../basic_usage/deepseek_v32.md:222
 msgid ""
 "python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp --tp 8 "
 "--dp 8 --enable-dp-attention\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:215
+#: ../../../basic_usage/deepseek_v32.md:226
 msgid "**For `DeepSeek-V3.2` and `DeepSeek-V3.2-Speciale`**:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:217
+#: ../../../basic_usage/deepseek_v32.md:228
 msgid ""
 "python3 -m sglang.launch_server   --model-path deepseek-ai/DeepSeek-V3.2   --"
 "trust-remote-code   --tp-size 8 --dp-size 8 --enable-dp-attention   --tool-"
 "call-parser deepseekv32   --reasoning-parser deepseek-v3\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:221
+#: ../../../basic_usage/deepseek_v32.md:232
 msgid "Run the following script to evaluate AIME 2025:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:222
+#: ../../../basic_usage/deepseek_v32.md:233
 msgid ""
 "#! /bin/bash\n"
 "export NEMO_SKILLS_DISABLE_UNCOMMITTED_CHANGES_CHECK=1\n"
@@ -530,11 +553,11 @@ msgid ""
 "  # ++inference.tokens_to_generate=120000 for Speciale model\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:247
+#: ../../../basic_usage/deepseek_v32.md:258
 msgid "Test results (8*B200):"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:249
+#: ../../../basic_usage/deepseek_v32.md:260
 msgid "DeepSeek-V3.2-Exp："
 msgstr ""
 
@@ -598,7 +621,7 @@ msgstr ""
 msgid "pass@4"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:258
+#: ../../../basic_usage/deepseek_v32.md:269
 msgid "DeepSeek-V3.2:"
 msgstr ""
 
@@ -622,7 +645,7 @@ msgstr ""
 msgid "96.67%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:266
+#: ../../../basic_usage/deepseek_v32.md:277
 msgid "DeepSeek-V3.2-Speciale:"
 msgstr ""
 
@@ -646,63 +669,283 @@ msgstr ""
 msgid "100.00%"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:275
+#: ../../../basic_usage/deepseek_v32.md:286
 msgid "DSA long sequence context parallel optimization(experimental)"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v32.md:279
-msgid "Example usage:"
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:280
-msgid ""
-"# Launch with EP + DP\n"
-"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp  --tp 8 "
-"--ep 8 --dp 2 --enable-dp-attention --enable-nsa-prefill-context-parallel --"
-"max-running-requests 32\n"
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:284
-msgid "Context-parallel Tips"
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:285
-msgid ""
-"`CP_size` reuses `atten_tp_size`, which is equal to `TP_size` / `DP_size`. "
-"Some features are still not supported at present."
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:287
-msgid ""
-"**Multi-batch prefill**: Currently, only single-request processing is "
-"supported during the prefill process."
-msgstr ""
-
 #: ../../../basic_usage/deepseek_v32.md:288
-msgid "**disaggregation**: P/D disaggregation."
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:289
-msgid ""
-"**Cross-machine support**: - Currently only tested on a single machine (TP=8,"
-"EP=8)."
+msgid "**Note: This feature is only verified on Hopper machines**"
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:290
 msgid ""
-"**Other Args**: Currently only supports moe_dense_tp_size=1, kv_cache_dtype "
-"= \"bf16\", moe_a2a_backend = \"deepep\","
-msgstr ""
-
-#: ../../../basic_usage/deepseek_v32.md:291
-msgid ""
-"**DP_size**: `CP_size` reuses `atten_tp_size`, which is equal to `TP_size` / "
-"`DP_size`. For the cp function to work correctly, `TP_size` must be "
-"divisible by `DP_size`, and TP_size / DP_size > 1 (to ensure CP_size > 1)."
+"For context parallel in DeepSeek V3.2 model, we provide two different modes "
+"of splitting tokens, which can be controlled with argument `--nsa-prefill-cp-"
+"mode`."
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v32.md:292
+msgid "In sequence splitting (default setting)"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:294
 msgid ""
-"**Detailed design reference**: https://github.com/sgl-project/sglang/"
-"pull/12065"
+"The first mode can be enabled by `--nsa-prefill-cp-mode in-seq-split`. This "
+"mode implements context parallel for DSA by splitting the sequence uniformly "
+"between context parallel ranks. At attention stage, each cp rank computes "
+"the indexer results of sharded sequence, and collects the whole kv cache "
+"through all gather operator."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:296
+msgid ""
+"The communication group for context parallel reuses the one for attention "
+"tp, thus `cp_size` equals `atten_tp_size = tp_size / dp_size`."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:298
+msgid "Note that in sequence splitting mode has the following restrictions:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:299
+msgid "The batch size is restricted to 1 for prefill batches"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:300
+msgid "Multi-node/PD disaggregation is still not supported"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:301
+msgid ""
+"`moe_dense_tp_size=1`, `kv_cache_dtype = \"bf16\"`, `moe_a2a_backend = "
+"\"deepep\"`"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:302
+msgid ""
+"To ensure `cp_size > 1`, the passed in `tp_size` must be larger than "
+"`dp_size`"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:304
+msgid ""
+"For more details, please refer to PR https://github.com/sgl-project/sglang/"
+"pull/12065."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:306
+msgid "Example:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:307
+msgid ""
+"# In-seq splitting mode launched with EP + DP\n"
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp  --tp 8 "
+"--ep 8 --dp 2 --enable-dp-attention --enable-nsa-prefill-context-parallel --"
+"nsa-prefill-cp-mode in-seq-split --max-running-requests 32\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:312
+msgid "Round robin splitting"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:314
+msgid ""
+"This mode can be enabled by specifying the parameter `--nsa-prefill-cp-mode "
+"round-robin-split`, which distributes tokens across ranks based on "
+"`token_idx % cp_size`."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:316
+msgid ""
+"In this scenario, compared with the aforementioned method, it additionally "
+"supports the fused MoE backend (the fused MoE backend may deliver better "
+"performance than DeepEP in single-machine scenarios), FP8 KV-cache, and "
+"multi-batch prefill inference. But it cannot be enabled with dp attention "
+"together."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:318
+msgid ""
+"For more details, please refer to PR https://github.com/sgl-project/sglang/"
+"pull/13959."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:320
+msgid "Example usage:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:321
+msgid ""
+"# Launch with FusedMoe + CP8\n"
+"python -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.2-Exp  --tp 8 "
+"--enable-nsa-prefill-context-parallel --nsa-prefill-cp-mode round-robin-"
+"split --max-running-requests 32\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:325
+msgid "Pipeline Parallel + Context Parallel (PP + CP)"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:327
+msgid ""
+"This mode combines Pipeline Parallelism (PP) and Context Parallelism (CP) to "
+"scale across multiple nodes, which can achieve better throughput and Time To "
+"First Token (TTFT). Note that this method has only been tested on H20 96G."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:329
+msgid "Standard Usage"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:331
+msgid ""
+"To launch with PP=2 and CP (via `round-robin-split` mode) on 2 nodes. This "
+"configuration uses the fused MoE kernel by default, which generally provides "
+"better performance."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:333
+msgid "For related development details, please refer to:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:334
+msgid ""
+"Fused MoE + CP support: [PR #13959](https://github.com/sgl-project/sglang/"
+"pull/13959)"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:335
+msgid ""
+"PP + CP support: [Issue #15358](https://github.com/sgl-project/sglang/"
+"issues/15358) and [PR #16380](https://github.com/sgl-project/sglang/"
+"pull/16380)"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:337
+msgid "Node 0:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:338
+msgid ""
+"export SGLANG_PP_LAYER_PARTITION=30,31\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
+"  --nnodes 2 --node-rank 0 \\\n"
+"  --dist-init-addr <HEAD_NODE_IP>:62001 \\\n"
+"  --tp 8 --pp-size 2 \\\n"
+"  --dp-size 1 --moe-dense-tp-size 1 \\\n"
+"  --enable-nsa-prefill-context-parallel \\\n"
+"  --nsa-prefill-cp-mode round-robin-split \\\n"
+"  --trust-remote-code \\\n"
+"  --disable-radix-cache \\\n"
+"  --mem-fraction-static 0.8 \\\n"
+"  --max-running-requests 128 \\\n"
+"  --chunked-prefill-size 16384 \\\n"
+"  --cuda-graph-max-bs 8 \\\n"
+"  --page-size 64 \\\n"
+"  --watchdog-timeout 3600 \\\n"
+"  --host 0.0.0.0 --port 8000 \\\n"
+"  --tool-call-parser deepseekv32\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:360
+msgid "Node 1:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:361
+msgid ""
+"export SGLANG_PP_LAYER_PARTITION=30,31\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
+"  --nnodes 2 --node-rank 1 \\\n"
+"  --dist-init-addr <HEAD_NODE_IP>:62001 \\\n"
+"  --tp 8 --pp-size 2 \\\n"
+"  --dp-size 1 --moe-dense-tp-size 1 \\\n"
+"  --enable-nsa-prefill-context-parallel \\\n"
+"  --nsa-prefill-cp-mode round-robin-split \\\n"
+"  --trust-remote-code \\\n"
+"  --disable-radix-cache \\\n"
+"  --mem-fraction-static 0.8 \\\n"
+"  --max-running-requests 128 \\\n"
+"  --chunked-prefill-size 16384 \\\n"
+"  --cuda-graph-max-bs 8 \\\n"
+"  --page-size 64 \\\n"
+"  --watchdog-timeout 3600 \\\n"
+"  --host 0.0.0.0 --port 8000 \\\n"
+"  --tool-call-parser deepseekv32\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:383
+msgid "PD Disaggregation with PP + CP"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:385
+msgid ""
+"If using PD (Prefill-Decode) Disaggregation, the Prefill nodes can be "
+"configured with PP + CP as follows."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:387
+msgid "Prefill Node 0:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:388
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
+"  --served-model-name deepseek-v32 \\\n"
+"  --nnodes 2 --node-rank 0 \\\n"
+"  --dist-init-addr <PREFILL_HEAD_IP>:20102 \\\n"
+"  --tp 8 --pp-size 2 \\\n"
+"  --dp-size 1 --moe-dense-tp-size 1 \\\n"
+"  --enable-nsa-prefill-context-parallel \\\n"
+"  --nsa-prefill-cp-mode round-robin-split  \\\n"
+"  --disaggregation-ib-device mlx5_bond_0,mlx5_bond_1,mlx5_bond_2,mlx5_bond_3 "
+"\\\n"
+"  --trust-remote-code \\\n"
+"  --disable-radix-cache \\\n"
+"  --max-running-requests 512 \\\n"
+"  --chunked-prefill-size 4096 \\\n"
+"  --context-length 131072 \\\n"
+"  --mem-fraction-static 0.9 \\\n"
+"  --page-size 64 \\\n"
+"  --enable-metrics \\\n"
+"  --collect-tokens-histogram \\\n"
+"  --tokenizer-worker-num 8 \\\n"
+"  --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:412
+msgid "Prefill Node 1:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:413
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-V3.2-Exp \\\n"
+"  --served-model-name deepseek-v32-prefill \\\n"
+"  --nnodes 2 --node-rank 1 \\\n"
+"  --dist-init-addr <PREFILL_HEAD_IP>:20102 \\\n"
+"  --tp 8 --pp-size 2 \\\n"
+"  --dp-size 1 --moe-dense-tp-size 1 \\\n"
+"  --enable-nsa-prefill-context-parallel \\\n"
+"  --nsa-prefill-cp-mode round-robin-split  \\\n"
+"  --disaggregation-ib-device mlx5_bond_0,mlx5_bond_1,mlx5_bond_2,mlx5_bond_3 "
+"\\\n"
+"  --trust-remote-code \\\n"
+"  --disable-radix-cache \\\n"
+"  --max-running-requests 512 \\\n"
+"  --chunked-prefill-size 4096 \\\n"
+"  --context-length 131072 \\\n"
+"  --mem-fraction-static 0.9 \\\n"
+"  --page-size 64 \\\n"
+"  --enable-metrics \\\n"
+"  --collect-tokens-histogram \\\n"
+"  --tokenizer-worker-num 8 \\\n"
+"  --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v32.md:437
+msgid "For the Decode nodes, it is recommended to use the **EP mode**."
 msgstr ""
