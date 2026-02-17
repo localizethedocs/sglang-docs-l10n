@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to Support New Models &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'supported_models/support_new_models';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/supported_models/support_new_models.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Transformers fallback in SGLang" href="transformers_fallback.html" />
+    <link rel="prev" title="Classification API" href="classify_models.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify_models.html">Classification API</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/supported_models/support_new_models.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/supported_models/support_new_models.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fsupported_models/support_new_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/supported_models/support_new_models.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>How to Support New Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-support-a-new-language-model">How to Support a New Language Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-support-a-new-multimodal-large-language-model">How to Support a New Multimodal Large Language Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-and-debugging">Testing and Debugging</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-debugging">Interactive Debugging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-the-model-to-the-test-suite">Add the Model to the Test Suite</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark">Benchmark</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#port-a-model-from-vllm-to-sglang">Port a Model from vLLM to SGLang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-an-external-model-implementation">Registering an External Model Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-implementing-and-serving-a-llama-wrapper-model">Example: Implementing and Serving a Llama Wrapper Model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-our-model">Implementing Our Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#serving-our-model-via-sglang-s-offline-engine">Serving Our Model Via SGLang's Offline Engine</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="how-to-support-new-models">
+<h1>How to Support New Models<a class="headerlink" href="#how-to-support-new-models" title="链接到此标题。">#</a></h1>
+<p>This document explains how to add support for new language models and multimodal large language models (MLLMs) in
+SGLang. It also covers how to test new models and register external implementations.</p>
+<section id="how-to-support-a-new-language-model">
+<h2>How to Support a New Language Model<a class="headerlink" href="#how-to-support-a-new-language-model" title="链接到此标题。">#</a></h2>
+<p>To support a new model in SGLang, you only need to add a single file under
+the <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/models">SGLang Models Directory</a>. You can learn
+from existing model implementations and create a new file for your model. For most models, you should be able to find a
+similar model to start with (e.g., starting from Llama). Also refer how
+to <a class="reference internal" href="#port-a-model-from-vllm-to-sglang"><span class="std std-ref">port a Model from vLLM to SGLang</span></a></p>
+</section>
+<section id="how-to-support-a-new-multimodal-large-language-model">
+<h2>How to Support a New Multimodal Large Language Model<a class="headerlink" href="#how-to-support-a-new-multimodal-large-language-model" title="链接到此标题。">#</a></h2>
+<p>To support a new multimodal large language model (MLLM) in SGLang, there are several key components in addition to the
+standard LLM support:</p>
+<ol class="arabic simple">
+<li><p><strong>Register your new model as multimodal</strong>:
+Extend <code class="docutils literal notranslate"><span class="pre">is_multimodal_model</span></code>
+in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/0ab3f437aba729b348a683ab32b35b214456efc7/python/sglang/srt/configs/model_config.py#L561">model_config.py</a>
+to return <code class="docutils literal notranslate"><span class="pre">True</span></code> for your model.</p></li>
+<li><p><strong>Register a new chat-template</strong>:
+Only when your default chat-template is unable to accept images as input: Register a new chat template in <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/conversation.py">conversation.py</a> and the corresponding matching function.</p></li>
+<li><p><strong>Multimodal Data Processor</strong>:
+Define a new <code class="docutils literal notranslate"><span class="pre">Processor</span></code> class that inherits from <code class="docutils literal notranslate"><span class="pre">BaseMultimodalProcessor</span></code> and register this processor as your
+model’s dedicated processor.
+See <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/multimodal/processors">multimodal_processor.py</a>
+for more details.</p></li>
+<li><p><strong>Handle Multimodal Tokens</strong>:
+Implement a <code class="docutils literal notranslate"><span class="pre">pad_input_ids</span></code> function for your new model. In this function, multimodal tokens in the prompt should be
+expanded (if necessary) and padded with multimodal-data-hashes so that SGLang can recognize different multimodal data
+with <code class="docutils literal notranslate"><span class="pre">RadixAttention</span></code>.</p></li>
+<li><p><strong>Handle Image Feature Extraction</strong>:
+Implement a <code class="docutils literal notranslate"><span class="pre">get_image_feature</span></code> function for your new model, which extracts image features from raw image data and converts them into the embeddings used by the language model.</p></li>
+<li><p><strong>Adapt to Vision Attention</strong>:
+Adapt the multi-headed <code class="docutils literal notranslate"><span class="pre">Attention</span></code> of ViT with SGLang’s <code class="docutils literal notranslate"><span class="pre">VisionAttention</span></code>.</p></li>
+</ol>
+<p>You can refer to <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/models/qwen2_vl.py">Qwen2VL</a> or
+other mllm implementations. These models demonstrate how to correctly handle both multimodal and textual inputs.</p>
+</section>
+<section id="testing-and-debugging">
+<h2>Testing and Debugging<a class="headerlink" href="#testing-and-debugging" title="链接到此标题。">#</a></h2>
+<p>Please note all your testing and benchmarking results in PR description.</p>
+<section id="interactive-debugging">
+<h3>Interactive Debugging<a class="headerlink" href="#interactive-debugging" title="链接到此标题。">#</a></h3>
+<p>For interactive debugging, compare the outputs of Hugging Face/Transformers and SGLang. The following two commands
+should give the same text output and very similar prefill logits:</p>
+<ul>
+<li><p>Get the reference output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/playground/reference_hf.py<span class="w"> </span>--model-path<span class="w"> </span><span class="o">[</span>new<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--model-type<span class="w"> </span><span class="o">{</span>text,mllm<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the SGLang output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_one_batch<span class="w"> </span>--correct<span class="w"> </span>--model<span class="w"> </span><span class="o">[</span>new<span class="w"> </span>model<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="add-the-model-to-the-test-suite">
+<h3>Add the Model to the Test Suite<a class="headerlink" href="#add-the-model-to-the-test-suite" title="链接到此标题。">#</a></h3>
+<p>To ensure the new model is well maintained, add it to the test suite by including it in the <code class="docutils literal notranslate"><span class="pre">ALL_OTHER_MODELS</span></code> list in
+the <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/test/srt/models/test_generation_models.py">test_generation_models.py</a>
+file, test the new model on your local machine and report the results on demonstrative benchmarks (GSM8K, MMLU, MMMU,
+MMMU-Pro, etc.) in your PR. \
+For VLMs, also include a test in <code class="docutils literal notranslate"><span class="pre">test_vision_openai_server_{x}.py</span></code> (e.g. <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/test/srt/test_vision_openai_server_a.py">test_vision_openai_server_a.py</a>, <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/test/srt/test_vision_openai_server_b.py">test_vision_openai_server_b.py</a>).</p>
+<p>This is an example command to run to test a new model on your local machine:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">ONLY_RUN</span><span class="o">=</span>Qwen/Qwen2-1.5B<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>test_generation_models.TestGenerationModels.test_others
+</pre></div>
+</div>
+</section>
+<section id="benchmark">
+<h3>Benchmark<a class="headerlink" href="#benchmark" title="链接到此标题。">#</a></h3>
+<ul class="simple">
+<li><p><strong>(Required) MMMU</strong>: follow MMMU benchmark <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/benchmark/mmmu/README.md">README.md</a> to get SGLang vs. HF Transformer accuracy comparison. The accuracy score from SGLang run should not be much lower than that from HF Transformer run. Similarly, follow https://docs.sglang.io/developer_guide/benchmark_and_profiling.html to get performance comparison: TTFT and throughput must meet or exceed baselines (e.g., HF Transformer).</p></li>
+<li><p><strong>(Optional) Other evals</strong>: If you ran other evals, please note the results in PR description.</p></li>
+</ul>
+</section>
+</section>
+<section id="port-a-model-from-vllm-to-sglang">
+<h2>Port a Model from vLLM to SGLang<a class="headerlink" href="#port-a-model-from-vllm-to-sglang" title="链接到此标题。">#</a></h2>
+<p>The <a class="reference external" href="https://github.com/vllm-project/vllm/tree/main/vllm/model_executor/models">vLLM Models Directory</a> is a valuable
+resource, as vLLM covers many models. SGLang reuses vLLM’s interface and some layers, making it easier to port models
+from vLLM to SGLang.</p>
+<p>To port a model from vLLM to SGLang:</p>
+<ul class="simple">
+<li><p>Compare these two files for guidance:</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/models/llama.py">SGLang Llama Implementation</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/models/llama.py">vLLM Llama Implementation</a></p></li>
+</ul>
+</li>
+<li><p>The major differences include:</p>
+<ul>
+<li><p><strong>Replace vLLM’s <code class="docutils literal notranslate"><span class="pre">Attention</span></code> with <code class="docutils literal notranslate"><span class="pre">RadixAttention</span></code></strong> (ensure you pass <code class="docutils literal notranslate"><span class="pre">layer_id</span></code> to <code class="docutils literal notranslate"><span class="pre">RadixAttention</span></code>).</p></li>
+<li><p><strong>Replace vLLM’s <code class="docutils literal notranslate"><span class="pre">LogitsProcessor</span></code> with SGLang’s <code class="docutils literal notranslate"><span class="pre">LogitsProcessor</span></code>.</strong></p></li>
+<li><p><strong>Replace the multi-headed <code class="docutils literal notranslate"><span class="pre">Attention</span></code> of ViT with SGLang’s <code class="docutils literal notranslate"><span class="pre">VisionAttention</span></code>.</strong></p></li>
+<li><p><strong>Replace other vLLM layers</strong> (such as <code class="docutils literal notranslate"><span class="pre">RMSNorm</span></code>, <code class="docutils literal notranslate"><span class="pre">SiluAndMul</span></code>) with SGLang layers.</p></li>
+<li><p><strong>Remove <code class="docutils literal notranslate"><span class="pre">Sample</span></code>.</strong></p></li>
+<li><p><strong>Change the <code class="docutils literal notranslate"><span class="pre">forward()</span></code> functions</strong> and add a <code class="docutils literal notranslate"><span class="pre">forward_batch()</span></code> method.</p></li>
+<li><p><strong>Add <code class="docutils literal notranslate"><span class="pre">EntryClass</span></code></strong> at the end.</p></li>
+<li><p><strong>Ensure that the new implementation uses only SGLang components</strong> and does not rely on any vLLM components.</p></li>
+</ul>
+</li>
+</ul>
+<p>Note: make sure you add your new model to the supported models list in the supported models documentation.</p>
+</section>
+<section id="registering-an-external-model-implementation">
+<h2>Registering an External Model Implementation<a class="headerlink" href="#registering-an-external-model-implementation" title="链接到此标题。">#</a></h2>
+<p>In addition to the methods above, you can register your new model with the <code class="docutils literal notranslate"><span class="pre">ModelRegistry</span></code> before launching the server.
+This allows you to integrate your model without modifying the source code.</p>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.models.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRegistry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.entrypoints.http_server</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server</span>
+
+<span class="c1"># For a single model, add it to the registry:</span>
+<span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_class</span>
+
+<span class="c1"># For multiple models, you can imitate the import_model_classes() function:</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">import_new_model_classes</span><span class="p">():</span>
+    <span class="n">model_arch_name_to_cls</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Populate model_arch_name_to_cls with your new model classes.</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">model_arch_name_to_cls</span>
+
+<span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">import_new_model_classes</span><span class="p">())</span>
+
+<span class="c1"># Launch the server with your server arguments:</span>
+<span class="n">launch_server</span><span class="p">(</span><span class="n">server_args</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-implementing-and-serving-a-llama-wrapper-model">
+<h2>Example: Implementing and Serving a Llama Wrapper Model<a class="headerlink" href="#example-implementing-and-serving-a-llama-wrapper-model" title="链接到此标题。">#</a></h2>
+<p>Below is an introductory, step-by-step walkthrough on how to implement a new model end-to-end in SGLang and then run it via the <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/docs/basic_usage/offline_engine_api.ipynb">Offline Engine</a>.</p>
+<section id="implementing-our-model">
+<h3>Implementing Our Model<a class="headerlink" href="#implementing-our-model" title="链接到此标题。">#</a></h3>
+<p>To keep things simple, this new model will be a simple wrapper around <a class="reference external" href="https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct">Llama 3.1-8B-Instruct</a>, and our goal will be just to bias the output logits for each <code class="docutils literal notranslate"><span class="pre">forward</span></code> call by taking the square root of each individual logit.</p>
+<p>Let's start by defining our model in a file called <code class="docutils literal notranslate"><span class="pre">llama_wrapper.py</span></code>.
+The first step is to import the necessary libraries from SRT, which is SGLang's internal backend.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In the file `llama_wrapper.py`</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.layers.logits_processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogitsProcessorOutput</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.layers.quantization.base_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantizationConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.model_executor.forward_batch_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForwardBatch</span><span class="p">,</span> <span class="n">PPProxyTensors</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.models.llama</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaForCausalLM</span>
+</pre></div>
+</div>
+<p>Next, we declare a new <code class="docutils literal notranslate"><span class="pre">class</span></code> for our model and have it inherit from <code class="docutils literal notranslate"><span class="pre">LlamaForCausalLM</span></code>, which allows our model to access <code class="docutils literal notranslate"><span class="pre">LlamaForCausalLM</span></code>'s predefined modules and layers, such as <code class="docutils literal notranslate"><span class="pre">LlamaAttention</span></code> and <code class="docutils literal notranslate"><span class="pre">LlamaMLP</span></code>.
+Note that almost all model implementations take in <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">quant_config</span></code> as arguments for their <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method; <code class="docutils literal notranslate"><span class="pre">config</span></code> and <code class="docutils literal notranslate"><span class="pre">quant_config</span></code> are passed in via <a class="reference external" href="https://github.com/sgl-project/sglang/blob/bf72b80122fd888bf619d17b96fa3e323ab809fc/python/sglang/srt/model_loader/loader.py#L219"><code class="docutils literal notranslate"><span class="pre">model_loader/loader.py</span></code></a>.
+Because we have inherited from <code class="docutils literal notranslate"><span class="pre">LlamaForCausalLM</span></code>, we can pass our parameters directly to its constructor, which will set the member variables for us.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">LlamaWrapper</span><span class="p">(</span><span class="n">LlamaForCausalLM</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">LlamaConfig</span><span class="p">,</span>
+        <span class="n">quant_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QuantizationConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">quant_config</span><span class="o">=</span><span class="n">quant_config</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, we want to define the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method, which is what will be called at inference time.
+Note that the signature for <code class="docutils literal notranslate"><span class="pre">forward</span></code> is essentially the same for any model; you can take a look at the other models defined in the <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/models/"><code class="docutils literal notranslate"><span class="pre">models</span></code> directory</a> for references.
+To see where exactly <code class="docutils literal notranslate"><span class="pre">forward</span></code> is called in the SGLang runtime's internals, take a look at <a class="reference external" href="https://github.com/sgl-project/sglang/blob/bf72b80122fd888bf619d17b96fa3e323ab809fc/python/sglang/srt/model_executor/model_runner.py#L1705"><code class="docutils literal notranslate"><span class="pre">forward_decode</span></code></a> and <a class="reference external" href="https://github.com/sgl-project/sglang/blob/bf72b80122fd888bf619d17b96fa3e323ab809fc/python/sglang/srt/model_executor/model_runner.py#L1724"><code class="docutils literal notranslate"><span class="pre">forward_extend</span></code></a> in the <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/model_executor/model_runner.py"><code class="docutils literal notranslate"><span class="pre">ModelRunner</span></code> class</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">forward_batch</span><span class="p">:</span> <span class="n">ForwardBatch</span><span class="p">,</span>
+        <span class="n">pp_proxy_tensors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PPProxyTensors</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">input_embeds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">get_embedding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LogitsProcessorOutput</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>We now call the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method for <code class="docutils literal notranslate"><span class="pre">self.model</span></code> (which is a member variable that <code class="docutils literal notranslate"><span class="pre">LlamaForCausalLM</span></code> defines in its <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method), which eventually calls <code class="docutils literal notranslate"><span class="pre">LlamaForCausalLM</span></code>'s <code class="docutils literal notranslate"><span class="pre">forward</span></code> method.
+After that, we feed the <code class="docutils literal notranslate"><span class="pre">hidden_states</span></code> into our model's <code class="docutils literal notranslate"><span class="pre">LogitsProcessor</span></code> (again defined in <code class="docutils literal notranslate"><span class="pre">LlamaForCausalLM</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">positions</span><span class="p">,</span>
+            <span class="n">forward_batch</span><span class="p">,</span>
+            <span class="n">input_embeds</span><span class="p">,</span>
+            <span class="n">pp_proxy_tensors</span><span class="o">=</span><span class="n">pp_proxy_tensors</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">res</span><span class="p">:</span> <span class="n">LogitsProcessorOutput</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logits_processor</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">hidden_states</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lm_head</span><span class="p">,</span>
+            <span class="n">forward_batch</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>After receiving the logits for the next token, we can finally perform our biasing step.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">orig_logits</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">next_token_logits</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">next_token_logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">orig_logits</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">orig_logits</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span>
+            <span class="n">orig_logits</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+<p>Now, our <code class="docutils literal notranslate"><span class="pre">LlamaWrapper</span></code> model is created and ready to be served!</p>
+</section>
+<section id="serving-our-model-via-sglang-s-offline-engine">
+<h3>Serving Our Model Via SGLang's Offline Engine<a class="headerlink" href="#serving-our-model-via-sglang-s-offline-engine" title="链接到此标题。">#</a></h3>
+<p>The next step of this walkthrough involves hosting our new model offline, so that it can be served locally and without an HTTP server.</p>
+<p>First, create a new file called <code class="docutils literal notranslate"><span class="pre">run.py</span></code>.
+Now, we must ensure that SGLang's <code class="docutils literal notranslate"><span class="pre">ModelRegistry</span></code> can find our model.
+To do this, we first download the model's configuration and weights from Huggingface.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In the file `run.py`</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">snapshot_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llama_wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaWrapper</span> <span class="c1"># Make sure to import our new model!</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.models.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRegistry</span>
+
+<span class="c1"># Make sure to request access to this model on Huggingface, then export your</span>
+<span class="c1"># `HF_TOKEN` to download the model snapshot</span>
+<span class="n">llama_dir</span> <span class="o">=</span> <span class="n">snapshot_download</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;meta-llama/Llama-3.1-8B-Instruct&quot;</span><span class="p">,</span>
+    <span class="n">local_dir</span><span class="o">=</span><span class="s2">&quot;./llama_ckpt&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we have our model on disk, we want to point it to <code class="docutils literal notranslate"><span class="pre">LlamaWrapper</span></code> by changing the <code class="docutils literal notranslate"><span class="pre">architectures</span></code> field in <code class="docutils literal notranslate"><span class="pre">./llama_ckpt/config.json</span></code> to be <code class="docutils literal notranslate"><span class="pre">LlamaWrapper</span></code>.
+That way, when we pass in the path of our model checkpoint to SGLang, it will know that we want to use &quot;LlamaWrapper&quot; instead of &quot;LlamaForCausalLM&quot; as our model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;architectures&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="c1">#  &quot;LlamaForCausalLM&quot;</span>
+    <span class="s2">&quot;LlamaWrapper&quot;</span>
+  <span class="p">],</span>
+  <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>However, if we don't link our <code class="docutils literal notranslate"><span class="pre">LlamaWrapper</span></code> class to the &quot;LlamaWrapper&quot; registry keyword, then SGLang won't be able to find our model.
+Thus, to register our <code class="docutils literal notranslate"><span class="pre">LlamaWrapper</span></code>, we want to follow the steps in the above section titled &quot;Registering an External Model Implementation&quot;.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">import_new_model_classes</span><span class="p">():</span>
+    <span class="n">model_arch_name_to_cls</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;LlamaWrapper&quot;</span><span class="p">:</span> <span class="n">LlamaWrapper</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">model_arch_name_to_cls</span>
+
+<span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">import_new_model_classes</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Lastly, when we create our <code class="docutils literal notranslate"><span class="pre">Engine</span></code>, we just pass in the path to the local model directory.
+Then, our <code class="docutils literal notranslate"><span class="pre">LlamaWrapper</span></code> is ready to be served; for this walkthrough, we will use SGLang <code class="docutils literal notranslate"><span class="pre">Engine</span></code>'s non-streaming asynchronous generation endpoint.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">Engine</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;./llama_ckpt&quot;</span><span class="p">)</span>
+    <span class="n">sampling_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;top_k&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+    <span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Write a short, neutral self-introduction for a fictional character. Hello, my name is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Provide a concise factual statement about France’s capital city. The capital of France is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Explain possible future trends in artificial intelligence. The future of AI is&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_llm</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">,</span> <span class="n">prompts</span><span class="p">))</span>
+
+    <span class="n">llm</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_llm</span><span class="p">(</span>
+    <span class="n">llm</span><span class="p">,</span>
+    <span class="n">sampling_params</span><span class="p">,</span>
+    <span class="n">prompts</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">async_generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Prompt: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated text: </span><span class="si">{</span><span class="n">output</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, when we call <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">run.py</span></code>, we will get the outputs of our newly created model!</p>
+</section>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="链接到此标题。">#</a></h2>
+<p>Add to table of supported models in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/docs/supported_models/generative_models.md">generative_models.md</a> or <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/docs/supported_models/multimodal_language_models.md">multimodal_language_models.md</a></p>
+<hr class="docutils" />
+<p>By following these guidelines, you can add support for new language models and multimodal large language models in
+SGLang and ensure they are thoroughly tested and easily integrated into the system.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="classify_models.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Classification API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="transformers_fallback.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Transformers fallback in SGLang</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-support-a-new-language-model">How to Support a New Language Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-support-a-new-multimodal-large-language-model">How to Support a New Multimodal Large Language Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-and-debugging">Testing and Debugging</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-debugging">Interactive Debugging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-the-model-to-the-test-suite">Add the Model to the Test Suite</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark">Benchmark</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#port-a-model-from-vllm-to-sglang">Port a Model from vLLM to SGLang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-an-external-model-implementation">Registering an External Model Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-implementing-and-serving-a-llama-wrapper-model">Example: Implementing and Serving a Llama Wrapper Model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-our-model">Implementing Our Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#serving-our-model-via-sglang-s-offline-engine">Serving Our Model Via SGLang's Offline Engine</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

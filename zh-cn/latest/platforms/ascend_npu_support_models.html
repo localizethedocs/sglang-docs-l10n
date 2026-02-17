@@ -1,0 +1,1031 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Support Models on Ascend NPU &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'platforms/ascend_npu_support_models';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/platforms/ascend_npu_support_models.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Support Features on Ascend NPU" href="ascend_npu_support_features.html" />
+    <link rel="prev" title="SGLang installation with NPUs support" href="ascend_npu.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 16 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ascend_npu_support.html">Ascend NPUs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu.html">SGLang installation with NPUs support</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Support Models on Ascend NPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_support_features.html">Support Features on Ascend NPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_deepseek_example.html">DeepSeek examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_qwen3_examples.html">Qwen3 examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_best_practice.html">Best Practice on Ascend NPU</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/platforms/ascend_npu_support_models.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/platforms/ascend_npu_support_models.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fplatforms/ascend_npu_support_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/platforms/ascend_npu_support_models.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Support Models on Ascend NPU</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-language-models">Large Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multimodal-language-models">Multimodal Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-models">Embedding Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward-models">Reward Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rerank-models">Rerank Models</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="support-models-on-ascend-npu">
+<h1>Support Models on Ascend NPU<a class="headerlink" href="#support-models-on-ascend-npu" title="链接到此标题。">#</a></h1>
+<p>This section describes the models supported on the Ascend NPU, including Large Language Models, Multimodal Language
+Models, Embedding Models, and Rerank Models. Mainstream DeepSeek/Qwen/GLM series are included.
+You are welcome to enable various models based on your business requirements.</p>
+<section id="large-language-models">
+<h2>Large Language Models<a class="headerlink" href="#large-language-models" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Models</p></th>
+<th class="head"><p>Model Family</p></th>
+<th class="head text-center"><p>A2 Supported</p></th>
+<th class="head text-center"><p>A3 Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeepSeek V3/V3.1</p></td>
+<td><p>DeepSeek</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepSeek V3.2</p></td>
+<td><p>DeepSeek</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DeepSeek R1</p></td>
+<td><p>DeepSeek</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepSeek V2</p></td>
+<td><p>DeepSeek</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen3</p></td>
+<td><p>Qwen</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-MoE</p></td>
+<td><p>Qwen</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen3-Next</p></td>
+<td><p>Qwen</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-Coder</p></td>
+<td><p>Qwen</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen2.5</p></td>
+<td><p>Qwen</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>QwQ-32B</p></td>
+<td><p>Qwen</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>meta-llama/Llama-4-Scout-17B-16E-Instruct</p></td>
+<td><p>Llama</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>AI-ModelScope/Llama-3.1-8B-Instruct</p></td>
+<td><p>Llama</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>LLM-Research/Llama-3.2-1B-Instruct</p></td>
+<td><p>Llama</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>mistralai/Mistral-7B-Instruct-v0.2</p></td>
+<td><p>Mistral</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>google/gemma-3-4b-it</p></td>
+<td><p>Gemma</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>microsoft/Phi-4-multimodal-instruct</p></td>
+<td><p>Phi</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>allenai/OLMoE-1B-7B-0924</p></td>
+<td><p>OLMoE</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>stabilityai/stablelm-2-1_6b</p></td>
+<td><p>StableLM</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>CohereForAI/c4ai-command-r-v01</p></td>
+<td><p>Command-R</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>huihui-ai/grok-2</p></td>
+<td><p>Grok</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>ZhipuAI/chatglm2-6b</p></td>
+<td><p>ChatGLM</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Shanghai_AI_Laboratory/internlm2-7b</p></td>
+<td><p>InternLM 2</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct</p></td>
+<td><p>ExaONE 3</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>xverse/XVERSE-MoE-A36B</p></td>
+<td><p>XVERSE</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>HuggingFaceTB/SmolLM-1.7B</p></td>
+<td><p>SmolLM</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>ZhipuAI/glm-4-9b-chat</p></td>
+<td><p>GLM-4</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>XiaomiMiMo/MiMo-7B-RL</p></td>
+<td><p>MiMo</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>arcee-ai/AFM-4.5B-Base</p></td>
+<td><p>Arcee AFM-4.5B</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Howeee/persimmon-8b-chat</p></td>
+<td><p>Persimmon</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>inclusionAI/Ling-lite</p></td>
+<td><p>Ling</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>ibm-granite/granite-3.1-8b-instruct</p></td>
+<td><p>Granite</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>ibm-granite/granite-3.0-3b-a800m-instruct</p></td>
+<td><p>Granite MoE</p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>databricks/dbrx-instruct</p></td>
+<td><p>DBRX (Databricks)</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>baichuan-inc/Baichuan2-13B-Chat</p></td>
+<td><p>Baichuan 2 (7B, 13B)</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>baidu/ERNIE-4.5-21B-A3B-PT</p></td>
+<td><p>ERNIE-4.5 (4.5, 4.5MoE series)</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>openbmb/MiniCPM3-4B</p></td>
+<td><p>MiniCPM (v3, 4B)</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>openai/gpt-oss-120b</p></td>
+<td><p>GPTOSS</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="multimodal-language-models">
+<h2>Multimodal Language Models<a class="headerlink" href="#multimodal-language-models" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Models</p></th>
+<th class="head"><p>Model Family (Variants)</p></th>
+<th class="head"><p>A2 Supported</p></th>
+<th class="head text-center"><p>A3 Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Qwen2.5-VL-72B-Instruct-w8a8</p></td>
+<td><p>Qwen-VL</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-VL-30B-A3B-Instruct</p></td>
+<td><p>Qwen-VL</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen3-VL-8B-Instruct</p></td>
+<td><p>Qwen-VL</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-VL-4B-Instruct</p></td>
+<td><p>Qwen-VL</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen3-VL-235B-A22B-Instruct</p></td>
+<td><p>Qwen-VL</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>deepseek-ai/deepseek-vl2</p></td>
+<td><p>DeepSeek-VL2</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>deepseek-ai/Janus-Pro-7B</p></td>
+<td><p>Janus-Pro (1B, 7B)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>openbmb/MiniCPM-V-2_6</p></td>
+<td><p>MiniCPM-V / MiniCPM-o</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>google/gemma-3-4b-it</p></td>
+<td><p>Gemma 3 (Multimodal)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>mistralai/Mistral-Small-3.1-24B-Instruct-2503</p></td>
+<td><p>Mistral-Small-3.1-24B</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>microsoft/Phi-4-multimodal-instruct</p></td>
+<td><p>Phi-4-multimodal-instruct</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>XiaomiMiMo/MiMo-VL-7B-RL</p></td>
+<td><p>MiMo-VL (7B)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>AI-ModelScope/llava-v1.6-34b</p></td>
+<td><p>LLaVA (v1.5 &amp; v1.6)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>lmms-lab/llava-next-72b</p></td>
+<td><p>LLaVA-NeXT (8B, 72B)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>lmms-lab/llava-onevision-qwen2-7b-ov</p></td>
+<td><p>LLaVA-OneVision</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Kimi/Kimi-VL-A3B-Instruct</p></td>
+<td><p>Kimi-VL (A3B)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>ZhipuAI/GLM-4.5V</p></td>
+<td><p>GLM-4.5V (106B)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>meta-llama/Llama-3.2-11B-Vision-Instruct</p></td>
+<td><p>Llama 3.2 Vision (11B)</p></td>
+<td><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="embedding-models">
+<h2>Embedding Models<a class="headerlink" href="#embedding-models" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Models</p></th>
+<th class="head"><p>Model Family</p></th>
+<th class="head"><p>A2 Supported</p></th>
+<th class="head text-center"><p>A3 Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>intfloat/e5-mistral-7b-instruct</p></td>
+<td><p>E5 (Llama/Mistral based)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>iic/gte_Qwen2-1.5B-instruct</p></td>
+<td><p>GTE-Qwen2</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen/Qwen3-Embedding-8B</p></td>
+<td><p>Qwen3-Embedding</p></td>
+<td><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Alibaba-NLP/gme-Qwen2-VL-2B-Instruct</p></td>
+<td><p>GME (Multimodal)</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>AI-ModelScope/clip-vit-large-patch14-336</p></td>
+<td><p>CLIP</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>BAAI/bge-large-en-v1.5</p></td>
+<td><p>BGE</p></td>
+<td><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="reward-models">
+<h2>Reward Models<a class="headerlink" href="#reward-models" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Models</p></th>
+<th class="head"><p>Model Family</p></th>
+<th class="head"><p>A2 Supported</p></th>
+<th class="head text-center"><p>A3 Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Skywork/Skywork-Reward-Llama-3.1-8B-v0.2</p></td>
+<td><p>Llama3.1 Reward</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Shanghai_AI_Laboratory/internlm2-7b-reward</p></td>
+<td><p>InternLM 2 Reward</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen/Qwen2.5-Math-RM-72B</p></td>
+<td><p>Qwen2.5 Reward - Math</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>jason9693/Qwen2.5-1.5B-apeach</p></td>
+<td><p>Qwen2.5 Reward - Sequence</p></td>
+<td><p><strong><span style="color: green;">√</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: green;">√</span></strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Skywork/Skywork-Reward-Gemma-2-27B-v0.2</p></td>
+<td><p>Gemma 2-27B Reward</p></td>
+<td><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="rerank-models">
+<h2>Rerank Models<a class="headerlink" href="#rerank-models" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Models</p></th>
+<th class="head"><p>Model Family</p></th>
+<th class="head text-center"><p>A2 Supported</p></th>
+<th class="head text-center"><p>A3 Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BAAI/bge-reranker-v2-m3</p></td>
+<td><p>BGE-Reranker</p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+<td class="text-center"><p><strong><span style="color: red;">×</span></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ascend_npu.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">SGLang installation with NPUs support</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ascend_npu_support_features.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Support Features on Ascend NPU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-language-models">Large Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multimodal-language-models">Multimodal Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-models">Embedding Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward-models">Reward Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rerank-models">Rerank Models</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 16 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

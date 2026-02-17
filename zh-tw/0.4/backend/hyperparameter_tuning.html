@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hyperparameter Tuning &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a07d80b7"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'backend/hyperparameter_tuning';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/backend/hyperparameter_tuning.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Attention Backend" href="attention_backend.html" />
+    <link rel="prev" title="Sampling Parameters" href="sampling_params.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">離線引擎 API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/general.html">General Guidance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/hardware.html">Hardware Supports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/advanced_deploy.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/backend/hyperparameter_tuning.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/backend/hyperparameter_tuning.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbackend/hyperparameter_tuning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/backend/hyperparameter_tuning.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hyperparameter Tuning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#achieving-high-throughput-for-offline-batch-inference">Achieving high throughput for offline batch inference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adjust-the-request-submission-speed-to-control-queue-req">Adjust the request submission speed to control <code class="docutils literal notranslate"><span class="pre">#queue-req</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#achieve-a-high-token-usage">Achieve a high <code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-mem-fraction-static-to-increase-the-kv-cache-pool-capacity">Tune <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> to increase the KV cache pool capacity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-out-of-memory-errors-by-tuning-chunked-prefill-size-mem-fraction-static-and-max-running-requests">Avoid out-of-memory errors by tuning <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code>, <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code>, and <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-cuda-graph-max-bs">Tune <code class="docutils literal notranslate"><span class="pre">--cuda-graph-max-bs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-dp-size-and-tp-size">Tune <code class="docutils literal notranslate"><span class="pre">--dp-size</span></code> and <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#try-other-options">Try other options</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hyperparameter-tuning">
+<h1>Hyperparameter Tuning<a class="headerlink" href="#hyperparameter-tuning" title="連結到這個標頭">#</a></h1>
+<section id="achieving-high-throughput-for-offline-batch-inference">
+<h2>Achieving high throughput for offline batch inference<a class="headerlink" href="#achieving-high-throughput-for-offline-batch-inference" title="連結到這個標頭">#</a></h2>
+<p>Achieving a large batch size is the most important thing for attaining high throughput in offline batch inference.
+When the server is running at full load in a steady state, look for the following in the log:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Decode</span> <span class="pre">batch.</span> <span class="pre">#running-req:</span> <span class="pre">233,</span> <span class="pre">#token:</span> <span class="pre">370959,</span> <span class="pre">token</span> <span class="pre">usage:</span> <span class="pre">0.82,</span> <span class="pre">cuda</span> <span class="pre">graph:</span> <span class="pre">True,</span> <span class="pre">gen</span> <span class="pre">throughput</span> <span class="pre">(token/s):</span> <span class="pre">4594.01,</span> <span class="pre">#queue-req:</span> <span class="pre">317</span></code></p>
+<section id="adjust-the-request-submission-speed-to-control-queue-req">
+<h3>Adjust the request submission speed to control <code class="docutils literal notranslate"><span class="pre">#queue-req</span></code><a class="headerlink" href="#adjust-the-request-submission-speed-to-control-queue-req" title="連結到這個標頭">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">#queue-req</span></code> indicates the number of requests in the queue.
+If you frequently see <code class="docutils literal notranslate"><span class="pre">#queue-req:</span> <span class="pre">0</span></code>, it suggests that your client code is submitting requests too slowly.
+A healthy range for <code class="docutils literal notranslate"><span class="pre">#queue-req</span></code> is <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">-</span> <span class="pre">2000</span></code>.
+However, avoid making <code class="docutils literal notranslate"><span class="pre">#queue-req</span></code> too large, as this will increase the scheduling overhead on the server.</p>
+</section>
+<section id="achieve-a-high-token-usage">
+<h3>Achieve a high <code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span></code><a class="headerlink" href="#achieve-a-high-token-usage" title="連結到這個標頭">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span></code> indicates the KV cache memory utilization of the server. <code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span> <span class="pre">&gt;</span> <span class="pre">0.9</span></code> means good utilization.</p>
+<p>If you frequently see <code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span> <span class="pre">&lt;</span> <span class="pre">0.9</span></code> and <code class="docutils literal notranslate"><span class="pre">#queue-req</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, it means the server is too conservative about taking in new requests. You can decrease <code class="docutils literal notranslate"><span class="pre">--schedule-conservativeness</span></code> to a value like 0.3.
+The case of a server being too conservative can happen when users send many requests with a large <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> but the requests stop very early due to EOS or stop strings.</p>
+<p>On the other hand, if you see <code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span></code> very high and you frequently see warnings like
+<code class="docutils literal notranslate"><span class="pre">KV</span> <span class="pre">cache</span> <span class="pre">pool</span> <span class="pre">is</span> <span class="pre">full.</span> <span class="pre">Retract</span> <span class="pre">requests.</span> <span class="pre">#retracted_reqs:</span> <span class="pre">1,</span> <span class="pre">#new_token_ratio:</span> <span class="pre">0.9998</span> <span class="pre">-&gt;</span> <span class="pre">1.0000</span></code>, you can increase <code class="docutils literal notranslate"><span class="pre">--schedule-conservativeness</span></code> to a value like 1.3.
+If you see <code class="docutils literal notranslate"><span class="pre">KV</span> <span class="pre">cache</span> <span class="pre">pool</span> <span class="pre">is</span> <span class="pre">full.</span> <span class="pre">Retract</span> <span class="pre">requests.</span></code> occasionally but not frequently, it is okay.</p>
+</section>
+<section id="tune-mem-fraction-static-to-increase-the-kv-cache-pool-capacity">
+<h3>Tune <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> to increase the KV cache pool capacity<a class="headerlink" href="#tune-mem-fraction-static-to-increase-the-kv-cache-pool-capacity" title="連結到這個標頭">#</a></h3>
+<p>GPU memory capacity = model weights + KV cache pool + activations + CUDA graph buffers</p>
+<p>mem_fraction_static = (model weights + KV cache pool) / GPU memory capacity.</p>
+<p>We want to increase the KV cache pool capacity to support a larger concurrency, so
+we want <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> to be as large as possible but still have enough room
+for activations and CUDA graph buffers.</p>
+<p>A simple strategy is to increase <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> by 0.01 each time until you encounter out-of-memory errors.</p>
+</section>
+<section id="avoid-out-of-memory-errors-by-tuning-chunked-prefill-size-mem-fraction-static-and-max-running-requests">
+<h3>Avoid out-of-memory errors by tuning <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code>, <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code>, and <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code><a class="headerlink" href="#avoid-out-of-memory-errors-by-tuning-chunked-prefill-size-mem-fraction-static-and-max-running-requests" title="連結到這個標頭">#</a></h3>
+<p>If you encounter out-of-memory (OOM) errors, you can adjust the following parameters:</p>
+<ul class="simple">
+<li><p>If OOM occurs during prefill, try reducing <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code> to <code class="docutils literal notranslate"><span class="pre">4096</span></code> or <code class="docutils literal notranslate"><span class="pre">2048</span></code>. This saves memory but slows down the prefill speed for long prompts.</p></li>
+<li><p>If OOM occurs during decoding, try lowering <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code>.</p></li>
+<li><p>You can also reduce <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> to a smaller value, such as 0.8 or 0.7. This decreases the memory usage of the KV cache memory pool and helps prevent OOM errors during both prefill and decoding. However, it limits maximum concurrency and reduces peak throughput.</p></li>
+</ul>
+</section>
+<section id="tune-cuda-graph-max-bs">
+<h3>Tune <code class="docutils literal notranslate"><span class="pre">--cuda-graph-max-bs</span></code><a class="headerlink" href="#tune-cuda-graph-max-bs" title="連結到這個標頭">#</a></h3>
+<p>By default, CUDA graph is enabled only for small batch sizes (e.g., less than 160 or 256).
+However, for some models, especially at large tensor parallelism sizes, CUDA graph can be useful for batch sizes up to 512 or 768.
+Therefore, it may be beneficial to increase <code class="docutils literal notranslate"><span class="pre">--cuda-graph-max-bs</span></code> to a larger value.
+Note that CUDA graph consumes more memory, so you may need to reduce <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> at the same time.</p>
+</section>
+<section id="tune-dp-size-and-tp-size">
+<h3>Tune <code class="docutils literal notranslate"><span class="pre">--dp-size</span></code> and <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code><a class="headerlink" href="#tune-dp-size-and-tp-size" title="連結到這個標頭">#</a></h3>
+<p>Data parallelism is better for throughput. When there is enough GPU memory, always favor data parallelism for throughput. Refer to <a class="reference internal" href="../router/router.html"><span class="std std-doc">sglang router</span></a> for a better data parallelism rather than using <code class="docutils literal notranslate"><span class="pre">dp_size</span></code> parameter.</p>
+</section>
+<section id="try-other-options">
+<h3>Try other options<a class="headerlink" href="#try-other-options" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">torch.compile</span></code> accelerates small models on small batch sizes. You can enable it with <code class="docutils literal notranslate"><span class="pre">--enable-torch-compile</span></code>.</p></li>
+<li><p>Try other quantization (e.g. FP8 quantization with <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">fp8</span></code>)</p></li>
+<li><p>Try other parallelism strategies (e.g. expert parallelism) or DP attention for deepseek models (with <code class="docutils literal notranslate"><span class="pre">--enable-dp-attention</span> <span class="pre">--dp-size</span> <span class="pre">8</span></code>).</p></li>
+<li><p>If the workload has many shared prefixes, try <code class="docutils literal notranslate"><span class="pre">--schedule-policy</span> <span class="pre">lpm</span></code>. Here, <code class="docutils literal notranslate"><span class="pre">lpm</span></code> stands for longest prefix match. It reorders requests to encourage more cache hits but introduces more scheduling overhead.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="sampling_params.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Sampling Parameters</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="attention_backend.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Attention Backend</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#achieving-high-throughput-for-offline-batch-inference">Achieving high throughput for offline batch inference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adjust-the-request-submission-speed-to-control-queue-req">Adjust the request submission speed to control <code class="docutils literal notranslate"><span class="pre">#queue-req</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#achieve-a-high-token-usage">Achieve a high <code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">usage</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-mem-fraction-static-to-increase-the-kv-cache-pool-capacity">Tune <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> to increase the KV cache pool capacity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-out-of-memory-errors-by-tuning-chunked-prefill-size-mem-fraction-static-and-max-running-requests">Avoid out-of-memory errors by tuning <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code>, <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code>, and <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-cuda-graph-max-bs">Tune <code class="docutils literal notranslate"><span class="pre">--cuda-graph-max-bs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-dp-size-and-tp-size">Tune <code class="docutils literal notranslate"><span class="pre">--dp-size</span></code> and <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#try-other-options">Try other options</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1318 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TPU &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'platforms/tpu';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/platforms/tpu.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="NVIDIA Jetson Orin" href="nvidia_jetson.html" />
+    <link rel="prev" title="CPU Servers" href="cpu_server.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/platforms/tpu.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/platforms/tpu.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fplatforms/tpu.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/platforms/tpu.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>TPU</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-requirements">System Requirements</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-tpu-hardware">Supported TPU Hardware</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-requirements">Software Requirements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-support-matrix">Feature Support Matrix</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-backend-comparison">Attention Backend Comparison</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-model-list">Optimized Model List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-using-pypi-recommended">Method 1: Using PyPI (Recommended)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-from-source">Method 2: From Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-3-using-docker">Method 3: Using Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-4-cloud-tpu-with-skypilot">Method 4: Cloud TPU with SkyPilot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-of-the-serving-engine">Launch of the Serving Engine</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example-qwen-7b">Basic Example: Qwen-7B</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-performance-configuration-qwen3-8b">High-Performance Configuration: Qwen3-8B</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-speculative-decoding-eagle3">Advanced: Speculative Decoding (EAGLE3)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-distributed-serving">Multi-Node Distributed Serving</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-with-requests">Benchmarking with Requests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#throughput-testing">Throughput Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-testing">Latency Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprehensive-benchmark-script">Comprehensive Benchmark Script</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-optimization">Memory Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#throughput-optimization">Throughput Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-optimization">Latency Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tpu-specific-optimizations">TPU-Specific Optimizations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#oom-out-of-memory-errors">OOM (Out of Memory) Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compilation-long-time">Compilation Long-Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-throughput">Low Throughput</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-issues">Connection Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-features">Advanced Features</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding">Speculative Decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunked-prefill">Chunked Prefill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-attention-backends">Custom Attention Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-verification">Environment Verification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#areas-for-contribution">Areas for Contribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-on-tpu">Testing on TPU</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#external-resources">External Resources</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tpu">
+<h1>TPU<a class="headerlink" href="#tpu" title="链接到此标题。">#</a></h1>
+<p>SGLang supports high-performance TPU inference through the SGLang-JAX backend, which is specifically optimized for Google Cloud TPUs. The JAX-based implementation delivers exceptional throughput and low latency for Large Language Model (LLM) serving workloads on TPU hardware.</p>
+<p>For TPU-specific issues or feature requests, please visit the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/issues">sglang-jax GitHub issues page</a>.</p>
+<p><strong>NOTE:</strong> SGLang TPU support is implemented via the SGLang-JAX backend, a dedicated JAX-based inference engine maintained as a separate repository at <a class="github reference external" href="https://github.com/sgl-project/sglang-jax">sgl-project/sglang-jax</a>.</p>
+<section id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="链接到此标题。">#</a></h2>
+<section id="supported-tpu-hardware">
+<h3>Supported TPU Hardware<a class="headerlink" href="#supported-tpu-hardware" title="链接到此标题。">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>TPU Type</p></th>
+<th class="head"><p>HBM Memory</p></th>
+<th class="head"><p>Availability</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TPU v6e</p></td>
+<td><p>32 GB</p></td>
+<td><p>Google Cloud</p></td>
+</tr>
+<tr class="row-odd"><td><p>TPU v7</p></td>
+<td><p>96 GB per core</p></td>
+<td><p>Google Cloud</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="software-requirements">
+<h3>Software Requirements<a class="headerlink" href="#software-requirements" title="链接到此标题。">#</a></h3>
+<ul class="simple">
+<li><p><strong>Python:</strong> 3.12 or higher</p></li>
+<li><p><strong>JAX:</strong> Latest version with TPU support</p></li>
+<li><p><strong>Environment:</strong> Google Cloud TPU VM or compatible TPU runtime</p></li>
+<li><p><strong>Optional:</strong> SkyPilot for simplified cloud deployment</p></li>
+</ul>
+</section>
+</section>
+<section id="feature-support-matrix">
+<h2>Feature Support Matrix<a class="headerlink" href="#feature-support-matrix" title="链接到此标题。">#</a></h2>
+<p>SGLang-JAX provides comprehensive TPU-optimized features for production LLM serving:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Support Status</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>High-Throughput Continuous Batching</p></td>
+<td><p>✅</p></td>
+<td><p>Dynamic request batching for maximum TPU utilization</p></td>
+</tr>
+<tr class="row-odd"><td><p>Radix Tree KV Cache</p></td>
+<td><p>✅</p></td>
+<td><p>Memory-efficient prefix sharing between requests</p></td>
+</tr>
+<tr class="row-even"><td><p>FlashAttention Backend</p></td>
+<td><p>✅</p></td>
+<td><p>TPU-optimized attention kernel for long sequences</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tensor Parallelism</p></td>
+<td><p>✅</p></td>
+<td><p>Distribute models across multiple TPU cores</p></td>
+</tr>
+<tr class="row-even"><td><p>Paged Attention</p></td>
+<td><p>✅</p></td>
+<td><p>Flexible KV cache management with paging</p></td>
+</tr>
+<tr class="row-odd"><td><p>Speculative Decoding (EAGLE/EAGLE3)</p></td>
+<td><p>✅</p></td>
+<td><p>20-40% throughput improvement for compatible models</p></td>
+</tr>
+<tr class="row-even"><td><p>Chunked Prefill</p></td>
+<td><p>✅</p></td>
+<td><p>Mixed prefill-decode batching</p></td>
+</tr>
+<tr class="row-odd"><td><p>OpenAI-Compatible API</p></td>
+<td><p>✅</p></td>
+<td><p>Drop-in replacement for OpenAI API</p></td>
+</tr>
+<tr class="row-even"><td><p>Data Parallel Attention</p></td>
+<td><p>🚧</p></td>
+<td><p>In development - Attention computation with data parallelism</p></td>
+</tr>
+<tr class="row-odd"><td><p>Quantization</p></td>
+<td><p>🚧</p></td>
+<td><p>In development - Model quantization for reduced memory usage</p></td>
+</tr>
+<tr class="row-even"><td><p>Multi-LoRA</p></td>
+<td><p>🚧</p></td>
+<td><p>In development - Serve multiple LoRA adapters simultaneously</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="attention-backend-comparison">
+<h3>Attention Backend Comparison<a class="headerlink" href="#attention-backend-comparison" title="链接到此标题。">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>Paged Attention</p></th>
+<th class="head"><p>Spec Decoding</p></th>
+<th class="head"><p>MLA</p></th>
+<th class="head"><p>Sliding Window</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FlashAttention (fa)</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Native</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>NOTE:</strong> FlashAttention backend is recommended for production workloads due to superior memory efficiency and performance.</p>
+</section>
+</section>
+<section id="optimized-model-list">
+<h2>Optimized Model List<a class="headerlink" href="#optimized-model-list" title="链接到此标题。">#</a></h2>
+<p>The following models have been tested and optimized for TPU deployment:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Family</p></th>
+<th class="head"><p>Performance Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/Qwen">Qwen 3</a></p></td>
+<td><p>⭐ Recommended for production</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/Qwen">Qwen 3 MoE</a></p></td>
+<td><p>⭐ Best performance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/Qwen">Qwen 2</a></p></td>
+<td><p>Needs improvement</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/Qwen">Qwen 2 MoE</a></p></td>
+<td><p>Needs improvement</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/Qwen">Qwen 1.5</a></p></td>
+<td><p>Needs improvement</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/meta-llama">Llama/LLaMA</a></p></td>
+<td><p>Needs improvement</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/xai-org">Grok-2</a></p></td>
+<td><p>Needs improvement</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/google">Gemma 2</a></p></td>
+<td><p>Verified on TPU</p></td>
+</tr>
+<tr class="row-even"><td><p>Bailing MoE</p></td>
+<td><p>Needs improvement</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="链接到此标题。">#</a></h2>
+<section id="method-1-using-pypi-recommended">
+<h3>Method 1: Using PyPI (Recommended)<a class="headerlink" href="#method-1-using-pypi-recommended" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sglang-jax
+</pre></div>
+</div>
+</section>
+<section id="method-2-from-source">
+<h3>Method 2: From Source<a class="headerlink" href="#method-2-from-source" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang-jax
+<span class="nb">cd</span><span class="w"> </span>sglang-jax
+uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.12<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;python[all]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="method-3-using-docker">
+<h3>Method 3: Using Docker<a class="headerlink" href="#method-3-using-docker" title="链接到此标题。">#</a></h3>
+<p><strong>NOTE:</strong> Docker support for TPU is currently under development. Please use PyPI or source installation methods.</p>
+</section>
+<section id="method-4-cloud-tpu-with-skypilot">
+<h3>Method 4: Cloud TPU with SkyPilot<a class="headerlink" href="#method-4-cloud-tpu-with-skypilot" title="链接到此标题。">#</a></h3>
+<p><a class="reference external" href="https://github.com/skypilot-org/skypilot">SkyPilot</a> provides simplified deployment on Google Cloud TPU:</p>
+<ol class="arabic simple">
+<li><p>Install SkyPilot and configure GCP access (see <a class="reference external" href="https://skypilot.readthedocs.io/">SkyPilot documentation</a>)</p></li>
+<li><p>Create a SkyPilot configuration file:</p></li>
+</ol>
+<details>
+<summary>SkyPilot YAML: <code>sglang-jax.sky.yaml</code></summary>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># sglang-jax.sky.yaml</span>
+<span class="nt">resources</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">accelerators</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tpu-v6e-4</span>
+<span class="w">   </span><span class="nt">accelerator_args</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">tpu_vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">      </span><span class="nt">runtime_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2-alpha-tpuv6e</span>
+
+<span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">git clone https://github.com/sgl-project/sglang-jax.git</span>
+<span class="w">  </span><span class="no">cd sglang-jax</span>
+<span class="w">  </span><span class="no">uv venv --python 3.12</span>
+<span class="w">  </span><span class="no">source .venv/bin/activate</span>
+<span class="w">  </span><span class="no">uv pip install -e &quot;python[all]&quot;</span>
+</pre></div>
+</div>
+</details>
+<ol class="arabic simple" start="3">
+<li><p>Launch your TPU cluster:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard deployment</span>
+sky<span class="w"> </span>launch<span class="w"> </span>-c<span class="w"> </span>sglang-jax<span class="w"> </span>sglang-jax.sky.yaml<span class="w"> </span>--infra<span class="o">=</span>gcp
+
+<span class="c1"># With spot instances for cost savings</span>
+sky<span class="w"> </span>launch<span class="w"> </span>-c<span class="w"> </span>sglang-jax<span class="w"> </span>sglang-jax.sky.yaml<span class="w"> </span>--infra<span class="o">=</span>gcp<span class="w"> </span>--use-spot
+</pre></div>
+</div>
+</section>
+</section>
+<section id="launch-of-the-serving-engine">
+<h2>Launch of the Serving Engine<a class="headerlink" href="#launch-of-the-serving-engine" title="链接到此标题。">#</a></h2>
+<section id="basic-example-qwen-7b">
+<h3>Basic Example: Qwen-7B<a class="headerlink" href="#basic-example-qwen-7b" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">JAX_COMPILATION_CACHE_DIR</span><span class="o">=</span>/tmp/jit_cache<span class="w"> </span>python3<span class="w"> </span>-u<span class="w"> </span>-m<span class="w"> </span>sgl_jax.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>Qwen/Qwen-7B-Chat<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dist-init-addr<span class="o">=</span><span class="m">0</span>.0.0.0:10011<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--nnodes<span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="o">=</span>tpu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-seed<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--node-rank<span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--mem-fraction-static<span class="o">=</span><span class="m">0</span>.8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-prefill-tokens<span class="o">=</span><span class="m">8192</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--download-dir<span class="o">=</span>/tmp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dtype<span class="o">=</span>bfloat16<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--skip-server-warmup<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span>
+</pre></div>
+</div>
+<p><strong>Key Parameters Explained:</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JAX_COMPILATION_CACHE_DIR=/tmp/jit_cache</span></code> - Enables JIT compilation caching to accelerate server startup on subsequent runs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tp-size=4</span></code> - Tensor parallelism size; match this to your TPU core count (typically 1, 4, or 8)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--device=tpu</span></code> - Specifies TPU device (this is the default for sglang-jax)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dtype=bfloat16</span></code> - Uses bfloat16 precision, which TPUs are optimized for</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--mem-fraction-static=0.8</span></code> - Allocates 80% of TPU HBM for static memory (adjustable from 0.2 to 0.9)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-prefill-tokens=8192</span></code> - Maximum number of tokens processed in the prefill phase</p></li>
+</ol>
+</section>
+<section id="high-performance-configuration-qwen3-8b">
+<h3>High-Performance Configuration: Qwen3-8B<a class="headerlink" href="#high-performance-configuration-qwen3-8b" title="链接到此标题。">#</a></h3>
+<p>For production workloads with optimal throughput:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-u<span class="w"> </span>-m<span class="w"> </span>sgl_jax.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>Qwen/Qwen3-8B<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="o">=</span>tpu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--mem-fraction-static<span class="o">=</span><span class="m">0</span>.8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--chunked-prefill-size<span class="o">=</span><span class="m">2048</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dtype<span class="o">=</span>bfloat16<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-running-requests<span class="o">=</span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--page-size<span class="o">=</span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--attention-backend<span class="o">=</span>fa
+</pre></div>
+</div>
+</section>
+<section id="advanced-speculative-decoding-eagle3">
+<h3>Advanced: Speculative Decoding (EAGLE3)<a class="headerlink" href="#advanced-speculative-decoding-eagle3" title="链接到此标题。">#</a></h3>
+<p>Speculative decoding can improve throughput by 20-40% for compatible models:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-u<span class="w"> </span>-m<span class="w"> </span>sgl_jax.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>Qwen/Qwen3-32B<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="o">=</span>tpu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--mem-fraction-static<span class="o">=</span><span class="m">0</span>.8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-prefill-tokens<span class="o">=</span><span class="m">4096</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--attention-backend<span class="o">=</span>fa<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dtype<span class="o">=</span>bfloat16<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="o">=</span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="o">=</span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--speculative-algorithm<span class="o">=</span>EAGLE3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--speculative-draft-model-path<span class="o">=</span>AngelSlim/Qwen3-32B_eagle3<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--page-size<span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--speculative-eagle-topk<span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--speculative-num-steps<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--speculative-num-draft-tokens<span class="o">=</span><span class="m">4</span>
+</pre></div>
+</div>
+<p><strong>NOTE:</strong> Speculative decoding is currently supported for Qwen3 and LLaMA model families. See the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/features/speculative_decoding.md">Speculative Decoding documentation</a> for detailed configuration guidance.</p>
+</section>
+<section id="multi-node-distributed-serving">
+<h3>Multi-Node Distributed Serving<a class="headerlink" href="#multi-node-distributed-serving" title="链接到此标题。">#</a></h3>
+<p>For large models requiring multiple TPU VMs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Node 0 (coordinator)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sgl_jax.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>MODEL_PATH<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dist-init-addr<span class="o">=</span>NODE0_IP:10011<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--nnodes<span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--node-rank<span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="o">=</span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">[</span>other<span class="w"> </span>parameters...<span class="o">]</span>
+
+<span class="c1"># Node 1 (worker)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sgl_jax.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>MODEL_PATH<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dist-init-addr<span class="o">=</span>NODE0_IP:10011<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--nnodes<span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--node-rank<span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="o">=</span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">[</span>other<span class="w"> </span>parameters...<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="benchmarking-with-requests">
+<h2>Benchmarking with Requests<a class="headerlink" href="#benchmarking-with-requests" title="链接到此标题。">#</a></h2>
+<section id="throughput-testing">
+<h3>Throughput Testing<a class="headerlink" href="#throughput-testing" title="链接到此标题。">#</a></h3>
+<p>Basic throughput benchmark:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sgl_jax.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--backend<span class="w"> </span>sgl-jax<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-prompts<span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-input<span class="o">=</span><span class="m">512</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-output<span class="o">=</span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-concurrency<span class="o">=</span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-range-ratio<span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--warmup-requests<span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+</section>
+<section id="latency-testing">
+<h3>Latency Testing<a class="headerlink" href="#latency-testing" title="链接到此标题。">#</a></h3>
+<p>Measure single-batch latency:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sgl_jax.bench_one_batch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--base-url<span class="w"> </span>http://127.0.0.1:30000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>Qwen/Qwen-7B-Chat<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--batch-size<span class="o">=</span><span class="m">32</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input-len<span class="o">=</span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-len<span class="o">=</span><span class="m">32</span>
+</pre></div>
+</div>
+</section>
+<section id="comprehensive-benchmark-script">
+<h3>Comprehensive Benchmark Script<a class="headerlink" href="#comprehensive-benchmark-script" title="链接到此标题。">#</a></h3>
+<p>For systematic performance evaluation across different configurations:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nb">set</span><span class="w"> </span>-e
+
+<span class="nv">backend</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="nv">sgl</span><span class="p">-jax</span><span class="si">}</span>
+<span class="nv">num_prompts_per_concurrency</span><span class="o">=</span><span class="m">3</span>
+<span class="nv">input_seq_lens</span><span class="o">=(</span><span class="m">1024</span><span class="w"> </span><span class="m">4096</span><span class="w"> </span><span class="m">8192</span><span class="o">)</span>
+<span class="nv">output_seq_lens</span><span class="o">=(</span><span class="m">1</span><span class="w"> </span><span class="m">1024</span><span class="o">)</span>
+<span class="nv">max_concurrencies</span><span class="o">=(</span><span class="m">8</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">32</span><span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="m">256</span><span class="o">)</span>
+
+<span class="k">for</span><span class="w"> </span>input_seq_len<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">input_seq_lens</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>output_seq_len<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">output_seq_lens</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=======================================&quot;</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Testing ISL/OSL: </span><span class="nv">$input_seq_len</span><span class="s2">/</span><span class="nv">$output_seq_len</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=======================================&quot;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span>max_concurrency<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">max_concurrencies</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">            </span><span class="nv">num_prompts</span><span class="o">=</span><span class="k">$((</span><span class="nv">num_prompts_per_concurrency</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nv">max_concurrency</span><span class="k">))</span>
+<span class="w">            </span>python3<span class="w"> </span>-m<span class="w"> </span>sgl_jax.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--backend<span class="w"> </span><span class="si">${</span><span class="nv">backend</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--num-prompts<span class="w"> </span><span class="si">${</span><span class="nv">num_prompts</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--random-input<span class="w"> </span><span class="si">${</span><span class="nv">input_seq_len</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--random-output<span class="w"> </span><span class="si">${</span><span class="nv">output_seq_len</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--max-concurrency<span class="w"> </span><span class="si">${</span><span class="nv">max_concurrency</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--random-range-ratio<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--disable-ignore-eos<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--warmup-requests<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="k">done</span>
+<span class="w">    </span><span class="k">done</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+<p>For detailed help on all benchmark parameters:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sgl_jax.bench_serving<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/developer_guide/benchmark_and_profiling.md">Benchmark and Profiling Guide</a> for advanced benchmarking techniques and profiling with JAX Profiler.</p>
+</section>
+</section>
+<section id="performance-optimization">
+<h2>Performance Optimization<a class="headerlink" href="#performance-optimization" title="链接到此标题。">#</a></h2>
+<section id="memory-optimization">
+<h3>Memory Optimization<a class="headerlink" href="#memory-optimization" title="链接到此标题。">#</a></h3>
+<p><strong>Reduce memory usage:</strong></p>
+<ul class="simple">
+<li><p>Lower <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> (from 0.8 → 0.5 → 0.3)</p></li>
+<li><p>Decrease <code class="docutils literal notranslate"><span class="pre">--max-prefill-tokens</span></code> (from 16384 → 8192 → 4096)</p></li>
+<li><p>Reduce <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code></p></li>
+</ul>
+<p><strong>Handle OOM errors:</strong></p>
+<ul class="simple">
+<li><p>Start with conservative memory settings (<code class="docutils literal notranslate"><span class="pre">--mem-fraction-static=0.5</span></code>)</p></li>
+<li><p>Gradually increase until you find the optimal balance</p></li>
+<li><p>Increase <code class="docutils literal notranslate"><span class="pre">--page-size</span></code> for better memory locality (1 → 16 → 64 → 128)</p></li>
+</ul>
+</section>
+<section id="throughput-optimization">
+<h3>Throughput Optimization<a class="headerlink" href="#throughput-optimization" title="链接到此标题。">#</a></h3>
+<p>To maximize tokens per second:</p>
+<ul class="simple">
+<li><p>Use FlashAttention backend: <code class="docutils literal notranslate"><span class="pre">--attention-backend=fa</span></code></p></li>
+<li><p>Enable speculative decoding (EAGLE3) for Qwen3 models (20-40% improvement)</p></li>
+<li><p>Increase <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code> to 256+</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> to 0.8+ (if memory allows)</p></li>
+<li><p>Use larger page sizes (64-128)</p></li>
+<li><p>Enable chunked prefill: <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size=2048</span></code></p></li>
+</ul>
+</section>
+<section id="latency-optimization">
+<h3>Latency Optimization<a class="headerlink" href="#latency-optimization" title="链接到此标题。">#</a></h3>
+<p>To minimize time-to-first-token (TTFT) and inter-token latency:</p>
+<ul class="simple">
+<li><p>Reduce <code class="docutils literal notranslate"><span class="pre">--page-size</span></code> to 1-4</p></li>
+<li><p>Lower <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code> (16-32) for smaller batches</p></li>
+<li><p>Reduce <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code></p></li>
+<li><p>Use conservative memory settings to avoid GC pauses</p></li>
+</ul>
+</section>
+<section id="tpu-specific-optimizations">
+<h3>TPU-Specific Optimizations<a class="headerlink" href="#tpu-specific-optimizations" title="链接到此标题。">#</a></h3>
+<ol class="arabic">
+<li><p><strong>JIT Compilation Cache:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">JAX_COMPILATION_CACHE_DIR</span><span class="o">=</span>/tmp/jit_cache
+</pre></div>
+</div>
+<p>Always set this environment variable to cache compiled kernels and accelerate server startup.</p>
+</li>
+<li><p><strong>Data Type Optimization:</strong>
+Use <code class="docutils literal notranslate"><span class="pre">--dtype=bfloat16</span></code> for TPU native optimization. TPUs are specifically designed for bfloat16 computations.</p></li>
+<li><p><strong>Tensor Parallelism:</strong>
+Match <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code> to your TPU core configuration (1, 4, or 8) for optimal model distribution.</p></li>
+<li><p><strong>Attention Backend:</strong>
+Always use <code class="docutils literal notranslate"><span class="pre">--attention-backend=fa</span></code> (FlashAttention) for production workloads.</p></li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="链接到此标题。">#</a></h2>
+<section id="oom-out-of-memory-errors">
+<h3>OOM (Out of Memory) Errors<a class="headerlink" href="#oom-out-of-memory-errors" title="链接到此标题。">#</a></h3>
+<p>If you encounter out-of-memory errors:</p>
+<ol class="arabic simple">
+<li><p>Reduce <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> from 0.8 to 0.5 or lower</p></li>
+<li><p>Decrease <code class="docutils literal notranslate"><span class="pre">--max-prefill-tokens</span></code> from 8192 to 4096 or 2048</p></li>
+<li><p>Lower <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code> to reduce concurrent batch size</p></li>
+<li><p>Increase <code class="docutils literal notranslate"><span class="pre">--page-size</span></code> for better memory layout efficiency</p></li>
+</ol>
+</section>
+<section id="compilation-long-time">
+<h3>Compilation Long-Time<a class="headerlink" href="#compilation-long-time" title="链接到此标题。">#</a></h3>
+<p>If the server takes too long to start:</p>
+<ol class="arabic simple">
+<li><p>Ensure <code class="docutils literal notranslate"><span class="pre">JAX_COMPILATION_CACHE_DIR</span></code> is properly set</p></li>
+<li><p>Understand that the first run requires JIT compilation (this is normal)</p></li>
+<li><p>Subsequent runs will be significantly faster with cached compilations</p></li>
+<li><p>Consider using <code class="docutils literal notranslate"><span class="pre">--skip-server-warmup</span></code> to defer compilation until first request</p></li>
+</ol>
+</section>
+<section id="low-throughput">
+<h3>Low Throughput<a class="headerlink" href="#low-throughput" title="链接到此标题。">#</a></h3>
+<p>If you're not achieving expected throughput:</p>
+<ol class="arabic simple">
+<li><p>Verify <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code> matches your TPU core configuration</p></li>
+<li><p>Check that <code class="docutils literal notranslate"><span class="pre">--attention-backend=fa</span></code> is enabled</p></li>
+<li><p>Increase <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code> to enable larger batch formation</p></li>
+<li><p>Consider enabling speculative decoding for compatible models</p></li>
+<li><p>Ensure memory settings allow for sufficient batch sizes</p></li>
+</ol>
+</section>
+<section id="connection-issues">
+<h3>Connection Issues<a class="headerlink" href="#connection-issues" title="链接到此标题。">#</a></h3>
+<p>If clients cannot connect to the server:</p>
+<ol class="arabic simple">
+<li><p>Ensure <code class="docutils literal notranslate"><span class="pre">--host=0.0.0.0</span></code> for external access (not just <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>)</p></li>
+<li><p>Verify firewall rules allow traffic on the specified port (default: 30000)</p></li>
+<li><p>Check that the server process is running: <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">http://localhost:30000/health</span></code></p></li>
+</ol>
+</section>
+</section>
+<section id="advanced-features">
+<h2>Advanced Features<a class="headerlink" href="#advanced-features" title="链接到此标题。">#</a></h2>
+<section id="speculative-decoding">
+<h3>Speculative Decoding<a class="headerlink" href="#speculative-decoding" title="链接到此标题。">#</a></h3>
+<p>SGLang-JAX supports EAGLE and EAGLE3 speculative decoding algorithms for Qwen3 and LLaMA model families. Speculative decoding can improve throughput by 20-40% without affecting output quality.</p>
+<p>See the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/features/speculative_decoding.md">Speculative Decoding documentation</a> for detailed configuration and supported model combinations.</p>
+</section>
+<section id="chunked-prefill">
+<h3>Chunked Prefill<a class="headerlink" href="#chunked-prefill" title="链接到此标题。">#</a></h3>
+<p>Enable mixed prefill-decode batching for better TPU utilization:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>--chunked-prefill-size<span class="o">=</span><span class="m">2048</span><span class="w"> </span>--enable-mixed-chunk
+</pre></div>
+</div>
+<p>This allows the scheduler to mix prefill operations with decode operations in the same batch, improving overall throughput.</p>
+</section>
+<section id="custom-attention-backends">
+<h3>Custom Attention Backends<a class="headerlink" href="#custom-attention-backends" title="链接到此标题。">#</a></h3>
+<p>SGLang-JAX supports a plugin-based attention backend system. You can implement custom attention kernels optimized for specific use cases.</p>
+<p>See the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/features/attention_backend.md">Attention Backend documentation</a> for implementation details.</p>
+</section>
+<section id="environment-verification">
+<h3>Environment Verification<a class="headerlink" href="#environment-verification" title="链接到此标题。">#</a></h3>
+<p>Verify your TPU setup before deploying:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from sgl_jax import check_env; check_env.check_env()&quot;</span>
+</pre></div>
+</div>
+<p>This command checks:</p>
+<ul class="simple">
+<li><p>Installed package versions</p></li>
+<li><p>TPU device availability and specifications</p></li>
+<li><p>System resources and configuration</p></li>
+<li><p>Compatibility of settings</p></li>
+</ul>
+</section>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="链接到此标题。">#</a></h2>
+<p>We welcome contributions to improve TPU support in SGLang-JAX!</p>
+<section id="areas-for-contribution">
+<h3>Areas for Contribution<a class="headerlink" href="#areas-for-contribution" title="链接到此标题。">#</a></h3>
+<p><strong>Check the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/issues/190">Development Roadmap</a></strong> to see planned features and find opportunities to contribute new functionality.</p>
+<p>Current contribution areas include:</p>
+<ul class="simple">
+<li><p>Performance optimizations for specific TPU generations</p></li>
+<li><p>Support for additional model architectures</p></li>
+<li><p>Documentation improvements and examples</p></li>
+<li><p>Bug reports and fixes</p></li>
+<li><p>Benchmark results and performance analysis</p></li>
+</ul>
+</section>
+<section id="how-to-contribute">
+<h3>How to Contribute<a class="headerlink" href="#how-to-contribute" title="链接到此标题。">#</a></h3>
+<ol class="arabic simple">
+<li><p>Visit the <a class="reference external" href="https://github.com/sgl-project/sglang-jax">sglang-jax repository</a></p></li>
+<li><p>Read the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/developer_guide/contribution_guide.md">Contribution Guide</a></p></li>
+<li><p>Join the <a class="reference external" href="https://sgl-fru7574.slack.com/archives/C09EBE5HT5X">SGL-JAX Slack community</a> for discussions</p></li>
+<li><p>Report issues at <a class="reference external" href="https://github.com/sgl-project/sglang-jax/issues">sglang-jax/issues</a></p></li>
+</ol>
+</section>
+<section id="testing-on-tpu">
+<h3>Testing on TPU<a class="headerlink" href="#testing-on-tpu" title="链接到此标题。">#</a></h3>
+<p>For contributors who need TPU access for testing:</p>
+<ul class="simple">
+<li><p>Refer to the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/developer_guide/tpu_resources_guide.md">TPU Resources Guide</a> for information on accessing TPU hardware</p></li>
+<li><p>Use SkyPilot with spot instances for cost-effective testing</p></li>
+<li><p>Follow the <a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/developer_guide/benchmark_and_profiling.md">Benchmark and Profiling Guide</a> for performance validation</p></li>
+</ul>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="链接到此标题。">#</a></h2>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="链接到此标题。">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang-jax">SGLang-JAX Repository</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/get_started/install.md">SGLang-JAX Installation Guide</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/basic_usage/qwen.md">Qwen Models Quick Start</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/developer_guide/benchmark_and_profiling.md">Benchmark and Profiling Guide</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang-jax/blob/main/docs/features/speculative_decoding.md">Speculative Decoding</a></p></li>
+</ul>
+</section>
+<section id="external-resources">
+<h3>External Resources<a class="headerlink" href="#external-resources" title="链接到此标题。">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://jax.readthedocs.io/">JAX Documentation</a></p></li>
+<li><p><a class="reference external" href="https://cloud.google.com/tpu/docs">Google Cloud TPU Documentation</a></p></li>
+<li><p><a class="reference external" href="https://skypilot.readthedocs.io/">SkyPilot Documentation</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cpu_server.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">CPU Servers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="nvidia_jetson.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">NVIDIA Jetson Orin</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-requirements">System Requirements</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-tpu-hardware">Supported TPU Hardware</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-requirements">Software Requirements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-support-matrix">Feature Support Matrix</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-backend-comparison">Attention Backend Comparison</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-model-list">Optimized Model List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-using-pypi-recommended">Method 1: Using PyPI (Recommended)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-from-source">Method 2: From Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-3-using-docker">Method 3: Using Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-4-cloud-tpu-with-skypilot">Method 4: Cloud TPU with SkyPilot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-of-the-serving-engine">Launch of the Serving Engine</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example-qwen-7b">Basic Example: Qwen-7B</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-performance-configuration-qwen3-8b">High-Performance Configuration: Qwen3-8B</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-speculative-decoding-eagle3">Advanced: Speculative Decoding (EAGLE3)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-distributed-serving">Multi-Node Distributed Serving</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-with-requests">Benchmarking with Requests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#throughput-testing">Throughput Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-testing">Latency Testing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprehensive-benchmark-script">Comprehensive Benchmark Script</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-optimization">Memory Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#throughput-optimization">Throughput Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latency-optimization">Latency Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tpu-specific-optimizations">TPU-Specific Optimizations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#oom-out-of-memory-errors">OOM (Out of Memory) Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compilation-long-time">Compilation Long-Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-throughput">Low Throughput</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-issues">Connection Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-features">Advanced Features</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding">Speculative Decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunked-prefill">Chunked Prefill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-attention-backends">Custom Attention Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-verification">Environment Verification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#areas-for-contribution">Areas for Contribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-on-tpu">Testing on TPU</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#external-resources">External Resources</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

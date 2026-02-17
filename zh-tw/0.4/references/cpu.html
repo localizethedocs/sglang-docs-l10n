@@ -1,0 +1,816 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang on CPU &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a07d80b7"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references/cpu';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/references/cpu.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Multi-Node Deployment" href="advanced_deploy.html" />
+    <link rel="prev" title="Apply SGLang on NVIDIA Jetson Orin" href="nvidia_jetson.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/offline_engine_api.html">離線引擎 API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="general.html">General Guidance</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hardware.html">Hardware Supports</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="amd.html">SGLang on AMD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nvidia_jetson.html">Apply SGLang on NVIDIA Jetson Orin</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SGLang on CPU</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_deploy.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/references/cpu.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/references/cpu.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Freferences/cpu.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/references/cpu.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang on CPU</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-model-list">Optimized Model List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">安裝</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-using-docker">使用 Docker 安裝</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install From Source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-of-the-serving-engine">Launch of the Serving Engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-with-requests">Benchmarking with Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-deepseek-r1">Example: Running DeepSeek-R1</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sglang-on-cpu">
+<h1>SGLang on CPU<a class="headerlink" href="#sglang-on-cpu" title="連結到這個標頭">#</a></h1>
+<p>The document addresses how to set up the <a class="reference external" href="https://github.com/sgl-project/sglang">SGLang</a> environment and run LLM inference on CPU servers.
+Specifically, SGLang is well optimized on the CPUs equipped with Intel® AMX® Instructions,
+which are 4th generation or newer Intel® Xeon® Scalable Processors.</p>
+<section id="optimized-model-list">
+<h2>Optimized Model List<a class="headerlink" href="#optimized-model-list" title="連結到這個標頭">#</a></h2>
+<p>A list of popular LLMs are optimized and run efficiently on CPU,
+including the most notable open-source models like Llama series, Qwen series,
+and the phenomenal high-quality reasoning model DeepSeek-R1.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Model Name</p></th>
+<th class="head text-center"><p>BF16</p></th>
+<th class="head text-center"><p>w8a8_int8</p></th>
+<th class="head text-center"><p>FP8</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>DeepSeek-R1</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/meituan/DeepSeek-R1-Channel-INT8">meituan/DeepSeek-R1-Channel-INT8</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/deepseek-ai/DeepSeek-R1">deepseek-ai/DeepSeek-R1</a></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Llama-3.2-3B</p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct">meta-llama/Llama-3.2-3B-Instruct</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/Llama-3.2-3B-Instruct-quantized.w8a8">RedHatAI/Llama-3.2-3B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Llama-3.1-8B</p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct">meta-llama/Llama-3.1-8B-Instruct</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/Meta-Llama-3.1-8B-quantized.w8a8">RedHatAI/Meta-Llama-3.1-8B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>QwQ-32B</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/QwQ-32B-quantized.w8a8">RedHatAI/QwQ-32B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>DeepSeek-Distilled-Llama</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/DeepSeek-R1-Distill-Llama-70B-quantized.w8a8">RedHatAI/DeepSeek-R1-Distill-Llama-70B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Qwen3-235B</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/Qwen/Qwen3-235B-A22B-FP8">Qwen/Qwen3-235B-A22B-FP8</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Note:</strong> The model identifiers listed in the table above
+have been verified on 6th Gen Intel® Xeon® P-core platforms.</p>
+</section>
+<section id="installation">
+<h2>安裝<a class="headerlink" href="#installation" title="連結到這個標頭">#</a></h2>
+<section id="install-using-docker">
+<h3>使用 Docker 安裝<a class="headerlink" href="#install-using-docker" title="連結到這個標頭">#</a></h3>
+<p>It is recommended to use Docker for setting up the SGLang environment.
+A <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/docker/Dockerfile.xeon">Dockerfile</a> is provided to facilitate the installation.
+Replace <code class="docutils literal notranslate"><span class="pre">&lt;secret&gt;</span></code> below with your <a class="reference external" href="https://huggingface.co/docs/hub/en/security-tokens">HuggingFace access token</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the SGLang repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang.git
+<span class="nb">cd</span><span class="w"> </span>sglang/docker
+
+<span class="c1"># Build the docker image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>sglang-cpu:main<span class="w"> </span>-f<span class="w"> </span>Dockerfile.xeon<span class="w"> </span>.
+
+<span class="c1"># Initiate a docker container</span>
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-it<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--privileged<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--ipc<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>/dev/shm:/dev/shm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>~/.cache/huggingface:/root/.cache/huggingface<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">30000</span>:30000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="s2">&quot;HF_TOKEN=&lt;secret&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>sglang-cpu:main<span class="w"> </span>/bin/bash
+</pre></div>
+</div>
+</section>
+<section id="install-from-source">
+<h3>Install From Source<a class="headerlink" href="#install-from-source" title="連結到這個標頭">#</a></h3>
+<p>If you'd prefer to install SGLang in a bare metal environment,
+the command list is as below.
+It is worth noting that the environment variable <code class="docutils literal notranslate"><span class="pre">SGLANG_USE_CPU_ENGINE=1</span></code>
+is required to enable SGLang service with CPU engine.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and activate a conda environment</span>
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sgl-cpu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>-y
+conda<span class="w"> </span>activate<span class="w"> </span>sgl-cpu
+
+<span class="c1"># Optional: Set PyTorch CPU as primary pip install channel to avoid installing CUDA version</span>
+pip<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>global.index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu
+pip<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>global.extra-index-url<span class="w"> </span>https://pypi.org/simple
+
+<span class="c1"># Check if some conda related environment variables have been set</span>
+env<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>conda
+<span class="c1"># The following environment variable settings are required</span>
+<span class="c1"># if they have not been set properly</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CONDA_EXE</span><span class="o">=</span><span class="k">$(</span>which<span class="w"> </span>conda<span class="k">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CONDA_ROOT</span><span class="o">=</span><span class="si">${</span><span class="nv">CONDA_EXE</span><span class="si">}</span>/../..
+<span class="nb">export</span><span class="w"> </span><span class="nv">CONDA_PREFIX</span><span class="o">=</span><span class="si">${</span><span class="nv">CONDA_ROOT</span><span class="si">}</span>/envs/sgl-cpu
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span>:<span class="si">${</span><span class="nv">CONDA_ROOT</span><span class="si">}</span>/bin:<span class="si">${</span><span class="nv">CONDA_ROOT</span><span class="si">}</span>/condabin
+
+<span class="c1"># Clone the SGLang code</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang.git
+<span class="nb">cd</span><span class="w"> </span>sglang
+git<span class="w"> </span>checkout<span class="w"> </span>&lt;YOUR-DESIRED-VERSION&gt;
+
+<span class="c1"># Install SGLang dependent libs, and build SGLang main package</span>
+pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools
+conda<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="nv">libsqlite</span><span class="o">==</span><span class="m">3</span>.48.0<span class="w"> </span>gperftools<span class="w"> </span>tbb<span class="w"> </span>libnuma<span class="w"> </span>numactl
+pip<span class="w"> </span>install<span class="w"> </span>intel-openmp
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;python[all_cpu]&quot;</span>
+
+<span class="c1"># Build the CPU backend kernels</span>
+<span class="nb">cd</span><span class="w"> </span>sgl-kernel
+cp<span class="w"> </span>pyproject_cpu.toml<span class="w"> </span>pyproject.toml
+pip<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span>.
+
+<span class="c1"># Other required environment variables</span>
+<span class="c1"># Recommend to set these in ~/.bashrc in order not to set every time in a new terminal</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_USE_CPU_ENGINE</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="si">${</span><span class="nv">LD_PRELOAD</span><span class="si">}</span>:<span class="si">${</span><span class="nv">CONDA_PREFIX</span><span class="si">}</span>/lib/libiomp5.so:<span class="si">${</span><span class="nv">CONDA_PREFIX</span><span class="si">}</span>/lib/libtcmalloc.so:<span class="si">${</span><span class="nv">CONDA_PREFIX</span><span class="si">}</span>/lib/libtbbmalloc.so.2
+</pre></div>
+</div>
+</section>
+</section>
+<section id="launch-of-the-serving-engine">
+<h2>Launch of the Serving Engine<a class="headerlink" href="#launch-of-the-serving-engine" title="連結到這個標頭">#</a></h2>
+<p>Example command to launch SGLang serving:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>&lt;MODEL_ID_OR_PATH&gt;<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">          </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                 </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">               </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<p>Notes:</p>
+<ol class="arabic">
+<li><p>For running W8A8 quantized models, please add the flag <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_int8</span></code>.</p></li>
+<li><p>The flag <code class="docutils literal notranslate"><span class="pre">--tp</span> <span class="pre">6</span></code> specifies that tensor parallelism will be applied using 6 ranks (TP6).
+The number of TP specified is how many TP ranks will be used during the execution.
+In a CPU platform, a TP rank means a sub-NUMA cluster (SNC).
+Usually we can get the SNC information (How many available) from Operation System.
+User can specify TP to be no more than the total available SNCs in current system.</p>
+<p>If the specified TP rank number differs from the total SNC count,
+the system will automatically utilize the first <code class="docutils literal notranslate"><span class="pre">n</span></code> SNCs.
+Note that <code class="docutils literal notranslate"><span class="pre">n</span></code> cannot exceed the total SNC number, doing so will result in an error.</p>
+<p>To specify the cores to be used, we need to explicitly set the environment variable <code class="docutils literal notranslate"><span class="pre">SGLANG_CPU_OMP_THREADS_BIND</span></code>.
+For example, if we want to run the SGLang service using the first 40 cores of each SNC on a Xeon® 6980P server,
+which has 43-43-42 cores on the 3 SNCs of a socket, we should set:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_CPU_OMP_THREADS_BIND</span><span class="o">=</span><span class="s2">&quot;0-39|43-82|86-125|128-167|171-210|214-253&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>A warmup step is automatically triggered when the service is started.
+The server is ready when you see the log <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">server</span> <span class="pre">is</span> <span class="pre">fired</span> <span class="pre">up</span> <span class="pre">and</span> <span class="pre">ready</span> <span class="pre">to</span> <span class="pre">roll!</span></code>.</p></li>
+</ol>
+</section>
+<section id="benchmarking-with-requests">
+<h2>Benchmarking with Requests<a class="headerlink" href="#benchmarking-with-requests" title="連結到這個標頭">#</a></h2>
+<p>You can benchmark the performance via the <code class="docutils literal notranslate"><span class="pre">bench_serving</span></code> script.
+Run the command in another terminal.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--dataset-name<span class="w"> </span>random<span class="w">        </span><span class="se">\</span>
+<span class="w">    </span>--random-input-len<span class="w"> </span><span class="m">1024</span><span class="w">      </span><span class="se">\</span>
+<span class="w">    </span>--random-output-len<span class="w"> </span><span class="m">1024</span><span class="w">     </span><span class="se">\</span>
+<span class="w">    </span>--num-prompts<span class="w"> </span><span class="m">1</span><span class="w">              </span><span class="se">\</span>
+<span class="w">    </span>--request-rate<span class="w"> </span>inf<span class="w">           </span><span class="se">\</span>
+<span class="w">    </span>--random-range-ratio<span class="w"> </span><span class="m">1</span>.0
+</pre></div>
+</div>
+<p>The detail explanations of the parameters can be looked up by the command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span>-h
+</pre></div>
+</div>
+<p>Additionally, the requests can be formed with
+<a class="reference external" href="https://docs.sglang.ai/backend/openai_api_completions.html">OpenAI Completions API</a>
+and sent via the command line (e.g. using <code class="docutils literal notranslate"><span class="pre">curl</span></code>) or via your own script.</p>
+</section>
+<section id="example-running-deepseek-r1">
+<h2>Example: Running DeepSeek-R1<a class="headerlink" href="#example-running-deepseek-r1" title="連結到這個標頭">#</a></h2>
+<p>An example command to launch service for W8A8 DeepSeek-R1 on a Xeon® 6980P server</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">                 </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>meituan/DeepSeek-R1-Channel-INT8<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">                        </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">                 </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                               </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>w8a8_int8<span class="w">                   </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">                             </span><span class="se">\</span>
+<span class="w">    </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w">                  </span><span class="se">\</span>
+<span class="w">    </span>--max-total-token<span class="w"> </span><span class="m">65536</span><span class="w">                    </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<p>Similarly, an example command to launch service for FP8 DeepSeek-R1 would be</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">                 </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w">            </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">                        </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">                 </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                               </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">                             </span><span class="se">\</span>
+<span class="w">    </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w">                  </span><span class="se">\</span>
+<span class="w">    </span>--max-total-token<span class="w"> </span><span class="m">65536</span><span class="w">                    </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<p>Then you can test with <code class="docutils literal notranslate"><span class="pre">bench_serving</span></code> command or construct your own command or script
+following <a class="reference internal" href="#benchmarking-with-requests"><span class="std std-ref">the benchmarking example</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="nvidia_jetson.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Apply SGLang on NVIDIA Jetson Orin</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="advanced_deploy.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Multi-Node Deployment</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-model-list">Optimized Model List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">安裝</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-using-docker">使用 Docker 安裝</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install From Source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-of-the-serving-engine">Launch of the Serving Engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-with-requests">Benchmarking with Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-deepseek-r1">Example: Running DeepSeek-R1</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

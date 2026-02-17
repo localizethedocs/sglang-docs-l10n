@@ -1,0 +1,1018 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reasoning Parser &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3e48b14c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'backend/separate_reasoning';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/backend/separate_reasoning.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Structured Outputs For Reasoning Models" href="structured_outputs_for_reasoning_models.html" />
+    <link rel="prev" title="Tool and Function Calling" href="function_calling.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">Offline Engine API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/general.html">General Guidance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/hardware.html">Hardware Supports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/advanced_deploy.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/backend/separate_reasoning.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/backend/separate_reasoning.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbackend/separate_reasoning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/backend/separate_reasoning.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reasoning Parser</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Supported-Models-&amp;-Parsers">Supported Models &amp; Parsers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Model-Specific-Behaviors">Model-Specific Behaviors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Launching-the-Server">Launching the Server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#OpenAI-Compatible-API">OpenAI Compatible API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Non-Streaming-Request">Non-Streaming Request</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming-Request">Streaming Request</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SGLang-Native-API">SGLang Native API</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Offline-Engine-API">Offline Engine API</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Supporting-New-Reasoning-Model-Schemas">Supporting New Reasoning Model Schemas</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <style>
+    .output_area.stderr, .output_area.stdout {
+        color: #d3d3d3 !important; /* light gray */
+    }
+</style><section id="Reasoning-Parser">
+<h1>Reasoning Parser<a class="headerlink" href="#Reasoning-Parser" title="Link to this heading">#</a></h1>
+<p>SGLang supports parsing reasoning content out from “normal” content for reasoning models such as <a class="reference external" href="https://huggingface.co/deepseek-ai/DeepSeek-R1">DeepSeek R1</a>.</p>
+<section id="Supported-Models-&amp;-Parsers">
+<h2>Supported Models &amp; Parsers<a class="headerlink" href="#Supported-Models-&-Parsers" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Reasoning tags</p></th>
+<th class="head"><p>Parser</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d">DeepSeek‑R1
+series</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> … <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepseek-r1</span></code></p></td>
+<td><p>Supports all variants (R1, R1-0528, R1-Distill)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/collections/Qwen/qwen3-67dd247413f0e2e4f653967f">Standard Qwen3
+models</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> … <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qwen3</span></code></p></td>
+<td><p>Supports <code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code> parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/Qwen/Qwen3-235B-A22B-Thinking-2507">Qwen3-Thinking models</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> … <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qwen3-thinking</span></code></p></td>
+<td><p>Always generates thinking content</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/collections/MoonshotAI/kimi-675e30c072b7ba7e79833be7">Kimi models</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">◁think▷</span></code> … <code class="docutils literal notranslate"><span class="pre">◁/think▷</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kimi</span></code></p></td>
+<td><p>Uses special thinking delimiters</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="Model-Specific-Behaviors">
+<h3>Model-Specific Behaviors<a class="headerlink" href="#Model-Specific-Behaviors" title="Link to this heading">#</a></h3>
+<p><strong>DeepSeek-R1 Family:</strong></p>
+<ul class="simple">
+<li><p>DeepSeek-R1: No <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> start tag, jumps directly to thinking content</p></li>
+<li><p>DeepSeek-R1-0528: Generates both <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> start and <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code> end tags</p></li>
+<li><p>Both are handled by the same <code class="docutils literal notranslate"><span class="pre">deepseek-r1</span></code> parser</p></li>
+</ul>
+<p><strong>Qwen3 Family:</strong></p>
+<ul class="simple">
+<li><p>Standard Qwen3 (e.g., Qwen3-2507): Use <code class="docutils literal notranslate"><span class="pre">qwen3</span></code> parser, supports <code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code> in chat templates</p></li>
+<li><p>Qwen3-Thinking (e.g., Qwen3-235B-A22B-Thinking-2507): Use <code class="docutils literal notranslate"><span class="pre">qwen3-thinking</span></code> parser, always thinks</p></li>
+</ul>
+</section>
+</section>
+<section id="Usage">
+<h2>Usage<a class="headerlink" href="#Usage" title="Link to this heading">#</a></h2>
+<section id="Launching-the-Server">
+<h3>Launching the Server<a class="headerlink" href="#Launching-the-Server" title="Link to this heading">#</a></h3>
+<p>Specify the <code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span></code> option.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.test_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_in_ci</span>
+
+<span class="k">if</span> <span class="n">is_in_ci</span><span class="p">():</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_server</span><span class="p">,</span> <span class="n">print_highlight</span><span class="p">,</span> <span class="n">terminate_process</span>
+
+
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python3 -m sglang.launch_server --model-path deepseek-ai/DeepSeek-R1-Distill-Qwen-7B --host 0.0.0.0 --reasoning-parser deepseek-r1&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span></code> defines the parser used to interpret responses.</p>
+</section>
+<section id="OpenAI-Compatible-API">
+<h3>OpenAI Compatible API<a class="headerlink" href="#OpenAI-Compatible-API" title="Link to this heading">#</a></h3>
+<p>Using the OpenAI compatible API, the contract follows the <a class="reference external" href="https://api-docs.deepseek.com/guides/reasoning_model">DeepSeek API design</a> established with the release of DeepSeek-R1:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code>: The content of the CoT.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">content</span></code>: The content of the final answer.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize OpenAI-like client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://0.0.0.0:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1&quot;</span><span class="p">)</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 1+3?&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<section id="Non-Streaming-Request">
+<h4>Non-Streaming Request<a class="headerlink" href="#Non-Streaming-Request" title="Link to this heading">#</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_non_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Non-streaming</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;separate_reasoning&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Reasoning ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Streaming-Request">
+<h4>Streaming Request<a class="headerlink" href="#Streaming-Request" title="Link to this heading">#</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Non-streaming</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;separate_reasoning&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">reasoning_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response_stream</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">:</span>
+        <span class="n">reasoning_content</span> <span class="o">+=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">reasoning_content</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Reasoning ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">reasoning_content</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Optionally, you can buffer the reasoning content to the last reasoning chunk (or the first chunk after the reasoning content).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Non-streaming</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;separate_reasoning&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;stream_reasoning&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">reasoning_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response_stream</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">:</span>
+        <span class="n">reasoning_content</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">reasoning_content</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Reasoning ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">reasoning_content</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The reasoning separation is enable by default when specify . <strong>To disable it, set the ``separate_reasoning`` option to ``False`` in request.</strong></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response_non_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Non-streaming</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;separate_reasoning&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Original Output ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="SGLang-Native-API">
+<h3>SGLang Native API<a class="headerlink" href="#SGLang-Native-API" title="Link to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;deepseek-ai/DeepSeek-R1-Distill-Qwen-7B&quot;</span><span class="p">)</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">,</span>
+    <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">gen_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/generate&quot;</span>
+<span class="n">gen_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="p">,</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;skip_special_tokens&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">gen_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">gen_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">gen_data</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Original Output ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">gen_response</span><span class="p">)</span>
+
+<span class="n">parse_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/separate_reasoning&quot;</span>
+<span class="n">separate_reasoning_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">gen_response</span><span class="p">,</span>
+    <span class="s2">&quot;reasoning_parser&quot;</span><span class="p">:</span> <span class="s2">&quot;deepseek-r1&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">separate_reasoning_response_json</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">parse_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">separate_reasoning_data</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Reasoning ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">separate_reasoning_response_json</span><span class="p">[</span><span class="s2">&quot;reasoning_text&quot;</span><span class="p">])</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">separate_reasoning_response_json</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Offline-Engine-API">
+<h3>Offline Engine API<a class="headerlink" href="#Offline-Engine-API" title="Link to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.reasoning_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReasoningParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_highlight</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">Engine</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;deepseek-ai/DeepSeek-R1-Distill-Qwen-7B&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;deepseek-ai/DeepSeek-R1-Distill-Qwen-7B&quot;</span><span class="p">)</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">,</span>
+    <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sampling_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;skip_special_tokens&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">sampling_params</span><span class="o">=</span><span class="n">sampling_params</span><span class="p">)</span>
+
+<span class="n">generated_text</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>  <span class="c1"># Assume there is only one prompt</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Original Output ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">ReasoningParser</span><span class="p">(</span><span class="s2">&quot;deepseek-r1&quot;</span><span class="p">)</span>
+<span class="n">reasoning_text</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_non_stream</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Reasoning ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">reasoning_text</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Supporting-New-Reasoning-Model-Schemas">
+<h2>Supporting New Reasoning Model Schemas<a class="headerlink" href="#Supporting-New-Reasoning-Model-Schemas" title="Link to this heading">#</a></h2>
+<p>For future reasoning models, you can implement the reasoning parser as a subclass of <code class="docutils literal notranslate"><span class="pre">BaseReasoningFormatDetector</span></code> in <code class="docutils literal notranslate"><span class="pre">python/sglang/srt/reasoning_parser.py</span></code> and specify the reasoning parser for new reasoning model schemas accordingly.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DeepSeekR1Detector</span><span class="p">(</span><span class="n">BaseReasoningFormatDetector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Detector for DeepSeek-R1 family models.</span>
+
+<span class="sd">    Supported models:</span>
+<span class="sd">      - DeepSeek-R1: Always generates thinking content without &lt;think&gt; start tag</span>
+<span class="sd">      - DeepSeek-R1-0528: Generates thinking content with &lt;think&gt; start tag</span>
+
+<span class="sd">    This detector handles both patterns automatically.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;&lt;think&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;/think&gt;&quot;</span><span class="p">,</span> <span class="n">force_reasoning</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="o">=</span><span class="n">stream_reasoning</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Qwen3Detector</span><span class="p">(</span><span class="n">BaseReasoningFormatDetector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Detector for standard Qwen3 models that support enable_thinking parameter.</span>
+
+<span class="sd">    These models can switch between thinking and non-thinking modes:</span>
+<span class="sd">      - enable_thinking=True: Generates &lt;think&gt;...&lt;/think&gt; tags</span>
+<span class="sd">      - enable_thinking=False: No thinking content generated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;&lt;think&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;/think&gt;&quot;</span><span class="p">,</span> <span class="n">force_reasoning</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="o">=</span><span class="n">stream_reasoning</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Qwen3ThinkingDetector</span><span class="p">(</span><span class="n">BaseReasoningFormatDetector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Detector for Qwen3-Thinking models (e.g., Qwen3-235B-A22B-Thinking-2507).</span>
+
+<span class="sd">    These models always generate thinking content without &lt;think&gt; start tag.</span>
+<span class="sd">    They do not support the enable_thinking parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;&lt;think&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;/think&gt;&quot;</span><span class="p">,</span> <span class="n">force_reasoning</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="o">=</span><span class="n">stream_reasoning</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReasoningParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parser that handles both streaming and non-streaming scenarios.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">      # For standard Qwen3 models with enable_thinking support</span>
+<span class="sd">      parser = ReasoningParser(&quot;qwen3&quot;)</span>
+
+<span class="sd">      # For Qwen3-Thinking models that always think</span>
+<span class="sd">      parser = ReasoningParser(&quot;qwen3-thinking&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DetectorMap</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseReasoningFormatDetector</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;deepseek-r1&quot;</span><span class="p">:</span> <span class="n">DeepSeekR1Detector</span><span class="p">,</span>
+        <span class="s2">&quot;qwen3&quot;</span><span class="p">:</span> <span class="n">Qwen3Detector</span><span class="p">,</span>
+        <span class="s2">&quot;qwen3-thinking&quot;</span><span class="p">:</span> <span class="n">Qwen3ThinkingDetector</span><span class="p">,</span>
+        <span class="s2">&quot;kimi&quot;</span><span class="p">:</span> <span class="n">KimiDetector</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_reasoning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">model_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model type must be specified&quot;</span><span class="p">)</span>
+
+        <span class="n">detector_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DetectorMap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">detector_class</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported model type: </span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector</span> <span class="o">=</span> <span class="n">detector_class</span><span class="p">(</span><span class="n">stream_reasoning</span><span class="o">=</span><span class="n">stream_reasoning</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_non_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns (reasoning_text, normal_text)&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">detect_and_parse</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">reasoning_text</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">normal_text</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_stream_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns (reasoning_text, normal_text) for the current chunk&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">parse_streaming_increment</span><span class="p">(</span><span class="n">chunk_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">reasoning_text</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">normal_text</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="function_calling.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tool and Function Calling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="structured_outputs_for_reasoning_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Structured Outputs For Reasoning Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Supported-Models-&amp;-Parsers">Supported Models &amp; Parsers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Model-Specific-Behaviors">Model-Specific Behaviors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Launching-the-Server">Launching the Server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#OpenAI-Compatible-API">OpenAI Compatible API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Non-Streaming-Request">Non-Streaming Request</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming-Request">Streaming Request</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SGLang-Native-API">SGLang Native API</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Offline-Engine-API">Offline Engine API</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Supporting-New-Reasoning-Model-Schemas">Supporting New Reasoning Model Schemas</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

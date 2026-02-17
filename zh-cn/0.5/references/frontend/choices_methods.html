@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Choices Methods in SGLang &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references/frontend/choices_methods';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/references/frontend/choices_methods.html" />
+    <link rel="icon" href="../../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Post-Training Integration" href="../post_training_integration.html" />
+    <link rel="prev" title="SGLang Frontend Language" href="frontend_tutorial.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../../ltd-provenance.js"></script>
+<script type="text/javascript" src="../../ltd-current.js"></script>
+<script type="text/javascript" src="../../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="frontend_index.html">Frontend Language</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontend_tutorial.html">SGLang Frontend Language</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Choices Methods in SGLang</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/references/frontend/choices_methods.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/references/frontend/choices_methods.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Freferences/frontend/choices_methods.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/references/frontend/choices_methods.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Choices Methods in SGLang</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-length-normalized">Token Length Normalized</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-token-selection">Greedy Token Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unconditional-likelihood-normalized">Unconditional Likelihood Normalized</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="choices-methods-in-sglang">
+<h1>Choices Methods in SGLang<a class="headerlink" href="#choices-methods-in-sglang" title="链接到此标题。">#</a></h1>
+<p>This doc describes the choices methods supported by SGLang.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">choices_method</span></code> arg determines how options supplied to SGLang's <code class="docutils literal notranslate"><span class="pre">choices</span></code> primitive are selected. Only the <code class="docutils literal notranslate"><span class="pre">RuntimeEndpoint</span></code> backend supports the <code class="docutils literal notranslate"><span class="pre">choices_method</span></code> arg. Other backends, such as <code class="docutils literal notranslate"><span class="pre">OpenAI</span></code>, have bespoke selection implementations due to API limitations.</p>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="链接到此标题。">#</a></h2>
+<section id="token-length-normalized">
+<h3>Token Length Normalized<a class="headerlink" href="#token-length-normalized" title="链接到此标题。">#</a></h3>
+<p>Token length normalized is the default SGLang choices method. It selects the option with the highest average logprob across all of its tokens.</p>
+<p>Usage example (alternatively, simply omit the <code class="docutils literal notranslate"><span class="pre">choices_method</span></code> arg):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@sgl</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">assistant</span><span class="p">(</span>
+        <span class="n">sgl</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span>
+            <span class="s2">&quot;answer&quot;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">],</span>
+            <span class="n">choices_method</span><span class="o">=</span><span class="n">sgl</span><span class="o">.</span><span class="n">token_length_normalized</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>This can perform poorly if an option contains many tokens, where its later tokens are predicted with high confidence based on its earlier tokens. For instance, even strong models will fail the above example if the specified options are <code class="docutils literal notranslate"><span class="pre">[&quot;Paris&quot;,</span> <span class="pre">&quot;Antidisestablishmentarianism&quot;]</span></code>.</p>
+</section>
+<section id="greedy-token-selection">
+<h3>Greedy Token Selection<a class="headerlink" href="#greedy-token-selection" title="链接到此标题。">#</a></h3>
+<p>Greedy token selection simply selects the option with the highest logprob for its initial token. For overlapping options where one option is a subset of a longer option, the logprobs of the shorter option are extended using its average logprob for comparison against the longer option.</p>
+<p>Usage example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@sgl</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">assistant</span><span class="p">(</span>
+        <span class="n">sgl</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span>
+            <span class="s2">&quot;answer&quot;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">],</span>
+            <span class="n">choices_method</span><span class="o">=</span><span class="n">sgl</span><span class="o">.</span><span class="n">greedy_token_selection</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>This can perform poorly if an option misleads the model down a bad path based on an attractive initial token. For instance, greedy selection will result in an incorrect response for this example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@sgl</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">us_president_example</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s2">&quot;Name a US president.&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">assistant</span><span class="p">(</span>
+        <span class="n">sgl</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span>
+            <span class="s2">&quot;answer&quot;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Donald Duck&quot;</span><span class="p">,</span> <span class="s2">&quot;Millard Fillmore&quot;</span><span class="p">],</span>
+            <span class="n">choices_method</span><span class="o">=</span><span class="n">sgl</span><span class="o">.</span><span class="n">greedy_token_selection</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="unconditional-likelihood-normalized">
+<h3>Unconditional Likelihood Normalized<a class="headerlink" href="#unconditional-likelihood-normalized" title="链接到此标题。">#</a></h3>
+<p>Unconditional likelihood normalized selects the option with the highest average token logprob once normalized by the unconditional token logprobs, as described in <a class="reference external" href="https://blog.eleuther.ai/multiple-choice-normalization/">this EleutherAI blogpost</a>. This method incurs an additional LLM call to obtain the unconditional likelihoods.</p>
+<p>Usage example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@sgl</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">assistant</span><span class="p">(</span>
+        <span class="n">sgl</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span>
+            <span class="s2">&quot;answer&quot;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">],</span>
+            <span class="n">choices_method</span><span class="o">=</span><span class="n">sgl</span><span class="o">.</span><span class="n">unconditional_likelihood_normalized</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="frontend_tutorial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">SGLang Frontend Language</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../post_training_integration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Post-Training Integration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token-length-normalized">Token Length Normalized</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-token-selection">Greedy Token Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unconditional-likelihood-normalized">Unconditional Likelihood Normalized</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

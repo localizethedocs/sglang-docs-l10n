@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PD Disaggregation &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=49b90552"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'backend/pd_disaggregation';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/backend/pd_disaggregation.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Querying Qwen-VL" href="vlm_query.html" />
+    <link rel="prev" title="LoRA Serving" href="lora.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">Offline Engine API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/general.html">General Guidance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/hardware.html">Hardware Supports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/advanced_deploy.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/backend/pd_disaggregation.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/backend/pd_disaggregation.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbackend/pd_disaggregation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/backend/pd_disaggregation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>PD Disaggregation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-and-what-is-pd-disaggregation">Why and What is PD Disaggregation?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#issues-with-unified-scheduling">Issues with Unified Scheduling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mooncake">Mooncake</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-single-node">Llama Single Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-multi-node">DeepSeek Multi-Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-configuration">Advanced Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-server-configuration">Prefill Server Configuration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#decode-server-configuration">Decode Server Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nixl">NIXL</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Llama Single Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">DeepSeek Multi-Node</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ascend">ASCEND</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Llama Single Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">DeepSeek Multi-Node</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pd-disaggregation">
+<h1>PD Disaggregation<a class="headerlink" href="#pd-disaggregation" title="链接到此标题。">#</a></h1>
+<section id="why-and-what-is-pd-disaggregation">
+<h2>Why and What is PD Disaggregation?<a class="headerlink" href="#why-and-what-is-pd-disaggregation" title="链接到此标题。">#</a></h2>
+<p>Large Language Model (LLM) inference comprises two distinct phases: <strong>Prefill</strong> and <strong>Decode</strong>. The Prefill phase is computation-intensive, processing the entire input sequence, while the Decode phase is memory-intensive, managing the Key-Value (KV) cache for token generation. Traditionally, these phases are handled within a unified engine, where combined scheduling of prefill and decode batches introduces inefficiencies. To address these challenges, we introduce <strong>Prefill and Decoding (PD) Disaggregation</strong> in SGLang.</p>
+<section id="issues-with-unified-scheduling">
+<h3>Issues with Unified Scheduling<a class="headerlink" href="#issues-with-unified-scheduling" title="链接到此标题。">#</a></h3>
+<p>The conventional unified engine, which processes prefill and decode batches together, results in two significant problems:</p>
+<ol class="arabic simple">
+<li><p><strong>Prefill Interruption</strong>: Incoming prefill batches frequently interrupt ongoing decode batches, causing substantial delays in token generation.</p></li>
+<li><p><strong>DP Attention Imbalance</strong>: In data-parallel (DP) attention, one DP worker may process a prefill batch while another handles a decode batch simultaneously, leading to increased decode latency.</p></li>
+</ol>
+<p>PD Disaggregation resolves these by separating the two stages, enabling tailored optimizations for each.</p>
+<p>For the design details, please refer to <a class="reference external" href="https://docs.google.com/document/d/1rQXJwKd5b9b1aOzLh98mnyMhBMhlxXA5ATZTHoQrwvc/edit?tab=t.0">link</a>.</p>
+<p>Currently, we support Mooncake and NIXL as the transfer engine.</p>
+</section>
+</section>
+<section id="mooncake">
+<h2>Mooncake<a class="headerlink" href="#mooncake" title="链接到此标题。">#</a></h2>
+<section id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>mooncake-transfer-engine
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="链接到此标题。">#</a></h3>
+</section>
+<section id="llama-single-node">
+<h3>Llama Single Node<a class="headerlink" href="#llama-single-node" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--disaggregation-ib-device<span class="w"> </span>mlx5_roce0
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--base-gpu-id<span class="w"> </span><span class="m">1</span><span class="w"> </span>--disaggregation-ib-device<span class="w"> </span>mlx5_roce0
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.srt.disaggregation.mini_lb<span class="w"> </span>--prefill<span class="w"> </span>http://127.0.0.1:30000<span class="w"> </span>--decode<span class="w"> </span>http://127.0.0.1:30001<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+</section>
+<section id="deepseek-multi-node">
+<h3>DeepSeek Multi-Node<a class="headerlink" href="#deepseek-multi-node" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill 0</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>--disaggregation-ib-device<span class="w"> </span><span class="si">${</span><span class="nv">device_name</span><span class="si">}</span><span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">prefill_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>normal<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8
+<span class="c1"># prefill 1</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>--disaggregation-ib-device<span class="w"> </span><span class="si">${</span><span class="nv">device_name</span><span class="si">}</span><span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">prefill_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">1</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>normal<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8
+<span class="c1"># decode 0</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>--disaggregation-ib-device<span class="w"> </span><span class="si">${</span><span class="nv">device_name</span><span class="si">}</span><span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">decode_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>low_latency<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w"> </span>--max-running-requests<span class="w"> </span><span class="m">128</span>
+<span class="c1"># decode 1</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>--disaggregation-ib-device<span class="w"> </span><span class="si">${</span><span class="nv">device_name</span><span class="si">}</span><span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">decode_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">1</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>low_latency<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w"> </span>--max-running-requests<span class="w"> </span><span class="m">128</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-configuration">
+<h3>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="链接到此标题。">#</a></h3>
+<p>PD Disaggregation with Mooncake supports the following environment variables for fine-grained control over system behavior.</p>
+<section id="prefill-server-configuration">
+<h4>Prefill Server Configuration<a class="headerlink" href="#prefill-server-configuration" title="链接到此标题。">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Variable</p></th>
+<th class="head text-center"><p>描述</p></th>
+<th class="head text-center"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DISAGGREGATION_THREAD_POOL_SIZE</span></code></strong></p></td>
+<td class="text-center"><p>Controls the total number of worker threads for KVCache transfer operations per TP rank</p></td>
+<td class="text-center"><p>A dynamic value calculated by <code class="docutils literal notranslate"><span class="pre">int(0.75</span> <span class="pre">*</span> <span class="pre">os.cpu_count())</span> <span class="pre">//</span> <span class="pre">8)</span></code>, which is limited to be larger than 4 and less than 12 to ensure efficiency and prevent thread race conditions</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DISAGGREGATION_QUEUE_SIZE</span></code></strong></p></td>
+<td class="text-center"><p>Sets the number of parallel transfer queues. KVCache transfer requests from multiple decode instances will be sharded into these queues so that they can share the threads and the transfer bandwidth at the same time. If it is set to <code class="docutils literal notranslate"><span class="pre">1</span></code>, then we transfer requests one by one according to fcfs strategy</p></td>
+<td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT</span></code></strong></p></td>
+<td class="text-center"><p>Timeout (seconds) for receiving destination KV indices during request initialization</p></td>
+<td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">300</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If a greater mean TTFT is acceptable, you can <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT=600</span></code> (10 minutes) to relax the timeout condition.
+Please be aware that this setting will cause prefill instances to take a longer time to clean up the affected memory resources when a running decode node loses connection.</p>
+</section>
+<section id="decode-server-configuration">
+<h4>Decode Server Configuration<a class="headerlink" href="#decode-server-configuration" title="链接到此标题。">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Variable</p></th>
+<th class="head text-center"><p>描述</p></th>
+<th class="head text-center"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DISAGGREGATION_HEARTBEAT_INTERVAL</span></code></strong></p></td>
+<td class="text-center"><p>Interval (seconds) between health checks to prefill bootstrap servers</p></td>
+<td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DISAGGREGATION_HEARTBEAT_MAX_FAILURE</span></code></strong></p></td>
+<td class="text-center"><p>Consecutive heartbeat failures before marking prefill server offline</p></td>
+<td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DISAGGREGATION_WAITING_TIMEOUT</span></code></strong></p></td>
+<td class="text-center"><p>Timeout (seconds) for receiving KV Cache after request initialization</p></td>
+<td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">300</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If a greater mean TTFT is acceptable, you can <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">SGLANG_DISAGGREGATION_WAITING_TIMEOUT=600</span></code> (10 minutes) to relax the timeout condition.</p>
+</section>
+</section>
+</section>
+<section id="nixl">
+<h2>NIXL<a class="headerlink" href="#nixl" title="链接到此标题。">#</a></h2>
+<section id="id1">
+<h3>Requirements<a class="headerlink" href="#id1" title="链接到此标题。">#</a></h3>
+<p>Install via pip.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nixl
+</pre></div>
+</div>
+<p>Or build from source - may be required if you already have UCX installed.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ai-dynamo/nixl.git
+<span class="nb">cd</span><span class="w"> </span>nixl
+pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>--config-settings<span class="o">=</span>setup-args<span class="o">=</span><span class="s2">&quot;-Ducx_path=/path/to/ucx&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Usage<a class="headerlink" href="#id2" title="链接到此标题。">#</a></h3>
+</section>
+<section id="id3">
+<h3>Llama Single Node<a class="headerlink" href="#id3" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--disaggregation-transfer-backend<span class="w"> </span>nixl
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--base-gpu-id<span class="w"> </span><span class="m">1</span><span class="w"> </span>--disaggregation-transfer-backend<span class="w"> </span>nixl
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.srt.disaggregation.mini_lb<span class="w"> </span>--prefill<span class="w"> </span>http://127.0.0.1:30000<span class="w"> </span>--decode<span class="w"> </span>http://127.0.0.1:30001<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>DeepSeek Multi-Node<a class="headerlink" href="#id4" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill 0</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>---disaggregation-transfer-backend<span class="w"> </span>nixl<span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">prefill_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>normal<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8
+<span class="c1"># prefill 1</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>---disaggregation-transfer-backend<span class="w"> </span>nixl<span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">prefill_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">1</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>normal<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8
+<span class="c1"># decode 0</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>---disaggregation-transfer-backend<span class="w"> </span>nixl<span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">decode_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>low_latency<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w"> </span>--max-running-requests<span class="w"> </span><span class="m">128</span>
+<span class="c1"># decode 1</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>---disaggregation-transfer-backend<span class="w"> </span>nixl<span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">decode_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">1</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span><span class="w"> </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--enable-dp-attention<span class="w"> </span>--enable-deepep-moe<span class="w"> </span>--deepep-mode<span class="w"> </span>low_latency<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w"> </span>--max-running-requests<span class="w"> </span><span class="m">128</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ascend">
+<h2>ASCEND<a class="headerlink" href="#ascend" title="链接到此标题。">#</a></h2>
+<section id="id5">
+<h3>Usage<a class="headerlink" href="#id5" title="链接到此标题。">#</a></h3>
+<p>Use ascend backend with <a class="reference external" href="https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com:443/sglang/mf_adapter-1.0.0-cp311-cp311-linux_aarch64.whl?AccessKeyId=HPUAXT4YM0U8JNTERLST&amp;amp;Expires=1783151861&amp;amp;Signature=3j10QDUjqk70enaq8lostYV2bEA%3D">mf_adapter(download link)</a> and ASCEND_MF_STORE_URL being set</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mf_adapter-1.0.0-cp311-cp311-linux_aarch64.whl<span class="w"> </span>--force-reinstall
+<span class="nb">export</span><span class="w"> </span><span class="nv">ASCEND_MF_STORE_URL</span><span class="o">=</span><span class="s2">&quot;tcp://xxx.xx.xxx.xxx:xxxx&quot;</span>
+</pre></div>
+</div>
+<p>Use mooncake backend, more details can be found in mooncake section.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ENABLE_ASCEND_TRANSFER_WITH_MOONCAKE</span><span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>Llama Single Node<a class="headerlink" href="#id6" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--disaggregation-transfer-backend<span class="w"> </span>ascend
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--base-gpu-id<span class="w"> </span><span class="m">1</span><span class="w"> </span>--disaggregation-transfer-backend<span class="w"> </span>ascend
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.srt.disaggregation.mini_lb<span class="w"> </span>--prefill<span class="w"> </span>http://127.0.0.1:30000<span class="w"> </span>--decode<span class="w"> </span>http://127.0.0.1:30001<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>DeepSeek Multi-Node<a class="headerlink" href="#id7" title="链接到此标题。">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill 0</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>---disaggregation-transfer-backend<span class="w"> </span>ascend<span class="w"> </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">prefill_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span>
+<span class="c1"># decode 0</span>
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3-0324<span class="w"> </span>---disaggregation-transfer-backend<span class="w"> </span>ascend<span class="w"> </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span>--host<span class="w"> </span><span class="si">${</span><span class="nv">local_ip</span><span class="si">}</span><span class="w"> </span>--port<span class="w"> </span><span class="m">30001</span><span class="w"> </span>--trust-remote-code<span class="w"> </span>--dist-init-addr<span class="w"> </span><span class="si">${</span><span class="nv">decode_master_ip</span><span class="si">}</span>:5000<span class="w"> </span>--nnodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp-size<span class="w"> </span><span class="m">16</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lora.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">LoRA Serving</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="vlm_query.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Querying Qwen-VL</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-and-what-is-pd-disaggregation">Why and What is PD Disaggregation?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#issues-with-unified-scheduling">Issues with Unified Scheduling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mooncake">Mooncake</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-single-node">Llama Single Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-multi-node">DeepSeek Multi-Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-configuration">Advanced Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-server-configuration">Prefill Server Configuration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#decode-server-configuration">Decode Server Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nixl">NIXL</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Llama Single Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">DeepSeek Multi-Node</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ascend">ASCEND</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Llama Single Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">DeepSeek Multi-Node</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

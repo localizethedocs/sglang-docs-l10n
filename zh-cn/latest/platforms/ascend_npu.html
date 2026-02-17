@@ -1,0 +1,1010 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang installation with NPUs support &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'platforms/ascend_npu';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/platforms/ascend_npu.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Support Models on Ascend NPU" href="ascend_npu_support_models.html" />
+    <link rel="prev" title="Ascend NPUs" href="ascend_npu_support.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 16 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ascend_npu_support.html">Ascend NPUs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SGLang installation with NPUs support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_support_models.html">Support Models on Ascend NPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_support_features.html">Support Features on Ascend NPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_deepseek_example.html">DeepSeek examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_qwen3_examples.html">Qwen3 examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ascend_npu_best_practice.html">Best Practice on Ascend NPU</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/platforms/ascend_npu.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/platforms/ascend_npu.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fplatforms/ascend_npu.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/platforms/ascend_npu.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang installation with NPUs support</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-version-mapping-for-sglang">Component Version Mapping For SGLang</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obtain-cann-image">Obtain CANN Image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparing-the-running-environment">Preparing the Running Environment</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-installing-from-source-with-prerequisites">Method 1: Installing from source with prerequisites</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python-version">Python Version</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cann">CANN</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#memfabric-adaptor">MemFabric Adaptor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-and-pytorch-framework-adaptor-on-ascend">Pytorch and Pytorch Framework Adaptor on Ascend</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#triton-on-ascend">Triton on Ascend</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sglang-kernels-npu">SGLang Kernels NPU</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deepep-compatible-library">DeepEP-compatible Library</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customops">CustomOps</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-sglang-from-source">Installing SGLang from source</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-using-docker-image">Method 2: Using Docker Image</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#obtain-image">Obtain Image</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-docker">Create Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-settings">System Settings</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-performance-power-scheme">CPU performance power scheme</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disable-numa-balancing">Disable NUMA balancing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prevent-swapping-out-system-memory">Prevent swapping out system memory</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-sglang-service">Running SGLang Service</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-service-for-large-language-models">Running Service For Large Language Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-mixed-scene">PD Mixed Scene</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-separation-scene">PD Separation Scene</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-service-for-multimodal-language-models">Running Service For Multimodal Language Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">PD Mixed Scene</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sglang-installation-with-npus-support">
+<h1>SGLang installation with NPUs support<a class="headerlink" href="#sglang-installation-with-npus-support" title="链接到此标题。">#</a></h1>
+<p>You can install SGLang using any of the methods below. Please go through <code class="docutils literal notranslate"><span class="pre">System</span> <span class="pre">Settings</span></code> section to ensure the clusters are roaring at max performance. Feel free to leave an issue <a class="reference external" href="https://github.com/sgl-project/sglang/issues">here at sglang</a> if you encounter any issues or have any problems.</p>
+<section id="component-version-mapping-for-sglang">
+<h2>Component Version Mapping For SGLang<a class="headerlink" href="#component-version-mapping-for-sglang" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Obtain Way</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HDK</p></td>
+<td><p>25.2.1</p></td>
+<td><p><a class="reference external" href="https://support.huawei.com/carrier/productNewOffering?col=product&amp;amp;path=PBI1-262732867/PBI1-262735886/PBI1-262735910/PBI1-261410188/PBI1-252764743&amp;amp;pVR=PBI1-263550357&amp;amp;pC=PBI1-264360782&amp;amp;pSPC=PBI1-266220744&amp;amp;resTab=SW">link</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>CANN</p></td>
+<td><p>8.3.rc2</p></td>
+<td><p><a class="reference internal" href="#obtain-cann-image"><span class="std std-ref">Obtain Images</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Pytorch Adapter</p></td>
+<td><p>7.3.0</p></td>
+<td><p><a class="reference external" href="https://gitcode.com/Ascend/pytorch/releases">link</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MemFabric</p></td>
+<td><p>0.1.0</p></td>
+<td><p><a class="reference external" href="https://gitcode.com/Ascend/memfabric_hybrid/releases">link</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Triton</p></td>
+<td><p>3.2.0.dev2025112116</p></td>
+<td><p><a class="reference external" href="https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/sglang/triton_ascend/triton_ascend-3.2.0.dev2025112116-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl">link</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bisheng</p></td>
+<td><p>20251121</p></td>
+<td><p><a class="reference external" href="https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/sglang/triton_ascend/Ascend-BiSheng-toolkit_aarch64_20251121.run">link</a></p></td>
+</tr>
+<tr class="row-even"><td><p>SGLang NPU Kernel</p></td>
+<td><p>NA</p></td>
+<td><p><a class="reference external" href="https://github.com/sgl-project/sgl-kernel-npu/releases">link</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a id="obtain-cann-image"></a></p>
+<section id="obtain-cann-image">
+<h3>Obtain CANN Image<a class="headerlink" href="#obtain-cann-image" title="链接到此标题。">#</a></h3>
+<p>You can obtain the dependency of a specified version of CANN through an image.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># for Atlas 800I A3 and Ubuntu OS</span>
+docker<span class="w"> </span>pull<span class="w"> </span>quay.io/ascend/cann:8.3.rc2-a3-ubuntu22.04-py3.11
+<span class="c1"># for Atlas 800I A2 and Ubuntu OS</span>
+docker<span class="w"> </span>pull<span class="w"> </span>quay.io/ascend/cann:8.3.rc2-910b-ubuntu22.04-py3.11
+</pre></div>
+</div>
+</section>
+</section>
+<section id="preparing-the-running-environment">
+<h2>Preparing the Running Environment<a class="headerlink" href="#preparing-the-running-environment" title="链接到此标题。">#</a></h2>
+<section id="method-1-installing-from-source-with-prerequisites">
+<h3>Method 1: Installing from source with prerequisites<a class="headerlink" href="#method-1-installing-from-source-with-prerequisites" title="链接到此标题。">#</a></h3>
+<section id="python-version">
+<h4>Python Version<a class="headerlink" href="#python-version" title="链接到此标题。">#</a></h4>
+<p>Only <code class="docutils literal notranslate"><span class="pre">python==3.11</span></code> is supported currently. If you don't want to break system pre-installed python, try installing with <a class="reference external" href="https://github.com/conda/conda">conda</a>.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>sglang_npu<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>activate<span class="w"> </span>sglang_npu
+</pre></div>
+</div>
+</section>
+<section id="cann">
+<h4>CANN<a class="headerlink" href="#cann" title="链接到此标题。">#</a></h4>
+<p>Prior to start work with SGLang on Ascend you need to install CANN Toolkit, Kernels operator package and NNAL version 8.3.RC2 or higher, check the <a class="reference external" href="https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/83RC1/softwareinst/instg/instg_0008.html?Mode=PmIns&amp;amp;InstallType=local&amp;amp;OS=openEuler&amp;amp;Software=cannToolKit">installation guide</a></p>
+</section>
+<section id="memfabric-adaptor">
+<h4>MemFabric Adaptor<a class="headerlink" href="#memfabric-adaptor" title="链接到此标题。">#</a></h4>
+<p>If you want to use PD disaggregation mode, you need to install MemFabric Adaptor. MemFabric Adaptor is a drop-in replacement of Mooncake Transfer Engine that enables KV cache transfer on Ascend NPU clusters.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mf-adapter<span class="o">==</span><span class="m">1</span>.0.0
+</pre></div>
+</div>
+</section>
+<section id="pytorch-and-pytorch-framework-adaptor-on-ascend">
+<h4>Pytorch and Pytorch Framework Adaptor on Ascend<a class="headerlink" href="#pytorch-and-pytorch-framework-adaptor-on-ascend" title="链接到此标题。">#</a></h4>
+<p>At the moment NPUGraph optimizations are supported only in <code class="docutils literal notranslate"><span class="pre">torch_npu==2.6.0.post3</span></code> that requires 'torch==2.6.0'.</p>
+<p><em>TODO: NPUGraph optimizations will be supported in future releases of 'torch_npu' 2.7.1, 2.8.0 and 2.9.0</em></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">PYTORCH_VERSION</span><span class="o">=</span><span class="m">2</span>.6.0
+<span class="nv">TORCHVISION_VERSION</span><span class="o">=</span><span class="m">0</span>.21.0
+<span class="nv">TORCH_NPU_VERSION</span><span class="o">=</span><span class="m">2</span>.6.0.post3
+pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="nv">$PYTORCH_VERSION</span><span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="nv">$TORCHVISION_VERSION</span><span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu
+pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch_npu</span><span class="o">==</span><span class="nv">$TORCH_NPU_VERSION</span>
+</pre></div>
+</div>
+<p>While there is no released versions of 'torch_npu' for 'torch==2.7.1' and 'torch==2.8.0' we provide custom builds of 'torch_npu'. PLATFORM can be 'aarch64' or 'x86_64'</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">PLATFORM</span><span class="o">=</span><span class="s2">&quot;aarch64&quot;</span>
+<span class="nv">PYTORCH_VERSION</span><span class="o">=</span><span class="m">2</span>.8.0
+<span class="nv">TORCHVISION_VERSION</span><span class="o">=</span><span class="m">0</span>.23.0
+pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="nv">$PYTORCH_VERSION</span><span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="nv">$TORCHVISION_VERSION</span><span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu
+wget<span class="w"> </span>https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/sglang/torch_npu/torch_npu-<span class="si">${</span><span class="nv">PYTORCH_VERSION</span><span class="si">}</span>.post2.dev20251120-cp311-cp311-manylinux_2_28_<span class="si">${</span><span class="nv">PLATFORM</span><span class="si">}</span>.whl
+pip<span class="w"> </span>install<span class="w"> </span>torch_npu-<span class="si">${</span><span class="nv">PYTORCH_VERSION</span><span class="si">}</span>.post2.dev20251120-cp311-cp311-manylinux_2_28_<span class="si">${</span><span class="nv">PLATFORM</span><span class="si">}</span>.whl
+</pre></div>
+</div>
+<p>If you are using other versions of <code class="docutils literal notranslate"><span class="pre">torch</span></code> and install <code class="docutils literal notranslate"><span class="pre">torch_npu</span></code>, check <a class="reference external" href="https://github.com/Ascend/pytorch/blob/master/README.md">installation guide</a></p>
+</section>
+<section id="triton-on-ascend">
+<h4>Triton on Ascend<a class="headerlink" href="#triton-on-ascend" title="链接到此标题。">#</a></h4>
+<p>We provide our own implementation of Triton for Ascend.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">BISHENG_NAME</span><span class="o">=</span><span class="s2">&quot;Ascend-BiSheng-toolkit_aarch64_20251121.run&quot;</span>
+<span class="nv">BISHENG_URL</span><span class="o">=</span><span class="s2">&quot;https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/sglang/triton_ascend/</span><span class="si">${</span><span class="nv">BISHENG_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+wget<span class="w"> </span>-O<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BISHENG_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BISHENG_URL</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>chmod<span class="w"> </span>a+x<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BISHENG_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s2">&quot;./</span><span class="si">${</span><span class="nv">BISHENG_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>--install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BISHENG_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>triton-ascend<span class="o">==</span><span class="m">3</span>.2.0rc4
+</pre></div>
+</div>
+<p>For installation of Triton on Ascend nightly builds or from sources, follow <a class="reference external" href="https://gitcode.com/Ascend/triton-ascend/blob/master/docs/sources/getting-started/installation.md">installation guide</a></p>
+</section>
+<section id="sglang-kernels-npu">
+<h4>SGLang Kernels NPU<a class="headerlink" href="#sglang-kernels-npu" title="链接到此标题。">#</a></h4>
+<p>We provide SGL kernels for Ascend NPU, check <a class="reference external" href="https://github.com/sgl-project/sgl-kernel-npu/blob/main/python/sgl_kernel_npu/README.md">installation guide</a>.</p>
+</section>
+<section id="deepep-compatible-library">
+<h4>DeepEP-compatible Library<a class="headerlink" href="#deepep-compatible-library" title="链接到此标题。">#</a></h4>
+<p>We provide a DeepEP-compatible Library as a drop-in replacement of deepseek-ai's DeepEP library, check the <a class="reference external" href="https://github.com/sgl-project/sgl-kernel-npu/blob/main/python/deep_ep/README.md">installation guide</a>.</p>
+</section>
+<section id="customops">
+<h4>CustomOps<a class="headerlink" href="#customops" title="链接到此标题。">#</a></h4>
+<p><em>TODO: to be removed once merged into sgl-kernel-npu.</em>
+Additional package with custom operations. DEVICE_TYPE can be &quot;a3&quot; for Atlas A3 server or &quot;910b&quot; for Atlas A2 server.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">DEVICE_TYPE</span><span class="o">=</span><span class="s2">&quot;a3&quot;</span>
+wget<span class="w"> </span>https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/ops/CANN-custom_ops-8.2.0.0-<span class="nv">$DEVICE_TYPE</span>-linux.aarch64.run
+chmod<span class="w"> </span>a+x<span class="w"> </span>./CANN-custom_ops-8.2.0.0-<span class="nv">$DEVICE_TYPE</span>-linux.aarch64.run
+./CANN-custom_ops-8.2.0.0-<span class="nv">$DEVICE_TYPE</span>-linux.aarch64.run<span class="w"> </span>--quiet<span class="w"> </span>--install-path<span class="o">=</span>/usr/local/Ascend/ascend-toolkit/latest/opp
+wget<span class="w"> </span>https://sglang-ascend.obs.cn-east-3.myhuaweicloud.com/ops/custom_ops-1.0.<span class="nv">$DEVICE_TYPE</span>-cp311-cp311-linux_aarch64.whl
+pip<span class="w"> </span>install<span class="w"> </span>./custom_ops-1.0.<span class="nv">$DEVICE_TYPE</span>-cp311-cp311-linux_aarch64.whl
+</pre></div>
+</div>
+</section>
+<section id="installing-sglang-from-source">
+<h4>Installing SGLang from source<a class="headerlink" href="#installing-sglang-from-source" title="链接到此标题。">#</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the last release branch</span>
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>v0.5.6.post2<span class="w"> </span>https://github.com/sgl-project/sglang.git
+<span class="nb">cd</span><span class="w"> </span>sglang
+mv<span class="w"> </span>python/pyproject_other.toml<span class="w"> </span>python/pyproject.toml
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>python<span class="o">[</span>srt_npu<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="method-2-using-docker-image">
+<h3>Method 2: Using Docker Image<a class="headerlink" href="#method-2-using-docker-image" title="链接到此标题。">#</a></h3>
+<section id="obtain-image">
+<h4>Obtain Image<a class="headerlink" href="#obtain-image" title="链接到此标题。">#</a></h4>
+<p>You can download the SGLang image or build an image based on Dockerfile to obtain the Ascend NPU image.</p>
+<ol class="arabic simple">
+<li><p>Download SGLang image</p></li>
+</ol>
+<div class="highlight-angular2html notranslate"><div class="highlight"><pre><span></span>dockerhub: docker.io/lmsysorg/sglang:$tag
+# Main-based tag, change main to specific version like v0.5.6,
+# you can get image for specific version
+Atlas 800I A3 : {main}-cann8.3.rc2-a3
+Atlas 800I A2: {main}-cann8.3.rc2-910b
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Build an image based on Dockerfile</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the SGLang repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang.git
+<span class="nb">cd</span><span class="w"> </span>sglang/docker
+
+<span class="c1"># Build the docker image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>&lt;image_name&gt;<span class="w"> </span>-f<span class="w"> </span>npu.Dockerfile<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="create-docker">
+<h4>Create Docker<a class="headerlink" href="#create-docker" title="链接到此标题。">#</a></h4>
+<p><strong>Notice:</strong> <code class="docutils literal notranslate"><span class="pre">--privileged</span></code> and <code class="docutils literal notranslate"><span class="pre">--network=host</span></code> are required by RDMA, which is typically needed by Ascend NPU clusters.</p>
+<p><strong>Notice:</strong> The following docker command is based on Atlas 800I A3 machines. If you are using Atlas 800I A2, make sure only <code class="docutils literal notranslate"><span class="pre">davinci[0-7]</span></code> are mapped into container.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">alias</span><span class="w"> </span><span class="nv">drun</span><span class="o">=</span><span class="s1">&#39;docker run -it --rm --privileged --network=host --ipc=host --shm-size=16g \</span>
+<span class="s1">    --device=/dev/davinci0 --device=/dev/davinci1 --device=/dev/davinci2 --device=/dev/davinci3 \</span>
+<span class="s1">    --device=/dev/davinci4 --device=/dev/davinci5 --device=/dev/davinci6 --device=/dev/davinci7 \</span>
+<span class="s1">    --device=/dev/davinci8 --device=/dev/davinci9 --device=/dev/davinci10 --device=/dev/davinci11 \</span>
+<span class="s1">    --device=/dev/davinci12 --device=/dev/davinci13 --device=/dev/davinci14 --device=/dev/davinci15 \</span>
+<span class="s1">    --device=/dev/davinci_manager --device=/dev/hisi_hdc \</span>
+<span class="s1">    --volume /usr/local/sbin:/usr/local/sbin --volume /usr/local/Ascend/driver:/usr/local/Ascend/driver \</span>
+<span class="s1">    --volume /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \</span>
+<span class="s1">    --volume /etc/ascend_install.info:/etc/ascend_install.info \</span>
+<span class="s1">    --volume /var/queue_schedule:/var/queue_schedule --volume ~/.cache/:/root/.cache/&#39;</span>
+
+<span class="c1"># Add HF_TOKEN env for download model by SGLang.</span>
+drun<span class="w"> </span>--env<span class="w"> </span><span class="s2">&quot;HF_TOKEN=&lt;secret&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>&lt;image_name&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--attention-backend<span class="w"> </span>ascend
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="system-settings">
+<h2>System Settings<a class="headerlink" href="#system-settings" title="链接到此标题。">#</a></h2>
+<section id="cpu-performance-power-scheme">
+<h3>CPU performance power scheme<a class="headerlink" href="#cpu-performance-power-scheme" title="链接到此标题。">#</a></h3>
+<p>The default power scheme on Ascend hardware is <code class="docutils literal notranslate"><span class="pre">ondemand</span></code> which could affect performance, changing it to <code class="docutils literal notranslate"><span class="pre">performance</span></code> is recommended.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>performance<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+
+<span class="c1"># Make sure changes are applied successfully</span>
+cat<span class="w"> </span>/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor<span class="w"> </span><span class="c1"># shows performance</span>
+</pre></div>
+</div>
+</section>
+<section id="disable-numa-balancing">
+<h3>Disable NUMA balancing<a class="headerlink" href="#disable-numa-balancing" title="链接到此标题。">#</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>kernel.numa_balancing<span class="o">=</span><span class="m">0</span>
+<span class="c1"># Check</span>
+cat<span class="w"> </span>/proc/sys/kernel/numa_balancing<span class="w"> </span><span class="c1"># shows 0</span>
+</pre></div>
+</div>
+</section>
+<section id="prevent-swapping-out-system-memory">
+<h3>Prevent swapping out system memory<a class="headerlink" href="#prevent-swapping-out-system-memory" title="链接到此标题。">#</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>vm.swappiness<span class="o">=</span><span class="m">10</span>
+
+<span class="c1"># Check</span>
+cat<span class="w"> </span>/proc/sys/vm/swappiness<span class="w"> </span><span class="c1"># shows 10</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-sglang-service">
+<h2>Running SGLang Service<a class="headerlink" href="#running-sglang-service" title="链接到此标题。">#</a></h2>
+<section id="running-service-for-large-language-models">
+<h3>Running Service For Large Language Models<a class="headerlink" href="#running-service-for-large-language-models" title="链接到此标题。">#</a></h3>
+<section id="pd-mixed-scene">
+<h4>PD Mixed Scene<a class="headerlink" href="#pd-mixed-scene" title="链接到此标题。">#</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enabling CPU Affinity</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_SET_CPU_AFFINITY</span><span class="o">=</span><span class="m">1</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span>--attention-backend<span class="w"> </span>ascend
+</pre></div>
+</div>
+</section>
+<section id="pd-separation-scene">
+<h4>PD Separation Scene<a class="headerlink" href="#pd-separation-scene" title="链接到此标题。">#</a></h4>
+<ol class="arabic simple">
+<li><p>Launch Prefill Server</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enabling CPU Affinity</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_SET_CPU_AFFINITY</span><span class="o">=</span><span class="m">1</span>
+
+<span class="c1"># PIP: recommended to config first Prefill Server IP</span>
+<span class="c1"># PORT: one free port</span>
+<span class="c1"># all sglang servers need to be config the same PIP and PORT,</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ASCEND_MF_STORE_URL</span><span class="o">=</span><span class="s2">&quot;tcp://PIP:PORT&quot;</span>
+<span class="c1"># if you are Atlas 800I A2 hardware and use rdma for kv cache transfer, add this parameter</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ASCEND_MF_TRANSFER_PROTOCOL</span><span class="o">=</span><span class="s2">&quot;device_rdma&quot;</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disaggregation-transfer-backend<span class="w"> </span>ascend<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disaggregation-bootstrap-port<span class="w"> </span><span class="m">8995</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--attention-backend<span class="w"> </span>ascend<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>npu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--base-gpu-id<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Launch Decode Server</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># PIP: recommended to config first Prefill Server IP</span>
+<span class="c1"># PORT: one free port</span>
+<span class="c1"># all sglang servers need to be config the same PIP and PORT,</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ASCEND_MF_STORE_URL</span><span class="o">=</span><span class="s2">&quot;tcp://PIP:PORT&quot;</span>
+<span class="c1"># if you are Atlas 800I A2 hardware and use rdma for kv cache transfer, add this parameter</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ASCEND_MF_TRANSFER_PROTOCOL</span><span class="o">=</span><span class="s2">&quot;device_rdma&quot;</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disaggregation-transfer-backend<span class="w"> </span>ascend<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--attention-backend<span class="w"> </span>ascend<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>npu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--base-gpu-id<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp-size<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">8001</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Launch Router</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--pd-disaggregation<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--policy<span class="w"> </span>cache_aware<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--prefill<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span><span class="m">8995</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--decode<span class="w"> </span>http://127.0.0.1:8001<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">6688</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-service-for-multimodal-language-models">
+<h3>Running Service For Multimodal Language Models<a class="headerlink" href="#running-service-for-multimodal-language-models" title="链接到此标题。">#</a></h3>
+<section id="id1">
+<h4>PD Mixed Scene<a class="headerlink" href="#id1" title="链接到此标题。">#</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>Qwen3-VL-30B-A3B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>npu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--attention-backend<span class="w"> </span>ascend<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--mm-attention-backend<span class="w"> </span>ascend_attn<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disable-radix-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable-multimodal<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--sampling-backend<span class="w"> </span>ascend
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ascend_npu_support.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Ascend NPUs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ascend_npu_support_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Support Models on Ascend NPU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-version-mapping-for-sglang">Component Version Mapping For SGLang</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obtain-cann-image">Obtain CANN Image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparing-the-running-environment">Preparing the Running Environment</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-installing-from-source-with-prerequisites">Method 1: Installing from source with prerequisites</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python-version">Python Version</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cann">CANN</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#memfabric-adaptor">MemFabric Adaptor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-and-pytorch-framework-adaptor-on-ascend">Pytorch and Pytorch Framework Adaptor on Ascend</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#triton-on-ascend">Triton on Ascend</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sglang-kernels-npu">SGLang Kernels NPU</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deepep-compatible-library">DeepEP-compatible Library</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customops">CustomOps</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-sglang-from-source">Installing SGLang from source</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-using-docker-image">Method 2: Using Docker Image</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#obtain-image">Obtain Image</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-docker">Create Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-settings">System Settings</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-performance-power-scheme">CPU performance power scheme</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disable-numa-balancing">Disable NUMA balancing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prevent-swapping-out-system-memory">Prevent swapping out system memory</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-sglang-service">Running SGLang Service</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-service-for-large-language-models">Running Service For Large Language Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-mixed-scene">PD Mixed Scene</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-separation-scene">PD Separation Scene</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-service-for-multimodal-language-models">Running Service For Multimodal Language Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">PD Mixed Scene</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 16 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

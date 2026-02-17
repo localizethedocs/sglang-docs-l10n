@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Production Metrics &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=d99e55db"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references/production_metrics';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/references/production_metrics.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">Install SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/send_request.html">Quick Start: Sending Requests</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/native_api.html">Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/backend.html">Backend: SGLang Runtime (SRT)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">Frontend: Structured Generation Language (SGLang)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="supported_models.html">Supported Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters in SGLang Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Guide on Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_chat_template.html">Custom Chat Template in SGLang Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributor_guide.html">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learn_more.html">Learn more</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/references/production_metrics.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/references/production_metrics.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Freferences/production_metrics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/references/production_metrics.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Production Metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-guide">Setup Guide</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grafana-dashboard">Grafana Dashboard</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="production-metrics">
+<h1>Production Metrics<a class="headerlink" href="#production-metrics" title="Link to this heading">#</a></h1>
+<p>sglang exposes the following metrics via Prometheus. The metrics are namespaced by <code class="docutils literal notranslate"><span class="pre">$name</span></code> (the model name).</p>
+<p>An example of the monitoring dashboard is available in <a class="reference internal" href="#../examples/monitoring/grafana.json"><span class="xref myst">examples/monitoring/grafana.json</span></a>.</p>
+<p>Here is an example of the metrics:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># HELP sglang:max_total_num_tokens Maximum total number of tokens</span>
+<span class="c1"># TYPE sglang:max_total_num_tokens gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">max_total_num_tokens</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">161721.0</span>
+<span class="c1"># HELP sglang:max_prefill_tokens Maximum prefill tokens</span>
+<span class="c1"># TYPE sglang:max_prefill_tokens gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">max_prefill_tokens</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">16384.0</span>
+<span class="c1"># HELP sglang:max_running_requests Maximum running requests</span>
+<span class="c1"># TYPE sglang:max_running_requests gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">max_running_requests</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">4097.0</span>
+<span class="c1"># HELP sglang:context_len Context length</span>
+<span class="c1"># TYPE sglang:context_len gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">context_len</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">8192.0</span>
+<span class="c1"># HELP sglang:prompt_tokens_total Number of prefill tokens processed.</span>
+<span class="c1"># TYPE sglang:prompt_tokens_total counter</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">prompt_tokens_total</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">506780.0</span>
+<span class="c1"># HELP sglang:generation_tokens_total Number of generation tokens processed.</span>
+<span class="c1"># TYPE sglang:generation_tokens_total counter</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">generation_tokens_total</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">424549.0</span>
+<span class="c1"># HELP sglang:num_requests_running Number of requests currently running on GPU</span>
+<span class="c1"># TYPE sglang:num_requests_running gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">num_requests_running</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:num_requests_waiting Number of requests waiting to be processed.</span>
+<span class="c1"># TYPE sglang:num_requests_waiting gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">num_requests_waiting</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:gen_throughput Gen token throughput (token/s)</span>
+<span class="c1"># TYPE sglang:gen_throughput gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">gen_throughput</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:token_usage Total token usage</span>
+<span class="c1"># TYPE sglang:token_usage gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">token_usage</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.01</span>
+<span class="c1"># HELP sglang:new_seq Number of new sequences</span>
+<span class="c1"># TYPE sglang:new_seq gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">new_seq</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:new_token Number of new token</span>
+<span class="c1"># TYPE sglang:new_token gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">new_token</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:cached_token Number of cached token</span>
+<span class="c1"># TYPE sglang:cached_token gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">cached_token</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:cache_hit_rate Cache hit rate</span>
+<span class="c1"># TYPE sglang:cache_hit_rate gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">cache_hit_rate</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">10.61</span>
+<span class="c1"># HELP sglang:queue_req Number of queued requests</span>
+<span class="c1"># TYPE sglang:queue_req gauge</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">queue_req</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="c1"># HELP sglang:time_to_first_token_seconds Histogram of time to first token in seconds.</span>
+<span class="c1"># TYPE sglang:time_to_first_token_seconds histogram</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_sum</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">656.0780844688416</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.001&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.005&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.01&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.02&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.04&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">207.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.06&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">456.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.08&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">598.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">707.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.25&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1187.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1350.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.75&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2.5&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;7.5&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;15.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;25.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;30.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;+Inf&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_to_first_token_seconds_count</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2124.0</span>
+<span class="c1"># HELP sglang:time_per_output_token_seconds Histogram of time per output token in seconds.</span>
+<span class="c1"># TYPE sglang:time_per_output_token_seconds histogram</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_sum</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">29846.5393948555</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.005&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.01&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.015&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.02&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">9602.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.025&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">30060.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.03&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">39184.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.04&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">61387.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.05&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">78835.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.075&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">139394.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422029.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.15&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422029.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.2&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422029.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.3&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422424.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.4&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422424.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422425.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;0.75&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422425.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422425.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2.5&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422425.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;+Inf&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422425.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">time_per_output_token_seconds_count</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">422425.0</span>
+<span class="c1"># HELP sglang:request_prompt_tokens Number of prefill tokens processed</span>
+<span class="c1"># TYPE sglang:request_prompt_tokens histogram</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_sum</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">500552.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">22.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">191.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">511.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">825.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">997.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;200.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1182.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;500.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1748.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2102.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;+Inf&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_prompt_tokens_count</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="c1"># HELP sglang:request_generation_tokens Number of generation tokens processed.</span>
+<span class="c1"># TYPE sglang:request_generation_tokens histogram</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_sum</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">424529.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">0.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">49.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">202.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">448.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">814.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">979.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;200.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1266.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;500.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1883.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2095.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;+Inf&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">request_generation_tokens_count</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="c1"># HELP sglang:e2e_request_latency_seconds Histogram of End-to-end request latency in seconds</span>
+<span class="c1"># TYPE sglang:e2e_request_latency_seconds histogram</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_sum</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">70517.99934530258</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">21.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">54.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">311.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">733.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1563.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;200.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;500.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;+Inf&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">e2e_request_latency_seconds_count</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="c1"># HELP sglang:waiting_request_latency_seconds Histogram of request waiting time in seconds</span>
+<span class="c1"># TYPE sglang:waiting_request_latency_seconds histogram</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_sum</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">24885.007263183594</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">421.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">563.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">900.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1270.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">1623.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;200.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;500.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;1000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;2000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;5000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;10000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;20000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;50000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;100000.0&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s2">&quot;+Inf&quot;</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+<span class="n">sglang</span><span class="p">:</span><span class="n">waiting_request_latency_seconds_count</span><span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/gemma-2-9b-it&quot;</span><span class="p">}</span> <span class="mf">2104.0</span>
+</pre></div>
+</div>
+<section id="setup-guide">
+<h2>Setup Guide<a class="headerlink" href="#setup-guide" title="Link to this heading">#</a></h2>
+<p>To setup a monitoring dashboard, you can use the following docker compose file: <a class="reference internal" href="#../examples/monitoring/docker-compose.yaml"><span class="xref myst">examples/monitoring/docker-compose.yaml</span></a>.</p>
+<p>Assume you have sglang server running at <code class="docutils literal notranslate"><span class="pre">localhost:30000</span></code>.</p>
+<p>To start the monitoring dashboard (prometheus + grafana), cd to <code class="docutils literal notranslate"><span class="pre">examples/monitoring</span></code> and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>compose.yaml<span class="w"> </span>-p<span class="w"> </span>monitoring<span class="w"> </span>up
+</pre></div>
+</div>
+<p>Then you can access the Grafana dashboard at http://localhost:3000.</p>
+<section id="grafana-dashboard">
+<h3>Grafana Dashboard<a class="headerlink" href="#grafana-dashboard" title="Link to this heading">#</a></h3>
+<p>To import the Grafana dashboard, click <code class="docutils literal notranslate"><span class="pre">+</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Import</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Upload</span> <span class="pre">JSON</span> <span class="pre">file</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Upload</span></code> and select <a class="reference internal" href="#../examples/monitoring/grafana.json"><span class="xref myst">grafana.json</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-guide">Setup Guide</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grafana-dashboard">Grafana Dashboard</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2024, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

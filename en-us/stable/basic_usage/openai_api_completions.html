@@ -1,0 +1,1120 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OpenAI APIs - Completions &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'basic_usage/openai_api_completions';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/basic_usage/openai_api_completions.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="OpenAI APIs - Vision" href="openai_api_vision.html" />
+    <link rel="prev" title="OpenAI-Compatible APIs" href="openai_api.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">Sending Requests</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="openai_api.html">OpenAI-Compatible APIs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">OpenAI APIs - Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/basic_usage/openai_api_completions.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/basic_usage/openai_api_completions.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbasic_usage/openai_api_completions.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/basic_usage/openai_api_completions.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>OpenAI APIs - Completions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Launch-A-Server">Launch A Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Chat-Completions">Chat Completions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Model-Thinking/Reasoning-Support">Model Thinking/Reasoning Support</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Supported-Models-and-Configuration">Supported Models and Configuration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Basic-Usage">Basic Usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-Qwen3-Models">Example: Qwen3 Models</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Logit-Bias-Support">Logit Bias Support</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Getting-Token-IDs">Getting Token IDs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-DeepSeek-V3-Models">Example: DeepSeek-V3 Models</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Parameters">Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Logit Bias Support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Completions">Completions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Parameters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Structured-Outputs-(JSON,-Regex,-EBNF)">Structured Outputs (JSON, Regex, EBNF)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Using-LoRA-Adapters">Using LoRA Adapters</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <style>
+    .output_area.stderr, .output_area.stdout {
+        color: #d3d3d3 !important; /* light gray */
+    }
+</style><section id="OpenAI-APIs---Completions">
+<h1>OpenAI APIs - Completions<a class="headerlink" href="#OpenAI-APIs---Completions" title="Link to this heading">#</a></h1>
+<p>SGLang provides OpenAI-compatible APIs to enable a smooth transition from OpenAI services to self-hosted local models. A complete reference for the API is available in the <a class="reference external" href="https://platform.openai.com/docs/api-reference">OpenAI API Reference</a>.</p>
+<p>This tutorial covers the following popular APIs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chat/completions</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">completions</span></code></p></li>
+</ul>
+<p>Check out other tutorials to learn about <a class="reference internal" href="openai_api_vision.html"><span class="doc">vision APIs</span></a> for vision-language models and <a class="reference internal" href="openai_api_embeddings.html"><span class="doc">embedding APIs</span></a> for embedding models.</p>
+<section id="Launch-A-Server">
+<h2>Launch A Server<a class="headerlink" href="#Launch-A-Server" title="Link to this heading">#</a></h2>
+<p>Launch the server in your terminal and wait for it to initialize.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.doc_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_server</span><span class="p">,</span> <span class="n">print_highlight</span><span class="p">,</span> <span class="n">terminate_process</span>
+
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python3 -m sglang.launch_server --model-path qwen/qwen2.5-0.5b-instruct --host 0.0.0.0 --log-level warning&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server started on http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Chat-Completions">
+<h2>Chat Completions<a class="headerlink" href="#Chat-Completions" title="Link to this heading">#</a></h2>
+<section id="Usage">
+<h3>Usage<a class="headerlink" href="#Usage" title="Link to this heading">#</a></h3>
+<p>The server fully implements the OpenAI API. It will automatically apply the chat template specified in the Hugging Face tokenizer, if one is available. You can also specify a custom chat template with <code class="docutils literal notranslate"><span class="pre">--chat-template</span></code> when launching the server.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1&quot;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Model-Thinking/Reasoning-Support">
+<h3>Model Thinking/Reasoning Support<a class="headerlink" href="#Model-Thinking/Reasoning-Support" title="Link to this heading">#</a></h3>
+<p>Some models support internal reasoning or thinking processes that can be exposed in the API response. SGLang provides unified support for various reasoning models through the <code class="docutils literal notranslate"><span class="pre">chat_template_kwargs</span></code> parameter and compatible reasoning parsers.</p>
+<section id="Supported-Models-and-Configuration">
+<h4>Supported Models and Configuration<a class="headerlink" href="#Supported-Models-and-Configuration" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Family</p></th>
+<th class="head"><p>Chat Template Parameter</p></th>
+<th class="head"><p>Reasoning Parser</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeepSeek-R1 (R1, R1-0528, R1-Distill)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">deepseek-r1</span></code></p></td>
+<td><p>Standard reasoning models</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepSeek-V3.1</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">thinking</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">deepseek-v3</span></code></p></td>
+<td><p>Hybrid model (thinking/non-thinking modes)</p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen3 (standard)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">qwen3</span></code></p></td>
+<td><p>Hybrid model (thinking/non-thinking modes)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-Thinking</p></td>
+<td><p>N/A (always enabled)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">qwen3-thinking</span></code></p></td>
+<td><p>Always generates reasoning</p></td>
+</tr>
+<tr class="row-even"><td><p>Kimi</p></td>
+<td><p>N/A (always enabled)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">kimi</span></code></p></td>
+<td><p>Kimi thinking models</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gpt-Oss</p></td>
+<td><p>N/A (always enabled)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">gpt-oss</span></code></p></td>
+<td><p>Gpt-Oss thinking models</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="Basic-Usage">
+<h4>Basic Usage<a class="headerlink" href="#Basic-Usage" title="Link to this heading">#</a></h4>
+<p>To enable reasoning output, you need to:</p>
+<ol class="arabic simple">
+<li><p>Launch the server with the appropriate reasoning parser</p></li>
+<li><p>Set the model-specific parameter in <code class="docutils literal notranslate"><span class="pre">chat_template_kwargs</span></code></p></li>
+<li><p>Optionally use <code class="docutils literal notranslate"><span class="pre">separate_reasoning:</span> <span class="pre">False</span></code> to not get reasoning content separately (default to <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+</ol>
+<p><strong>Note for Qwen3-Thinking models:</strong> These models always generate thinking content and do not support the <code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code> parameter. Use <code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">qwen3-thinking</span></code> or <code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span> <span class="pre">qwen3</span></code> to parse the thinking content.</p>
+</section>
+<section id="Example:-Qwen3-Models">
+<h4>Example: Qwen3 Models<a class="headerlink" href="#Example:-Qwen3-Models" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch server:</span>
+<span class="c1"># python3 -m sglang.launch_server --model Qwen/Qwen3-4B --reasoning-parser qwen3</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;EMPTY&quot;</span><span class="p">,</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:30000/v1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;Qwen/Qwen3-4B&quot;</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;How many r&#39;s are in &#39;strawberry&#39;?&quot;</span><span class="p">}]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;chat_template_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enable_thinking&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;separate_reasoning&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reasoning:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Answer:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>ExampleOutput:</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Reasoning: Okay, so the user is asking how many &#39;r&#39;s are in the word &#39;strawberry&#39;. Let me think. First, I need to make sure I have the word spelled correctly. Strawberry... S-T-R-A-W-B-E-R-R-Y. Wait, is that right? Let me break it down.
+
+Starting with &#39;strawberry&#39;, let&#39;s write out the letters one by one. S, T, R, A, W, B, E, R, R, Y. Hmm, wait, that&#39;s 10 letters. Let me check again. S (1), T (2), R (3), A (4), W (5), B (6), E (7), R (8), R (9), Y (10). So the letters are S-T-R-A-W-B-E-R-R-Y.
+...
+Therefore, the answer should be three R&#39;s in &#39;strawberry&#39;. But I need to make sure I&#39;m not counting any other letters as R. Let me check again. S, T, R, A, W, B, E, R, R, Y. No other R&#39;s. So three in total. Yeah, that seems right.
+
+----------------------------------------------------------------------------------------------------
+Answer: The word &quot;strawberry&quot; contains **three** letters &#39;r&#39;. Here&#39;s the breakdown:
+
+1. **S-T-R-A-W-B-E-R-R-Y**
+   - The **third letter** is &#39;R&#39;.
+   - The **eighth and ninth letters** are also &#39;R&#39;s.
+
+Thus, the total count is **3**.
+
+**Answer:** 3.
+</pre></div>
+</div>
+<p><strong>Note:</strong> Setting <code class="docutils literal notranslate"><span class="pre">&quot;enable_thinking&quot;:</span> <span class="pre">False</span></code> (or omitting it) will result in <code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code> being <code class="docutils literal notranslate"><span class="pre">None</span></code>. Qwen3-Thinking models always generate reasoning content and don’t support the <code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code> parameter.</p>
+</section>
+<section id="Logit-Bias-Support">
+<h4>Logit Bias Support<a class="headerlink" href="#Logit-Bias-Support" title="Link to this heading">#</a></h4>
+<p>SGLang supports the <code class="docutils literal notranslate"><span class="pre">logit_bias</span></code> parameter for both chat completions and completions APIs. This parameter allows you to modify the likelihood of specific tokens being generated by adding bias values to their logits. The bias values can range from -100 to 100, where:</p>
+<ul class="simple">
+<li><p><strong>Positive values</strong> (0 to 100) increase the likelihood of the token being selected</p></li>
+<li><p><strong>Negative values</strong> (-100 to 0) decrease the likelihood of the token being selected</p></li>
+<li><p><strong>-100</strong> effectively prevents the token from being generated</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">logit_bias</span></code> parameter accepts a dictionary where keys are token IDs (as strings) and values are the bias amounts (as floats).</p>
+</section>
+<section id="Getting-Token-IDs">
+<h4>Getting Token IDs<a class="headerlink" href="#Getting-Token-IDs" title="Link to this heading">#</a></h4>
+<p>To use <code class="docutils literal notranslate"><span class="pre">logit_bias</span></code> effectively, you need to know the token IDs for the words you want to bias. Here’s how to get token IDs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get tokenizer to find token IDs</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tiktoken</span>
+
+<span class="c1"># For OpenAI models, use the appropriate encoding</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">encoding_for_model</span><span class="p">(</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span>  <span class="c1"># or your model</span>
+
+<span class="c1"># Get token IDs for specific words</span>
+<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;sunny&quot;</span>
+<span class="n">token_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Token IDs for &#39;</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">token_ids</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># For SGLang models, you can access the tokenizer through the client</span>
+<span class="c1"># and get token IDs for bias</span>
+</pre></div>
+</div>
+<p><strong>Important:</strong> The <code class="docutils literal notranslate"><span class="pre">logit_bias</span></code> parameter uses token IDs as string keys, not the actual words.</p>
+</section>
+<section id="Example:-DeepSeek-V3-Models">
+<h4>Example: DeepSeek-V3 Models<a class="headerlink" href="#Example:-DeepSeek-V3-Models" title="Link to this heading">#</a></h4>
+<p>DeepSeek-V3 models support thinking mode through the <code class="docutils literal notranslate"><span class="pre">thinking</span></code> parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch server:</span>
+<span class="c1"># python3 -m sglang.launch_server --model deepseek-ai/DeepSeek-V3.1 --tp 8  --reasoning-parser deepseek-v3</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;EMPTY&quot;</span><span class="p">,</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:30000/v1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;deepseek-ai/DeepSeek-V3.1&quot;</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;How many r&#39;s are in &#39;strawberry&#39;?&quot;</span><span class="p">}]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;chat_template_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;thinking&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;separate_reasoning&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reasoning:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Answer:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Example Output:</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Reasoning: First, the question is: &quot;How many r&#39;s are in &#39;strawberry&#39;?&quot;
+
+I need to count the number of times the letter &#39;r&#39; appears in the word &quot;strawberry&quot;.
+
+Let me write out the word: S-T-R-A-W-B-E-R-R-Y.
+
+Now, I&#39;ll go through each letter and count the &#39;r&#39;s.
+...
+So, I have three &#39;r&#39;s in &quot;strawberry&quot;.
+
+I should double-check. The word is spelled S-T-R-A-W-B-E-R-R-Y. The letters are at positions: 3, 8, and 9 are &#39;r&#39;s. Yes, that&#39;s correct.
+
+Therefore, the answer should be 3.
+----------------------------------------------------------------------------------------------------
+Answer: The word &quot;strawberry&quot; contains **3** instances of the letter &quot;r&quot;. Here&#39;s a breakdown for clarity:
+
+- The word is spelled: S-T-R-A-W-B-E-R-R-Y
+- The &quot;r&quot; appears at the 3rd, 8th, and 9th positions.
+</pre></div>
+</div>
+<p><strong>Note:</strong> DeepSeek-V3 models use the <code class="docutils literal notranslate"><span class="pre">thinking</span></code> parameter (not <code class="docutils literal notranslate"><span class="pre">enable_thinking</span></code>) to control reasoning output.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example with logit_bias parameter</span>
+<span class="c1"># Note: You need to get the actual token IDs from your tokenizer</span>
+<span class="c1"># For demonstration, we&#39;ll use some example token IDs</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Complete this sentence: The weather today is&quot;</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">logit_bias</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;12345&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Increase likelihood of token ID 12345</span>
+        <span class="s2">&quot;67890&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span>  <span class="c1"># Decrease likelihood of token ID 67890</span>
+        <span class="s2">&quot;11111&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>  <span class="c1"># Slightly increase likelihood of token ID 11111</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response with logit bias: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Parameters">
+<h3>Parameters<a class="headerlink" href="#Parameters" title="Link to this heading">#</a></h3>
+<p>The chat completions API accepts OpenAI Chat Completions API’s parameters. Refer to <a class="reference external" href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI Chat Completions API</a> for more details.</p>
+<p>SGLang extends the standard API with the <code class="docutils literal notranslate"><span class="pre">extra_body</span></code> parameter, allowing for additional customization. One key option within <code class="docutils literal notranslate"><span class="pre">extra_body</span></code> is <code class="docutils literal notranslate"><span class="pre">chat_template_kwargs</span></code>, which can be used to pass arguments to the chat template processor.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a knowledgeable historian who provides concise responses.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me about ancient Rome&quot;</span><span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Ancient Rome was a civilization centered in Italy.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What were their major achievements?&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>  <span class="c1"># Lower temperature for more focused responses</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>  <span class="c1"># Reasonable length for a concise response</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>  <span class="c1"># Slightly higher for better fluency</span>
+    <span class="n">presence_penalty</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># Mild penalty to avoid repetition</span>
+    <span class="n">frequency_penalty</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># Mild penalty for more natural language</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Single response is usually more stable</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>  <span class="c1"># Keep for reproducibility</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Streaming mode is also supported.</p>
+<section id="id1">
+<h4>Logit Bias Support<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<p>The completions API also supports the <code class="docutils literal notranslate"><span class="pre">logit_bias</span></code> parameter with the same functionality as described in the chat completions section above.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say this is a test&quot;</span><span class="p">}],</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example with logit_bias parameter for completions API</span>
+<span class="c1"># Note: You need to get the actual token IDs from your tokenizer</span>
+<span class="c1"># For demonstration, we&#39;ll use some example token IDs</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;The best programming language for AI is&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">logit_bias</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;12345&quot;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span>  <span class="c1"># Strongly favor token ID 12345</span>
+        <span class="s2">&quot;67890&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># Completely avoid token ID 67890</span>
+        <span class="s2">&quot;11111&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">25</span><span class="p">,</span>  <span class="c1"># Slightly discourage token ID 11111</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response with logit bias: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="Completions">
+<h2>Completions<a class="headerlink" href="#Completions" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>Usage<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Completions API is similar to Chat Completions API, but without the <code class="docutils literal notranslate"><span class="pre">messages</span></code> parameter or chat templates.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>The completions API accepts OpenAI Completions API’s parameters. Refer to <a class="reference external" href="https://platform.openai.com/docs/api-reference/completions/create">OpenAI Completions API</a> for more details.</p>
+<p>Here is an example of a detailed completions request:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Write a short story about a space explorer.&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>  <span class="c1"># Moderate temperature for creative writing</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>  <span class="c1"># Longer response for a story</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>  <span class="c1"># Balanced diversity in word choice</span>
+    <span class="n">stop</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;THE END&quot;</span><span class="p">],</span>  <span class="c1"># Multiple stop sequences</span>
+    <span class="n">presence_penalty</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>  <span class="c1"># Encourage novel elements</span>
+    <span class="n">frequency_penalty</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>  <span class="c1"># Reduce repetitive phrases</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Generate one completion</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>  <span class="c1"># For reproducible results</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Structured-Outputs-(JSON,-Regex,-EBNF)">
+<h2>Structured Outputs (JSON, Regex, EBNF)<a class="headerlink" href="#Structured-Outputs-(JSON,-Regex,-EBNF)" title="Link to this heading">#</a></h2>
+<p>For OpenAI compatible structured outputs API, refer to <a class="reference internal" href="../advanced_features/structured_outputs.html"><span class="doc">Structured Outputs</span></a> for more details.</p>
+</section>
+<section id="Using-LoRA-Adapters">
+<h2>Using LoRA Adapters<a class="headerlink" href="#Using-LoRA-Adapters" title="Link to this heading">#</a></h2>
+<p>SGLang supports LoRA (Low-Rank Adaptation) adapters with OpenAI-compatible APIs. You can specify which adapter to use directly in the <code class="docutils literal notranslate"><span class="pre">model</span></code> parameter using the <code class="docutils literal notranslate"><span class="pre">base-model:adapter-name</span></code> syntax.</p>
+<p><strong>Server Setup:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>qwen/qwen2.5-0.5b-instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable-lora<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--lora-paths<span class="w"> </span><span class="nv">adapter_a</span><span class="o">=</span>/path/to/adapter_a<span class="w"> </span><span class="nv">adapter_b</span><span class="o">=</span>/path/to/adapter_b
+</pre></div>
+</div>
+<p>For more details on LoRA serving configuration, see the <a class="reference internal" href="../advanced_features/lora.html"><span class="doc">LoRA documentation</span></a>.</p>
+<p><strong>API Call:</strong></p>
+<p>(Recommended) Use the <code class="docutils literal notranslate"><span class="pre">model:adapter</span></code> syntax to specify which adapter to use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct:adapter_a&quot;</span><span class="p">,</span>  <span class="c1"># ← base-model:adapter-name</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Convert to SQL: show all users&quot;</span><span class="p">}],</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Backward Compatible: Using ``extra_body``</strong></p>
+<p>The old <code class="docutils literal notranslate"><span class="pre">extra_body</span></code> method is still supported for backward compatibility:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Backward compatible method</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Convert to SQL: show all users&quot;</span><span class="p">}],</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="s2">&quot;adapter_a&quot;</span><span class="p">},</span>  <span class="c1"># ← old method</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> When both <code class="docutils literal notranslate"><span class="pre">model:adapter</span></code> and <code class="docutils literal notranslate"><span class="pre">extra_body[&quot;lora_path&quot;]</span></code> are specified, the <code class="docutils literal notranslate"><span class="pre">model:adapter</span></code> syntax takes precedence.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="openai_api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">OpenAI-Compatible APIs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="openai_api_vision.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">OpenAI APIs - Vision</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Launch-A-Server">Launch A Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Chat-Completions">Chat Completions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Model-Thinking/Reasoning-Support">Model Thinking/Reasoning Support</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Supported-Models-and-Configuration">Supported Models and Configuration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Basic-Usage">Basic Usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-Qwen3-Models">Example: Qwen3 Models</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Logit-Bias-Support">Logit Bias Support</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Getting-Token-IDs">Getting Token IDs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-DeepSeek-V3-Models">Example: DeepSeek-V3 Models</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Parameters">Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Logit Bias Support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Completions">Completions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Parameters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Structured-Outputs-(JSON,-Regex,-EBNF)">Structured Outputs (JSON, Regex, EBNF)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Using-LoRA-Adapters">Using LoRA Adapters</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1473 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tool Parser &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/tool_parser';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/tool_parser.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Reasoning Parser" href="separate_reasoning.html" />
+    <link rel="prev" title="Structured Outputs For Reasoning Models" href="structured_outputs_for_reasoning_models.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">重排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore 模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/tool_parser.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/tool_parser.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/tool_parser.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/tool_parser.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tool Parser</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Currently-supported-parsers:">Currently supported parsers:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#OpenAI-Compatible-API">OpenAI Compatible API</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Launching-the-Server">Launching the Server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Define-Tools-for-Function-Call">Define Tools for Function Call</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#定義訊息">定義訊息</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#初始化客戶端">初始化客戶端</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Non-Streaming-Request">Non-Streaming Request</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Handle-Tools">Handle Tools</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming-Request">Streaming Request</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Handle Tools</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Define-a-Tool-Function">Define a Tool Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#執行工具">執行工具</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Send-Results-Back-to-Model">Send Results Back to Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#原生-API-與-SGLang-執行時（SRT）">原生 API 與 SGLang 執行時（SRT）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#離線引擎-API">離線引擎 API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Tool-Choice-Mode">Tool Choice Mode</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Supported-Tool-Choice-Options">Supported Tool Choice Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#後端相容性">後端相容性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-Required-Tool-Choice">Example: Required Tool Choice</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-Specific-Function-Choice">Example: Specific Function Choice</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Pythonic-Tool-Call-Format-(Llama-3.2-/-Llama-3.3-/-Llama-4)">Pythonic Tool Call Format (Llama-3.2 / Llama-3.3 / Llama-4)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#如何啟用">如何啟用</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Forcing-Pythonic-Tool-Call-Output-Without-a-Chat-Template">Forcing Pythonic Tool Call Output Without a Chat Template</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#How-to-support-a-new-model?">How to support a new model?</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <style>
+    .output_area.stderr, .output_area.stdout {
+        color: #d3d3d3 !important; /* light gray */
+    }
+</style><section id="Tool-Parser">
+<h1>Tool Parser<a class="headerlink" href="#Tool-Parser" title="連結到這個標頭">#</a></h1>
+<p>This guide demonstrates how to use SGLang’s <a class="reference external" href="https://platform.openai.com/docs/guides/function-calling">Function calling</a> functionality.</p>
+<section id="Currently-supported-parsers:">
+<h2>Currently supported parsers:<a class="headerlink" href="#Currently-supported-parsers:" title="連結到這個標頭">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parser</p></th>
+<th class="head"><p>支援的模型</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">deepseekv3</span></code></p></td>
+<td><p>DeepSeek-v3 (e.g., <code class="docutils literal notranslate"><span class="pre">deepseek-ai/DeepSeek-V3-0324</span></code>)</p></td>
+<td><p>Recommend adding <code class="docutils literal notranslate"><span class="pre">--chat-template</span> <span class="pre">./examples/chat_template/tool_chat_template_deepseekv3.jinja</span></code> to launch command.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">deepseekv31</span></code></p></td>
+<td><p>DeepSeek-V3.1 and DeepSeek-V3.2-Exp (e.g. <code class="docutils literal notranslate"><span class="pre">deepseek-ai/DeepSeek-V3.1</span></code>, <code class="docutils literal notranslate"><span class="pre">deepseek-ai/DeepSeek-V3.2-Exp</span></code>)</p></td>
+<td><p>Recommend adding <code class="docutils literal notranslate"><span class="pre">--chat-template</span> <span class="pre">./examples/chat_template/tool_chat_template_deepseekv31.jinja</span></code> (Or ..deepseekv32.jinja for DeepSeek-V3.2) to launch command.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">deepseekv32</span></code></p></td>
+<td><p>DeepSeek-V3.2 (<code class="docutils literal notranslate"><span class="pre">deepseek-ai/DeepSeek-V3.2</span></code>)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">glm</span></code></p></td>
+<td><p>GLM series (e.g. <code class="docutils literal notranslate"><span class="pre">zai-org/GLM-4.6</span></code>)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gpt-oss</span></code></p></td>
+<td><p>GPT-OSS (e.g., <code class="docutils literal notranslate"><span class="pre">openai/gpt-oss-120b</span></code>, <code class="docutils literal notranslate"><span class="pre">openai/gpt-oss-20b</span></code>, <code class="docutils literal notranslate"><span class="pre">lmsys/gpt-oss-120b-bf16</span></code>, <code class="docutils literal notranslate"><span class="pre">lmsys/gpt-oss-20b-bf16</span></code>)</p></td>
+<td><p>The gpt-oss tool parser filters out analysis channel events and only preserves normal text. This can cause the content to be empty when explanations are in the
+analysis channel. To work around this, complete the tool round by returning tool results as <code class="docutils literal notranslate"><span class="pre">role=&quot;tool&quot;</span></code> messages, which enables the model to generate the final
+content.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kimi_k2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">moonshotai/Kimi-K2-Instruct</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">llama3</span></code></p></td>
+<td><p>Llama 3.1 / 3.2 / 3.3 (e.g. <code class="docutils literal notranslate"><span class="pre">meta-llama/Llama-3.1-8B-Instruct</span></code>, <code class="docutils literal notranslate"><span class="pre">meta-llama/Llama-3.2-1B-Instruct</span></code>, <code class="docutils literal notranslate"><span class="pre">meta-llama/Llama-3.3-70B-Instruct</span></code>)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">llama4</span></code></p></td>
+<td><p>Llama 4 (e.g. <code class="docutils literal notranslate"><span class="pre">meta-llama/Llama-4-Scout-17B-16E-Instruct</span></code>)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mistral</span></code></p></td>
+<td><p>Mistral (e.g. <code class="docutils literal notranslate"><span class="pre">mistralai/Mistral-7B-Instruct-v0.3</span></code>, <code class="docutils literal notranslate"><span class="pre">mistralai/Mistral-Nemo-Instruct-2407</span></code>, <code class="docutils literal notranslate"><span class="pre">mistralai/Mistral-7B-v0.3</span></code>)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pythonic</span></code></p></td>
+<td><p>Llama-3.2 / Llama-3.3 / Llama-4</p></td>
+<td><p>Model outputs function calls as Python code. Requires <code class="docutils literal notranslate"><span class="pre">--tool-call-parser</span> <span class="pre">pythonic</span></code> and is recommended to use with a specific chat template.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">qwen</span></code></p></td>
+<td><p>Qwen series (e.g. <code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-Next-80B-A3B-Instruct</span></code>, <code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-VL-30B-A3B-Thinking</span></code>) except Qwen3-Coder</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">qwen3_coder</span></code></p></td>
+<td><p>Qwen3-Coder (e.g. <code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-Coder-30B-A3B-Instruct</span></code>)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">step3</span></code></p></td>
+<td><p>Step-3</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="OpenAI-Compatible-API">
+<h2>OpenAI Compatible API<a class="headerlink" href="#OpenAI-Compatible-API" title="連結到這個標頭">#</a></h2>
+<section id="Launching-the-Server">
+<h3>Launching the Server<a class="headerlink" href="#Launching-the-Server" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.doc_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_server</span><span class="p">,</span> <span class="n">print_highlight</span><span class="p">,</span> <span class="n">terminate_process</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python3 -m sglang.launch_server --model-path Qwen/Qwen2.5-7B-Instruct --tool-call-parser qwen25 --host 0.0.0.0 --log-level warning&quot;</span>  <span class="c1"># qwen25</span>
+<span class="p">)</span>
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">--tool-call-parser</span></code> defines the parser used to interpret responses.</p>
+</section>
+<section id="Define-Tools-for-Function-Call">
+<h3>Define Tools for Function Call<a class="headerlink" href="#Define-Tools-for-Function-Call" title="連結到這個標頭">#</a></h3>
+<p>Below is a Python snippet that shows how to define a tool as a dictionary. The dictionary includes a tool name, a description, and property defined Parameters.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define tools</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_current_weather&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Get the current weather in a given location&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The city to find the weather for, e.g. &#39;San Francisco&#39;&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;the two-letter abbreviation for the state that the city is&quot;</span>
+                        <span class="s2">&quot; in, e.g. &#39;CA&#39; which would mean &#39;California&#39;&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The unit to fetch the temperature in&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;celsius&quot;</span><span class="p">,</span> <span class="s2">&quot;fahrenheit&quot;</span><span class="p">],</span>
+                    <span class="p">},</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="定義訊息">
+<h3>定義訊息<a class="headerlink" href="#定義訊息" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_messages</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What&#39;s the weather like in Boston today? Output a reasoning before act, then use the tools to help you.&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">get_messages</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="初始化客戶端">
+<h3>初始化客戶端<a class="headerlink" href="#初始化客戶端" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize OpenAI-like client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://0.0.0.0:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1&quot;</span><span class="p">)</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Non-Streaming-Request">
+<h3>Non-Streaming Request<a class="headerlink" href="#Non-Streaming-Request" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Non-streaming mode test</span>
+<span class="n">response_non_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Non-streaming</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Non-stream response:&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== content ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== tool_calls ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Handle-Tools">
+<h4>Handle Tools<a class="headerlink" href="#Handle-Tools" title="連結到這個標頭">#</a></h4>
+<p>When the engine determines it should call a particular tool, it will return arguments or partial arguments through the response. You can parse these arguments and later invoke the tool accordingly.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">name_non_stream</span> <span class="o">=</span> <span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span>
+<span class="n">arguments_non_stream</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">arguments</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final streamed function call name: </span><span class="si">{</span><span class="n">name_non_stream</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final streamed function call arguments: </span><span class="si">{</span><span class="n">arguments_non_stream</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Streaming-Request">
+<h3>Streaming Request<a class="headerlink" href="#Streaming-Request" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Streaming mode test</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Streaming response:&quot;</span><span class="p">)</span>
+<span class="n">response_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Enable streaming</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">tool_calls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">arguments</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response_stream</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">+=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
+        <span class="n">tool_calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Tool Call ====&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">tool_calls</span><span class="p">:</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="n">tool_call</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="id1">
+<h4>Handle Tools<a class="headerlink" href="#id1" title="連結到這個標頭">#</a></h4>
+<p>When the engine determines it should call a particular tool, it will return arguments or partial arguments through the response. You can parse these arguments and later invoke the tool accordingly.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parse and combine function call arguments</span>
+<span class="n">arguments</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">tool_calls</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Streamed function call name: </span><span class="si">{</span><span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+        <span class="n">arguments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span>
+
+<span class="c1"># Combine all fragments into a single JSON string</span>
+<span class="n">full_arguments</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;streamed function call arguments: </span><span class="si">{</span><span class="n">full_arguments</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Define-a-Tool-Function">
+<h3>Define a Tool Function<a class="headerlink" href="#Define-a-Tool-Function" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a demonstration, define real function according to your usage.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_current_weather</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;The weather in </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2"> is 85 degrees </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">. It is &quot;</span>
+        <span class="s2">&quot;partly cloudly, with highs in the 90&#39;s.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="n">available_tools</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;get_current_weather&quot;</span><span class="p">:</span> <span class="n">get_current_weather</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="執行工具">
+<h3>執行工具<a class="headerlink" href="#執行工具" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response_non_stream</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+<span class="c1"># Call the corresponding tool function</span>
+<span class="n">tool_call</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">tool_name</span> <span class="o">=</span> <span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span>
+<span class="n">tool_to_call</span> <span class="o">=</span> <span class="n">available_tools</span><span class="p">[</span><span class="n">tool_name</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">tool_to_call</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">arguments</span><span class="p">)))</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Function call result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># messages.append({&quot;role&quot;: &quot;tool&quot;, &quot;content&quot;: result, &quot;name&quot;: tool_name})</span>
+<span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;tool&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tool_call_id&quot;</span><span class="p">:</span> <span class="n">tool_call</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">tool_name</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updated message history: </span><span class="si">{</span><span class="n">messages</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Send-Results-Back-to-Model">
+<h3>Send Results Back to Model<a class="headerlink" href="#Send-Results-Back-to-Model" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Non-stream response:&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">final_response</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">final_response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="原生-API-與-SGLang-執行時（SRT）">
+<h2>原生 API 與 SGLang 執行時（SRT）<a class="headerlink" href="#原生-API-與-SGLang-執行時（SRT）" title="連結到這個標頭">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="c1"># generate an answer</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;Qwen/Qwen2.5-7B-Instruct&quot;</span><span class="p">)</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">get_messages</span><span class="p">()</span>
+
+<span class="nb">input</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">gen_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/generate&quot;</span>
+<span class="n">gen_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="p">,</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;skip_special_tokens&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">gen_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">gen_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">gen_data</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Response ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">gen_response</span><span class="p">)</span>
+
+<span class="c1"># parse the response</span>
+<span class="n">parse_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/parse_function_call&quot;</span>
+
+<span class="n">function_call_input</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">gen_response</span><span class="p">,</span>
+    <span class="s2">&quot;tool_call_parser&quot;</span><span class="p">:</span> <span class="s2">&quot;qwen25&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="n">tools</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">function_call_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">parse_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">function_call_input</span><span class="p">)</span>
+<span class="n">function_call_response_json</span> <span class="o">=</span> <span class="n">function_call_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">function_call_response_json</span><span class="p">[</span><span class="s2">&quot;normal_text&quot;</span><span class="p">])</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Calls ====&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function name: &quot;</span><span class="p">,</span> <span class="n">function_call_response_json</span><span class="p">[</span><span class="s2">&quot;calls&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function arguments: &quot;</span><span class="p">,</span> <span class="n">function_call_response_json</span><span class="p">[</span><span class="s2">&quot;calls&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;parameters&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="離線引擎-API">
+<h2>離線引擎 API<a class="headerlink" href="#離線引擎-API" title="連結到這個標頭">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.function_call.function_call_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionCallParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.managers.io_struct</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tool</span><span class="p">,</span> <span class="n">Function</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">Engine</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;Qwen/Qwen2.5-7B-Instruct&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">tokenizer_manager</span><span class="o">.</span><span class="n">tokenizer</span>
+<span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span>
+    <span class="n">messages</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># Note that for gpt-oss tool parser, adding &quot;no_stop_trim&quot;: True</span>
+<span class="c1"># to make sure the tool call token &lt;call&gt; is not trimmed.</span>
+
+<span class="n">sampling_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="s2">&quot;skip_special_tokens&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># 1) Offline generation</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">sampling_params</span><span class="o">=</span><span class="n">sampling_params</span><span class="p">)</span>
+<span class="n">generated_text</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>  <span class="c1"># Assume there is only one prompt</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;=== Offline Engine Output Text ===&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+
+
+<span class="c1"># 2) Parse using FunctionCallParser</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_dict_to_tool</span><span class="p">(</span><span class="n">tool_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tool</span><span class="p">:</span>
+    <span class="n">function_dict</span> <span class="o">=</span> <span class="n">tool_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="n">Tool</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">tool_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">),</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">Function</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">function_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">function_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">),</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">function_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_dict_to_tool</span><span class="p">(</span><span class="n">raw_tool</span><span class="p">)</span> <span class="k">for</span> <span class="n">raw_tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">]</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">FunctionCallParser</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">tool_call_parser</span><span class="o">=</span><span class="s2">&quot;qwen25&quot;</span><span class="p">)</span>
+<span class="n">normal_text</span><span class="p">,</span> <span class="n">calls</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_non_stream</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;=== Parsing Result ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Normal text portion:&quot;</span><span class="p">,</span> <span class="n">normal_text</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Function call portion:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">calls</span><span class="p">:</span>
+    <span class="c1"># call: ToolCallItem</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - tool name: </span><span class="si">{</span><span class="n">call</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    parameters: </span><span class="si">{</span><span class="n">call</span><span class="o">.</span><span class="n">parameters</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3) If needed, perform additional logic on the parsed functions, such as automatically calling the corresponding function to obtain a return value, etc.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Tool-Choice-Mode">
+<h2>Tool Choice Mode<a class="headerlink" href="#Tool-Choice-Mode" title="連結到這個標頭">#</a></h2>
+<p>SGLang supports OpenAI’s <code class="docutils literal notranslate"><span class="pre">tool_choice</span></code> parameter to control when and which tools the model should call. This feature is implemented using EBNF (Extended Backus-Naur Form) grammar to ensure reliable tool calling behavior.</p>
+<section id="Supported-Tool-Choice-Options">
+<h3>Supported Tool Choice Options<a class="headerlink" href="#Supported-Tool-Choice-Options" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><strong>``tool_choice=」required」``</strong>: Forces the model to call at least one tool</p></li>
+<li><p><strong>``tool_choice={「type」: 「function」, 「function」: {「name」: 「specific_function」}}``</strong>: Forces the model to call a specific function</p></li>
+</ul>
+</section>
+<section id="後端相容性">
+<h3>後端相容性<a class="headerlink" href="#後端相容性" title="連結到這個標頭">#</a></h3>
+<p>Tool choice is fully supported with the <strong>Xgrammar backend</strong>, which is the default grammar backend (<code class="docutils literal notranslate"><span class="pre">--grammar-backend</span> <span class="pre">xgrammar</span></code>). However, it may not be fully supported with other backends such as <code class="docutils literal notranslate"><span class="pre">outlines</span></code>.</p>
+</section>
+<section id="Example:-Required-Tool-Choice">
+<h3>Example: Required Tool Choice<a class="headerlink" href="#Example:-Required-Tool-Choice" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_server</span><span class="p">,</span> <span class="n">print_highlight</span><span class="p">,</span> <span class="n">terminate_process</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.doc_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+
+<span class="c1"># Start a new server session for tool choice examples</span>
+<span class="n">server_process_tool_choice</span><span class="p">,</span> <span class="n">port_tool_choice</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python3 -m sglang.launch_server --model-path Qwen/Qwen2.5-7B-Instruct --tool-call-parser qwen25 --host 0.0.0.0  --log-level warning&quot;</span>
+<span class="p">)</span>
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port_tool_choice</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Initialize client for tool choice examples</span>
+<span class="n">client_tool_choice</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://0.0.0.0:</span><span class="si">{</span><span class="n">port_tool_choice</span><span class="si">}</span><span class="s2">/v1&quot;</span>
+<span class="p">)</span>
+<span class="n">model_name_tool_choice</span> <span class="o">=</span> <span class="n">client_tool_choice</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+
+<span class="c1"># Example with tool_choice=&quot;required&quot; - forces the model to call a tool</span>
+<span class="n">messages_required</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello, what is the capital of France?&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="c1"># Define tools</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_current_weather&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Get the current weather in a given location&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The city to find the weather for, e.g. &#39;San Francisco&#39;&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The unit to fetch the temperature in&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;celsius&quot;</span><span class="p">,</span> <span class="s2">&quot;fahrenheit&quot;</span><span class="p">],</span>
+                    <span class="p">},</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">response_required</span> <span class="o">=</span> <span class="n">client_tool_choice</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name_tool_choice</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages_required</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">tool_choice</span><span class="o">=</span><span class="s2">&quot;required&quot;</span><span class="p">,</span>  <span class="c1"># Force the model to call a tool</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Response with tool_choice=&#39;required&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Content:&quot;</span><span class="p">,</span> <span class="n">response_required</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tool calls:&quot;</span><span class="p">,</span> <span class="n">response_required</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Example:-Specific-Function-Choice">
+<h3>Example: Specific Function Choice<a class="headerlink" href="#Example:-Specific-Function-Choice" title="連結到這個標頭">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example with specific function choice - forces the model to call a specific function</span>
+<span class="n">messages_specific</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What are the most attactive places in France?&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">response_specific</span> <span class="o">=</span> <span class="n">client_tool_choice</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name_tool_choice</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages_specific</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">tool_choice</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_current_weather&quot;</span><span class="p">},</span>
+    <span class="p">},</span>  <span class="c1"># Force the model to call the specific get_current_weather function</span>
+<span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Response with specific function choice:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Content:&quot;</span><span class="p">,</span> <span class="n">response_specific</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tool calls:&quot;</span><span class="p">,</span> <span class="n">response_specific</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response_specific</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
+    <span class="n">tool_call</span> <span class="o">=</span> <span class="n">response_specific</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Called function: </span><span class="si">{</span><span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Arguments: </span><span class="si">{</span><span class="n">tool_call</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">arguments</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process_tool_choice</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Pythonic-Tool-Call-Format-(Llama-3.2-/-Llama-3.3-/-Llama-4)">
+<h2>Pythonic Tool Call Format (Llama-3.2 / Llama-3.3 / Llama-4)<a class="headerlink" href="#Pythonic-Tool-Call-Format-(Llama-3.2-/-Llama-3.3-/-Llama-4)" title="連結到這個標頭">#</a></h2>
+<p>Some Llama models (such as Llama-3.2-1B, Llama-3.2-3B, Llama-3.3-70B, and Llama-4) support a 「pythonic」 tool call format, where the model outputs function calls as Python code, e.g.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">get_current_weather</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s2">&quot;San Francisco&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;CA&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;celsius&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The output is a Python list of function calls, with arguments as Python literals (not JSON).</p></li>
+<li><p>Multiple tool calls can be returned in the same list:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">get_current_weather</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s2">&quot;San Francisco&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;CA&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;celsius&quot;</span><span class="p">),</span>
+ <span class="n">get_current_weather</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;NY&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;fahrenheit&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>For more information, refer to Meta’s documentation on <a class="reference external" href="https://github.com/meta-llama/llama-models/blob/main/models/llama4/prompt_format.md#zero-shot-function-calling---system-message">Zero shot function calling</a>.</p>
+<p>Note that this feature is still under development on Blackwell.</p>
+<section id="如何啟用">
+<h3>如何啟用<a class="headerlink" href="#如何啟用" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p>Launch the server with <code class="docutils literal notranslate"><span class="pre">--tool-call-parser</span> <span class="pre">pythonic</span></code></p></li>
+<li><p>You may also specify –chat-template with the improved template for the model (e.g., <code class="docutils literal notranslate"><span class="pre">--chat-template=examples/chat_template/tool_chat_template_llama4_pythonic.jinja</span></code>). This is recommended because the model expects a special prompt format to reliably produce valid pythonic tool call outputs. The template ensures that the prompt structure (e.g., special tokens, message boundaries like <code class="docutils literal notranslate"><span class="pre">&lt;|eom|&gt;</span></code>, and function call delimiters) matches what the model was trained or fine-tuned on. If you do not
+use the correct chat template, tool calling may fail or produce inconsistent results.</p></li>
+</ul>
+<section id="Forcing-Pythonic-Tool-Call-Output-Without-a-Chat-Template">
+<h4>Forcing Pythonic Tool Call Output Without a Chat Template<a class="headerlink" href="#Forcing-Pythonic-Tool-Call-Output-Without-a-Chat-Template" title="連結到這個標頭">#</a></h4>
+<p>If you don’t want to specify a chat template, you must give the model extremely explicit instructions in your messages to enforce pythonic output. For example, for <code class="docutils literal notranslate"><span class="pre">Llama-3.2-1B-Instruct</span></code>, you need:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot; python3 -m sglang.launch_server --model-path meta-llama/Llama-3.2-1B-Instruct --tool-call-parser pythonic --tp 1  --log-level warning&quot;</span>  <span class="c1"># llama-3.2-1b-instruct</span>
+<span class="p">)</span>
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_weather&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Get the current weather for a given location.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The name of the city or location.&quot;</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_tourist_attractions&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Get a list of top tourist attractions for a given city.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The name of the city to find attractions for.&quot;</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;city&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_messages</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">&quot;You are a travel assistant. &quot;</span>
+                <span class="s2">&quot;When asked to call functions, ALWAYS respond ONLY with a python list of function calls, &quot;</span>
+                <span class="s2">&quot;using this format: [func_name1(param1=value1, param2=value2), func_name2(param=value)]. &quot;</span>
+                <span class="s2">&quot;Do NOT use JSON, do NOT use variables, do NOT use any other format. &quot;</span>
+                <span class="s2">&quot;Here is an example:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s1">&#39;[get_weather(location=&quot;Paris&quot;), get_tourist_attractions(city=&quot;Paris&quot;)]&#39;</span>
+            <span class="p">),</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">&quot;I&#39;m planning a trip to Tokyo next week. What&#39;s the weather like and what are some top tourist attractions? &quot;</span>
+                <span class="s2">&quot;Propose parallel tool calls at once, using the python list of function calls format as shown above.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">get_messages</span><span class="p">()</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1&quot;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;xxxxxx&quot;</span><span class="p">)</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+
+
+<span class="n">response_non_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Non-streaming</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Non-stream response:&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_non_stream</span><span class="p">)</span>
+
+<span class="n">response_stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">tool_calls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">arguments</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response_stream</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="n">texts</span> <span class="o">+=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
+        <span class="n">tool_calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;Streaming Response:&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Text ====&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+<span class="n">print_highlight</span><span class="p">(</span><span class="s2">&quot;==== Tool Call ====&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">tool_calls</span><span class="p">:</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="n">tool_call</span><span class="p">)</span>
+
+<span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><strong>Note:</strong></div>
+<div class="line">The model may still default to JSON if it was heavily finetuned on that format. Prompt engineering (including examples) is the only way to increase the chance of pythonic output if you are not using a chat template.</div>
+</div>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="How-to-support-a-new-model?">
+<h2>How to support a new model?<a class="headerlink" href="#How-to-support-a-new-model?" title="連結到這個標頭">#</a></h2>
+<ol class="arabic simple">
+<li><p>Update the TOOLS_TAG_LIST in sglang/srt/function_call_parser.py with the model’s tool tags. Currently supported tags include:</p></li>
+</ol>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TOOLS_TAG_LIST = [
+    “&lt;|plugin|&gt;“,
+    “&lt;function=“,
+    “&lt;tool_call&gt;“,
+    “&lt;|python_tag|&gt;“,
+    “[TOOL_CALLS]”
+]
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create a new detector class in sglang/srt/function_call_parser.py that inherits from BaseFormatDetector. The detector should handle the model’s specific function call format. For example:</p></li>
+</ol>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>class NewModelDetector(BaseFormatDetector):
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Add the new detector to the MultiFormatParser class that manages all the format detectors.</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="structured_outputs_for_reasoning_models.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Structured Outputs For Reasoning Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="separate_reasoning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Reasoning Parser</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Currently-supported-parsers:">Currently supported parsers:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#OpenAI-Compatible-API">OpenAI Compatible API</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Launching-the-Server">Launching the Server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Define-Tools-for-Function-Call">Define Tools for Function Call</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#定義訊息">定義訊息</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#初始化客戶端">初始化客戶端</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Non-Streaming-Request">Non-Streaming Request</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Handle-Tools">Handle Tools</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming-Request">Streaming Request</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Handle Tools</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Define-a-Tool-Function">Define a Tool Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#執行工具">執行工具</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Send-Results-Back-to-Model">Send Results Back to Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#原生-API-與-SGLang-執行時（SRT）">原生 API 與 SGLang 執行時（SRT）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#離線引擎-API">離線引擎 API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Tool-Choice-Mode">Tool Choice Mode</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Supported-Tool-Choice-Options">Supported Tool Choice Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#後端相容性">後端相容性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-Required-Tool-Choice">Example: Required Tool Choice</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Example:-Specific-Function-Choice">Example: Specific Function Choice</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Pythonic-Tool-Call-Format-(Llama-3.2-/-Llama-3.3-/-Llama-4)">Pythonic Tool Call Format (Llama-3.2 / Llama-3.3 / Llama-4)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#如何啟用">如何啟用</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Forcing-Pythonic-Tool-Call-Output-Without-a-Chat-Template">Forcing Pythonic Tool Call Output Without a Chat Template</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#How-to-support-a-new-model?">How to support a new model?</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

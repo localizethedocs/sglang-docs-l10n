@@ -1,0 +1,963 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CPU Servers &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'platforms/cpu_server';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/platforms/cpu_server.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TPU" href="tpu.html" />
+    <link rel="prev" title="AMD GPUs" href="amd_gpu.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/platforms/cpu_server.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/platforms/cpu_server.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fplatforms/cpu_server.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/platforms/cpu_server.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>CPU Servers</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-model-list">Optimized Model List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-using-docker">Install Using Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install From Source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-of-the-serving-engine">Launch of the Serving Engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-with-requests">Benchmarking with Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage-commands">Example Usage Commands</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-deepseek-v3-1-terminus">Example: Running DeepSeek-V3.1-Terminus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-llama-3-2-3b">Example: Running Llama-3.2-3B</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cpu-servers">
+<h1>CPU Servers<a class="headerlink" href="#cpu-servers" title="Link to this heading">#</a></h1>
+<p>The document addresses how to set up the <a class="reference external" href="https://github.com/sgl-project/sglang">SGLang</a> environment and run LLM inference on CPU servers.
+SGLang is enabled and optimized on the CPUs equipped with Intel® AMX® Instructions,
+which are 4th generation or newer Intel® Xeon® Scalable Processors.</p>
+<section id="optimized-model-list">
+<h2>Optimized Model List<a class="headerlink" href="#optimized-model-list" title="Link to this heading">#</a></h2>
+<p>A list of popular LLMs are optimized and run efficiently on CPU,
+including the most notable open-source models like Llama series, Qwen series,
+and DeepSeek series like DeepSeek-R1 and DeepSeek-V3.1-Terminus.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Model Name</p></th>
+<th class="head text-center"><p>BF16</p></th>
+<th class="head text-center"><p>W8A8_INT8</p></th>
+<th class="head text-center"><p>FP8</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>DeepSeek-R1</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/meituan/DeepSeek-R1-Channel-INT8">meituan/DeepSeek-R1-Channel-INT8</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/deepseek-ai/DeepSeek-R1">deepseek-ai/DeepSeek-R1</a></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DeepSeek-V3.1-Terminus</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/IntervitensInc/DeepSeek-V3.1-Terminus-Channel-int8">IntervitensInc/DeepSeek-V3.1-Terminus-Channel-int8</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus">deepseek-ai/DeepSeek-V3.1-Terminus</a></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Llama-3.2-3B</p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct">meta-llama/Llama-3.2-3B-Instruct</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/Llama-3.2-3B-Instruct-quantized.w8a8">RedHatAI/Llama-3.2-3B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Llama-3.1-8B</p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct">meta-llama/Llama-3.1-8B-Instruct</a></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/Meta-Llama-3.1-8B-quantized.w8a8">RedHatAI/Meta-Llama-3.1-8B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>QwQ-32B</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/QwQ-32B-quantized.w8a8">RedHatAI/QwQ-32B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DeepSeek-Distilled-Llama</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/RedHatAI/DeepSeek-R1-Distill-Llama-70B-quantized.w8a8">RedHatAI/DeepSeek-R1-Distill-Llama-70B-quantized.w8a8</a></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Qwen3-235B</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p><a class="reference external" href="https://huggingface.co/Qwen/Qwen3-235B-A22B-FP8">Qwen/Qwen3-235B-A22B-FP8</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Note:</strong> The model identifiers listed in the table above
+have been verified on 6th Gen Intel® Xeon® P-core platforms.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<section id="install-using-docker">
+<h3>Install Using Docker<a class="headerlink" href="#install-using-docker" title="Link to this heading">#</a></h3>
+<p>It is recommended to use Docker for setting up the SGLang environment.
+A <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/docker/xeon.Dockerfile">Dockerfile</a> is provided to facilitate the installation.
+Replace <code class="docutils literal notranslate"><span class="pre">&lt;secret&gt;</span></code> below with your <a class="reference external" href="https://huggingface.co/docs/hub/en/security-tokens">HuggingFace access token</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the SGLang repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang.git
+<span class="nb">cd</span><span class="w"> </span>sglang/docker
+
+<span class="c1"># Build the docker image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>sglang-cpu:latest<span class="w"> </span>-f<span class="w"> </span>xeon.Dockerfile<span class="w"> </span>.
+
+<span class="c1"># Initiate a docker container</span>
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-it<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--privileged<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--ipc<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>/dev/shm:/dev/shm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>~/.cache/huggingface:/root/.cache/huggingface<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">30000</span>:30000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="s2">&quot;HF_TOKEN=&lt;secret&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>sglang-cpu:latest<span class="w"> </span>/bin/bash
+</pre></div>
+</div>
+</section>
+<section id="install-from-source">
+<h3>Install From Source<a class="headerlink" href="#install-from-source" title="Link to this heading">#</a></h3>
+<p>If you prefer to install SGLang in a bare metal environment,
+the setup process is as follows:</p>
+<p>Please install the required packages and libraries beforehand if
+they are not already present on your system.
+You can refer to the Ubuntu-based installation commands in
+<a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/docker/xeon.Dockerfile#L11">the Dockerfile</a>
+for guidance.</p>
+<ol class="arabic simple">
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">uv</span></code> package manager, then create and activate a virtual environment:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Taking &#39;/opt&#39; as the example uv env folder, feel free to change it as needed</span>
+<span class="nb">cd</span><span class="w"> </span>/opt
+curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/.local/bin/env
+uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.12
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create a config file to direct the installation channel
+(a.k.a. index-url) of <code class="docutils literal notranslate"><span class="pre">torch</span></code> related packages:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>vim<span class="w"> </span>.venv/uv.toml
+</pre></div>
+</div>
+<p>Press ‘a’ to enter insert mode of <code class="docutils literal notranslate"><span class="pre">vim</span></code>, paste the following content into the created file</p>
+<div class="highlight-file notranslate"><div class="highlight"><pre><span></span>[[index]]
+name = &quot;torch&quot;
+url = &quot;https://download.pytorch.org/whl/cpu&quot;
+
+[[index]]
+name = &quot;torchvision&quot;
+url = &quot;https://download.pytorch.org/whl/cpu&quot;
+
+[[index]]
+name = &quot;torchaudio&quot;
+url = &quot;https://download.pytorch.org/whl/cpu&quot;
+
+[[index]]
+name = &quot;triton&quot;
+url = &quot;https://download.pytorch.org/whl/cpu&quot;
+
+</pre></div>
+</div>
+<p>Save the file (in <code class="docutils literal notranslate"><span class="pre">vim</span></code>, press ‘esc’ to exit insert mode, then ‘:x+Enter’),
+and set it as the default <code class="docutils literal notranslate"><span class="pre">uv</span></code> config.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">UV_CONFIG_FILE</span><span class="o">=</span>/opt/.venv/uv.toml
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Clone the <code class="docutils literal notranslate"><span class="pre">sglang</span></code> source code and build the packages</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the SGLang code</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang.git
+<span class="nb">cd</span><span class="w"> </span>sglang
+git<span class="w"> </span>checkout<span class="w"> </span>&lt;YOUR-DESIRED-VERSION&gt;
+
+<span class="c1"># Use dedicated toml file</span>
+<span class="nb">cd</span><span class="w"> </span>python
+cp<span class="w"> </span>pyproject_cpu.toml<span class="w"> </span>pyproject.toml
+<span class="c1"># Install SGLang dependent libs, and build SGLang main package</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.9.0<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.24.0<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.9.0<span class="w"> </span><span class="nv">torchao</span><span class="o">==</span><span class="m">0</span>.14.1<span class="w"> </span><span class="nv">triton</span><span class="o">==</span><span class="m">3</span>.5.0<span class="w"> </span>--force-reinstall
+
+<span class="c1"># Build the CPU backend kernels</span>
+<span class="nb">cd</span><span class="w"> </span>../sgl-kernel
+cp<span class="w"> </span>pyproject_cpu.toml<span class="w"> </span>pyproject.toml
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Set the required environment variables</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_USE_CPU_ENGINE</span><span class="o">=</span><span class="m">1</span>
+
+<span class="c1"># Set &#39;LD_LIBRARY_PATH&#39; and &#39;LD_PRELOAD&#39; to ensure the libs can be loaded by sglang processes</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/usr/lib/x86_64-linux-gnu
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="si">${</span><span class="nv">LD_PRELOAD</span><span class="si">}</span>:/opt/.venv/lib/libiomp5.so:<span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span>/libtcmalloc.so.4:<span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span>/libtbbmalloc.so.2
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul>
+<li><p>Note that the environment variable <code class="docutils literal notranslate"><span class="pre">SGLANG_USE_CPU_ENGINE=1</span></code>
+is required to enable the SGLang service with the CPU engine.</p></li>
+<li><p>If you encounter code compilation issues during the <code class="docutils literal notranslate"><span class="pre">sgl-kernel</span></code> building process,
+please check your <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and <code class="docutils literal notranslate"><span class="pre">g++</span></code> versions and upgrade them if they are outdated.
+It is recommended to use <code class="docutils literal notranslate"><span class="pre">gcc-13</span></code> and <code class="docutils literal notranslate"><span class="pre">g++-13</span></code> as they have been verified
+in the official Docker container.</p></li>
+<li><p>The system library path is typically located in one of the following directories:
+<code class="docutils literal notranslate"><span class="pre">~/.local/lib/</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/local/lib64/</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/lib/</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/lib64/</span></code>
+and <code class="docutils literal notranslate"><span class="pre">/usr/lib/x86_64-linux-gnu/</span></code>. In the above example commands, <code class="docutils literal notranslate"><span class="pre">/usr/lib/x86_64-linux-gnu</span></code>
+is used. Please adjust the path according to your server configuration.</p></li>
+<li><p>It is recommended to add the following to your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file to
+avoid setting these variables every time you open a new terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_USE_CPU_ENGINE</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>&lt;YOUR-SYSTEM-LIBRARY-FOLDER&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span>&lt;YOUR-LIBS-PATHS&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="launch-of-the-serving-engine">
+<h2>Launch of the Serving Engine<a class="headerlink" href="#launch-of-the-serving-engine" title="Link to this heading">#</a></h2>
+<p>Example command to launch SGLang serving:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>&lt;MODEL_ID_OR_PATH&gt;<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">          </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                 </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">               </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<p>Notes:</p>
+<ol class="arabic">
+<li><p>For running W8A8 quantized models, please add the flag <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_int8</span></code>.</p></li>
+<li><p>The flag <code class="docutils literal notranslate"><span class="pre">--tp</span> <span class="pre">6</span></code> specifies that tensor parallelism will be applied using 6 ranks (TP6).
+The number of TP specified is how many TP ranks will be used during the execution.
+On a CPU platform, a TP rank means a sub-NUMA cluster (SNC).
+Usually we can get the SNC information (How many available) from the Operating System.
+Users can specify TP to be no more than the total available SNCs in current system.</p>
+<p>If the specified TP rank number differs from the total SNC count,
+the system will automatically utilize the first <code class="docutils literal notranslate"><span class="pre">n</span></code> SNCs.
+Note that <code class="docutils literal notranslate"><span class="pre">n</span></code> cannot exceed the total SNC number, doing so will result in an error.</p>
+<p>To specify the cores to be used, we need to explicitly set the environment variable <code class="docutils literal notranslate"><span class="pre">SGLANG_CPU_OMP_THREADS_BIND</span></code>.
+For example, if we want to run the SGLang service using the first 40 cores of each SNC on a Xeon® 6980P server,
+which has 43-43-42 cores on the 3 SNCs of a socket, we should set:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_CPU_OMP_THREADS_BIND</span><span class="o">=</span><span class="s2">&quot;0-39|43-82|86-125|128-167|171-210|214-253&quot;</span>
+</pre></div>
+</div>
+<p>Please beware that with SGLANG_CPU_OMP_THREADS_BIND set,
+the available memory amounts of the ranks may not be determined in prior.
+You may need to set proper <code class="docutils literal notranslate"><span class="pre">--max-total-tokens</span></code> to avoid the out-of-memory error.</p>
+</li>
+<li><p>For optimizing decoding with torch.compile, please add the flag <code class="docutils literal notranslate"><span class="pre">--enable-torch-compile</span></code>.
+To specify the maximum batch size when using <code class="docutils literal notranslate"><span class="pre">torch.compile</span></code>, set the flag <code class="docutils literal notranslate"><span class="pre">--torch-compile-max-bs</span></code>.
+For example, <code class="docutils literal notranslate"><span class="pre">--enable-torch-compile</span> <span class="pre">--torch-compile-max-bs</span> <span class="pre">4</span></code> means using <code class="docutils literal notranslate"><span class="pre">torch.compile</span></code>
+and setting the maximum batch size to 4. Currently the maximum applicable batch size
+for optimizing with <code class="docutils literal notranslate"><span class="pre">torch.compile</span></code> is 16.</p></li>
+<li><p>A warmup step is automatically triggered when the service is started.
+The server is ready when you see the log <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">server</span> <span class="pre">is</span> <span class="pre">fired</span> <span class="pre">up</span> <span class="pre">and</span> <span class="pre">ready</span> <span class="pre">to</span> <span class="pre">roll!</span></code>.</p></li>
+</ol>
+</section>
+<section id="benchmarking-with-requests">
+<h2>Benchmarking with Requests<a class="headerlink" href="#benchmarking-with-requests" title="Link to this heading">#</a></h2>
+<p>You can benchmark the performance via the <code class="docutils literal notranslate"><span class="pre">bench_serving</span></code> script.
+Run the command in another terminal. An example command would be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--dataset-name<span class="w"> </span>random<span class="w">        </span><span class="se">\</span>
+<span class="w">    </span>--random-input-len<span class="w"> </span><span class="m">1024</span><span class="w">      </span><span class="se">\</span>
+<span class="w">    </span>--random-output-len<span class="w"> </span><span class="m">1024</span><span class="w">     </span><span class="se">\</span>
+<span class="w">    </span>--num-prompts<span class="w"> </span><span class="m">1</span><span class="w">              </span><span class="se">\</span>
+<span class="w">    </span>--request-rate<span class="w"> </span>inf<span class="w">           </span><span class="se">\</span>
+<span class="w">    </span>--random-range-ratio<span class="w"> </span><span class="m">1</span>.0
+</pre></div>
+</div>
+<p>Detailed parameter descriptions are available via the command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span>-h
+</pre></div>
+</div>
+<p>Additionally, requests can be formatted using
+<a class="reference external" href="https://docs.sglang.io/basic_usage/openai_api_completions.html">the OpenAI Completions API</a>
+and sent via the command line (e.g., using <code class="docutils literal notranslate"><span class="pre">curl</span></code>) or through your own scripts.</p>
+</section>
+<section id="example-usage-commands">
+<h2>Example Usage Commands<a class="headerlink" href="#example-usage-commands" title="Link to this heading">#</a></h2>
+<p>Large Language Models can range from fewer than 1 billion to several hundred billion parameters.
+Dense models larger than 20B are expected to run on flagship 6th Gen Intel® Xeon® processors
+with dual sockets and a total of 6 sub-NUMA clusters. Dense models of approximately 10B parameters or fewer,
+or MoE (Mixture of Experts) models with fewer than 10B activated parameters, can run on more common
+4th generation or newer Intel® Xeon® processors, or utilize a single socket of the flagship 6th Gen Intel® Xeon® processors.</p>
+<section id="example-running-deepseek-v3-1-terminus">
+<h3>Example: Running DeepSeek-V3.1-Terminus<a class="headerlink" href="#example-running-deepseek-v3-1-terminus" title="Link to this heading">#</a></h3>
+<p>An example command to launch service of W8A8_INT8 DeepSeek-V3.1-Terminus on a Xeon® 6980P server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">                                 </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>IntervitensInc/DeepSeek-V3.1-Terminus-Channel-int8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">                                        </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">                                 </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                                               </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>w8a8_int8<span class="w">                                   </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">                                             </span><span class="se">\</span>
+<span class="w">    </span>--enable-torch-compile<span class="w">                                     </span><span class="se">\</span>
+<span class="w">    </span>--torch-compile-max-bs<span class="w"> </span><span class="m">4</span><span class="w">                                   </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<p>Similarly, an example command to launch service of FP8 DeepSeek-V3.1-Terminus would be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-V3.1-Terminus<span class="w">     </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">                            </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                                   </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">                                 </span><span class="se">\</span>
+<span class="w">    </span>--enable-torch-compile<span class="w">                         </span><span class="se">\</span>
+<span class="w">    </span>--torch-compile-max-bs<span class="w"> </span><span class="m">4</span><span class="w">                       </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<p>Note: Please set <code class="docutils literal notranslate"><span class="pre">--torch-compile-max-bs</span></code> to the maximum desired batch size for your deployment,
+which can be up to 16. The value <code class="docutils literal notranslate"><span class="pre">4</span></code> in the examples is illustrative.</p>
+</section>
+<section id="example-running-llama-3-2-3b">
+<h3>Example: Running Llama-3.2-3B<a class="headerlink" href="#example-running-llama-3-2-3b" title="Link to this heading">#</a></h3>
+<p>An example command to launch service of Llama-3.2-3B with BF16 precision:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>meta-llama/Llama-3.2-3B-Instruct<span class="w">       </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">                            </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                                   </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">                                 </span><span class="se">\</span>
+<span class="w">    </span>--enable-torch-compile<span class="w">                         </span><span class="se">\</span>
+<span class="w">    </span>--torch-compile-max-bs<span class="w"> </span><span class="m">16</span><span class="w">                      </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<p>The example command to launch service of W8A8_INT8 version of Llama-3.2-3B:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>RedHatAI/Llama-3.2-3B-quantized.w8a8<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>--trust-remote-code<span class="w">                            </span><span class="se">\</span>
+<span class="w">    </span>--disable-overlap-schedule<span class="w">                     </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w">                                   </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>w8a8_int8<span class="w">                       </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w">                                 </span><span class="se">\</span>
+<span class="w">    </span>--enable-torch-compile<span class="w">                         </span><span class="se">\</span>
+<span class="w">    </span>--torch-compile-max-bs<span class="w"> </span><span class="m">16</span><span class="w">                      </span><span class="se">\</span>
+<span class="w">    </span>--tp<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<p>Note: The <code class="docutils literal notranslate"><span class="pre">--torch-compile-max-bs</span></code> and <code class="docutils literal notranslate"><span class="pre">--tp</span></code> settings are examples that should be adjusted for your setup.
+For instance, use <code class="docutils literal notranslate"><span class="pre">--tp</span> <span class="pre">3</span></code> to utilize 1 socket with 3 sub-NUMA clusters on an Intel® Xeon® 6980P server.</p>
+<p>Once the server have been launched, you can test it using the <code class="docutils literal notranslate"><span class="pre">bench_serving</span></code> command or create
+your own commands or scripts following <a class="reference internal" href="#benchmarking-with-requests"><span class="std std-ref">the benchmarking example</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="amd_gpu.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">AMD GPUs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tpu.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">TPU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-model-list">Optimized Model List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-using-docker">Install Using Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install From Source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-of-the-serving-engine">Launch of the Serving Engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-with-requests">Benchmarking with Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage-commands">Example Usage Commands</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-deepseek-v3-1-terminus">Example: Running DeepSeek-V3.1-Terminus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-llama-3-2-3b">Example: Running Llama-3.2-3B</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

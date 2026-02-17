@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Contribution Guide &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/contribution_guide';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/developer_guide/contribution_guide.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Development Guide Using Docker" href="development_guide_using_docker.html" />
+    <link rel="prev" title="XPU" href="../platforms/xpu.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/developer_guide/contribution_guide.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/developer_guide/contribution_guide.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdeveloper_guide/contribution_guide.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_guide/contribution_guide.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Contribution Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-sglang-from-source">Install SGLang from Source</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fork-and-clone-the-repository">Fork and clone the repository</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-from-source">Build from source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#format-code-with-pre-commit">Format code with pre-commit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-and-add-unit-tests">Run and add unit tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-documentations">Write documentations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-accuracy">Test the accuracy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-the-speed">Benchmark the speed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-a-review-for-merge">Requesting a review for merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-trigger-ci-tests">How to Trigger CI Tests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-rate-limits">CI rate limits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-style-guidance">Code style guidance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-update-sgl-kernel">How to update sgl-kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-newcomers">Tips for newcomers</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="contribution-guide">
+<h1>Contribution Guide<a class="headerlink" href="#contribution-guide" title="链接到此标题。">#</a></h1>
+<p>Welcome to <strong>SGLang</strong>! We appreciate your interest in contributing. This guide provides a concise overview of how to set up your environment, run tests, build documentation, and open a Pull Request (PR). Whether you’re fixing a small bug or developing a major feature, we encourage following these steps for a smooth contribution process.</p>
+<section id="install-sglang-from-source">
+<h2>Install SGLang from Source<a class="headerlink" href="#install-sglang-from-source" title="链接到此标题。">#</a></h2>
+<section id="fork-and-clone-the-repository">
+<h3>Fork and clone the repository<a class="headerlink" href="#fork-and-clone-the-repository" title="链接到此标题。">#</a></h3>
+<p><strong>Note</strong>: New contributors do <strong>not</strong> have the write permission to push to the official SGLang repo. Please fork the repository under your GitHub account, then clone your fork locally.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/&lt;your_user_name&gt;/sglang.git
+</pre></div>
+</div>
+</section>
+<section id="build-from-source">
+<h3>Build from source<a class="headerlink" href="#build-from-source" title="链接到此标题。">#</a></h3>
+<p>Refer to <a class="reference internal" href="../get_started/install.html#method-2-from-source"><span class="std std-ref">Install SGLang from Source</span></a>.</p>
+</section>
+</section>
+<section id="format-code-with-pre-commit">
+<h2>Format code with pre-commit<a class="headerlink" href="#format-code-with-pre-commit" title="链接到此标题。">#</a></h2>
+<p>We use <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to maintain consistent code style checks. Before pushing your changes, please run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>pre-commit
+pre-commit<span class="w"> </span>install
+pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code></strong> manually runs all configured checks, applying fixes if possible. If it fails the first time, re-run it to ensure lint errors are fully resolved. Make sure your code passes all checks <strong>before</strong> creating a Pull Request.</p></li>
+<li><p><strong>Do not commit</strong> directly to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch. Always create a new branch (e.g., <code class="docutils literal notranslate"><span class="pre">feature/my-new-feature</span></code>), push your changes, and open a PR from that branch.</p></li>
+</ul>
+</section>
+<section id="run-and-add-unit-tests">
+<h2>Run and add unit tests<a class="headerlink" href="#run-and-add-unit-tests" title="链接到此标题。">#</a></h2>
+<p>If you add a new feature or fix a bug, please add corresponding unit tests to ensure coverage and prevent regression.
+SGLang uses Python's built-in <a class="reference external" href="https://docs.python.org/3/library/unittest.html">unittest</a> framework.
+For detailed instructions on running tests and integrating them into CI, refer to <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/test/README.md">test/README.md</a>.</p>
+</section>
+<section id="write-documentations">
+<h2>Write documentations<a class="headerlink" href="#write-documentations" title="链接到此标题。">#</a></h2>
+<p>We recommend new contributors start from writing documentation, which helps you quickly understand SGLang codebase.
+For more details, please refer to <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/docs/README.md">docs/README.md</a>.</p>
+</section>
+<section id="test-the-accuracy">
+<h2>Test the accuracy<a class="headerlink" href="#test-the-accuracy" title="链接到此标题。">#</a></h2>
+<p>If your code changes the model output, please run the accuracy tests. A quick sanity check is the few-shot GSM8K.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch a server</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">sglang</span><span class="o">.</span><span class="n">launch_server</span> <span class="o">--</span><span class="n">model</span> <span class="n">Qwen</span><span class="o">/</span><span class="n">Qwen2</span><span class="o">-</span><span class="mi">7</span><span class="n">B</span><span class="o">-</span><span class="n">Instruct</span>
+
+<span class="c1"># Evaluate</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">sglang</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">few_shot_gsm8k</span> <span class="o">--</span><span class="n">num</span><span class="o">-</span><span class="n">questions</span> <span class="mi">200</span>
+</pre></div>
+</div>
+<p>Please note that the above script is primarily a sanity check, not a rigorous accuracy or speed test.
+This test can have significant variance (1%–5%) in accuracy due to batching and the non-deterministic nature of the inference engine.
+Also, do not rely on the &quot;Latency/Output throughput&quot; from this script, as it is not a proper speed test.</p>
+<p>GSM8K is too easy for state-of-the-art models nowadays. Please try your own more challenging accuracy tests.
+You can find additional accuracy eval examples in:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/test/srt/test_eval_accuracy_large.py">test_eval_accuracy_large.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/test/srt/test_gpt_oss_1gpu.py">test_gpt_oss_1gpu.py</a></p></li>
+</ul>
+</section>
+<section id="benchmark-the-speed">
+<h2>Benchmark the speed<a class="headerlink" href="#benchmark-the-speed" title="链接到此标题。">#</a></h2>
+<p>Refer to <a class="reference internal" href="benchmark_and_profiling.html"><span class="std std-doc">Benchmark and Profiling</span></a>.</p>
+</section>
+<section id="requesting-a-review-for-merge">
+<h2>Requesting a review for merge<a class="headerlink" href="#requesting-a-review-for-merge" title="链接到此标题。">#</a></h2>
+<p>You can follow the pull request merge process described in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/.github/MAINTAINER.md">MAINTAINER.md</a>.
+You will need to work with the Merge Oncall, Codeowner, and other reviewers to get their approvals.
+Then your PR can be merged.</p>
+</section>
+<section id="how-to-trigger-ci-tests">
+<h2>How to Trigger CI Tests<a class="headerlink" href="#how-to-trigger-ci-tests" title="链接到此标题。">#</a></h2>
+<p>We have a lot of open PRs but limited CI machines, so only top and trusted contributors have permission to trigger CI tests.
+Users with permission are listed in the <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/.github/CI_PERMISSIONS.json">CI_PERMISSIONS.json</a></p>
+<p>For CI to run on a pull request, it must have the &quot;run-ci&quot; label. Authorized users can add the label or rerun failed tests by commenting on the PR with one of these commands:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/tag-run-ci-label</span></code>: Adds the &quot;run-ci&quot; label. Every future commit will trigger CI.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/rerun-failed-ci</span></code>: Reruns the failed or flaky tests from the most recent commit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/tag-and-rerun-ci</span></code>: A single command that performs both <code class="docutils literal notranslate"><span class="pre">/tag-run-ci-label</span></code> and <code class="docutils literal notranslate"><span class="pre">/rerun-failed-ci</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/rerun-stage</span> <span class="pre">&lt;stage-name&gt;</span></code>: Reruns a specific test stage without waiting for its dependencies. This is useful when you want to quickly validate a fix for a specific test failure instead of waiting ~30 minutes for preceding stages to complete.</p></li>
+</ul>
+<p>If you have permission, the <a class="reference external" href="https://github.com/sgl-project/sglang/actions/workflows/slash-command-handler.yml">Slash Command Handler</a> will run your command and react with a 👍 to your comment. It may take up to a few minutes for the reaction to appear. Here’s a usage <a class="reference external" href="https://github.com/sgl-project/sglang/pull/14253#issuecomment-3599509302">example</a>.</p>
+<p>To avoid spamming a PR with too many <code class="docutils literal notranslate"><span class="pre">/rerun-failed-ci</span></code> comments, you can also trigger the command by editing an existing comment and adding any suffix (e.g., <code class="docutils literal notranslate"><span class="pre">/rerun-failed-ci</span> <span class="pre">try</span> <span class="pre">again</span></code>).</p>
+<p>Example of rerunning a single test stage: <code class="docutils literal notranslate"><span class="pre">/rerun-stage</span> <span class="pre">unit-test-backend-4-gpu</span></code>.</p>
+<p>If you don’t have permission, please ask maintainers to trigger CI for you.</p>
+<section id="ci-rate-limits">
+<h3>CI rate limits<a class="headerlink" href="#ci-rate-limits" title="链接到此标题。">#</a></h3>
+<p>Due to CI scheduling and limited resources, higher-priority PRs may preempt running jobs. In such cases, you may need to rerun the tests.</p>
+<p>We apply CI rate limits to prevent abuse and ensure fair usage of our CI resources.</p>
+<p>Each CI workflow has a default limit defined in its workflow configuration file. For example, in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/.github/workflows/pr-gate.yml">pr-gate.yml</a>, the default cooldown period is 120 minutes, and each workflow can override it via the <code class="docutils literal notranslate"><span class="pre">cool-down-minutes</span></code> input parameter:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cool-down-minutes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">cooldown</span><span class="nv"> </span><span class="s">period</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">minutes;</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">disables</span><span class="nv"> </span><span class="s">rate</span><span class="nv"> </span><span class="s">limiting&quot;</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
+</pre></div>
+</div>
+<p>Users listed in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/.github/CI_PERMISSIONS.json">CI_PERMISSIONS.json</a> may have a per-user cooldown interval. In practice, we use the minimum of the workflow’s default window and the user-specific interval.</p>
+</section>
+</section>
+<section id="code-style-guidance">
+<h2>Code style guidance<a class="headerlink" href="#code-style-guidance" title="链接到此标题。">#</a></h2>
+<ul class="simple">
+<li><p>Avoid code duplication. If the same code snippet (more than five lines) appears multiple times, extract it into a shared function.</p></li>
+<li><p>Minimize device synchronization. Reduce expensive CPU-GPU synchronization operations, such as <code class="docutils literal notranslate"><span class="pre">tensor.item()</span></code> or <code class="docutils literal notranslate"><span class="pre">tensor.cpu()</span></code>, whenever possible. Use vectorized code.</p></li>
+<li><p>Prioritize extreme efficiency. SGLang is a runtime, and most of your code runs on the critical path for every request. Optimize all minor overheads as much as possible, especially in the model forward code.</p>
+<ul>
+<li><p>A common pattern is some runtime checks in the model forward pass (e.g., <a class="reference external" href="https://github.com/sgl-project/sglang/blob/f1b0eda55c2c4838e8ab90a0fac7fb1e3d7064ab/python/sglang/srt/models/deepseek_v2.py#L486-L491">this</a>). These are very likely the same for every layer. Please cache the result as a single boolean value whenever possible.</p></li>
+</ul>
+</li>
+<li><p>Make functions as pure as possible. Avoid in-place modification of arguments.</p></li>
+<li><p>Keep files concise. If a file exceeds 2,000 lines of code, split it into multiple smaller files. (e.g., <code class="docutils literal notranslate"><span class="pre">scheduler.py</span></code>, <code class="docutils literal notranslate"><span class="pre">scheduler_output_processor_mixin.py</span></code>)</p></li>
+<li><p>Keep tests run fast.</p>
+<ul>
+<li><p>If a single test file run longer than 500 seconds, split it into multiple smaller files (e.g., <code class="docutils literal notranslate"><span class="pre">test_eagle_infer_a.py</span></code>, <code class="docutils literal notranslate"><span class="pre">test_eagle_infer_b.py</span></code>).</p></li>
+<li><p>If a single job in a github workflow runs longer than 30 mins, split it into smaller jobs/steps.</p></li>
+<li><p>Reuse server launches in your unit tests to make tests run faster.</p></li>
+</ul>
+</li>
+<li><p>When supporting new hardware or features, follow these guidelines:</p>
+<ul>
+<li><p>Do not drastically change existing code.</p></li>
+<li><p>Always prefer new files to introduce specific components for your new hardware (e.g., <code class="docutils literal notranslate"><span class="pre">allocator_ascend.py</span></code>).</p></li>
+<li><p>If you write multiple if/else blocks for new features, ensure the common path (e.g., NVIDIA hardware or the existing code path) is the first branch.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="how-to-update-sgl-kernel">
+<h2>How to update sgl-kernel<a class="headerlink" href="#how-to-update-sgl-kernel" title="链接到此标题。">#</a></h2>
+<p>Since sglang and sgl-kernel are separate Python packages, our current GitHub CI infrastructure does not support updating a kernel and using it immediately within the same pull request (PR).
+To add a new kernel or modify an existing one in the sgl-kernel package, you must use multiple PRs.</p>
+<p>Follow these steps:</p>
+<ol class="arabic simple">
+<li><p>Submit a PR to update the sgl-kernel source code without using it in sglang python package (e.g., <a class="reference external" href="https://github.com/sgl-project/sglang/pull/8884/files">#8884</a>).</p></li>
+<li><p>Bump the version of sgl-kernel (e.g., <a class="reference external" href="https://github.com/sgl-project/sglang/pull/9220/files">#9220</a>).</p>
+<ul class="simple">
+<li><p>Once merged, this will trigger an automatic release of the sgl-kernel wheel to PyPI.</p></li>
+<li><p>If not urgent, you can wait for other people to release the wheel. A new version will typically be released within one week.</p></li>
+</ul>
+</li>
+<li><p>Apply the changes:</p>
+<ul class="simple">
+<li><p>Update the sgl-kernel version in <code class="docutils literal notranslate"><span class="pre">sglang/python/pyproject.toml</span></code> to use the modified kernels.</p></li>
+<li><p>Update the related caller code in the sglang to use the new kernel.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="tips-for-newcomers">
+<h2>Tips for newcomers<a class="headerlink" href="#tips-for-newcomers" title="链接到此标题。">#</a></h2>
+<p>If you want to contribute but don’t have a specific idea in mind, pick issues labeled <a class="reference external" href="https://github.com/sgl-project/sglang/issues?q=is%3Aissue+label%3A%22good+first+issue%22%2C%22help+wanted%22">“good first issue” or “help wanted”</a>. These tasks typically have lower complexity and provide an excellent introduction to the codebase. Also check out this <a class="reference external" href="https://github.com/zhaochenyang20/Awesome-ML-SYS-Tutorial/tree/main/sglang/code-walk-through">code walk-through</a> for a deeper look into SGLang’s workflow.</p>
+<p>If you have any questions or want to start a discussion, please feel free to ask in our <a class="reference external" href="https://slack.sglang.io">Slack channel</a>.</p>
+<p>Thank you for your interest in SGLang. Happy coding!</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../platforms/xpu.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">XPU</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="development_guide_using_docker.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Development Guide Using Docker</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-sglang-from-source">Install SGLang from Source</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fork-and-clone-the-repository">Fork and clone the repository</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-from-source">Build from source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#format-code-with-pre-commit">Format code with pre-commit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-and-add-unit-tests">Run and add unit tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-documentations">Write documentations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-accuracy">Test the accuracy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-the-speed">Benchmark the speed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-a-review-for-merge">Requesting a review for merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-trigger-ci-tests">How to Trigger CI Tests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-rate-limits">CI rate limits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-style-guidance">Code style guidance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-update-sgl-kernel">How to update sgl-kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-newcomers">Tips for newcomers</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

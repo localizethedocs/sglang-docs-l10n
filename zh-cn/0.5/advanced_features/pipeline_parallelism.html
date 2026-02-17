@@ -1,0 +1,762 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pipeline Parallelism for Long Context &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/pipeline_parallelism';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/pipeline_parallelism.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Hierarchical KV Caching (HiCache)" href="hicache.html" />
+    <link rel="prev" title="EPD Disaggregation" href="epd_disaggregation.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/pipeline_parallelism.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/pipeline_parallelism.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/pipeline_parallelism.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/pipeline_parallelism.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pipeline Parallelism for Long Context</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-pipeline-parallelism">Why Pipeline Parallelism?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-refactoring-based-on-async-communication">Implementation Refactoring based on Async Communication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guidance-about-dynamic-chunking">Guidance about Dynamic Chunking</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-dynamic-chunking">Why Dynamic Chunking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunked-prefill-size-and-smoothing-factor">Chunked Prefill Size and Smoothing Factor</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practice-for-long-context">Best Practice for Long Context</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuning-the-chunked-prefill-size">Tuning the Chunked Prefill Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-dynamic-chunking-and-adjust-smoothing-factor-for-ultra-long-itl">Enable Dynamic Chunking and Adjust Smoothing Factor for Ultra-long ITL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-on-nvidia-h20">Case Study on NVIDIA H20</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-v3-1-with-128k-input-token-length">DeepSeek-V3.1 with 128K Input Token Length</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-235b-a22b-fp8-with-128k-input-token-length">Qwen3-235B-A22B-FP8 with 128K Input Token Length</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practice-for-pipeline-parallelism-with-pd-disaggregation">Best Practice for Pipeline Parallelism with PD Disaggregation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pipeline-parallelism-for-long-context">
+<h1>Pipeline Parallelism for Long Context<a class="headerlink" href="#pipeline-parallelism-for-long-context" title="链接到此标题。">#</a></h1>
+<section id="why-pipeline-parallelism">
+<h2>Why Pipeline Parallelism?<a class="headerlink" href="#why-pipeline-parallelism" title="链接到此标题。">#</a></h2>
+<p>As Large Language Models (LLMs) scale toward trillion-parameter architectures and &quot;infinite&quot; context windows, the underlying serving infrastructure must evolve toward more granular, cross-node parallelization strategies. While KV cache techniques effectively mitigate redundant computation, they cannot circumvent the prohibitive Time to First Token (TTFT) inherent in ultra-long sequences with extremely large initial Input Token Length (ITL). Although Tensor Parallelism (TP) remains the conventional approach for intra-node scaling, it frequently encounters communication bottlenecks during multi-node deployments. On the other hand, pipeline parallelism only requires cross-node communication at the boundaries of each pipeline stage, which can achieve better computation-communication overlap compared to a large TP. Therefore, it is also a promising parallelization strategy for improving throughput.</p>
+<p>Detailed analysis can be found in this <a class="reference external" href="https://lmsys.org/blog/2026-01-15-chunked-pipeline/">blog</a>.</p>
+</section>
+<section id="implementation-refactoring-based-on-async-communication">
+<h2>Implementation Refactoring based on Async Communication<a class="headerlink" href="#implementation-refactoring-based-on-async-communication" title="链接到此标题。">#</a></h2>
+<p>With Dynamic Chunked Prefill, pipeline parallelism has the potential to reduce the TTFT of long-context inputs. For each request, its input tokens can be partitioned into multiple chunks, each no longer than the chunked prefill size. Different chunks of the same request can be processed simultaneously by different nodes, thus parallelizing the processing and reducing TTFT. SGLang has supported Pipeline Parallelism (#5724) for some time and made it compatible with the PD Disaggregation feature (#8846), but the implementation was not perfect and had significant room for performance improvements.</p>
+<p>To eliminate this performance hazard, SGLang implements a Micro-batching Event Loop with non-blocking asynchronous peer-to-peer (P2P) communication to overlap GPU computation with CPU metadata processing and PP communication. This ensures that while one micro-batch is being computed on the GPU, the next one is already being prepared and moved into position effectively, ensuring the pipeline remains as saturated as possible. This approach was first proposed in #7979 and has been redesigned and included in #11852.</p>
+<p>The key mechanisms of the implementation include:</p>
+<ul class="simple">
+<li><p><strong>Decoupled Sync/Async Logic in the Event Loop:</strong> The scheduler uses <code class="docutils literal notranslate"><span class="pre">async_send</span></code> in <code class="docutils literal notranslate"><span class="pre">_pp_send_pyobj_to_next_stage</span></code>. Instead of waiting for a transfer to complete, it returns a <code class="docutils literal notranslate"><span class="pre">P2PWork</span></code> handle. The actual synchronization (<code class="docutils literal notranslate"><span class="pre">P2PWork.work.wait()</span></code>) is deferred until <code class="docutils literal notranslate"><span class="pre">_pp_commit_comm_work</span></code> is called, allowing the CPU to perform other work—like scheduling the next batch or processing metadata—while data is in flight.</p></li>
+<li><p><strong>Multi-Stream Execution:</strong> In addition to the main <code class="docutils literal notranslate"><span class="pre">default_stream</span></code>, which serves as the synchronization stream, SGLang utilizes dedicated <code class="docutils literal notranslate"><span class="pre">forward_stream</span></code> and <code class="docutils literal notranslate"><span class="pre">copy_stream</span></code> to execute forward pass GPU computation and Data-to-Host (D2H) memory transfers separately for better overlapping. While <code class="docutils literal notranslate"><span class="pre">_pp_launch_batch</span></code> is executing the current micro-batch on the GPU for the current stage, the CPU processes the previous micro-batch's results using <code class="docutils literal notranslate"><span class="pre">_pp_process_batch_result</span></code>.</p></li>
+</ul>
+</section>
+<section id="guidance-about-dynamic-chunking">
+<h2>Guidance about Dynamic Chunking<a class="headerlink" href="#guidance-about-dynamic-chunking" title="链接到此标题。">#</a></h2>
+<section id="why-dynamic-chunking">
+<h3>Why Dynamic Chunking<a class="headerlink" href="#why-dynamic-chunking" title="链接到此标题。">#</a></h3>
+<p>Chunked prefill with a fixed size can cause bubbles in the pipeline, especially when the pp size is large. The main reason behind this phenomenon is that the model has a non-uniform running time, even though each chunk size is identical (brought by the Transformer structure). The larger the prefix sequence length, the longer the running time of the chunk. And these bubbles will be propagated to the next stage, and will significantly degrade the scale efficiency of larger pp ranks.</p>
+<p>To address this issue, SGLang introduces a dynamic chunking mechanism to predict the optimal size for the next chunk such that it satisfies this condition:</p>
+<p>Runtime(L + Next Chunk Size) - Runtime(L) = Runtime(Initial Chunk Size)</p>
+<p>where <em><strong>L</strong></em> denotes the Prefix Sequence Length. By profiling a series of requests with different ITLs, we model the cumulative runtime as a quadratic function of sequence length. Using this model, we solve the optimal next chunk size for any given prefix length <em><strong>L</strong></em>. Since the computation complexity of the Attention mechanism scales with <em><strong>L</strong></em>, the next chunk size will be progressively reduced as <em><strong>L</strong></em> grows to maintain an aligned chunk execution time across pipeline stages.</p>
+<p>Based on this method, the scheduler can predict and dynamically reduce the chunk size during runtime to minimize the bubbles caused by the stage misalignment. To be noticed, the scheduler does not use the raw predicted value. To facilitate efficient KVCache memory management and ensure affinity with hardware execution efficiency, the value is aligned downward to the nearest multiple of max(<code class="docutils literal notranslate"><span class="pre">--page-size</span></code>, 64).</p>
+</section>
+<section id="chunked-prefill-size-and-smoothing-factor">
+<h3>Chunked Prefill Size and Smoothing Factor<a class="headerlink" href="#chunked-prefill-size-and-smoothing-factor" title="链接到此标题。">#</a></h3>
+<p>When <code class="docutils literal notranslate"><span class="pre">--enable-dynamic-chunking</span></code> is enabled, each chunk size of a sequence is determined dynamically based on the quadratic model that predicts the next chunk size based on the estimated runtime of the initial chunk length. In this case, we use <code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code> to set up the initial chunk size. When switching to the dynamic chunking mode, the initial chunk size (<code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code>) should be set to a larger value comparable to the original chunked prefill size, so that there won't be too many chunks.</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">SGLANG_DYNAMIC_CHUNKING_SMOOTH_FACTOR</span></code></strong> is an environmental variable that controls the smoothing factor for the dynamic chunking algorithm, defaulting to 0.75. It determines how much the chunk size can change during the prefill phase. A larger value means a more aggressive chunk size change, which may lead to better performance but also to greater chunk size changes (the chunk size at the end may become very small, which could lead to performance degradation) and more total chunks. When it is set to 1, the chunk size will be adjusted strictly based on the aforementioned quadratic model that predicts the next chunk size. A smaller value means a more conservative chunk size change, which may lead to smaller chunk size changes and fewer total chunks. When it is set to 0, the chunk size will not be adjusted dynamically, so it is identical to the traditional way with a fixed chunked prefill size.</p>
+<p>Due to the variation in hardware, models, and target workloads, a static configuration is seldom optimal across all scenarios. Consequently, achieving peak performance necessitates a degree of hyperparameter tuning when switching to the dynamic chunking mode.</p>
+<p><strong>Tuning Guidance for Dynamic Chunked Prefill</strong></p>
+<ul class="simple">
+<li><p><strong>Step 1 - Iterate to find the optimal fixed chunked prefill size for the targeted PP size</strong>: Different PP sizes for targeted ITL may have different optimal chunked prefill sizes. Therefore, users should iterate to obtain the baseline according to the available resources for scaling.</p></li>
+<li><p><strong>Step 2 - Initial Chunk Size Selection for Dynamic Chunking</strong>: Set the initial size to 2× or 3× the optimal fixed chunked prefill size. This reduces the total number of chunks and prevents &quot;tail chunks&quot; from underutilizing hardware. To maintain efficiency for extremely large Input Token Lengths (ITL), the dynamic predictor automatically ensures subsequent chunks are at least 1/4 of this initial size. In addition, it is recommended to use a larger initial chunk size (e.g., 4× the optimal fixed chunked prefill size) for such cases as well.</p></li>
+<li><p><strong>Step 3 - Smooth Factor Adjustment</strong>: This factor controls how strictly the chunk size adjusts the prediction given by the quadratic performance fitting model.</p>
+<ul>
+<li><p>1.0: Follows the model strictly.</p></li>
+<li><p><strong>0.6 – 0.85 (Recommended)</strong>: Typical range for the best balance between dynamic scaling and hardware stability. Through experiments, we find that a range between 0.6 and 0.85 typically yields the best performance for dynamic chunking.</p></li>
+<li><p>0: Disables dynamic adjustment, reverting to traditional fixed-size chunking.</p></li>
+</ul>
+</li>
+<li><p><strong>Another small optimization tip:</strong> Put the larger partition in the higher PP rank when the layers are not evenly divisible across ranks. It can increase the GPU utilization when a larger PP rank is waiting for the previous stage’s result, hence reducing the bubbles on higher PP ranks. If we take DeepSeek-V3.1 as an example, <code class="docutils literal notranslate"><span class="pre">SGLANG_PP_LAYER_PARTITION=15,15,15,16</span></code> usually performs better than <code class="docutils literal notranslate"><span class="pre">16,15,15,15</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="best-practice-for-long-context">
+<h2>Best Practice for Long Context<a class="headerlink" href="#best-practice-for-long-context" title="链接到此标题。">#</a></h2>
+<section id="tuning-the-chunked-prefill-size">
+<h3>Tuning the Chunked Prefill Size<a class="headerlink" href="#tuning-the-chunked-prefill-size" title="链接到此标题。">#</a></h3>
+<p>Optimizing the chunked prefill size is crucial for balancing pipeline efficiency and resource utilization. The ideal size depends on factors including model architecture, hardware configuration, and typical input lengths. We recommend starting with a small chunk size, such as 4K, and gradually increasing it until you find the optimal size for your specific use case (Different targeted ITL and PP Sizes may have different optimal chunked prefill sizes. Therefore, users should iterate to obtain the baseline according to the available resources for scaling). Alternatively, you can analyze the hardware capacity and determine the optimal chunk size based on the roofline model.</p>
+</section>
+<section id="enable-dynamic-chunking-and-adjust-smoothing-factor-for-ultra-long-itl">
+<h3>Enable Dynamic Chunking and Adjust Smoothing Factor for Ultra-long ITL<a class="headerlink" href="#enable-dynamic-chunking-and-adjust-smoothing-factor-for-ultra-long-itl" title="链接到此标题。">#</a></h3>
+<p>SGLang also offers a dynamic chunking solution that could further improve performance. This feature is currently an experimental feature that requires a certain amount of tuning experimentation and may not be suitable for all workloads. In addition, fine-tuning the smoothing factor can help optimize performance for specific workloads and model characteristics.</p>
+</section>
+<section id="case-study-on-nvidia-h20">
+<h3>Case Study on NVIDIA H20<a class="headerlink" href="#case-study-on-nvidia-h20" title="链接到此标题。">#</a></h3>
+<p>When evaluating pipeline parallelism with fixed chunked prefill sizes from 2K to 16K, experiment results show that a 4K chunk size delivered optimal prefill TTFT performance for the DeepSeek-V3.1, and a 6K chunk size delivered optimal prefill TTFT performance for the Qwen3-235B-A22B-FP8.</p>
+<p>When enabling dynamic chunking, we first scale the optimal fixed chunked prefill size by a factor of 3 as the initial chunk size. Through experimentation, we found that a multiplier of 2-3 provides an appropriate balance—avoiding excessive initial pipeline bubbles while ensuring that subsequent chunks don't become too small as context length increases. With the default dynamic chunking smoothing factor of 0.75, we performed parameter tuning and determined that a value of 0.65 works optimally with the 12K initial chunk size for the DeepSeek-V3.1, while a value of 0.8 works optimally with the 18K initial chunk size for the Qwen3-235B-A22B-FP8.</p>
+<section id="deepseek-v3-1-with-128k-input-token-length">
+<h4>DeepSeek-V3.1 with 128K Input Token Length<a class="headerlink" href="#deepseek-v3-1-with-128k-input-token-length" title="链接到此标题。">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill node 0 (fixed chunked prefill size)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3.1<span class="w"> </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--nnodes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span>--pp-size<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--dist-init-addr<span class="w"> </span>&lt;MASTER_NODE_IP&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disable-radix-cache<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>fa3<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--watchdog-timeout<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-running-requests<span class="w"> </span><span class="m">128</span><span class="w"> </span>--chunked-prefill-size<span class="w"> </span><span class="m">4096</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill node 0 (with dynamic chunking)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_DYNAMIC_CHUNKING_SMOOTH_FACTOR</span><span class="o">=</span><span class="m">0</span>.65
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-V3.1<span class="w"> </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--nnodes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span>--pp-size<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--dist-init-addr<span class="w"> </span>&lt;MASTER_NODE_IP&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disable-radix-cache<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>fa3<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--watchdog-timeout<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-running-requests<span class="w"> </span><span class="m">128</span><span class="w"> </span>--chunked-prefill-size<span class="w"> </span><span class="m">12288</span><span class="w"> </span>--enable-dynamic-chunking
+</pre></div>
+</div>
+</section>
+<section id="qwen3-235b-a22b-fp8-with-128k-input-token-length">
+<h4>Qwen3-235B-A22B-FP8 with 128K Input Token Length<a class="headerlink" href="#qwen3-235b-a22b-fp8-with-128k-input-token-length" title="链接到此标题。">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill node 0 (fixed chunked prefill size)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-235B-A22B-FP8<span class="w"> </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--nnodes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp<span class="w"> </span><span class="m">4</span><span class="w"> </span>--pp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--dist-init-addr<span class="w"> </span>&lt;MASTER_NODE_IP&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disable-radix-cache<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>fa3<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--watchdog-timeout<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-running-requests<span class="w"> </span><span class="m">128</span><span class="w"> </span>--chunked-prefill-size<span class="w"> </span><span class="m">6144</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># prefill node 0 (with dynamic chunking)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_DYNAMIC_CHUNKING_SMOOTH_FACTOR</span><span class="o">=</span><span class="m">0</span>.8
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-235B-A22B-FP8<span class="w"> </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--nnodes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--node-rank<span class="w"> </span><span class="m">0</span><span class="w"> </span>--tp<span class="w"> </span><span class="m">4</span><span class="w"> </span>--pp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--dist-init-addr<span class="w"> </span>&lt;MASTER_NODE_IP&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disable-radix-cache<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.8<span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>fa3<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--watchdog-timeout<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-running-requests<span class="w"> </span><span class="m">128</span><span class="w"> </span>--chunked-prefill-size<span class="w"> </span><span class="m">18432</span><span class="w"> </span>--enable-dynamic-chunking
+</pre></div>
+</div>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">--disable-radix-cache</span></code> is enabled only for reproducible benchmarking purposes. It is not recommended to use it in production.</p>
+</section>
+</section>
+</section>
+<section id="best-practice-for-pipeline-parallelism-with-pd-disaggregation">
+<h2>Best Practice for Pipeline Parallelism with PD Disaggregation<a class="headerlink" href="#best-practice-for-pipeline-parallelism-with-pd-disaggregation" title="链接到此标题。">#</a></h2>
+<p>To be added. Stay tuned for the latest updates on Pipeline Parallelism with PD Disaggregation.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="epd_disaggregation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">EPD Disaggregation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hicache.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Hierarchical KV Caching (HiCache)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-pipeline-parallelism">Why Pipeline Parallelism?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-refactoring-based-on-async-communication">Implementation Refactoring based on Async Communication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guidance-about-dynamic-chunking">Guidance about Dynamic Chunking</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-dynamic-chunking">Why Dynamic Chunking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunked-prefill-size-and-smoothing-factor">Chunked Prefill Size and Smoothing Factor</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practice-for-long-context">Best Practice for Long Context</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuning-the-chunked-prefill-size">Tuning the Chunked Prefill Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-dynamic-chunking-and-adjust-smoothing-factor-for-ultra-long-itl">Enable Dynamic Chunking and Adjust Smoothing Factor for Ultra-long ITL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-on-nvidia-h20">Case Study on NVIDIA H20</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deepseek-v3-1-with-128k-input-token-length">DeepSeek-V3.1 with 128K Input Token Length</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-235b-a22b-fp8-with-128k-input-token-length">Qwen3-235B-A22B-FP8 with 128K Input Token Length</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practice-for-pipeline-parallelism-with-pd-disaggregation">Best Practice for Pipeline Parallelism with PD Disaggregation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

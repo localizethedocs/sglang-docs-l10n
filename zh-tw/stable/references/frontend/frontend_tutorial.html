@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang Frontend Language &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references/frontend/frontend_tutorial';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/references/frontend/frontend_tutorial.html" />
+    <link rel="icon" href="../../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜尋" href="../../search.html" />
+    <link rel="next" title="Choices Methods in SGLang" href="choices_methods.html" />
+    <link rel="prev" title="前端語言" href="frontend_index.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../../ltd-provenance.js"></script>
+<script type="text/javascript" src="../../ltd-current.js"></script>
+<script type="text/javascript" src="../../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/rerank_models.html">重排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/mindspore_models.html">MindSpore 模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="frontend_index.html">前端語言</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SGLang Frontend Language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/references/frontend/frontend_tutorial.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/references/frontend/frontend_tutorial.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Freferences/frontend/frontend_tutorial.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/references/frontend/frontend_tutorial.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang Frontend Language</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Launch-A-Server">Launch A Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Basic-Usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Multi-turn-Dialog">Multi-turn Dialog</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Control-flow">Control flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Parallelism">Parallelism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Constrained-Decoding">Constrained Decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Batching">Batching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming">Streaming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Complex-Prompts">Complex Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Multi-modal-Generation">Multi-modal Generation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <style>
+    .output_area.stderr, .output_area.stdout {
+        color: #d3d3d3 !important; /* light gray */
+    }
+</style><section id="SGLang-Frontend-Language">
+<h1>SGLang Frontend Language<a class="headerlink" href="#SGLang-Frontend-Language" title="連結到這個標頭">#</a></h1>
+<p>SGLang frontend language can be used to define simple and easy prompts in a convenient, structured way.</p>
+<section id="Launch-A-Server">
+<h2>Launch A Server<a class="headerlink" href="#Launch-A-Server" title="連結到這個標頭">#</a></h2>
+<p>Launch the server in your terminal and wait for it to initialize.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="kn">import</span> <span class="n">assistant_begin</span><span class="p">,</span> <span class="n">assistant_end</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="kn">import</span> <span class="n">assistant</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">user</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="kn">import</span> <span class="n">image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="kn">import</span> <span class="n">RuntimeEndpoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.lang.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_default_backend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.doc_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_highlight</span><span class="p">,</span> <span class="n">terminate_process</span><span class="p">,</span> <span class="n">wait_for_server</span>
+
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python -m sglang.launch_server --model-path Qwen/Qwen2.5-7B-Instruct --host 0.0.0.0 --log-level warning&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server started on http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Set the default backend. Note: Besides the local server, you may use also <code class="docutils literal notranslate"><span class="pre">OpenAI</span></code> or other API endpoints.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">set_default_backend</span><span class="p">(</span><span class="n">RuntimeEndpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Basic-Usage">
+<h2>Basic Usage<a class="headerlink" href="#Basic-Usage" title="連結到這個標頭">#</a></h2>
+<p>The most simple way of using SGLang frontend language is a simple question answer dialog between a user and an assistant.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">basic_qa</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You are a helpful assistant than can answer questions.&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">basic_qa</span><span class="p">(</span><span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Multi-turn-Dialog">
+<h2>Multi-turn Dialog<a class="headerlink" href="#Multi-turn-Dialog" title="連結到這個標頭">#</a></h2>
+<p>SGLang frontend language can also be used to define multi-turn dialogs.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">multi_turn_qa</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You are a helpful assistant than can answer questions.&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="s2">&quot;Please give me a list of 3 countries and their capitals.&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;first_answer&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">))</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="s2">&quot;Please give me another list of 3 countries and their capitals.&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;second_answer&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">multi_turn_qa</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;first_answer&quot;</span><span class="p">])</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;second_answer&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Control-flow">
+<h2>Control flow<a class="headerlink" href="#Control-flow" title="連結到這個標頭">#</a></h2>
+<p>You may use any Python code within the function to define more complex control flows.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tool_use</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span>
+        <span class="s2">&quot;To answer this question: &quot;</span>
+        <span class="o">+</span> <span class="n">question</span>
+        <span class="o">+</span> <span class="s2">&quot;. I need to use a &quot;</span>
+        <span class="o">+</span> <span class="n">gen</span><span class="p">(</span><span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;calculator&quot;</span><span class="p">,</span> <span class="s2">&quot;search engine&quot;</span><span class="p">])</span>
+        <span class="o">+</span> <span class="s2">&quot;. &quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;calculator&quot;</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="s2">&quot;The math expression is: &quot;</span> <span class="o">+</span> <span class="n">gen</span><span class="p">(</span><span class="s2">&quot;expression&quot;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;search engine&quot;</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="s2">&quot;The key word to search is: &quot;</span> <span class="o">+</span> <span class="n">gen</span><span class="p">(</span><span class="s2">&quot;word&quot;</span><span class="p">))</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">tool_use</span><span class="p">(</span><span class="s2">&quot;What is 2 * 2?&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">])</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;expression&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Parallelism">
+<h2>Parallelism<a class="headerlink" href="#Parallelism" title="連結到這個標頭">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">fork</span></code> to launch parallel prompts. Because <code class="docutils literal notranslate"><span class="pre">sgl.gen</span></code> is non-blocking, the for loop below issues two generation calls in parallel.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tip_suggestion</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span>
+        <span class="s2">&quot;Here are two tips for staying healthy: &quot;</span>
+        <span class="s2">&quot;1. Balanced Diet. 2. Regular Exercise.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">forks</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">fork</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">forks</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Now, expand tip </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> into a paragraph:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="n">gen</span><span class="p">(</span><span class="s2">&quot;detailed_tip&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="s2">&quot;Tip 1:&quot;</span> <span class="o">+</span> <span class="n">forks</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;detailed_tip&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="s2">&quot;Tip 2:&quot;</span> <span class="o">+</span> <span class="n">forks</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;detailed_tip&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span>
+        <span class="s2">&quot;To summarize the above two tips, I can say:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">gen</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">tip_suggestion</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Constrained-Decoding">
+<h2>Constrained Decoding<a class="headerlink" href="#Constrained-Decoding" title="連結到這個標頭">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">regex</span></code> to specify a regular expression as a decoding constraint. This is only supported for local models.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">regular_expression_gen</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="s2">&quot;What is the IP address of the Google DNS servers?&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span>
+        <span class="n">gen</span><span class="p">(</span>
+            <span class="s2">&quot;answer&quot;</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;((25[0-5]|2[0-4]\d|[01]?\d\d?).)</span><span class="si">{3}</span><span class="s2">(25[0-5]|2[0-4]\d|[01]?\d\d?)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">regular_expression_gen</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">regex</span></code> to define a <code class="docutils literal notranslate"><span class="pre">JSON</span></code> decoding schema.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">character_regex</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;\{\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;name&quot;: &quot;[\w\d\s]{1,16}&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;house&quot;: &quot;(Gryffindor|Slytherin|Ravenclaw|Hufflepuff)&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;blood status&quot;: &quot;(Pure-blood|Half-blood|Muggle-born)&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;occupation&quot;: &quot;(student|teacher|auror|ministry of magic|death eater|order of the phoenix)&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;wand&quot;: \{\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;        &quot;wood&quot;: &quot;[\w\d\s]{1,16}&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;        &quot;core&quot;: &quot;[\w\d\s]{1,16}&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;        &quot;length&quot;: [0-9]{1,2}\.[0-9]{0,2}\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    \},\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;alive&quot;: &quot;(Alive|Deceased)&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;patronus&quot;: &quot;[\w\d\s]{1,16}&quot;,\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;    &quot;bogart&quot;: &quot;[\w\d\s]{1,16}&quot;\n&quot;&quot;&quot;</span>
+    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;\}&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+
+<span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">character_gen</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a character in Harry Potter. Please fill in the following information about this character.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;json_output&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="n">character_regex</span><span class="p">))</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">character_gen</span><span class="p">(</span><span class="s2">&quot;Harry Potter&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;json_output&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Batching">
+<h2>Batching<a class="headerlink" href="#Batching" title="連結到這個標頭">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">run_batch</span></code> to run a batch of prompts.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">text_qa</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+
+<span class="n">states</span> <span class="o">=</span> <span class="n">text_qa</span><span class="o">.</span><span class="n">run_batch</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of the United Kingdom?&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of Japan?&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">states</span><span class="p">):</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Answer </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Streaming">
+<h2>Streaming<a class="headerlink" href="#Streaming" title="連結到這個標頭">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">stream</span></code> to stream the output to the user.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">text_qa</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">text_qa</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">question</span><span class="o">=</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">text_iter</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Complex-Prompts">
+<h2>Complex Prompts<a class="headerlink" href="#Complex-Prompts" title="連結到這個標頭">#</a></h2>
+<p>You may use <code class="docutils literal notranslate"><span class="pre">{system|user|assistant}_{begin|end}</span></code> to define complex prompts.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chat_example</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">system</span><span class="p">(</span><span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">)</span>
+    <span class="c1"># Same as: s += s.system(&quot;You are a helpful assistant.&quot;)</span>
+
+    <span class="k">with</span> <span class="n">s</span><span class="o">.</span><span class="n">user</span><span class="p">():</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;Question: What is the capital of France?&quot;</span>
+
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant_begin</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;Answer: &quot;</span> <span class="o">+</span> <span class="n">gen</span><span class="p">(</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant_end</span><span class="p">()</span>
+
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">chat_example</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Multi-modal-Generation">
+<h2>Multi-modal Generation<a class="headerlink" href="#Multi-modal-Generation" title="連結到這個標頭">#</a></h2>
+<p>You may use SGLang frontend language to define multi-modal prompts. See <a class="reference external" href="https://docs.sglang.io/supported_models/generative_models.html">here</a> for supported models.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python -m sglang.launch_server --model-path Qwen/Qwen2.5-VL-7B-Instruct --host 0.0.0.0 --log-level warning&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server started on http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">set_default_backend</span><span class="p">(</span><span class="n">RuntimeEndpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Ask a question about an image.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">image_qa</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">image_file</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">user</span><span class="p">(</span><span class="n">image</span><span class="p">(</span><span class="n">image_file</span><span class="p">)</span> <span class="o">+</span> <span class="n">question</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">assistant</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="s2">&quot;answer&quot;</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">256</span><span class="p">))</span>
+
+
+<span class="n">image_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/sgl-project/sglang/blob/main/examples/assets/example_image.png?raw=true&quot;</span>
+<span class="n">image_bytes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">image_qa</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">,</span> <span class="s2">&quot;What is in the image?&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="frontend_index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">前端語言</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="choices_methods.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Choices Methods in SGLang</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Launch-A-Server">Launch A Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Basic-Usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Multi-turn-Dialog">Multi-turn Dialog</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Control-flow">Control flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Parallelism">Parallelism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Constrained-Decoding">Constrained Decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Batching">Batching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming">Streaming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Complex-Prompts">Complex Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Multi-modal-Generation">Multi-modal Generation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

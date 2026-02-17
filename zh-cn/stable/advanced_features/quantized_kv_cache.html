@@ -1,0 +1,877 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quantized KV Cache &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/quantized_kv_cache';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/quantized_kv_cache.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Expert Parallelism" href="expert_parallelism.html" />
+    <link rel="prev" title="Quantization" href="quantization.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/quantized_kv_cache.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/quantized_kv_cache.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/quantized_kv_cache.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/quantized_kv_cache.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantized KV Cache</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-formats">Supported Formats</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-format">FP8 Format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp4-format">FP4 Format</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-quantized-kv-cache">Enabling Quantized KV Cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-factors">Scaling Factors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-considerations">Performance Considerations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-savings">Memory Savings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-impact">Accuracy Impact</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-accuracy">FP8 Accuracy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fp4-accuracy">FP4 Accuracy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantized-kv-cache">
+<h1>Quantized KV Cache<a class="headerlink" href="#quantized-kv-cache" title="链接到此标题。">#</a></h1>
+<p>Quantized KV cache reduces the memory footprint of key-value cache storage by using lower-precision data types (FP8 or FP4) instead of the default model precision in BF16. During autoregressive generation, LLMs cache previously computed key-value pairs to avoid redundant calculations. The KV cache typically consumes a significant portion of GPU memory, especially for long sequences.</p>
+<p>Quantized KV cache is a memory optimization technique that primarily benefits throughput by allowing more tokens to be cached, but may introduce minimal accuracy degradation depending on the quantization format used.</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><strong>Performance Warning</strong>: When quantized KV cache must be dequantized before use in attention operations, performance can be extremely slow if dequantization is not fused with the attention kernel. Always verify that your chosen attention backend supports quantized KV cache. Backends without fused support may experience significant throughput degradation, potentially negating the memory benefits.</p>
+<p><strong>Backend Support</strong>: Not all attention backends support quantized KV cache. Refer to <a class="reference internal" href="attention_backend.html"><span class="std std-doc">Attention Backend</span></a> for which backends support it.</p>
+</div>
+<section id="supported-formats">
+<h2>Supported Formats<a class="headerlink" href="#supported-formats" title="链接到此标题。">#</a></h2>
+<p>SGLang supports the following quantized KV cache formats:</p>
+<section id="fp8-format">
+<h3>FP8 Format<a class="headerlink" href="#fp8-format" title="链接到此标题。">#</a></h3>
+<p><a class="reference external" href="https://www.opencompute.org">OCP (Open Compute Project)</a> specifies two common 8-bit floating point formats:</p>
+<ul class="simple">
+<li><p><strong>E5M2</strong> (5 exponent bits, 2 mantissa bits): Larger dynamic range (±57344.0), lower precision</p></li>
+<li><p><strong>E4M3</strong> (4 exponent bits, 3 mantissa bits): Higher precision, smaller dynamic range (±240.0)</p></li>
+</ul>
+</section>
+<section id="fp4-format">
+<h3>FP4 Format<a class="headerlink" href="#fp4-format" title="链接到此标题。">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>FP4 quantization is currently experimental.</p>
+</div>
+<p><a class="reference external" href="https://www.opencompute.org">OCP (Open Compute Project)</a> specifies MXFP4 (Microscaling FP4), a 4-bit floating-point format:</p>
+<ul class="simple">
+<li><p><strong>E2M1</strong> (1 sign bit, 2 exponent bits, 1 mantissa bit): Uses block-based microscaling where tensors are divided into blocks of consecutive elements, with each block sharing a single 8-bit exponential scaling factor. While OCP specifies blocks of 32 elements, SGLang's current implementation uses blocks of 16 elements for KV cache quantization.</p></li>
+</ul>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="链接到此标题。">#</a></h2>
+<section id="enabling-quantized-kv-cache">
+<h3>Enabling Quantized KV Cache<a class="headerlink" href="#enabling-quantized-kv-cache" title="链接到此标题。">#</a></h3>
+<p>To enable quantized KV cache, use the <code class="docutils literal notranslate"><span class="pre">--kv-cache-dtype</span></code> argument when launching the server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enable FP8 E5M2 KV cache</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-R1-0528<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--kv-cache-dtype<span class="w"> </span>fp8_e5m2<span class="w"> </span><span class="se">\</span>
+
+<span class="c1"># Enable FP8 E4M3 KV cache</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>deepseek-ai/DeepSeek-R1-0528<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--kv-cache-dtype<span class="w"> </span>fp8_e4m3<span class="w"> </span><span class="se">\</span>
+
+<span class="c1"># Enable FP4 E2M1 KV cache</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>nvidia/DeepSeek-R1-0528-NVFP4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--kv-cache-dtype<span class="w"> </span>fp4_e2m1<span class="w"> </span><span class="se">\</span>
+</pre></div>
+</div>
+</section>
+<section id="scaling-factors">
+<h3>Scaling Factors<a class="headerlink" href="#scaling-factors" title="链接到此标题。">#</a></h3>
+<p>FP8 quantization requires scaling factors to properly quantize and dequantize the KV cache.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Currently, only per-tensor (scalar) scaling factors are supported.</p>
+</div>
+<p>Scaling factors can be:</p>
+<ul class="simple">
+<li><p><strong>Loaded from checkpoints</strong>: Pre-quantized models (e.g., ModelOpt) may include <code class="docutils literal notranslate"><span class="pre">k_scale</span></code> and <code class="docutils literal notranslate"><span class="pre">v_scale</span></code> parameters that are automatically loaded</p></li>
+<li><p><strong>Provided via JSON</strong>: Supply scaling factors via <code class="docutils literal notranslate"><span class="pre">--quantization-param-path</span></code>.</p></li>
+</ul>
+<p>The JSON file should follow this format:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;kv_cache&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;dtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float8_e4m3fn&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;scaling_factor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;1&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the outer keys in <code class="docutils literal notranslate"><span class="pre">scaling_factor</span></code> are tensor parallel ranks and inner keys are layer indices.</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>If scaling factors are not provided and not found in the checkpoint, it will default to 1.0, which may cause accuracy issues.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p><strong>FP4 (MXFP4)</strong>: Unlike FP8, FP4 quantization handles scaling factors automatically on-the-fly during quantization and dequantization. No pre-quantized models or external scaling factor files are required—the block-based scaling factors are computed dynamically as needed.</p>
+</div>
+</section>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="链接到此标题。">#</a></h2>
+<section id="memory-savings">
+<h3>Memory Savings<a class="headerlink" href="#memory-savings" title="链接到此标题。">#</a></h3>
+<p>Quantized KV cache provides significant memory savings:</p>
+<ul class="simple">
+<li><p><strong>BF16 → FP4</strong>: Supports approximately 3.56× more tokens than BF16 (accounting for scaling factor overhead)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>FP4 and FP8 quantization require additional memory for block-based scaling factors, which reduces the effective memory savings compared to the raw bit-width reduction. FP4 with block size 16 supports approximately 1.78× more tokens than FP8, and approximately 3.56× more tokens than BF16. The relative token capacity between FP8 and BF16 can be derived from these ratios.</p>
+</div>
+<p>This enables longer context lengths or more concurrent requests within the same memory budget.</p>
+</section>
+<section id="accuracy-impact">
+<h3>Accuracy Impact<a class="headerlink" href="#accuracy-impact" title="链接到此标题。">#</a></h3>
+<section id="fp8-accuracy">
+<h4>FP8 Accuracy<a class="headerlink" href="#fp8-accuracy" title="链接到此标题。">#</a></h4>
+<p>FP8 E4M3 quantization typically introduces minimal accuracy degradation. The impact depends on model architecture, sequence length, and quantization format (generally, E4M3 has better accuracy than E5M2).</p>
+</section>
+<section id="fp4-accuracy">
+<h4>FP4 Accuracy<a class="headerlink" href="#fp4-accuracy" title="链接到此标题。">#</a></h4>
+<p>FP4 (MXFP4) quantization provides significant memory savings with varying accuracy impact depending on model size and dataset complexity. Preliminary accuracy test results from <a class="reference external" href="https://github.com/sgl-project/sglang/pull/10078">PR #10078</a> (MLA) and <a class="reference external" href="https://github.com/sgl-project/sglang/pull/12612">PR #12612</a> (MHA) show:</p>
+<p><strong>Large Models (e.g., Qwen3-235B-A22B, DeepSeek-R1-0528)</strong></p>
+<p>On large-scale models, FP4 maintains accuracy close to FP8/BF16, especially on simpler datasets:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Dataset</p></th>
+<th class="head"><p>KV16</p></th>
+<th class="head"><p>KV8 (FP8 E4M3)</p></th>
+<th class="head"><p>KV4 (FP4 E2M1)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Qwen3-235B-A22B</p></td>
+<td><p>gsm8k</p></td>
+<td><p>0.9168</p></td>
+<td><p>0.9181</p></td>
+<td><p>0.9186</p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-235B-A22B</p></td>
+<td><p>aime25</p></td>
+<td><p>0.7733</p></td>
+<td><p>0.7333</p></td>
+<td><p>0.6000</p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen3-235B-A22B</p></td>
+<td><p>gpqa_diamond</p></td>
+<td><p>0.7010</p></td>
+<td><p>0.6899</p></td>
+<td><p>0.6778</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepSeek-R1-0528</p></td>
+<td><p>gsm8k</p></td>
+<td><p>0.9157</p></td>
+<td><p>0.9154</p></td>
+<td><p>0.9124</p></td>
+</tr>
+<tr class="row-even"><td><p>DeepSeek-R1-0528</p></td>
+<td><p>aime25</p></td>
+<td><p>0.5067</p></td>
+<td><p>0.4934</p></td>
+<td><p>0.4000</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepSeek-R1-0528</p></td>
+<td><p>gpqa_diamond</p></td>
+<td><p>0.7707</p></td>
+<td><p>0.7697</p></td>
+<td><p>0.7273</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Smaller Models (e.g., GPT-OSS-120B)</strong></p>
+<p>On smaller models, FP4 shows more pronounced accuracy drops, particularly on challenging datasets:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Dataset</p></th>
+<th class="head"><p>KV16</p></th>
+<th class="head"><p>KV8 (FP8 E4M3)</p></th>
+<th class="head"><p>KV4 (FP4 E2M1)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPT-OSS-120B</p></td>
+<td><p>gsm8k</p></td>
+<td><p>0.9161</p></td>
+<td><p>0.9163</p></td>
+<td><p>0.9152</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-OSS-120B</p></td>
+<td><p>aime25</p></td>
+<td><p>0.7533</p></td>
+<td><p>0.7667</p></td>
+<td><p>0.3533</p></td>
+</tr>
+<tr class="row-even"><td><p>GPT-OSS-120B</p></td>
+<td><p>gpqa_diamond</p></td>
+<td><p>0.5081</p></td>
+<td><p>0.5434</p></td>
+<td><p>0.3202</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Key Observations:</strong></p>
+<ul class="simple">
+<li><p><strong>Simple datasets (e.g., gsm8k)</strong>: FP4 maintains accuracy close to FP8/BF16 across model sizes</p></li>
+<li><p><strong>Model size matters</strong>: Large models (200B+ parameters) generally tolerate FP4 quantization better than smaller models</p></li>
+<li><p><strong>Context length</strong>: Accuracy degradation may be more pronounced in long-context scenarios, as the accumulation of the quantization error may become significant.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>Evaluate FP4 accuracy on your specific model and workload. Large models on simpler tasks typically show minimal degradation, while smaller models or complex reasoning tasks may require FP8 or BF16 for acceptable accuracy.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="链接到此标题。">#</a></h2>
+<ul class="simple">
+<li><p><strong>Use pre-quantized models</strong>: Prefer models quantized offline with scaling factors included in the checkpoint.</p></li>
+<li><p><strong>Choose the right format</strong>: Use <code class="docutils literal notranslate"><span class="pre">fp8_e4m3</span></code> for better accuracy (recommended), <code class="docutils literal notranslate"><span class="pre">fp8_e5m2</span></code> for larger dynamic range, or <code class="docutils literal notranslate"><span class="pre">fp4_e2m1</span></code> for maximum memory savings (experimental)</p></li>
+<li><p><strong>Check backend compatibility</strong>: Verify that your chosen attention backend supports quantized KV cache</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="quantization.html"><span class="std std-doc">Quantization</span></a></p></li>
+<li><p><a class="reference internal" href="attention_backend.html"><span class="std std-doc">Attention Backend</span></a></p></li>
+<li><p><a class="reference internal" href="server_arguments.html"><span class="std std-doc">Server Arguments</span></a></p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="quantization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Quantization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="expert_parallelism.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Expert Parallelism</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-formats">Supported Formats</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-format">FP8 Format</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp4-format">FP4 Format</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-quantized-kv-cache">Enabling Quantized KV Cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-factors">Scaling Factors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-considerations">Performance Considerations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-savings">Memory Savings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-impact">Accuracy Impact</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-accuracy">FP8 Accuracy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fp4-accuracy">FP4 Accuracy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

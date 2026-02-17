@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Sampling Parameters &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3e48b14c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'backend/sampling_params';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/backend/sampling_params.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Hyperparameter Tuning" href="hyperparameter_tuning.html" />
+    <link rel="prev" title="Server Arguments" href="server_arguments.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">Offline Engine API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/general.html">General Guidance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/hardware.html">Hardware Supports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/advanced_deploy.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/backend/sampling_params.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/backend/sampling_params.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbackend/sampling_params.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/backend/sampling_params.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sampling Parameters</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-endpoint"><code class="docutils literal notranslate"><span class="pre">/generate</span></code> Endpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Sampling parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penalizers">Penalizers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-decoding">Constrained decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-options">Other options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normal">Normal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multimodal">Multimodal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-outputs-json-regex-ebnf">Structured Outputs (JSON, Regex, EBNF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-logit-processor">Custom logit processor</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sampling-parameters">
+<h1>Sampling Parameters<a class="headerlink" href="#sampling-parameters" title="Link to this heading">#</a></h1>
+<p>This doc describes the sampling parameters of the SGLang Runtime. It is the low-level endpoint of the runtime.</p>
+<p>If you want a high-level endpoint that can automatically handle chat templates, consider using the <a class="reference internal" href="openai_api_completions.html"><span class="std std-doc">OpenAI Compatible API</span></a>.</p>
+<section id="generate-endpoint">
+<h2><code class="docutils literal notranslate"><span class="pre">/generate</span></code> Endpoint<a class="headerlink" href="#generate-endpoint" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">/generate</span></code> endpoint accepts the following parameters in JSON format. For detailed usage, see the <a class="reference internal" href="native_api.html"><span class="std std-doc">native API doc</span></a>. The object is defined at <code class="docutils literal notranslate"><span class="pre">io_struct.py::GenerateReqInput</span></code>. You can also read the source code to find more arguments and docs.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Type/Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[str],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The input prompt. Can be a single prompt or a batch of prompts.</p></td>
+</tr>
+<tr class="row-odd"><td><p>input_ids</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[List[int]],</span> <span class="pre">List[int]]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The token IDs for text; one can specify either text or input_ids.</p></td>
+</tr>
+<tr class="row-even"><td><p>input_embeds</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[List[List[float]]],</span> <span class="pre">List[List[float]]]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The embeddings for input_ids; one can specify either text, input_ids, or input_embeds.</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_data</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[List[ImageDataItem]],</span> <span class="pre">List[ImageDataItem],</span> <span class="pre">ImageDataItem]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The image input. Can be an image instance, file name, URL, or base64 encoded string. Can be a single image, list of images, or list of lists of images.</p></td>
+</tr>
+<tr class="row-even"><td><p>audio_data</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[AudioDataItem],</span> <span class="pre">AudioDataItem]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The audio input. Can be a file name, URL, or base64 encoded string.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sampling_params</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[Dict],</span> <span class="pre">Dict]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The sampling parameters as described in the sections below.</p></td>
+</tr>
+<tr class="row-even"><td><p>rid</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[str],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The request ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>return_logprob</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[bool],</span> <span class="pre">bool]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>Whether to return log probabilities for tokens.</p></td>
+</tr>
+<tr class="row-even"><td><p>logprob_start_len</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[int],</span> <span class="pre">int]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>If return_logprob, the start location in the prompt for returning logprobs. Default is “-1”, which returns logprobs for output tokens only.</p></td>
+</tr>
+<tr class="row-odd"><td><p>top_logprobs_num</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[int],</span> <span class="pre">int]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>If return_logprob, the number of top logprobs to return at each position.</p></td>
+</tr>
+<tr class="row-even"><td><p>token_ids_logprob</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[List[int]],</span> <span class="pre">List[int]]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>If return_logprob, the token IDs to return logprob for.</p></td>
+</tr>
+<tr class="row-odd"><td><p>return_text_in_logprobs</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></code></p></td>
+<td><p>Whether to detokenize tokens in text in the returned logprobs.</p></td>
+</tr>
+<tr class="row-even"><td><p>stream</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></code></p></td>
+<td><p>Whether to stream output.</p></td>
+</tr>
+<tr class="row-odd"><td><p>lora_path</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[Optional[str]],</span> <span class="pre">Optional[str]]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The path to the LoRA.</p></td>
+</tr>
+<tr class="row-even"><td><p>custom_logit_processor</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[List[Optional[str]],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>Custom logit processor for advanced sampling control. Must be a serialized instance of <code class="docutils literal notranslate"><span class="pre">CustomLogitProcessor</span></code> using its <code class="docutils literal notranslate"><span class="pre">to_str()</span></code> method. For usage see below.</p></td>
+</tr>
+<tr class="row-odd"><td><p>return_hidden_states</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Union[List[bool],</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">False</span></code></p></td>
+<td><p>Whether to return hidden states.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id1">
+<h2>Sampling parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>The object is defined at <code class="docutils literal notranslate"><span class="pre">sampling_params.py::SamplingParams</span></code>. You can also read the source code to find more arguments and docs.</p>
+<section id="core-parameters">
+<h3>Core parameters<a class="headerlink" href="#core-parameters" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Type/Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>max_new_tokens</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></code></p></td>
+<td><p>The maximum output length measured in tokens.</p></td>
+</tr>
+<tr class="row-odd"><td><p>stop</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[Union[str,</span> <span class="pre">List[str]]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>One or multiple <a class="reference external" href="https://platform.openai.com/docs/api-reference/chat/create#chat-create-stop">stop words</a>. Generation will stop if one of these words is sampled.</p></td>
+</tr>
+<tr class="row-even"><td><p>stop_token_ids</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[List[int]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>Provide stop words in the form of token IDs. Generation will stop if one of these token IDs is sampled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>temperature</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></code></p></td>
+<td><p><a class="reference external" href="https://platform.openai.com/docs/api-reference/chat/create#chat-create-temperature">Temperature</a> when sampling the next token. <code class="docutils literal notranslate"><span class="pre">temperature</span> <span class="pre">=</span> <span class="pre">0</span></code> corresponds to greedy sampling, a higher temperature leads to more diversity.</p></td>
+</tr>
+<tr class="row-even"><td><p>top_p</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></code></p></td>
+<td><p><a class="reference external" href="https://platform.openai.com/docs/api-reference/chat/create#chat-create-top_p">Top-p</a> selects tokens from the smallest sorted set whose cumulative probability exceeds <code class="docutils literal notranslate"><span class="pre">top_p</span></code>. When <code class="docutils literal notranslate"><span class="pre">top_p</span> <span class="pre">=</span> <span class="pre">1</span></code>, this reduces to unrestricted sampling from all tokens.</p></td>
+</tr>
+<tr class="row-odd"><td><p>top_k</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">=</span> <span class="pre">-1</span></code></p></td>
+<td><p><a class="reference external" href="https://developer.nvidia.com/blog/how-to-get-better-outputs-from-your-large-language-model/#predictability_vs_creativity">Top-k</a> randomly selects from the <code class="docutils literal notranslate"><span class="pre">k</span></code> highest-probability tokens.</p></td>
+</tr>
+<tr class="row-even"><td><p>min_p</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></code></p></td>
+<td><p><a class="reference external" href="https://github.com/huggingface/transformers/issues/27670">Min-p</a> samples from tokens with probability larger than <code class="docutils literal notranslate"><span class="pre">min_p</span> <span class="pre">*</span> <span class="pre">highest_token_probability</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="penalizers">
+<h3>Penalizers<a class="headerlink" href="#penalizers" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Type/Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>frequency_penalty</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></code></p></td>
+<td><p>Penalizes tokens based on their frequency in generation so far. Must be between <code class="docutils literal notranslate"><span class="pre">-2</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code> where negative numbers encourage repeatment of tokens and positive number encourages sampling of new tokens. The scaling of penalization grows linearly with each appearance of a token.</p></td>
+</tr>
+<tr class="row-odd"><td><p>presence_penalty</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></code></p></td>
+<td><p>Penalizes tokens if they appeared in the generation so far. Must be between <code class="docutils literal notranslate"><span class="pre">-2</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code> where negative numbers encourage repeatment of tokens and positive number encourages sampling of new tokens. The scaling of the penalization is constant if a token occurred.</p></td>
+</tr>
+<tr class="row-even"><td><p>min_new_tokens</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></code></p></td>
+<td><p>Forces the model to generate at least <code class="docutils literal notranslate"><span class="pre">min_new_tokens</span></code> until a stop word or EOS token is sampled. Note that this might lead to unintended behavior, for example, if the distribution is highly skewed towards these tokens.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="constrained-decoding">
+<h3>Constrained decoding<a class="headerlink" href="#constrained-decoding" title="Link to this heading">#</a></h3>
+<p>Please refer to our dedicated guide on <a class="reference internal" href="structured_outputs.html"><span class="std std-doc">constrained decoding</span></a> for the following parameters.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Type/Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>json_schema</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>JSON schema for structured outputs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>regex</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>Regex for structured outputs.</p></td>
+</tr>
+<tr class="row-even"><td><p>ebnf</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>EBNF for structured outputs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>structural_tag</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>The structal tag for structured outputs.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="other-options">
+<h3>Other options<a class="headerlink" href="#other-options" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Type/Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>n</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></code></p></td>
+<td><p>Specifies the number of output sequences to generate per request. (Generating multiple outputs in one request (n &gt; 1) is discouraged; repeating the same prompts several times offers better control and efficiency.)</p></td>
+</tr>
+<tr class="row-odd"><td><p>ignore_eos</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></code></p></td>
+<td><p>Don’t stop generation when EOS token is sampled.</p></td>
+</tr>
+<tr class="row-even"><td><p>skip_special_tokens</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></code></p></td>
+<td><p>Remove special tokens during decoding.</p></td>
+</tr>
+<tr class="row-odd"><td><p>spaces_between_special_tokens</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></code></p></td>
+<td><p>Whether or not to add spaces between special tokens during detokenization.</p></td>
+</tr>
+<tr class="row-even"><td><p>no_stop_trim</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></code></p></td>
+<td><p>Don’t trim stop words or EOS token from the generated text.</p></td>
+</tr>
+<tr class="row-odd"><td><p>custom_params</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[List[Optional[Dict[str,</span> <span class="pre">Any]]]]</span> <span class="pre">=</span> <span class="pre">None</span></code></p></td>
+<td><p>Used when employing <code class="docutils literal notranslate"><span class="pre">CustomLogitProcessor</span></code>. For usage, see below.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<section id="normal">
+<h3>Normal<a class="headerlink" href="#normal" title="Link to this heading">#</a></h3>
+<p>Launch a server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span>
+</pre></div>
+</div>
+<p>Send a request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;The capital of France is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Detailed example in <a class="reference internal" href="send_request.html"><span class="std std-doc">send request</span></a>.</p>
+</section>
+<section id="streaming">
+<h3>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
+<p>Send a request and stream the output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;The capital of France is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">prev</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">(</span><span class="n">decode_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">chunk</span> <span class="ow">and</span> <span class="n">chunk</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;data:&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">chunk</span> <span class="o">==</span> <span class="s2">&quot;data: [DONE]&quot;</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">chunk</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="n">prev</span><span class="p">:],</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Detailed example in <a class="reference external" href="https://docs.sglang.ai/backend/openai_api_completions.html#id2">openai compatible api</a>.</p>
+</section>
+<section id="multimodal">
+<h3>Multimodal<a class="headerlink" href="#multimodal" title="Link to this heading">#</a></h3>
+<p>Launch a server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>lmms-lab/llava-onevision-qwen2-7b-ov
+</pre></div>
+</div>
+<p>Download an image:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-o<span class="w"> </span>example_image.png<span class="w"> </span>-L<span class="w"> </span>https://github.com/sgl-project/sglang/blob/main/test/lang/example_image.png?raw<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<p>Send a request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;|im_start|&gt;system</span><span class="se">\n</span><span class="s2">You are a helpful assistant.&lt;|im_end|&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&lt;|im_start|&gt;user</span><span class="se">\n</span><span class="s2">&lt;image&gt;</span><span class="se">\n</span><span class="s2">Describe this image in a very short sentence.&lt;|im_end|&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&lt;|im_start|&gt;assistant</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image_data&quot;</span><span class="p">:</span> <span class="s2">&quot;example_image.png&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">image_data</span></code> can be a file name, a URL, or a base64 encoded string. See also <code class="docutils literal notranslate"><span class="pre">python/sglang/srt/utils.py:load_image</span></code>.</p>
+<p>Streaming is supported in a similar manner as <a class="reference internal" href="#streaming"><span class="std std-ref">above</span></a>.</p>
+<p>Detailed example in <a class="reference internal" href="openai_api_vision.html"><span class="std std-doc">openai api vision</span></a>.</p>
+</section>
+<section id="structured-outputs-json-regex-ebnf">
+<h3>Structured Outputs (JSON, Regex, EBNF)<a class="headerlink" href="#structured-outputs-json-regex-ebnf" title="Link to this heading">#</a></h3>
+<p>You can specify a JSON schema, regular expression or <a class="reference external" href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a> to constrain the model output. The model output will be guaranteed to follow the given constraints. Only one constraint parameter (<code class="docutils literal notranslate"><span class="pre">json_schema</span></code>, <code class="docutils literal notranslate"><span class="pre">regex</span></code>, or <code class="docutils literal notranslate"><span class="pre">ebnf</span></code>) can be specified for a request.</p>
+<p>SGLang supports two grammar backends:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/dottxt-ai/outlines">Outlines</a>: Supports JSON schema and regular expression constraints.</p></li>
+<li><p><a class="reference external" href="https://github.com/mlc-ai/xgrammar">XGrammar</a> (default): Supports JSON schema, regular expression, and EBNF constraints.</p>
+<ul>
+<li><p>XGrammar currently uses the <a class="reference external" href="https://github.com/ggerganov/llama.cpp/blob/master/grammars/README.md">GGML BNF format</a>.</p></li>
+</ul>
+</li>
+</ul>
+<p>If instead you want to initialize the Outlines backend, you can use <code class="docutils literal notranslate"><span class="pre">--grammar-backend</span> <span class="pre">outlines</span></code> flag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--grammar-backend<span class="w"> </span><span class="o">[</span>xgrammar<span class="p">|</span>outlines<span class="o">]</span><span class="w"> </span><span class="c1"># xgrammar or outlines (default: xgrammar)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">json_schema</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;^[</span><span class="se">\\</span><span class="s2">w]+$&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;population&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;population&quot;</span><span class="p">],</span>
+<span class="p">})</span>
+
+<span class="c1"># JSON (works with both Outlines and XGrammar)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Here is the information of the capital of France in the JSON format.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+            <span class="s2">&quot;json_schema&quot;</span><span class="p">:</span> <span class="n">json_schema</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c1"># Regular expression (Outlines backend only)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Paris is the capital of&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+            <span class="s2">&quot;regex&quot;</span><span class="p">:</span> <span class="s2">&quot;(France|England)&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c1"># EBNF (XGrammar backend only)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Write a greeting.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+            <span class="s2">&quot;ebnf&quot;</span><span class="p">:</span> <span class="s1">&#39;root ::= &quot;Hello&quot; | &quot;Hi&quot; | &quot;Hey&quot;&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Detailed example in <a class="reference internal" href="structured_outputs.html"><span class="std std-doc">structured outputs</span></a>.</p>
+</section>
+<section id="custom-logit-processor">
+<h3>Custom logit processor<a class="headerlink" href="#custom-logit-processor" title="Link to this heading">#</a></h3>
+<p>Launch a server with <code class="docutils literal notranslate"><span class="pre">--enable-custom-logit-processor</span></code> flag on.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--enable-custom-logit-processor
+</pre></div>
+</div>
+<p>Define a custom logit processor that will always sample a specific token id.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.sampling.custom_logit_processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomLogitProcessor</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DeterministicLogitProcessor</span><span class="p">(</span><span class="n">CustomLogitProcessor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dummy logit processor that changes the logits to always</span>
+<span class="sd">    sample the given token id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">custom_param_list</span><span class="p">):</span>
+        <span class="c1"># Check that the number of logits matches the number of custom parameters</span>
+        <span class="k">assert</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_param_list</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;token_id&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param_dict</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">custom_param_list</span><span class="p">):</span>
+            <span class="c1"># Mask all other tokens</span>
+            <span class="n">logits</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+            <span class="c1"># Assign highest probability to the specified token</span>
+            <span class="n">logits</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="n">logits</span>
+</pre></div>
+</div>
+<p>Send a request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;http://localhost:30000/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;The capital of France is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom_logit_processor&quot;</span><span class="p">:</span> <span class="n">DeterministicLogitProcessor</span><span class="p">()</span><span class="o">.</span><span class="n">to_str</span><span class="p">(),</span>
+        <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+            <span class="s2">&quot;custom_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;token_id&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="server_arguments.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Server Arguments</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hyperparameter_tuning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hyperparameter Tuning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-endpoint"><code class="docutils literal notranslate"><span class="pre">/generate</span></code> Endpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Sampling parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penalizers">Penalizers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-decoding">Constrained decoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-options">Other options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normal">Normal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multimodal">Multimodal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-outputs-json-regex-ebnf">Structured Outputs (JSON, Regex, EBNF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-logit-processor">Custom logit processor</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1213 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang Native APIs &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'basic_usage/native_api';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/basic_usage/native_api.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Sampling Parameters" href="sampling_params.html" />
+    <link rel="prev" title="Offline Engine API" href="offline_engine_api.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/basic_usage/native_api.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/basic_usage/native_api.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbasic_usage/native_api.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/basic_usage/native_api.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang Native APIs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Launch-A-Server">Launch A Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Generate-(text-generation-model)">Generate (text generation model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Get-Model-Info">Get Model Info</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Get-Server-Info">Get Server Info</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Health-Check">Health Check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Flush-Cache">Flush Cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Update-Weights-From-Disk">Update Weights From Disk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Encode-(embedding-model)">Encode (embedding model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v1/rerank-(cross-encoder-rerank-model)">v1/rerank (cross encoder rerank model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v1/score-(decoder-only-scoring)">v1/score (decoder-only scoring)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Classify-(reward-model)">Classify (reward model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Capture-expert-selection-distribution-in-MoE-models">Capture expert selection distribution in MoE models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Tokenize/Detokenize-Example-(Round-Trip)">Tokenize/Detokenize Example (Round Trip)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <style>
+    .output_area.stderr, .output_area.stdout {
+        color: #d3d3d3 !important; /* light gray */
+    }
+</style><section id="SGLang-Native-APIs">
+<h1>SGLang Native APIs<a class="headerlink" href="#SGLang-Native-APIs" title="链接到此标题。">#</a></h1>
+<p>Apart from the OpenAI compatible APIs, the SGLang Runtime also provides its native server APIs. We introduce the following APIs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/generate</span></code> (text generation model)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/get_model_info</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/get_server_info</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/health</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/health_generate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/flush_cache</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/update_weights</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/encode</span></code>(embedding model)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/rerank</span></code>(cross encoder rerank model)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/score</span></code>(decoder-only scoring)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/classify</span></code>(reward model)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/start_expert_distribution_record</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/stop_expert_distribution_record</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/dump_expert_distribution_record</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/tokenize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/detokenize</span></code></p></li>
+<li><p>A full list of these APIs can be found at <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/entrypoints/http_server.py">http_server.py</a></p></li>
+</ul>
+<p>We mainly use <code class="docutils literal notranslate"><span class="pre">requests</span></code> to test these APIs in the following examples. You can also use <code class="docutils literal notranslate"><span class="pre">curl</span></code>.</p>
+<section id="Launch-A-Server">
+<h2>Launch A Server<a class="headerlink" href="#Launch-A-Server" title="链接到此标题。">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.doc_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_server</span><span class="p">,</span> <span class="n">print_highlight</span><span class="p">,</span> <span class="n">terminate_process</span>
+
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python3 -m sglang.launch_server --model-path qwen/qwen2.5-0.5b-instruct --host 0.0.0.0 --log-level warning&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Generate-(text-generation-model)">
+<h2>Generate (text generation model)<a class="headerlink" href="#Generate-(text-generation-model)" title="链接到此标题。">#</a></h2>
+<p>Generate completions. This is similar to the <code class="docutils literal notranslate"><span class="pre">/v1/completions</span></code> in OpenAI API. Detailed parameters can be found in the <a class="reference internal" href="sampling_params.html"><span class="doc">sampling parameters</span></a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/generate&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Get-Model-Info">
+<h2>Get Model Info<a class="headerlink" href="#Get-Model-Info" title="链接到此标题。">#</a></h2>
+<p>Get the information of the model.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model_path</span></code>: The path/name of the model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_generation</span></code>: Whether the model is used as generation model or embedding model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tokenizer_path</span></code>: The path/name of the tokenizer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preferred_sampling_params</span></code>: The default sampling params specified via <code class="docutils literal notranslate"><span class="pre">--preferred-sampling-params</span></code>. <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned in this example as we did not explicitly configure it in server args.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weight_version</span></code>: This field contains the version of the model weights. This is often used to track changes or updates to the model’s trained parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">has_image_understanding</span></code>: Whether the model has image-understanding capability.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">has_audio_understanding</span></code>: Whether the model has audio-understanding capability.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_type</span></code>: The model type from the HuggingFace config (e.g., “qwen2”, “llama”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">architectures</span></code>: The model architectures from the HuggingFace config (e.g., [“Qwen2ForCausalLM”]).</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/get_model_info&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_json</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;is_generation&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;tokenizer_path&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;preferred_sampling_params&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span>
+    <span class="s2">&quot;model_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_generation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tokenizer_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;preferred_sampling_params&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;weight_version&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_image_understanding&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_audio_understanding&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model_type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;architectures&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Get-Server-Info">
+<h2>Get Server Info<a class="headerlink" href="#Get-Server-Info" title="链接到此标题。">#</a></h2>
+<p>Gets the server information including CLI arguments, token limits, and memory pool sizes.</p>
+<ul class="simple">
+<li><p>Note: <code class="docutils literal notranslate"><span class="pre">get_server_info</span></code> merges the following deprecated endpoints:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_server_args</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_memory_pool_size</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_max_total_num_tokens</span></code></p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/get_server_info&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Health-Check">
+<h2>Health Check<a class="headerlink" href="#Health-Check" title="链接到此标题。">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/health</span></code>: Check the health of the server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/health_generate</span></code>: Check the health of the server by generating one token.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/health_generate&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/health&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Flush-Cache">
+<h2>Flush Cache<a class="headerlink" href="#Flush-Cache" title="链接到此标题。">#</a></h2>
+<p>Flush the radix cache. It will be automatically triggered when the model weights are updated by the <code class="docutils literal notranslate"><span class="pre">/update_weights</span></code> API.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/flush_cache&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Update-Weights-From-Disk">
+<h2>Update Weights From Disk<a class="headerlink" href="#Update-Weights-From-Disk" title="链接到此标题。">#</a></h2>
+<p>Update model weights from disk without restarting the server. Only applicable for models with the same architecture and parameter size.</p>
+<p>SGLang support <code class="docutils literal notranslate"><span class="pre">update_weights_from_disk</span></code> API for continuous evaluation during training (save checkpoint to disk and update weights from disk).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># successful update with same architecture and size</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/update_weights_from_disk&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model_path&quot;</span><span class="p">:</span> <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span>
+<span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Succeeded to update model weights.&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># failed update with different parameter size or wrong name</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/update_weights_from_disk&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model_path&quot;</span><span class="p">:</span> <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct-wrong&quot;</span><span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response_json</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span>
+<span class="k">assert</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span>
+    <span class="s2">&quot;Failed to get weights iterator: &quot;</span>
+    <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct-wrong&quot;</span>
+    <span class="s2">&quot; (repository not found).&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Encode-(embedding-model)">
+<h2>Encode (embedding model)<a class="headerlink" href="#Encode-(embedding-model)" title="链接到此标题。">#</a></h2>
+<p>Encode text into embeddings. Note that this API is only available for <a class="reference internal" href="openai_api_embeddings.html"><span class="doc">embedding models</span></a> and will raise an error for generation models. Therefore, we launch a new server to server an embedding model.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">embedding_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path Alibaba-NLP/gte-Qwen2-1.5B-instruct \</span>
+<span class="sd">    --host 0.0.0.0 --is-embedding --log-level warning</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># successful encode for embedding model</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/encode&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Alibaba-NLP/gte-Qwen2-1.5B-instruct&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Once upon a time&quot;</span><span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text embedding (first 10): </span><span class="si">{</span><span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;embedding&#39;</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">embedding_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="v1/rerank-(cross-encoder-rerank-model)">
+<h2>v1/rerank (cross encoder rerank model)<a class="headerlink" href="#v1/rerank-(cross-encoder-rerank-model)" title="链接到此标题。">#</a></h2>
+<p>Rerank a list of documents given a query using a cross-encoder model. Note that this API is only available for cross encoder model like <a class="reference external" href="https://huggingface.co/BAAI/bge-reranker-v2-m3">BAAI/bge-reranker-v2-m3</a> with <code class="docutils literal notranslate"><span class="pre">attention-backend</span></code> <code class="docutils literal notranslate"><span class="pre">triton</span></code> and <code class="docutils literal notranslate"><span class="pre">torch_native</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reranker_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path BAAI/bge-reranker-v2-m3 \</span>
+<span class="sd">    --host 0.0.0.0 --disable-radix-cache --chunked-prefill-size -1 --attention-backend triton --is-embedding --log-level warning</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute rerank scores for query and documents</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1/rerank&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;BAAI/bge-reranker-v2-m3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;what is panda?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;documents&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;hi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response_json</span><span class="p">:</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Score: </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> - Document: &#39;</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">reranker_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="v1/score-(decoder-only-scoring)">
+<h2>v1/score (decoder-only scoring)<a class="headerlink" href="#v1/score-(decoder-only-scoring)" title="链接到此标题。">#</a></h2>
+<p>Compute token probabilities for specified tokens given a query and items. This is useful for classification tasks, scoring responses, or computing log-probabilities.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: Query text</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">items</span></code>: Item text(s) to score</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label_token_ids</span></code>: Token IDs to compute probabilities for</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apply_softmax</span></code>: Whether to apply softmax to get normalized probabilities (default: False)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">item_first</span></code>: Whether items come first in concatenation order (default: False)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: Model name</p></li>
+</ul>
+<p>The response contains <code class="docutils literal notranslate"><span class="pre">scores</span></code> - a list of probability lists, one per item, each in the order of <code class="docutils literal notranslate"><span class="pre">label_token_ids</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">score_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path qwen/qwen2.5-0.5b-instruct \</span>
+<span class="sd">    --host 0.0.0.0 --log-level warning</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Score the probability of different completions given a query</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;The capital of France is&quot;</span>
+<span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">]</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1/score&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="n">items</span><span class="p">,</span>
+    <span class="s2">&quot;label_token_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9454</span><span class="p">,</span> <span class="mi">2753</span><span class="p">],</span>  <span class="c1"># e.g. &quot;Yes&quot; and &quot;No&quot; token ids</span>
+    <span class="s2">&quot;apply_softmax&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Normalize probabilities to sum to 1</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="c1"># Display scores for each item</span>
+<span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">scores</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;scores&quot;</span><span class="p">]):</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Item &#39;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&#39;: probabilities = </span><span class="si">{</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">scores</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">score_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Classify-(reward-model)">
+<h2>Classify (reward model)<a class="headerlink" href="#Classify-(reward-model)" title="链接到此标题。">#</a></h2>
+<p>SGLang Runtime also supports reward models. Here we use a reward model to classify the quality of pairwise generations.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that SGLang now treats embedding models and reward models as the same type of models.</span>
+<span class="c1"># This will be updated in the future.</span>
+
+<span class="n">reward_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path Skywork/Skywork-Reward-Llama-3.1-8B-v0.2 --host 0.0.0.0 --is-embedding --log-level warning</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;What is the range of the numeric output of a sigmoid node in a neural network?&quot;</span>
+<span class="p">)</span>
+
+<span class="n">RESPONSE1</span> <span class="o">=</span> <span class="s2">&quot;The output of a sigmoid node is bounded between -1 and 1.&quot;</span>
+<span class="n">RESPONSE2</span> <span class="o">=</span> <span class="s2">&quot;The output of a sigmoid node is bounded between 0 and 1.&quot;</span>
+
+<span class="n">CONVS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">PROMPT</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">RESPONSE1</span><span class="p">}],</span>
+    <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">PROMPT</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">RESPONSE2</span><span class="p">}],</span>
+<span class="p">]</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;Skywork/Skywork-Reward-Llama-3.1-8B-v0.2&quot;</span><span class="p">)</span>
+<span class="n">prompts</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span><span class="n">CONVS</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/classify&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Skywork/Skywork-Reward-Llama-3.1-8B-v0.2&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">prompts</span><span class="p">}</span>
+
+<span class="n">responses</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;reward: </span><span class="si">{</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;embedding&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">reward_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Capture-expert-selection-distribution-in-MoE-models">
+<h2>Capture expert selection distribution in MoE models<a class="headerlink" href="#Capture-expert-selection-distribution-in-MoE-models" title="链接到此标题。">#</a></h2>
+<p>SGLang Runtime supports recording the number of times an expert is selected in a MoE model run for each expert in the model. This is useful when analyzing the throughput of the model and plan for optimization.</p>
+<p><em>Note: We only print out the first 10 lines of the csv below for better readability. Please adjust accordingly if you want to analyze the results more deeply.</em></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expert_record_server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="s2">&quot;python3 -m sglang.launch_server --model-path Qwen/Qwen1.5-MoE-A2.7B --host 0.0.0.0 --expert-distribution-recorder-mode stat --log-level warning&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/start_expert_distribution_record&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/generate&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/stop_expert_distribution_record&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/dump_expert_distribution_record&quot;</span><span class="p">)</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">expert_record_server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Tokenize/Detokenize-Example-(Round-Trip)">
+<h2>Tokenize/Detokenize Example (Round Trip)<a class="headerlink" href="#Tokenize/Detokenize-Example-(Round-Trip)" title="链接到此标题。">#</a></h2>
+<p>This example demonstrates how to use the /tokenize and /detokenize endpoints together. We first tokenize a string, then detokenize the resulting IDs to reconstruct the original text. This workflow is useful when you need to handle tokenization externally but still leverage the server for detokenization.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer_free_server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path qwen/qwen2.5-0.5b-instruct</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_highlight</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">tokenize_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/tokenize&quot;</span>
+<span class="n">detokenize_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/detokenize&quot;</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;qwen/qwen2.5-0.5b-instruct&quot;</span>
+<span class="n">input_text</span> <span class="o">=</span> <span class="s2">&quot;SGLang provides efficient tokenization endpoints.&quot;</span>
+<span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original Input Text:</span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">input_text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- tokenize the input text ---</span>
+<span class="n">tokenize_payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+    <span class="s2">&quot;prompt&quot;</span><span class="p">:</span> <span class="n">input_text</span><span class="p">,</span>
+    <span class="s2">&quot;add_special_tokens&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">tokenize_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">tokenize_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">tokenize_payload</span><span class="p">)</span>
+    <span class="n">tokenize_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">tokenization_result</span> <span class="o">=</span> <span class="n">tokenize_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">token_ids</span> <span class="o">=</span> <span class="n">tokenization_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tokens&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token_ids</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Tokenization returned empty tokens.&quot;</span><span class="p">)</span>
+
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tokenized Output (IDs):</span><span class="se">\n</span><span class="si">{</span><span class="n">token_ids</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Token Count: </span><span class="si">{</span><span class="n">tokenization_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max Model Length: </span><span class="si">{</span><span class="n">tokenization_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_model_len&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># --- detokenize the obtained token IDs ---</span>
+    <span class="n">detokenize_payload</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+        <span class="s2">&quot;tokens&quot;</span><span class="p">:</span> <span class="n">token_ids</span><span class="p">,</span>
+        <span class="s2">&quot;skip_special_tokens&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">detokenize_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">detokenize_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">detokenize_payload</span><span class="p">)</span>
+    <span class="n">detokenize_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">detokenization_result</span> <span class="o">=</span> <span class="n">detokenize_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">reconstructed_text</span> <span class="o">=</span> <span class="n">detokenization_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Detokenized Output (Text):</span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">reconstructed_text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">input_text</span> <span class="o">==</span> <span class="n">reconstructed_text</span><span class="p">:</span>
+        <span class="n">print_highlight</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Round Trip Successful: Original and reconstructed text match.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">print_highlight</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Round Trip Mismatch: Original and reconstructed text differ.&quot;</span>
+        <span class="p">)</span>
+
+<span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">HTTP Request Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">print_highlight</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">An error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">tokenizer_free_server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="offline_engine_api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Offline Engine API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="sampling_params.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Sampling Parameters</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Launch-A-Server">Launch A Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Generate-(text-generation-model)">Generate (text generation model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Get-Model-Info">Get Model Info</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Get-Server-Info">Get Server Info</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Health-Check">Health Check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Flush-Cache">Flush Cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Update-Weights-From-Disk">Update Weights From Disk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Encode-(embedding-model)">Encode (embedding model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v1/rerank-(cross-encoder-rerank-model)">v1/rerank (cross encoder rerank model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v1/score-(decoder-only-scoring)">v1/score (decoder-only scoring)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Classify-(reward-model)">Classify (reward model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Capture-expert-selection-distribution-in-MoE-models">Capture expert selection distribution in MoE models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Tokenize/Detokenize-Example-(Round-Trip)">Tokenize/Detokenize Example (Round Trip)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 17 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1460 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang Model Gateway (formerly SGLang Router) &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c67a83f9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/router';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/router.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Deterministic Inference" href="deterministic_inference.html" />
+    <link rel="prev" title="Query Vision Language Model" href="vlm_query.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 01 月 06 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, Llama, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query Vision Language Model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SGLang Model Gateway (formerly SGLang Router)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">重排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/router.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/router.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/router.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/router.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang Model Gateway (formerly SGLang Router)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">目次表</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">概覽</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#control-plane">Control Plane</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-plane">Data Plane</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-privacy">Storage &amp; Privacy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-modes">Deployment Modes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co-launch-router-workers">Co-launch Router + Workers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-launch-http">Separate Launch (HTTP)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grpc-launch">gRPC Launch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-decode-disaggregation">Prefill/Decode Disaggregation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-backend-proxy">OpenAI Backend Proxy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#worker-lifecycle-dynamic-scaling">Worker Lifecycle &amp; Dynamic Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reliability-flow-control">Reliability &amp; Flow Control</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retries">Retries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#circuit-breaker">Circuit Breaker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-limiting-queuing">Rate Limiting &amp; Queuing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing-policies">Load Balancing Policies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#service-discovery-kubernetes">Service Discovery (Kubernetes)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-authentication">Security &amp; Authentication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-data-connectors">History &amp; Data Connectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mcp-advanced-tooling">MCP &amp; Advanced Tooling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-surface">API Surface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-reference">組態參考</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-settings">核心設定</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-aware-tuning">Cache-Aware Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fault-tolerance">Fault Tolerance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-decode">Prefill/Decode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-discovery">Kubernetes Discovery</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observability">Observability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">疑難排解</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sglang-model-gateway-formerly-sglang-router">
+<h1>SGLang Model Gateway (formerly SGLang Router)<a class="headerlink" href="#sglang-model-gateway-formerly-sglang-router" title="連結到這個標頭">#</a></h1>
+<p>SGLang Model Gateway is a high-performance model-routing gateway for large-scale LLM deployments. It centralizes worker lifecycle management, balances traffic across heterogeneous protocols (HTTP, gRPC, OpenAI-compatible), and provides enterprise-ready control over history storage, MCP tooling, and privacy-sensitive workflows. The router is deeply optimized for the SGLang serving runtime, but can route to any OpenAI-compatible backend.</p>
+<hr class="docutils" />
+<section id="table-of-contents">
+<h2>目次表<a class="headerlink" href="#table-of-contents" title="連結到這個標頭">#</a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#overview"><span class="std std-ref">Overview</span></a></p></li>
+<li><p><a class="reference internal" href="#architecture"><span class="std std-ref">Architecture</span></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#control-plane"><span class="std std-ref">Control Plane</span></a></p></li>
+<li><p><a class="reference internal" href="#data-plane"><span class="std std-ref">Data Plane</span></a></p></li>
+<li><p>Storage &amp; Privacy</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#deployment-modes"><span class="std std-ref">Deployment Modes</span></a></p>
+<ul class="simple">
+<li><p>Co-launch Router + Workers</p></li>
+<li><p><a class="reference internal" href="#separate-launch-http"><span class="std std-ref">Separate Launch (HTTP)</span></a></p></li>
+<li><p><a class="reference internal" href="#grpc-launch"><span class="std std-ref">gRPC Launch</span></a></p></li>
+<li><p>Prefill/Decode Disaggregation</p></li>
+<li><p><a class="reference internal" href="#openai-backend-proxy"><span class="std std-ref">OpenAI Backend Proxy</span></a></p></li>
+</ul>
+</li>
+<li><p>Worker Lifecycle &amp; Dynamic Scaling</p></li>
+<li><p>Reliability &amp; Flow Control</p></li>
+<li><p><a class="reference internal" href="#load-balancing-policies"><span class="std std-ref">Load Balancing Policies</span></a></p></li>
+<li><p><a class="reference internal" href="#service-discovery-kubernetes"><span class="std std-ref">Service Discovery (Kubernetes)</span></a></p></li>
+<li><p>Security &amp; Authentication</p></li>
+<li><p>History &amp; Data Connectors</p></li>
+<li><p>MCP &amp; Advanced Tooling</p></li>
+<li><p><a class="reference internal" href="#api-surface"><span class="std std-ref">API Surface</span></a></p></li>
+<li><p><a class="reference internal" href="#configuration-reference"><span class="std std-ref">Configuration Reference</span></a></p></li>
+<li><p><a class="reference internal" href="#observability"><span class="std std-ref">Observability</span></a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting"><span class="std std-ref">Troubleshooting</span></a></p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="overview">
+<h2>概覽<a class="headerlink" href="#overview" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p><strong>Unified control plane</strong> for registering, monitoring, and orchestrating regular, prefill, and decode workers across heterogeneous model fleets.</p></li>
+<li><p><strong>Multi-protocol data plane</strong> that routes traffic across HTTP, PD (prefill/decode), gRPC, and OpenAI-compatible backends with shared reliability primitives.</p></li>
+<li><p><strong>Industry-first gRPC pipeline</strong> with native Rust tokenization, reasoning parsers, and tool-call execution for high-throughput, OpenAI-compatible serving; supports both single-stage and PD topologies.</p></li>
+<li><p><strong>Inference Gateway Mode (<code class="docutils literal notranslate"><span class="pre">--enable-igw</span></code>)</strong> dynamically instantiates multiple router stacks (HTTP regular/PD, gRPC) and applies per-model policies for multi-tenant deployments.</p></li>
+<li><p><strong>Conversation &amp; responses connectors</strong> centralize chat history inside the router so the same context can be reused across models and MCP loops without leaking data to upstream vendors (memory, none, Oracle ATP).</p></li>
+<li><p><strong>Enterprise privacy</strong>: agentic multi-turn <code class="docutils literal notranslate"><span class="pre">/v1/responses</span></code>, native MCP client (STDIO/HTTP/SSE/Streamable), and history storage all operate within the router boundary.</p></li>
+<li><p><strong>Reliability core</strong>: retries with jitter, worker-scoped circuit breakers, token-bucket rate limiting with queuing, background health checks, and cache-aware load monitoring.</p></li>
+<li><p><strong>Observability</strong>: Prometheus metrics, structured tracing, request ID propagation, and detailed job queue stats.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="連結到這個標頭">#</a></h2>
+<section id="control-plane">
+<h3>Control Plane<a class="headerlink" href="#control-plane" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><strong>Worker Manager</strong> discovers capabilities (<code class="docutils literal notranslate"><span class="pre">/get_server_info</span></code>, <code class="docutils literal notranslate"><span class="pre">/get_model_info</span></code>), tracks load, and registers/removes workers in the shared registry.</p></li>
+<li><p><strong>Job Queue</strong> serializes add/remove requests and exposes status (<code class="docutils literal notranslate"><span class="pre">/workers/{url}</span></code>) so clients can track onboarding progress.</p></li>
+<li><p><strong>Load Monitor</strong> feeds cache-aware and power-of-two policies with live worker load statistics.</p></li>
+<li><p><strong>Health Checker</strong> continuously probes workers and updates readiness, circuit breaker state, and router metrics.</p></li>
+</ul>
+</section>
+<section id="data-plane">
+<h3>Data Plane<a class="headerlink" href="#data-plane" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><strong>HTTP routers</strong> (regular &amp; PD) implement <code class="docutils literal notranslate"><span class="pre">/generate</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/completions</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/responses</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/embeddings</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/rerank</span></code>, and associated admin endpoints.</p></li>
+<li><p><strong>gRPC router</strong> streams tokenized requests directly to SRT gRPC workers, running fully in Rust—tokenizer, reasoning parser, and tool parser all reside in-process. Supports both single-stage and PD routing.</p></li>
+<li><p><strong>OpenAI router</strong> proxies OpenAI-compatible endpoints to external vendors (OpenAI, xAI, etc.) while keeping chat history and multi-turn orchestration local.</p></li>
+</ul>
+</section>
+<section id="storage-privacy">
+<h3>Storage &amp; Privacy<a class="headerlink" href="#storage-privacy" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p>Conversation and response history is stored at the router tier (memory, none, or Oracle ATP). The same history can power multiple models or MCP loops without sending data to upstream vendors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/responses</span></code> agentic flows, MCP sessions, and conversation APIs share the same storage layer, enabling compliance for regulated workloads.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="deployment-modes">
+<h2>Deployment Modes<a class="headerlink" href="#deployment-modes" title="連結到這個標頭">#</a></h2>
+<section id="co-launch-router-workers">
+<h3>Co-launch Router + Workers<a class="headerlink" href="#co-launch-router-workers" title="連結到這個標頭">#</a></h3>
+<p>Launch the router and a fleet of SGLang workers in one process (ideal for single-node or quick starts). The CLI accepts two namespaces of arguments:</p>
+<ul class="simple">
+<li><p><strong>Worker arguments</strong> (no prefix) configure the SGLang runtime (<code class="docutils literal notranslate"><span class="pre">--model</span></code>, <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code>, <code class="docutils literal notranslate"><span class="pre">--dp-size</span></code>, <code class="docutils literal notranslate"><span class="pre">--grpc-mode</span></code>, etc.).</p></li>
+<li><p><strong>Router arguments</strong> are prefixed with <code class="docutils literal notranslate"><span class="pre">--router-</span></code> and map directly to <code class="docutils literal notranslate"><span class="pre">launch_router</span></code> flags (<code class="docutils literal notranslate"><span class="pre">--router-policy</span></code>, <code class="docutils literal notranslate"><span class="pre">--router-model-path</span></code>, <code class="docutils literal notranslate"><span class="pre">--router-log-level</span></code>, ...).</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dp-size<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">30000</span>
+</pre></div>
+</div>
+<p>Comprehensive example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8080</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp-size<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--grpc-mode<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-level<span class="w"> </span>debug<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-prometheus-port<span class="w"> </span><span class="m">10001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-tool-call-parser<span class="w"> </span>llama<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-health-success-threshold<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-health-check-timeout-secs<span class="w"> </span><span class="m">6000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-health-check-interval-secs<span class="w"> </span><span class="m">60</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-policy<span class="w"> </span>round_robin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--router-log-level<span class="w"> </span>debug
+</pre></div>
+</div>
+</section>
+<section id="separate-launch-http">
+<h3>Separate Launch (HTTP)<a class="headerlink" href="#separate-launch-http" title="連結到這個標頭">#</a></h3>
+<p>Run workers independently and point the router at their HTTP endpoints.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Worker nodes</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span>--port<span class="w"> </span><span class="m">8001</span>
+
+<span class="c1"># Router node</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span>http://worker2:8001<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--policy<span class="w"> </span>cache_aware<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span>
+</pre></div>
+</div>
+</section>
+<section id="grpc-launch">
+<h3>gRPC Launch<a class="headerlink" href="#grpc-launch" title="連結到這個標頭">#</a></h3>
+<p>Use SRT gRPC workers to unlock the highest throughput and access native reasoning/tool pipelines.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Workers expose gRPC endpoints</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--grpc-mode<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">20000</span>
+
+<span class="c1"># Router</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>grpc://127.0.0.1:20000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reasoning-parser<span class="w"> </span>deepseek-r1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tool-call-parser<span class="w"> </span>json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>gRPC router supports both single-stage and PD serving. Provide <code class="docutils literal notranslate"><span class="pre">--tokenizer-path</span></code> or <code class="docutils literal notranslate"><span class="pre">--model-path</span></code> (HF repo or local directory) plus optional <code class="docutils literal notranslate"><span class="pre">--chat-template</span></code>.</p>
+</div></blockquote>
+</section>
+<section id="prefill-decode-disaggregation">
+<h3>Prefill/Decode Disaggregation<a class="headerlink" href="#prefill-decode-disaggregation" title="連結到這個標頭">#</a></h3>
+<p>Split prefill and decode workers for PD-aware caching and balancing.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--pd-disaggregation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prefill<span class="w"> </span>http://prefill1:30001<span class="w"> </span><span class="m">9001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--decode<span class="w"> </span>http://decode1:30011<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--policy<span class="w"> </span>cache_aware<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prefill-policy<span class="w"> </span>cache_aware<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--decode-policy<span class="w"> </span>power_of_two
+</pre></div>
+</div>
+</section>
+<section id="openai-backend-proxy">
+<h3>OpenAI Backend Proxy<a class="headerlink" href="#openai-backend-proxy" title="連結到這個標頭">#</a></h3>
+<p>Proxy OpenAI-compatible endpoints (OpenAI, xAI, etc.) while keeping history and MCP sessions local.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>openai<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>https://api.openai.com<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--history-backend<span class="w"> </span>memory
+</pre></div>
+</div>
+<blockquote>
+<div><p>OpenAI backend mode expects exactly one <code class="docutils literal notranslate"><span class="pre">--worker-urls</span></code> entry per router instance.</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="worker-lifecycle-dynamic-scaling">
+<h2>Worker Lifecycle &amp; Dynamic Scaling<a class="headerlink" href="#worker-lifecycle-dynamic-scaling" title="連結到這個標頭">#</a></h2>
+<p>Add or remove workers at runtime using the REST APIs. Jobs are queued and tracked for eventual consistency.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a worker (HTTP or gRPC)</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:30000/workers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;url&quot;:&quot;grpc://0.0.0.0:31000&quot;,&quot;worker_type&quot;:&quot;regular&quot;}&#39;</span>
+
+<span class="c1"># Inspect registry</span>
+curl<span class="w"> </span>http://localhost:30000/workers
+
+<span class="c1"># Remove a worker</span>
+curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:30000/workers/grpc://0.0.0.0:31000
+</pre></div>
+</div>
+<p>Legacy endpoints (<code class="docutils literal notranslate"><span class="pre">/add_worker</span></code>, <code class="docutils literal notranslate"><span class="pre">/remove_worker</span></code>, <code class="docutils literal notranslate"><span class="pre">/list_workers</span></code>) remain available but will be deprecated. <code class="docutils literal notranslate"><span class="pre">/workers/{url}</span></code> returns both registry data and queued job status.</p>
+</section>
+<hr class="docutils" />
+<section id="reliability-flow-control">
+<h2>Reliability &amp; Flow Control<a class="headerlink" href="#reliability-flow-control" title="連結到這個標頭">#</a></h2>
+<section id="retries">
+<h3>Retries<a class="headerlink" href="#retries" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span>http://worker2:8001<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--retry-max-retries<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--retry-initial-backoff-ms<span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--retry-max-backoff-ms<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--retry-backoff-multiplier<span class="w"> </span><span class="m">1</span>.5<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--retry-jitter-factor<span class="w"> </span><span class="m">0</span>.2
+</pre></div>
+</div>
+</section>
+<section id="circuit-breaker">
+<h3>Circuit Breaker<a class="headerlink" href="#circuit-breaker" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span>http://worker2:8001<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cb-failure-threshold<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cb-success-threshold<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cb-timeout-duration-secs<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cb-window-duration-secs<span class="w"> </span><span class="m">60</span>
+</pre></div>
+</div>
+</section>
+<section id="rate-limiting-queuing">
+<h3>Rate Limiting &amp; Queuing<a class="headerlink" href="#rate-limiting-queuing" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span>http://worker2:8001<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-concurrent-requests<span class="w"> </span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--rate-limit-tokens-per-second<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-size<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-timeout-secs<span class="w"> </span><span class="m">30</span>
+</pre></div>
+</div>
+<p>Requests beyond the concurrency limit wait in a FIFO queue (up to <code class="docutils literal notranslate"><span class="pre">queue-size</span></code>). A <code class="docutils literal notranslate"><span class="pre">429</span></code> is returned when the queue is full; <code class="docutils literal notranslate"><span class="pre">408</span></code> is returned when <code class="docutils literal notranslate"><span class="pre">queue-timeout-secs</span></code> expires.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="load-balancing-policies">
+<h2>Load Balancing Policies<a class="headerlink" href="#load-balancing-policies" title="連結到這個標頭">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Policy</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">random</span></code></p></td>
+<td><p>Uniform random selection.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--policy</span> <span class="pre">random</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">round_robin</span></code></p></td>
+<td><p>Cycles through workers in order.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--policy</span> <span class="pre">round_robin</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">power_of_two</span></code></p></td>
+<td><p>Samples two workers and picks the lighter one (requires Load Monitor).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--policy</span> <span class="pre">power_of_two</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cache_aware</span></code></p></td>
+<td><p>Default policy; combines cache locality with load balancing, falling back to shortest queue.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--policy</span> <span class="pre">cache_aware</span></code> + tuning flags</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Key tuning flags:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>--cache-threshold<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="se">\</span>
+--balance-abs-threshold<span class="w"> </span><span class="m">32</span><span class="w"> </span><span class="se">\</span>
+--balance-rel-threshold<span class="w"> </span><span class="m">1</span>.5<span class="w"> </span><span class="se">\</span>
+--eviction-interval-secs<span class="w"> </span><span class="m">120</span><span class="w"> </span><span class="se">\</span>
+--max-tree-size<span class="w"> </span><span class="m">67108864</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="service-discovery-kubernetes">
+<h2>Service Discovery (Kubernetes)<a class="headerlink" href="#service-discovery-kubernetes" title="連結到這個標頭">#</a></h2>
+<p>Enable automatic worker discovery via Kubernetes pod selectors.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--service-discovery<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>sglang-worker<span class="w"> </span><span class="nv">role</span><span class="o">=</span>inference<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--service-discovery-namespace<span class="w"> </span>production<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--service-discovery-port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>PD deployments can specify <code class="docutils literal notranslate"><span class="pre">--prefill-selector</span></code> and <code class="docutils literal notranslate"><span class="pre">--decode-selector</span></code> plus the <code class="docutils literal notranslate"><span class="pre">sglang.ai/bootstrap-port</span></code> annotation for prefill bootstrap ports. Ensure RBAC grants <code class="docutils literal notranslate"><span class="pre">get/list/watch</span></code> on pods.</p>
+</section>
+<hr class="docutils" />
+<section id="security-authentication">
+<h2>Security &amp; Authentication<a class="headerlink" href="#security-authentication" title="連結到這個標頭">#</a></h2>
+<ul>
+<li><p><strong>Router API key (<code class="docutils literal notranslate"><span class="pre">--api-key</span></code>)</strong>: clients must supply <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;key&gt;</span></code>.</p></li>
+<li><p><strong>Worker API keys</strong>: when adding workers dynamically, include <code class="docutils literal notranslate"><span class="pre">api_key</span></code> in the payload; workers listed via CLI inherit the router key.</p></li>
+<li><p><strong>Full-stack auth</strong>: start router with <code class="docutils literal notranslate"><span class="pre">--api-key</span></code>, then add workers with their own keys:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer router-key&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:30000/workers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;url&quot;:&quot;http://worker:8000&quot;,&quot;api_key&quot;:&quot;worker-key&quot;}&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Privacy</strong>: All conversation history, <code class="docutils literal notranslate"><span class="pre">/v1/responses</span></code> state, and MCP sessions stay inside the router. Nothing is persisted at remote model vendors unless explicitly proxied.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="history-data-connectors">
+<h2>History &amp; Data Connectors<a class="headerlink" href="#history-data-connectors" title="連結到這個標頭">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">memory</span></code> (default)</p></td>
+<td><p>In-memory storage for quick prototyping.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--history-backend</span> <span class="pre">memory</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+<td><p>No persistence; APIs operate but store nothing.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--history-backend</span> <span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">oracle</span></code></p></td>
+<td><p>Oracle Autonomous Database-backed storage (pooled connections).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--history-backend</span> <span class="pre">oracle</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">postgres</span></code></p></td>
+<td><p>PostgreSQL Database-backed storage (pooled connections).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--history-backend</span> <span class="pre">postgres</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Oracle configuration (choose DSN <em>or</em> TNS alias):
+Install the Oracle Instant Client and set <code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code> accordingly.
+Choose <strong>one</strong> connection method:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Full connection descriptor</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ATP_DSN</span><span class="o">=</span><span class="s2">&quot;(description=(address=(protocol=tcps)(port=1522)(host=adb.region.oraclecloud.com))(connect_data=(service_name=service_name)))&quot;</span>
+
+<span class="c1"># Option 2: TNS alias (requires wallet)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ATP_TNS_ALIAS</span><span class="o">=</span><span class="s2">&quot;sglroutertestatp_high&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ATP_WALLET_PATH</span><span class="o">=</span><span class="s2">&quot;/path/to/wallet&quot;</span>
+</pre></div>
+</div>
+<p>Provide database credentials and optional pool sizing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ATP_USER</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ATP_PASSWORD</span><span class="o">=</span><span class="s2">&quot;secret&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ATP_POOL_MIN</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ATP_POOL_MAX</span><span class="o">=</span><span class="m">32</span>
+
+python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>openai<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>https://api.openai.com<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--history-backend<span class="w"> </span>oracle
+</pre></div>
+</div>
+<blockquote>
+<div><p>History backends currently apply to OpenAI router mode. gRPC parity for <code class="docutils literal notranslate"><span class="pre">/v1/responses</span></code> is on the roadmap.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="mcp-advanced-tooling">
+<h2>MCP &amp; Advanced Tooling<a class="headerlink" href="#mcp-advanced-tooling" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p>Native MCP client supports <strong>STDIO</strong>, <strong>HTTP</strong>, <strong>SSE</strong>, and <strong>Streamable</strong> transports—no external config files required.</p></li>
+<li><p>Tool-call parsers cover JSON, Pythonic, XML, and custom schemas with streaming/non-streaming execution loops.</p></li>
+<li><p>Reasoning parsers ship for DeepSeek-R1, Qwen3, Step-3, GLM4, Llama families, Kimi K2, GPT-OSS, Mistral, and more (<code class="docutils literal notranslate"><span class="pre">src/reasoning_parser</span></code>).</p></li>
+<li><p>Tokenizer factory accepts HuggingFace IDs, local directories, and explicit <code class="docutils literal notranslate"><span class="pre">tokenizer.json</span></code> files with chat template overrides (<code class="docutils literal notranslate"><span class="pre">src/tokenizer</span></code>).</p></li>
+</ul>
+<p>Use CLI flags to select parsers:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>--reasoning-parser<span class="w"> </span>deepseek-r1<span class="w"> </span><span class="se">\</span>
+--tool-call-parser<span class="w"> </span>json<span class="w"> </span><span class="se">\</span>
+--chat-template<span class="w"> </span>/path/to/template.json
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="api-surface">
+<h2>API Surface<a class="headerlink" href="#api-surface" title="連結到這個標頭">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/generate</span></code></p></td>
+<td><p>SGLang generate API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code></p></td>
+<td><p>OpenAI-compatible chat (streaming/tool calls).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/completions</span></code></p></td>
+<td><p>OpenAI-compatible text completions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/responses</span></code></p></td>
+<td><p>Create background responses (agentic loops).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/responses/{id}</span></code></p></td>
+<td><p>Retrieve stored responses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/embeddings</span></code></p></td>
+<td><p>Forward embedding requests.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/rerank</span></code></p></td>
+<td><p>Ranking endpoint (<code class="docutils literal notranslate"><span class="pre">/rerank</span></code> synonym).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/conversations</span></code></p></td>
+<td><p>Create conversation metadata.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code>/<code class="docutils literal notranslate"><span class="pre">POST</span></code>/<code class="docutils literal notranslate"><span class="pre">DELETE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/conversations/{id}</span></code></p></td>
+<td><p>Get/update/delete conversation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code>/<code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/conversations/{id}/items</span></code></p></td>
+<td><p>List or append conversation items.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code>/<code class="docutils literal notranslate"><span class="pre">DELETE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/v1/conversations/{id}/items/{item_id}</span></code></p></td>
+<td><p>Inspect/delete conversation item.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/workers</span></code></p></td>
+<td><p>List registered workers with health/load.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/workers</span></code></p></td>
+<td><p>Queue worker registration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/workers/{url}</span></code></p></td>
+<td><p>Queue worker removal.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/flush_cache</span></code></p></td>
+<td><p>Flush worker caches (HTTP workers).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/get_loads</span></code></p></td>
+<td><p>Retrieve worker load snapshot.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/liveness</span></code> / <code class="docutils literal notranslate"><span class="pre">/readiness</span></code> / <code class="docutils literal notranslate"><span class="pre">/health</span></code></p></td>
+<td><p>Health probes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="configuration-reference">
+<h2>組態參考<a class="headerlink" href="#configuration-reference" title="連結到這個標頭">#</a></h2>
+<section id="core-settings">
+<h3>核心設定<a class="headerlink" href="#core-settings" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>預設值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--host</span></code></p></td>
+<td><p>str</p></td>
+<td><p>127.0.0.1</p></td>
+<td><p>Router host.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--port</span></code></p></td>
+<td><p>int</p></td>
+<td><p>30000</p></td>
+<td><p>Router port.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--worker-urls</span></code></p></td>
+<td><p>list</p></td>
+<td><p>[]</p></td>
+<td><p>Worker URLs (HTTP or gRPC).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--policy</span></code></p></td>
+<td><p>str</p></td>
+<td><p>cache_aware</p></td>
+<td><p>Routing policy (<code class="docutils literal notranslate"><span class="pre">random</span></code>, <code class="docutils literal notranslate"><span class="pre">round_robin</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_aware</span></code>, <code class="docutils literal notranslate"><span class="pre">power_of_two</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-concurrent-requests</span></code></p></td>
+<td><p>int</p></td>
+<td><p>-1</p></td>
+<td><p>Concurrency limit (-1 disables rate limiting).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--request-timeout-secs</span></code></p></td>
+<td><p>int</p></td>
+<td><p>600</p></td>
+<td><p>Request timeout.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-payload-size</span></code></p></td>
+<td><p>int</p></td>
+<td><p>256MB</p></td>
+<td><p>Maximum request payload.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="cache-aware-tuning">
+<h3>Cache-Aware Tuning<a class="headerlink" href="#cache-aware-tuning" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>預設值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--cache-threshold</span></code></p></td>
+<td><p>float</p></td>
+<td><p>0.3</p></td>
+<td><p>Minimum prefix match ratio.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--balance-abs-threshold</span></code></p></td>
+<td><p>int</p></td>
+<td><p>64</p></td>
+<td><p>Absolute load threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--balance-rel-threshold</span></code></p></td>
+<td><p>float</p></td>
+<td><p>1.5</p></td>
+<td><p>Relative load ratio.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--eviction-interval-secs</span></code></p></td>
+<td><p>int</p></td>
+<td><p>120</p></td>
+<td><p>Cache eviction cadence.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-tree-size</span></code></p></td>
+<td><p>int</p></td>
+<td><p>67108864</p></td>
+<td><p>Max nodes in cache tree.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="fault-tolerance">
+<h3>Fault Tolerance<a class="headerlink" href="#fault-tolerance" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>預設值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--retry-max-retries</span></code></p></td>
+<td><p>int</p></td>
+<td><p>5</p></td>
+<td><p>Max retries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--retry-initial-backoff-ms</span></code></p></td>
+<td><p>int</p></td>
+<td><p>50</p></td>
+<td><p>Initial backoff (ms).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--retry-max-backoff-ms</span></code></p></td>
+<td><p>int</p></td>
+<td><p>30000</p></td>
+<td><p>Max backoff (ms).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--retry-backoff-multiplier</span></code></p></td>
+<td><p>float</p></td>
+<td><p>1.5</p></td>
+<td><p>Backoff multiplier.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--retry-jitter-factor</span></code></p></td>
+<td><p>float</p></td>
+<td><p>0.2</p></td>
+<td><p>Retry jitter (0.0-1.0).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-retries</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>False</p></td>
+<td><p>Disable retries.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--cb-failure-threshold</span></code></p></td>
+<td><p>int</p></td>
+<td><p>5</p></td>
+<td><p>Failures before opening circuit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--cb-success-threshold</span></code></p></td>
+<td><p>int</p></td>
+<td><p>2</p></td>
+<td><p>Successes to close circuit.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--cb-timeout-duration-secs</span></code></p></td>
+<td><p>int</p></td>
+<td><p>30</p></td>
+<td><p>Cooldown period.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--cb-window-duration-secs</span></code></p></td>
+<td><p>int</p></td>
+<td><p>60</p></td>
+<td><p>Window size.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-circuit-breaker</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>False</p></td>
+<td><p>Disable circuit breaker.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="prefill-decode">
+<h3>Prefill/Decode<a class="headerlink" href="#prefill-decode" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>預設值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--pd-disaggregation</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>False</p></td>
+<td><p>Enable PD mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--prefill</span></code></p></td>
+<td><p>list</p></td>
+<td><p>[]</p></td>
+<td><p>Prefill URLs + optional bootstrap ports.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--decode</span></code></p></td>
+<td><p>list</p></td>
+<td><p>[]</p></td>
+<td><p>Decode URLs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--prefill-policy</span></code></p></td>
+<td><p>str</p></td>
+<td><p>None</p></td>
+<td><p>Override policy for prefill nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--decode-policy</span></code></p></td>
+<td><p>str</p></td>
+<td><p>None</p></td>
+<td><p>Override policy for decode nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--worker-startup-timeout-secs</span></code></p></td>
+<td><p>int</p></td>
+<td><p>600</p></td>
+<td><p>Worker init timeout.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--worker-startup-check-interval</span></code></p></td>
+<td><p>int</p></td>
+<td><p>30</p></td>
+<td><p>Polling interval.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="kubernetes-discovery">
+<h3>Kubernetes Discovery<a class="headerlink" href="#kubernetes-discovery" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--service-discovery</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>Enable discovery.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--selector</span> <span class="pre">key=value</span> <span class="pre">...</span></code></p></td>
+<td><p>list</p></td>
+<td><p>Label selectors (regular mode).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--prefill-selector</span></code> / <code class="docutils literal notranslate"><span class="pre">--decode-selector</span></code></p></td>
+<td><p>list</p></td>
+<td><p>Label selectors for PD mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--service-discovery-namespace</span></code></p></td>
+<td><p>str</p></td>
+<td><p>Namespace to watch.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--service-discovery-port</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Worker port (default 80).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--bootstrap-port-annotation</span></code></p></td>
+<td><p>str</p></td>
+<td><p>Prefill bootstrap annotation (default <code class="docutils literal notranslate"><span class="pre">sglang.ai/bootstrap-port</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="observability">
+<h2>Observability<a class="headerlink" href="#observability" title="連結到這個標頭">#</a></h2>
+<p>Enable Prometheus metrics:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span>http://worker2:8001<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prometheus-host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prometheus-port<span class="w"> </span><span class="m">29000</span>
+</pre></div>
+</div>
+<p>Key metrics:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sgl_router_requests_total</span></code></p></td>
+<td><p>Counter</p></td>
+<td><p>Total requests by endpoint/method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sgl_router_processed_requests_total</span></code></p></td>
+<td><p>Counter</p></td>
+<td><p>Requests processed per worker.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sgl_router_active_workers</span></code></p></td>
+<td><p>Gauge</p></td>
+<td><p>Healthy worker count.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sgl_router_running_requests</span></code></p></td>
+<td><p>Gauge</p></td>
+<td><p>In-flight requests per worker.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sgl_router_cache_hits_total</span></code> / <code class="docutils literal notranslate"><span class="pre">misses_total</span></code></p></td>
+<td><p>Counter</p></td>
+<td><p>Cache-aware routing hits/misses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sgl_router_generate_duration_seconds</span></code></p></td>
+<td><p>Histogram</p></td>
+<td><p>Request latency distribution.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Enable request ID propagation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--request-id-headers<span class="w"> </span>x-request-id<span class="w"> </span>x-trace-id
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="troubleshooting">
+<h2>疑難排解<a class="headerlink" href="#troubleshooting" title="連結到這個標頭">#</a></h2>
+<ol class="arabic">
+<li><p><strong>Workers never ready</strong>
+Increase <code class="docutils literal notranslate"><span class="pre">--worker-startup-timeout-secs</span></code> or ensure health probes respond before router startup.</p></li>
+<li><p><strong>Load imbalance / hot workers</strong>
+Inspect <code class="docutils literal notranslate"><span class="pre">sgl_router_processed_requests_total</span></code> and tune cache-aware thresholds (<code class="docutils literal notranslate"><span class="pre">--balance-*</span></code>, <code class="docutils literal notranslate"><span class="pre">--cache-threshold</span></code>).</p></li>
+<li><p><strong>Circuit breaker flapping</strong>
+Increase <code class="docutils literal notranslate"><span class="pre">--cb-failure-threshold</span></code> or extend the timeout/window durations. Consider temporarily disabling retries.</p></li>
+<li><p><strong>Queue overflow (429)</strong>
+Increase <code class="docutils literal notranslate"><span class="pre">--queue-size</span></code> or reduce client concurrency. Ensure <code class="docutils literal notranslate"><span class="pre">--max-concurrent-requests</span></code> matches downstream capacity.</p></li>
+<li><p><strong>Memory growth</strong>
+Reduce <code class="docutils literal notranslate"><span class="pre">--max-tree-size</span></code> or lower <code class="docutils literal notranslate"><span class="pre">--eviction-interval-secs</span></code> for more aggressive cache pruning.</p></li>
+<li><p><strong>Debugging</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://worker1:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-level<span class="w"> </span>debug<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-dir<span class="w"> </span>./router_logs
+</pre></div>
+</div>
+</li>
+</ol>
+<hr class="docutils" />
+<p>SGLang Model Gateway continues to evolve alongside the SGLang runtime. Keep CLI flags, integrations, and documentation aligned when adopting new features or contributing improvements.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="vlm_query.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Query Vision Language Model</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="deterministic_inference.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Deterministic Inference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">目次表</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">概覽</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#control-plane">Control Plane</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-plane">Data Plane</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-privacy">Storage &amp; Privacy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-modes">Deployment Modes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co-launch-router-workers">Co-launch Router + Workers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-launch-http">Separate Launch (HTTP)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grpc-launch">gRPC Launch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-decode-disaggregation">Prefill/Decode Disaggregation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-backend-proxy">OpenAI Backend Proxy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#worker-lifecycle-dynamic-scaling">Worker Lifecycle &amp; Dynamic Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reliability-flow-control">Reliability &amp; Flow Control</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retries">Retries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#circuit-breaker">Circuit Breaker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-limiting-queuing">Rate Limiting &amp; Queuing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing-policies">Load Balancing Policies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#service-discovery-kubernetes">Service Discovery (Kubernetes)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-authentication">Security &amp; Authentication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-data-connectors">History &amp; Data Connectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mcp-advanced-tooling">MCP &amp; Advanced Tooling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-surface">API Surface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-reference">組態參考</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-settings">核心設定</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-aware-tuning">Cache-Aware Tuning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fault-tolerance">Fault Tolerance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-decode">Prefill/Decode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-discovery">Kubernetes Discovery</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observability">Observability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">疑難排解</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 01 月 06 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

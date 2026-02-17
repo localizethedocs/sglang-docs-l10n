@@ -1,0 +1,1000 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quantization &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/quantization';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/quantization.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quantized KV Cache" href="quantized_kv_cache.html" />
+    <link rel="prev" title="Reasoning Parser" href="separate_reasoning.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 16, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/quantization.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/quantization.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/quantization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/quantization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offline-quantization">Offline Quantization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-offline-model-quantization">Examples of Offline Model Quantization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-unsloth">Using Unsloth</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-auto-round">Using auto-round</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-gptqmodel">Using GPTQModel</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-llm-compressor">Using LLM Compressor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-nvidia-modelopt">Using NVIDIA ModelOpt</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-and-export-workflow">Quantization and Export Workflow</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#available-quantization-methods">Available Quantization Methods</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-usage">Python API Usage</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#deploying-quantized-models">Deploying Quantized Models</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-features">Advanced Features</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits-of-modelopt">Benefits of ModelOpt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-quantization">Online Quantization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantization">
+<h1>Quantization<a class="headerlink" href="#quantization" title="Link to this heading">#</a></h1>
+<p>SGLang supports various quantization methods, including offline quantization and online dynamic quantization.</p>
+<p>Offline quantization loads pre-quantized model weights directly during inference. This is required for quantization methods
+such as GPTQ and AWQ, which collect and pre-compute various statistics from the original weights using the calibration dataset.</p>
+<p>Online quantization dynamically computes scaling parameters—such as the maximum/minimum values of model weights—during runtime.
+Like NVIDIA FP8 training’s <a class="reference external" href="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/examples/fp8_primer.html#Mixed-precision-training-with-FP8">delayed scaling</a> mechanism, online quantization calculates the appropriate scaling factors
+on-the-fly to convert high-precision weights into a lower-precision format.</p>
+<p><strong>Note: For better performance, usability and convenience, offline quantization is recommended over online quantization.</strong></p>
+<p>If you use a pre-quantized model, do not add <code class="docutils literal notranslate"><span class="pre">--quantization</span></code> to enable online quantization at the same time.
+For popular pre-quantized models, please visit <a class="reference external" href="https://huggingface.co/unsloth">Unsloth</a>, <a class="reference external" href="https://huggingface.co/collections/nvidia/inference-optimized-checkpoints-with-model-optimizer">NVIDIA ModelOpt</a>
+or <a class="reference external" href="https://huggingface.co/collections/neuralmagic">NeuralMagic</a> collections on HF for some
+popular quality validated quantized models. Quantized models must be validated via benchmarks post-quantization
+to guard against abnormal quantization loss regressions.</p>
+<section id="offline-quantization">
+<h2>Offline Quantization<a class="headerlink" href="#offline-quantization" title="Link to this heading">#</a></h2>
+<p>To load already quantized models, simply load the model weights and config. <strong>Again, if the model has been quantized offline,
+there’s no need to add <code class="docutils literal notranslate"><span class="pre">--quantization</span></code> argument when starting the engine. The quantization method will be parsed from the
+downloaded Hugging Face config. For example, DeepSeek V3/R1 models are already in FP8, so do not add redundant parameters.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>Take note, if your model is <strong>per-channel quantized (INT8 or FP8) with per-token dynamic quantization activation</strong>, you can opt to include <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_int8</span></code> or <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_fp8</span></code> to invoke the corresponding CUTLASS int8_kernel or fp8_kernel in sgl-kernel. This action will ignore the Hugging Face config’s quantization settings. For instance, with <code class="docutils literal notranslate"><span class="pre">neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic</span></code>, if you execute with <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_fp8</span></code>, the system will use the <code class="docutils literal notranslate"><span class="pre">W8A8Fp8Config</span></code> from SGLang to invoke the sgl-kernel, rather than the <code class="docutils literal notranslate"><span class="pre">CompressedTensorsConfig</span></code> for vLLM kernels.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>w8a8_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<section id="examples-of-offline-model-quantization">
+<h3>Examples of Offline Model Quantization<a class="headerlink" href="#examples-of-offline-model-quantization" title="Link to this heading">#</a></h3>
+<section id="using-unsloth">
+<h4>Using <a class="reference external" href="https://docs.unsloth.ai/basics/inference-and-deployment/sglang-guide">Unsloth</a><a class="headerlink" href="#using-unsloth" title="Link to this heading">#</a></h4>
+<p>We strongly suggest the use of Unsloth to quantize and load the model. Please refer to <a class="reference external" href="https://docs.unsloth.ai/basics/inference-and-deployment/sglang-guide">SGLang Deployment &amp; Inference Guide with Unsloth</a>.</p>
+</section>
+<section id="using-auto-round">
+<h4>Using <a class="reference external" href="https://github.com/intel/auto-round">auto-round</a><a class="headerlink" href="#using-auto-round" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install</span>
+pip<span class="w"> </span>install<span class="w"> </span>auto-round
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>LLM quantization</p></li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># for LLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">auto_round</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoRound</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Llama-3.2-1B-Instruct&quot;</span>
+<span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&quot;Llama-3.2-1B-Instruct-autoround-4bit&quot;</span>
+<span class="c1"># Scheme examples: &quot;W2A16&quot;, &quot;W3A16&quot;, &quot;W4A16&quot;, &quot;W8A16&quot;, &quot;NVFP4&quot;, &quot;MXFP4&quot; (no real kernels), &quot;GGUF:Q4_K_M&quot;, etc.</span>
+<span class="n">scheme</span> <span class="o">=</span> <span class="s2">&quot;W4A16&quot;</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;auto_round&quot;</span>
+<span class="n">autoround</span> <span class="o">=</span> <span class="n">AutoRound</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">)</span>
+<span class="n">autoround</span><span class="o">.</span><span class="n">quantize_and_save</span><span class="p">(</span><span class="n">quant_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">)</span> <span class="c1"># quantize and save</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>VLM quantization</p></li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># for VLMs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">auto_round</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoRoundMLLM</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;Qwen/Qwen2-VL-2B-Instruct&quot;</span>
+<span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&quot;Qwen2-VL-2B-Instruct-autoround-4bit&quot;</span>
+<span class="n">scheme</span> <span class="o">=</span> <span class="s2">&quot;W4A16&quot;</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;auto_round&quot;</span>
+<span class="n">autoround</span> <span class="o">=</span> <span class="n">AutoRoundMLLM</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">scheme</span><span class="p">)</span>
+<span class="n">autoround</span><span class="o">.</span><span class="n">quantize_and_save</span><span class="p">(</span><span class="n">quant_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">)</span> <span class="c1"># quantize and save</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Command Line Usage (Gaudi/CPU/Intel GPU/CUDA)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>auto-round<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>meta-llama/Llama-3.2-1B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--bits<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--group_size<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--format<span class="w"> </span><span class="s2">&quot;auto_round&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output_dir<span class="w"> </span>./tmp_autoround
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>known issues</p></li>
+</ul>
+<p>Several limitations currently affect offline quantized model loading in sglang, These issues might be resolved in future updates of sglang. If you experience any problems, consider using Hugging Face Transformers as an alternative.</p>
+<ol class="arabic">
+<li><p>Mixed-bit Quantization Limitations</p>
+<p>Mixed-bit quantization is not fully supported. Due to vLLM’s layer fusion (e.g., QKV fusion), applying different bit-widths to components within the same fused layer can lead to compatibility issues.</p>
+</li>
+<li><p>Limited Support for Quantized MoE Models</p>
+<p>Quantized MoE models may encounter inference issues due to kernel limitations (e.g., lack of support for mlp.gate layer quantization). please try to skip quantizing these layers to avoid such errors.</p>
+</li>
+<li><p>Limited Support for Quantized VLMs</p>
+ <details>
+     <summary>VLM failure cases</summary>
+<p>Qwen2.5-VL-7B</p>
+<p>auto_round:auto_gptq format:  Accuracy is close to zero.</p>
+<p>GPTQ format:  Fails with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">output</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">aligned</span> <span class="k">with</span> <span class="n">the</span> <span class="n">quantized</span> <span class="n">weight</span> <span class="n">shape</span>
+</pre></div>
+</div>
+<p>auto_round:auto_awq and AWQ format:  These work as expected.</p>
+ </details>
+</li>
+</ol>
+</section>
+<section id="using-gptqmodel">
+<h4>Using <a class="reference external" href="https://github.com/ModelCloud/GPTQModel">GPTQModel</a><a class="headerlink" href="#using-gptqmodel" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install</span>
+pip<span class="w"> </span>install<span class="w"> </span>gptqmodel<span class="w"> </span>--no-build-isolation<span class="w"> </span>-v
+</pre></div>
+</div>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gptqmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPTQModel</span><span class="p">,</span> <span class="n">QuantizeConfig</span>
+
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Llama-3.2-1B-Instruct&quot;</span>
+<span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&quot;Llama-3.2-1B-Instruct-gptqmodel-4bit&quot;</span>
+
+<span class="n">calibration_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+    <span class="s2">&quot;allenai/c4&quot;</span><span class="p">,</span> <span class="n">data_files</span><span class="o">=</span><span class="s2">&quot;en/c4-train.00001-of-01024.json.gz&quot;</span><span class="p">,</span>
+    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
+  <span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">))[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+<span class="n">quant_config</span> <span class="o">=</span> <span class="n">QuantizeConfig</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span> <span class="c1"># quantization config</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GPTQModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">quant_config</span><span class="p">)</span> <span class="c1"># load model</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">calibration_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># quantize</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">quant_path</span><span class="p">)</span> <span class="c1"># save model</span>
+</pre></div>
+</div>
+</section>
+<section id="using-llm-compressor">
+<h4>Using <a class="reference external" href="https://github.com/vllm-project/llm-compressor/">LLM Compressor</a><a class="headerlink" href="#using-llm-compressor" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install</span>
+pip<span class="w"> </span>install<span class="w"> </span>llmcompressor
+</pre></div>
+</div>
+<p>Here, we take quantize <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3-8B-Instruct</span></code> to <code class="docutils literal notranslate"><span class="pre">FP8</span></code> as an example to elaborate on how to do offline quantization.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llmcompressor.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparseAutoModelForCausalLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llmcompressor.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">oneshot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llmcompressor.modifiers.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantizationModifier</span>
+
+<span class="c1"># Step 1: Load the original model.</span>
+<span class="n">MODEL_ID</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B-Instruct&quot;</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SparseAutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+  <span class="n">MODEL_ID</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">torch_dtype</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_ID</span><span class="p">)</span>
+
+<span class="c1"># Step 2: Perform offline quantization.</span>
+<span class="c1"># Step 2.1: Configure the simple PTQ quantization.</span>
+<span class="n">recipe</span> <span class="o">=</span> <span class="n">QuantizationModifier</span><span class="p">(</span>
+  <span class="n">targets</span><span class="o">=</span><span class="s2">&quot;Linear&quot;</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;FP8_DYNAMIC&quot;</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lm_head&quot;</span><span class="p">])</span>
+
+<span class="c1"># Step 2.2: Apply the quantization algorithm.</span>
+<span class="n">oneshot</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">recipe</span><span class="o">=</span><span class="n">recipe</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Save the model.</span>
+<span class="n">SAVE_DIR</span> <span class="o">=</span> <span class="n">MODEL_ID</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-FP8-Dynamic&quot;</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">SAVE_DIR</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">SAVE_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, you can directly use the quantized model with <code class="docutils literal notranslate"><span class="pre">SGLang</span></code>, by using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span><span class="nv">$PWD</span>/Meta-Llama-3-8B-Instruct-FP8-Dynamic<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+</section>
+<section id="using-nvidia-modelopt">
+<h4>Using <a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer">NVIDIA ModelOpt</a><a class="headerlink" href="#using-nvidia-modelopt" title="Link to this heading">#</a></h4>
+<p>NVIDIA Model Optimizer (ModelOpt) provides advanced quantization techniques optimized for NVIDIA hardware. SGLang includes a streamlined workflow for quantizing models with ModelOpt and automatically exporting them for deployment.</p>
+<section id="installation">
+<h5>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h5>
+<p>First, install ModelOpt. You can either install it directly or as an optional SGLang dependency:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Install ModelOpt directly</span>
+pip<span class="w"> </span>install<span class="w"> </span>nvidia-modelopt
+
+<span class="c1"># Option 2: Install SGLang with ModelOpt support (recommended)</span>
+pip<span class="w"> </span>install<span class="w"> </span>sglang<span class="o">[</span>modelopt<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="quantization-and-export-workflow">
+<h5>Quantization and Export Workflow<a class="headerlink" href="#quantization-and-export-workflow" title="Link to this heading">#</a></h5>
+<p>SGLang provides an example script that demonstrates the complete ModelOpt quantization and export workflow:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Quantize and export a model using ModelOpt FP8 quantization</span>
+python<span class="w"> </span>examples/usage/modelopt_quantize_and_export.py<span class="w"> </span>quantize<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>TinyLlama/TinyLlama-1.1B-Chat-v1.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--export-dir<span class="w"> </span>./quantized_tinyllama_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization-method<span class="w"> </span>modelopt_fp8
+
+<span class="c1"># For FP4 quantization</span>
+python<span class="w"> </span>examples/usage/modelopt_quantize_and_export.py<span class="w"> </span>quantize<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>TinyLlama/TinyLlama-1.1B-Chat-v1.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--export-dir<span class="w"> </span>./quantized_tinyllama_fp4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization-method<span class="w"> </span>modelopt_fp4
+</pre></div>
+</div>
+</section>
+<section id="available-quantization-methods">
+<h5>Available Quantization Methods<a class="headerlink" href="#available-quantization-methods" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">modelopt_fp8</span></code>: FP8 quantization with optimal performance on NVIDIA Hopper and Blackwell GPUs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modelopt_fp4</span></code>: FP4 quantization with optimal performance on Nvidia Blackwell GPUs</p></li>
+</ul>
+</section>
+<section id="python-api-usage">
+<h5>Python API Usage<a class="headerlink" href="#python-api-usage" title="Link to this heading">#</a></h5>
+<p>You can also use ModelOpt quantization programmatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.device_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.load_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.model_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.model_loader.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_model_loader</span>
+
+<span class="c1"># Configure model with ModelOpt quantization and export</span>
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;TinyLlama/TinyLlama-1.1B-Chat-v1.0&quot;</span><span class="p">,</span>
+    <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;modelopt_fp8&quot;</span><span class="p">,</span>  <span class="c1"># or &quot;modelopt_fp4&quot;</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">load_config</span> <span class="o">=</span> <span class="n">LoadConfig</span><span class="p">(</span>
+    <span class="n">modelopt_export_path</span><span class="o">=</span><span class="s2">&quot;./exported_model&quot;</span><span class="p">,</span>
+    <span class="n">modelopt_checkpoint_save_path</span><span class="o">=</span><span class="s2">&quot;./checkpoint.pth&quot;</span><span class="p">,</span>  <span class="c1"># optional, fake quantized checkpoint</span>
+<span class="p">)</span>
+<span class="n">device_config</span> <span class="o">=</span> <span class="n">DeviceConfig</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load and quantize the model (export happens automatically)</span>
+<span class="n">model_loader</span> <span class="o">=</span> <span class="n">get_model_loader</span><span class="p">(</span><span class="n">load_config</span><span class="p">,</span> <span class="n">model_config</span><span class="p">)</span>
+<span class="n">quantized_model</span> <span class="o">=</span> <span class="n">model_loader</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span>
+    <span class="n">model_config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span>
+    <span class="n">device_config</span><span class="o">=</span><span class="n">device_config</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="deploying-quantized-models">
+<h5>Deploying Quantized Models<a class="headerlink" href="#deploying-quantized-models" title="Link to this heading">#</a></h5>
+<p>After quantization and export, you can deploy the model with SGLang:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Deploy the exported quantized model</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>./quantized_tinyllama_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>modelopt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>Or using the Python API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+
+<span class="c1"># Deploy exported ModelOpt quantized model</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">Engine</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;./quantized_tinyllama_fp8&quot;</span><span class="p">,</span>
+    <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;modelopt&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Run inference</span>
+<span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">]</span>
+<span class="n">sampling_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prompt: </span><span class="si">{</span><span class="n">prompts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output: </span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-features">
+<h5>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading">#</a></h5>
+<p><strong>Checkpoint Management</strong>: Save and restore fake quantized checkpoints for reuse:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save the fake quantized checkpoint during quantization</span>
+python<span class="w"> </span>examples/usage/modelopt_quantize_and_export.py<span class="w"> </span>quantize<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Llama-3.2-1B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--export-dir<span class="w"> </span>./quantized_model<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization-method<span class="w"> </span>modelopt_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--checkpoint-save-path<span class="w"> </span>./my_checkpoint.pth
+
+<span class="c1"># The checkpoint can be reused for future quantization runs and skip calibration</span>
+</pre></div>
+</div>
+<p><strong>Export-only Workflow</strong>: If you have a pre-existing fake quantized ModelOpt checkpoint, you can export it directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.device_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.load_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.model_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.model_loader.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_model_loader</span>
+
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;meta-llama/Llama-3.2-1B-Instruct&quot;</span><span class="p">,</span>
+    <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;modelopt_fp8&quot;</span><span class="p">,</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">load_config</span> <span class="o">=</span> <span class="n">LoadConfig</span><span class="p">(</span>
+    <span class="n">modelopt_checkpoint_restore_path</span><span class="o">=</span><span class="s2">&quot;./my_checkpoint.pth&quot;</span><span class="p">,</span>
+    <span class="n">modelopt_export_path</span><span class="o">=</span><span class="s2">&quot;./exported_model&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Load and export the model</span>
+<span class="n">model_loader</span> <span class="o">=</span> <span class="n">get_model_loader</span><span class="p">(</span><span class="n">load_config</span><span class="p">,</span> <span class="n">model_config</span><span class="p">)</span>
+<span class="n">model_loader</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">device_config</span><span class="o">=</span><span class="n">DeviceConfig</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="benefits-of-modelopt">
+<h5>Benefits of ModelOpt<a class="headerlink" href="#benefits-of-modelopt" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><strong>Hardware Optimization</strong>: Specifically optimized for NVIDIA GPU architectures</p></li>
+<li><p><strong>Advanced Quantization</strong>: Supports cutting-edge FP8 and FP4 quantization techniques</p></li>
+<li><p><strong>Seamless Integration</strong>: Automatic export to HuggingFace format for easy deployment</p></li>
+<li><p><strong>Calibration-based</strong>: Uses calibration datasets for optimal quantization quality</p></li>
+<li><p><strong>Production Ready</strong>: Enterprise-grade quantization with NVIDIA support</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="online-quantization">
+<h2>Online Quantization<a class="headerlink" href="#online-quantization" title="Link to this heading">#</a></h2>
+<p>To enable online quantization, you can simply specify <code class="docutils literal notranslate"><span class="pre">--quantization</span></code> in the command line. For example, you can launch the server with the following command to enable <code class="docutils literal notranslate"><span class="pre">FP8</span></code> quantization for model <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3.1-8B-Instruct</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>Our team is working on supporting more online quantization methods. SGLang will soon support methods including but not limited to <code class="docutils literal notranslate"><span class="pre">[&quot;awq&quot;,</span> <span class="pre">&quot;gptq&quot;,</span> <span class="pre">&quot;marlin&quot;,</span> <span class="pre">&quot;gptq_marlin&quot;,</span> <span class="pre">&quot;awq_marlin&quot;,</span> <span class="pre">&quot;bitsandbytes&quot;,</span> <span class="pre">&quot;gguf&quot;]</span></code>.</p>
+<p>SGLang also supports quantization methods based on <a class="reference external" href="https://github.com/pytorch/ao">torchao</a>. You can simply specify <code class="docutils literal notranslate"><span class="pre">--torchao-config</span></code> in the command line to support this feature. For example, if you want to enable <code class="docutils literal notranslate"><span class="pre">int4wo-128</span></code> for model <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3.1-8B-Instruct</span></code>, you can launch the server with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--torchao-config<span class="w"> </span>int4wo-128<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>SGLang supports the following quantization methods based on torchao <code class="docutils literal notranslate"><span class="pre">[&quot;int8dq&quot;,</span> <span class="pre">&quot;int8wo&quot;,</span> <span class="pre">&quot;fp8wo&quot;,</span> <span class="pre">&quot;fp8dq-per_tensor&quot;,</span> <span class="pre">&quot;fp8dq-per_row&quot;,</span> <span class="pre">&quot;int4wo-32&quot;,</span> <span class="pre">&quot;int4wo-64&quot;,</span> <span class="pre">&quot;int4wo-128&quot;,</span> <span class="pre">&quot;int4wo-256&quot;]</span></code>.</p>
+<p>Note: According to <a class="reference external" href="https://github.com/sgl-project/sglang/issues/2219#issuecomment-2561890230">this issue</a>, <code class="docutils literal notranslate"><span class="pre">&quot;int8dq&quot;</span></code> method currently has some bugs when using together with cuda graph capture. So we suggest to disable cuda graph capture when using <code class="docutils literal notranslate"><span class="pre">&quot;int8dq&quot;</span></code> method. Namely, please use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--torchao-config<span class="w"> </span>int8dq<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disable-cuda-graph<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ModelCloud/GPTQModel">GPTQModel</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vllm-project/llm-compressor/">LLM Compressor</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer">NVIDIA Model Optimizer (ModelOpt)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pytorch/ao">Torchao: PyTorch Architecture Optimization</a></p></li>
+<li><p><a class="reference external" href="https://docs.vllm.ai/en/latest/quantization/">vLLM Quantization</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/auto-round">auto-round</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="separate_reasoning.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Reasoning Parser</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="quantized_kv_cache.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quantized KV Cache</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offline-quantization">Offline Quantization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-offline-model-quantization">Examples of Offline Model Quantization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-unsloth">Using Unsloth</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-auto-round">Using auto-round</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-gptqmodel">Using GPTQModel</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-llm-compressor">Using LLM Compressor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-nvidia-modelopt">Using NVIDIA ModelOpt</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-and-export-workflow">Quantization and Export Workflow</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#available-quantization-methods">Available Quantization Methods</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-usage">Python API Usage</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#deploying-quantized-models">Deploying Quantized Models</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-features">Advanced Features</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits-of-modelopt">Benefits of ModelOpt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-quantization">Online Quantization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 16, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,843 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Multimodal Language Models &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'supported_models/multimodal_language_models';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/supported_models/multimodal_language_models.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Diffusion Language Models" href="diffusion_language_models.html" />
+    <link rel="prev" title="Large Language Models" href="generative_models.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/supported_models/multimodal_language_models.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/supported_models/multimodal_language_models.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fsupported_models/multimodal_language_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/supported_models/multimodal_language_models.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multimodal Language Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-launch-command">Example launch Command</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-models">Supported models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#video-input-support">Video Input Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-notes">Usage Notes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multimodal-inputs-limitation">Multimodal Inputs Limitation</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="multimodal-language-models">
+<h1>Multimodal Language Models<a class="headerlink" href="#multimodal-language-models" title="Link to this heading">#</a></h1>
+<p>These models accept multi-modal inputs (e.g., images and text) and generate text output. They augment language models with multimodal encoders.</p>
+<section id="example-launch-command">
+<h2>Example launch Command<a class="headerlink" href="#example-launch-command" title="Link to this heading">#</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>meta-llama/Llama-3.2-11B-Vision-Instruct<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># example HF/local path</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>See the <a class="reference external" href="https://docs.sglang.io/basic_usage/openai_api_vision.html">OpenAI APIs section</a> for how to send multimodal requests.</p>
+</div></blockquote>
+</section>
+<section id="supported-models">
+<h2>Supported models<a class="headerlink" href="#supported-models" title="Link to this heading">#</a></h2>
+<p>Below the supported models are summarized in a table.</p>
+<p>If you are unsure if a specific architecture is implemented, you can search for it via GitHub. For example, to search for <code class="docutils literal notranslate"><span class="pre">Qwen2_5_VLForConditionalGeneration</span></code>, use the expression:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">repo</span><span class="p">:</span><span class="n">sgl</span><span class="o">-</span><span class="n">project</span><span class="o">/</span><span class="n">sglang</span> <span class="n">path</span><span class="p">:</span><span class="o">/^</span><span class="n">python</span>\<span class="o">/</span><span class="n">sglang</span>\<span class="o">/</span><span class="n">srt</span>\<span class="o">/</span><span class="n">models</span>\<span class="o">//</span> <span class="n">Qwen2_5_VLForConditionalGeneration</span>
+</pre></div>
+</div>
+<p>in the GitHub search bar.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Family (Variants)</p></th>
+<th class="head"><p>Example HuggingFace Identifier</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Qwen-VL</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-VL-235B-A22B-Instruct</span></code></p></td>
+<td><p>Alibaba’s vision-language extension of Qwen; for example, Qwen2.5-VL (7B and larger variants) can analyze and converse about image content.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DeepSeek-VL2</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepseek-ai/deepseek-vl2</span></code></p></td>
+<td><p>Vision-language variant of DeepSeek (with a dedicated image processor), enabling advanced multimodal reasoning on image and text inputs.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Janus-Pro</strong> (1B, 7B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepseek-ai/Janus-Pro-7B</span></code></p></td>
+<td><p>DeepSeek’s open-source multimodal model capable of both image understanding and generation. Janus-Pro employs a decoupled architecture for separate visual encoding paths, enhancing performance in both tasks.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>MiniCPM-V / MiniCPM-o</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">openbmb/MiniCPM-V-2_6</span></code></p></td>
+<td><p>MiniCPM-V (2.6, ~8B) supports image inputs, and MiniCPM-o adds audio/video; these multimodal LLMs are optimized for end-side deployment on mobile/edge devices.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Llama 3.2 Vision</strong> (11B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">meta-llama/Llama-3.2-11B-Vision-Instruct</span></code></p></td>
+<td><p>Vision-enabled variant of Llama 3 (11B) that accepts image inputs for visual question answering and other multimodal tasks.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LLaVA</strong> (v1.5 &amp; v1.6)</p></td>
+<td><p><em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">liuhaotian/llava-v1.5-13b</span></code></p></td>
+<td><p>Open vision-chat models that add an image encoder to LLaMA/Vicuna (e.g. LLaMA2 13B) for following multimodal instruction prompts.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>LLaVA-NeXT</strong> (8B, 72B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmms-lab/llava-next-72b</span></code></p></td>
+<td><p>Improved LLaVA models (with an 8B Llama3 version and a 72B version) offering enhanced visual instruction-following and accuracy on multimodal benchmarks.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LLaVA-OneVision</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmms-lab/llava-onevision-qwen2-7b-ov</span></code></p></td>
+<td><p>Enhanced LLaVA variant integrating Qwen as the backbone; supports multiple images (and even video frames) as inputs via an OpenAI Vision API-compatible format.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Gemma 3 (Multimodal)</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">google/gemma-3-4b-it</span></code></p></td>
+<td><p>Gemma 3’s larger models (4B, 12B, 27B) accept images (each image encoded as 256 tokens) alongside text in a combined 128K-token context.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Kimi-VL</strong> (A3B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">moonshotai/Kimi-VL-A3B-Instruct</span></code></p></td>
+<td><p>Kimi-VL is a multimodal model that can understand and generate text from images.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Mistral-Small-3.1-24B</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mistralai/Mistral-Small-3.1-24B-Instruct-2503</span></code></p></td>
+<td><p>Mistral 3.1 is a multimodal model that can generate text from text or images input. It also supports tool calling and structured output.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Phi-4-multimodal-instruct</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">microsoft/Phi-4-multimodal-instruct</span></code></p></td>
+<td><p>Phi-4-multimodal-instruct is the multimodal variant of the Phi-4-mini model, enhanced with LoRA for improved multimodal capabilities. It supports text, vision and audio modalities in SGLang.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MiMo-VL</strong> (7B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">XiaomiMiMo/MiMo-VL-7B-RL</span></code></p></td>
+<td><p>Xiaomi’s compact yet powerful vision-language model featuring a native resolution ViT encoder for fine-grained visual details, an MLP projector for cross-modal alignment, and the MiMo-7B language model optimized for complex reasoning tasks.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>GLM-4.5V</strong> (106B) /  <strong>GLM-4.1V</strong>(9B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">zai-org/GLM-4.5V</span></code></p></td>
+<td><p>GLM-4.5V and GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable Reinforcement Learning</p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">--chat-template</span> <span class="pre">glm-4v</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>DotsVLM</strong> (General/OCR)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rednote-hilab/dots.vlm1.inst</span></code></p></td>
+<td><p>RedNote’s vision-language model built on a 1.2B vision encoder and DeepSeek V3 LLM, featuring NaViT vision encoder trained from scratch with dynamic resolution support and enhanced OCR capabilities through structured image data training.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DotsVLM-OCR</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rednote-hilab/dots.ocr</span></code></p></td>
+<td><p>Specialized OCR variant of DotsVLM optimized for optical character recognition tasks with enhanced text extraction and document understanding capabilities.</p></td>
+<td><p>Don’t use <code class="docutils literal notranslate"><span class="pre">--trust-remote-code</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>NVILA</strong> (8B, 15B, Lite-2B, Lite-8B, Lite-15B)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Efficient-Large-Model/NVILA-8B</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">chatml</span></code></p></td>
+<td><p>NVILA explores the full stack efficiency of multi-modal design, achieving cheaper training, faster deployment and better performance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>NVIDIA Nemotron Nano 2.0 VL</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-BF16</span></code></p></td>
+<td><p>NVIDIA Nemotron Nano v2 VL enables multi-image reasoning and video understanding, along with strong document intelligence, visual Q&amp;A and summarization capabilities. It builds on Nemotron Nano V2, a hybrid Mamba-Transformer LLM, in order to achieve higher inference throughput in long document and video scenarios.</p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">--trust-remote-code</span></code>. You may need to adjust <code class="docutils literal notranslate"><span class="pre">--max-mamba-cache-size</span></code> [default is 512] to fit memory constraints.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JetVLM</strong></p></td>
+<td><p></p></td>
+<td><p>JetVLM is an vision-language model designed for high-performance multimodal understanding and generation tasks built upon Jet-Nemotron.</p></td>
+<td><p>Coming soon</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="video-input-support">
+<h2>Video Input Support<a class="headerlink" href="#video-input-support" title="Link to this heading">#</a></h2>
+<p>SGLang supports video input for Vision-Language Models (VLMs), enabling temporal reasoning tasks such as video question answering, captioning, and holistic scene understanding. Video clips are decoded, key frames are sampled, and the resulting tensors are batched together with the text prompt, allowing multimodal inference to integrate visual and linguistic context.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Family</p></th>
+<th class="head"><p>Example Identifier</p></th>
+<th class="head"><p>Video notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Qwen-VL</strong> (Qwen2-VL, Qwen2.5-VL, Qwen3-VL, Qwen3-Omni)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-VL-235B-A22B-Instruct</span></code></p></td>
+<td><p>The processor gathers <code class="docutils literal notranslate"><span class="pre">video_data</span></code>, runs Qwen’s frame sampler, and merges the resulting features with text tokens before inference.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>GLM-4v</strong> (4.5V, 4.1V, MOE)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">zai-org/GLM-4.5V</span></code></p></td>
+<td><p>Video clips are read with Decord, converted to tensors, and passed to the model alongside metadata for rotary-position handling.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>NVILA</strong> (Full &amp; Lite)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Efficient-Large-Model/NVILA-8B</span></code></p></td>
+<td><p>The runtime samples eight frames per clip and attaches them to the multimodal request when <code class="docutils literal notranslate"><span class="pre">video_data</span></code> is present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LLaVA video variants</strong> (LLaVA-NeXT-Video, LLaVA-OneVision)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmms-lab/LLaVA-NeXT-Video-7B</span></code></p></td>
+<td><p>The processor routes video prompts to the LlavaVid video-enabled architecture, and the provided example shows how to query it with <code class="docutils literal notranslate"><span class="pre">sgl.video(...)</span></code> clips.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>NVIDIA Nemotron Nano 2.0 VL</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-BF16</span></code></p></td>
+<td><p>The processor samples at 2 FPS, at a max of 128 frames, as per model training. The model uses <span class="xref myst">EVS</span>, a pruning method that removes redundant tokens from video embeddings. By default <code class="docutils literal notranslate"><span class="pre">video_pruning_rate=0.7</span></code>. Change this by providing: <code class="docutils literal notranslate"><span class="pre">--json-model-override-args</span> <span class="pre">'{&quot;video_pruning_rate&quot;:</span> <span class="pre">0.0}'</span></code> to disable EVS, for example.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JetVLM</strong></p></td>
+<td><p></p></td>
+<td><p>The runtime samples eight frames per clip and attaches them to the multimodal request when <code class="docutils literal notranslate"><span class="pre">video_data</span></code> is present.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">sgl.video(path,</span> <span class="pre">num_frames)</span></code> when building prompts to attach clips from your SGLang programs.</p>
+<p>Example OpenAI-compatible request that sends a video clip:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:30000/v1/chat/completions&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Qwen/Qwen3-VL-30B-A3B-Instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;What’s happening in this video?&quot;</span><span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;video_url&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;video_url&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/sgl-project/sgl-test-files/raw/refs/heads/main/videos/jobs_presenting_ipod.mp4&quot;</span>
+                    <span class="p">},</span>
+                <span class="p">},</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="usage-notes">
+<h2>Usage Notes<a class="headerlink" href="#usage-notes" title="Link to this heading">#</a></h2>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading">#</a></h3>
+<p>For multimodal models, you can use the <code class="docutils literal notranslate"><span class="pre">--keep-mm-feature-on-device</span></code> flag to optimize for latency at the cost of increased GPU memory usage:</p>
+<ul class="simple">
+<li><p><strong>Default behavior</strong>: Multimodal feature tensors are moved to CPU after processing to save GPU memory</p></li>
+<li><p><strong>With <code class="docutils literal notranslate"><span class="pre">--keep-mm-feature-on-device</span></code></strong>: Feature tensors remain on GPU, reducing device-to-host copy overhead and improving latency, but consuming more GPU memory</p></li>
+</ul>
+<p>Use this flag when you have sufficient GPU memory and want to minimize latency for multimodal inference.</p>
+</section>
+<section id="multimodal-inputs-limitation">
+<h3>Multimodal Inputs Limitation<a class="headerlink" href="#multimodal-inputs-limitation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Use <code class="docutils literal notranslate"><span class="pre">--mm-process-config</span> <span class="pre">'{&quot;image&quot;:{&quot;max_pixels&quot;:1048576},&quot;video&quot;:{&quot;fps&quot;:3,&quot;max_pixels&quot;:602112,&quot;max_frames&quot;:60}}'</span></code></strong>: To set <code class="docutils literal notranslate"><span class="pre">image</span></code>, <code class="docutils literal notranslate"><span class="pre">video</span></code>, and <code class="docutils literal notranslate"><span class="pre">audio</span></code> input limits.</p></li>
+</ul>
+<p>This can reduce GPU memory usage, improve inference speed, and help to avoid OOM, but may impact model performance, thus set a proper value based on your specific use case. Currently, only <code class="docutils literal notranslate"><span class="pre">qwen_vl</span></code> supports this config. Please refer to <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/multimodal/processors/qwen_vl.py">qwen_vl processor</a> for understanding the meaning of each parameter.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="generative_models.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Large Language Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="diffusion_language_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Diffusion Language Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-launch-command">Example launch Command</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-models">Supported models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#video-input-support">Video Input Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-notes">Usage Notes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multimodal-inputs-limitation">Multimodal Inputs Limitation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

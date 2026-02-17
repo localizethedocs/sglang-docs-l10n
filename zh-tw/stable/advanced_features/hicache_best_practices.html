@@ -1,0 +1,847 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang HiCache Best Practices &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/hicache_best_practices';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/hicache_best_practices.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="HiCache 系統設計與最佳化" href="hicache_design.html" />
+    <link rel="prev" title="Hierarchical KV Caching (HiCache)" href="hicache.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SGLang HiCache Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hicache_design.html">HiCache 系統設計與最佳化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">重排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore 模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/hicache_best_practices.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/hicache_best_practices.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/hicache_best_practices.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/hicache_best_practices.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang HiCache Best Practices</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-hicache-matters">Why HiCache Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-guidelines">Configuration Guidelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-hicache-parameters">Core HiCache Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-configurations-with-storage-backends-enabled">Key Configurations with Storage Backends Enabled</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout-optimization">Memory Layout Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefetch-policies">Prefetch Policies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-pd-disaggregation">Integration with PD Disaggregation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-with-hf3fs">Deployment with HF3FS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-with-mooncake">Deployment with Mooncake</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-storage-backend-integration">Custom Storage Backend Integration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-backend-loading">Dynamic Backend Loading</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community-and-support">Community and Support</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sglang-hicache-best-practices">
+<h1>SGLang HiCache Best Practices<a class="headerlink" href="#sglang-hicache-best-practices" title="連結到這個標頭">#</a></h1>
+<section id="why-hicache-matters">
+<h2>Why HiCache Matters<a class="headerlink" href="#why-hicache-matters" title="連結到這個標頭">#</a></h2>
+<p>SGLang HiCache extends the traditional RadixAttention with a three-tier hierarchical KV caching system that dramatically improves performance for long-context and multi-turn conversation scenarios. By intelligently managing KV caches across GPU memory, host memory, and external storage backends, HiCache addresses the fundamental capacity bottleneck that limits cache hit rates in conventional systems.</p>
+</section>
+<section id="configuration-guidelines">
+<h2>Configuration Guidelines<a class="headerlink" href="#configuration-guidelines" title="連結到這個標頭">#</a></h2>
+</section>
+<section id="core-hicache-parameters">
+<h2>Core HiCache Parameters<a class="headerlink" href="#core-hicache-parameters" title="連結到這個標頭">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Essential HiCache flags</span>
+--page-size<span class="w"> </span><span class="m">64</span><span class="w">                        </span><span class="c1"># Page size for cache management</span>
+--enable-hierarchical-cache<span class="w">           </span><span class="c1"># Enable HiCache</span>
+--hicache-ratio<span class="w"> </span><span class="m">2</span><span class="w">                     </span><span class="c1"># Host memory ratio (2x GPU memory)</span>
+--hicache-size<span class="w"> </span><span class="m">100</span><span class="w">                    </span><span class="c1"># Host memory size in GBs, will override the above ratio</span>
+--hicache-io-backend<span class="w"> </span>kernel<span class="w">           </span><span class="c1"># The I/O backend of moving data between CPU and GPU</span>
+--hicache-write-policy<span class="w"> </span>write_through<span class="w">  </span><span class="c1"># Cache write policy from GPU to CPU</span>
+--hicache-storage-backend<span class="w">             </span><span class="c1"># Optional storage backend (e.g., hf3fs, mooncake, etc.)</span>
+</pre></div>
+</div>
+</section>
+<section id="key-configurations-with-storage-backends-enabled">
+<h2>Key Configurations with Storage Backends Enabled<a class="headerlink" href="#key-configurations-with-storage-backends-enabled" title="連結到這個標頭">#</a></h2>
+<section id="memory-layout-optimization">
+<h3>Memory Layout Optimization<a class="headerlink" href="#memory-layout-optimization" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Page-first: Optimized for I/O efficiency with zero-copy (recommended with kernel backend)</span>
+--hicache-mem-layout<span class="w"> </span>page_first
+<span class="c1"># Page-first-direct: Optimized for direct I/O operations (Compatible with fa3 and same zero-copy performance as page_first)</span>
+--hicache-mem-layout<span class="w"> </span>page_first_direct
+<span class="c1"># Layer-first</span>
+--hicache-mem-layout<span class="w"> </span>layer_first
+</pre></div>
+</div>
+<p><strong>Layout Compatibility:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">page_first</span></code>: Only compatible with <code class="docutils literal notranslate"><span class="pre">kernel</span></code> I/O backend, automatically switches to <code class="docutils literal notranslate"><span class="pre">layer_first</span></code> with <code class="docutils literal notranslate"><span class="pre">direct</span></code> backend</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">page_first_direct</span></code>: Specifically designed for <code class="docutils literal notranslate"><span class="pre">direct</span></code> I/O backend with optimized memory organization</p></li>
+</ul>
+</section>
+<section id="prefetch-policies">
+<h3>Prefetch Policies<a class="headerlink" href="#prefetch-policies" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Best-effort: Terminate prefetch when needed</span>
+--hicache-storage-prefetch-policy<span class="w"> </span>best_effort
+<span class="c1"># Wait-complete: Ensure complete prefetch, higher cache reuse</span>
+--hicache-storage-prefetch-policy<span class="w"> </span>wait_complete
+<span class="c1"># Timeout: Balance between completion and best-effort</span>
+--hicache-storage-prefetch-policy<span class="w"> </span>timeout
+</pre></div>
+</div>
+</section>
+<section id="integration-with-pd-disaggregation">
+<h3>Integration with PD Disaggregation<a class="headerlink" href="#integration-with-pd-disaggregation" title="連結到這個標頭">#</a></h3>
+<p>HiCache works seamlessly with PD Disaggregation. You can choose between two configurations:</p>
+<ol class="arabic simple">
+<li><p><strong>Prefill-only HiCache</strong>: Enable HiCache only on Prefill nodes, allowing KV cache sharing among Prefill instances</p></li>
+<li><p><strong>Full HiCache with async offloading</strong>: Enable HiCache on Prefill nodes and async KV cache offloading on Decode nodes, allowing Prefill nodes to reuse KV caches from Decode nodes in multi-turn dialogue scenarios</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prefill node with HiCache enabled for cross-prefill sharing (ideal for SystemPrompt scenarios)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>/xxx/DeepSeek-R1/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">10000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-metrics<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-cache-report<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.85<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--page-size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-hierarchical-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-ratio<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-size<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-mem-layout<span class="w"> </span>page_first_direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-io-backend<span class="w"> </span>direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-write-policy<span class="w"> </span>write_through<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-backend<span class="w"> </span>hf3fs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-prefetch-policy<span class="w"> </span>wait_complete<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disaggregation-ib-device<span class="w"> </span>mlx5_0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disaggregation-mode<span class="w"> </span>prefill<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disaggregation-transfer-backend<span class="w"> </span>mooncake
+
+<span class="c1"># Decode node with async offloading enabled for KV cache reuse by Prefill (ideal for multi-turn conversations)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>/xxx/DeepSeek-R1/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">10000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-metrics<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-cache-report<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--page-size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-ratio<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-size<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-mem-layout<span class="w"> </span>page_first_direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-io-backend<span class="w"> </span>direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-write-policy<span class="w"> </span>write_through<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-backend<span class="w"> </span>hf3fs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-prefetch-policy<span class="w"> </span>wait_complete<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disaggregation-decode-enable-offload-kvcache<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># Enable async KV cache offloading in decode node</span>
+<span class="w">  </span>--disaggregation-ib-device<span class="w"> </span>mlx5_0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disaggregation-mode<span class="w"> </span>decode<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disaggregation-transfer-backend<span class="w"> </span>mooncake
+</pre></div>
+</div>
+</section>
+<section id="deployment-with-hf3fs">
+<h3>Deployment with HF3FS<a class="headerlink" href="#deployment-with-hf3fs" title="連結到這個標頭">#</a></h3>
+<p>Here is an example of deploying DeepSeek-R1 with HiCache-HF3FS. For more details, see the <span class="xref myst">HF3FS Documentation</span>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>/xxx/DeepSeek-R1/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-level<span class="w"> </span>info<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">10000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-metrics<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-cache-report<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--page-size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.85<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-hierarchical-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-ratio<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-size<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-mem-layout<span class="w"> </span>page_first_direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-io-backend<span class="w"> </span>direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-write-policy<span class="w"> </span>write_through<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-backend<span class="w"> </span>hf3fs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-prefetch-policy<span class="w"> </span>wait_complete<span class="w"> </span><span class="se">\</span>
+</pre></div>
+</div>
+</section>
+<section id="deployment-with-mooncake">
+<h3>Deployment with Mooncake<a class="headerlink" href="#deployment-with-mooncake" title="連結到這個標頭">#</a></h3>
+<p>Here is an example of deploying Qwen3-235B-A22B-Instruct-2507 with Mooncake. For more details, see the <span class="xref myst">Mooncake Documentation</span>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set Mooncake environment variables</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOONCAKE_TE_META_DATA_SERVER</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:8080/metadata&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOONCAKE_GLOBAL_SEGMENT_SIZE</span><span class="o">=</span><span class="m">816043786240</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOONCAKE_PROTOCOL</span><span class="o">=</span><span class="s2">&quot;rdma&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOONCAKE_DEVICE</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DEVICE_LIST</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOONCAKE_MASTER</span><span class="o">=</span><span class="m">127</span>.0.0.1:50051
+
+<span class="c1"># Launch SGLang server with Mooncake backend</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span><span class="nv">$MODEL_PATH</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--page-size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-hierarchical-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-ratio<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-mem-layout<span class="w"> </span>page_first_direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-io-backend<span class="w"> </span>direct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-backend<span class="w"> </span>mooncake<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-write-policy<span class="w"> </span>write_through<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-prefetch-policy<span class="w"> </span>timeout
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-storage-backend-integration">
+<h2>Custom Storage Backend Integration<a class="headerlink" href="#custom-storage-backend-integration" title="連結到這個標頭">#</a></h2>
+<p>To integrate a new storage backend:</p>
+<ol class="arabic simple">
+<li><p><strong>Implement three core methods:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get(key)</span></code>: Retrieve value by key</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exists(key)</span></code>: Check key existence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set(key,</span> <span class="pre">value)</span></code>: Store key-value pair</p></li>
+</ul>
+</li>
+<li><p><strong>Register your backend:</strong> Add your storage backend to the HiCache <a class="reference download internal" download="" href="../_downloads/62f9aec5f652f3712fb96e8201110e73/backend_factory.py"><span class="xref download myst">BackendFactory</span></a></p></li>
+</ol>
+<p>The HiCache controller handles all scheduling and synchronization automatically.</p>
+<section id="dynamic-backend-loading">
+<h3>Dynamic Backend Loading<a class="headerlink" href="#dynamic-backend-loading" title="連結到這個標頭">#</a></h3>
+<p>Alternatively, you can use dynamic loading to avoid hard-coding your backend in the repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>your-model<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-hierarchical-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-backend<span class="w"> </span>dynamic<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hicache-storage-backend-extra-config<span class="w"> </span><span class="s1">&#39;{&quot;backend_name&quot;:&quot;custom_backend_name&quot;, &quot;module_path&quot;: &quot;your_module_path&quot;, &quot;class_name&quot;: &quot;YourHiCacheClassName&quot;}&#39;</span>
+</pre></div>
+</div>
+<p><strong>Configuration Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend</span></code>: Set to <code class="docutils literal notranslate"><span class="pre">dynamic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend-extra-config</span></code>: JSON configuration with:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">backend_name</span></code>: Custom backend identifier</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">module_path</span></code>: Python module path to your implementation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_name</span></code>: Your HiCache implementation class name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface_v1</span></code>: 0 (disable) or 1 (enable) to control usage of batch_get_v1 and batch_set_v1 methods</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="community-and-support">
+<h2>Community and Support<a class="headerlink" href="#community-and-support" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p><strong>GitHub Issues</strong>: Report bugs and feature requests</p></li>
+<li><p><strong>Slack Channel</strong>: Join community discussions in #sgl-kv-cache-store</p></li>
+<li><p><strong>Documentation</strong>: Refer to storage backend-specific guides</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>This document will be continuously updated based on community feedback and new features. Contributions and suggestions are welcome!</em></p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hicache.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Hierarchical KV Caching (HiCache)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hicache_design.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">HiCache 系統設計與最佳化</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-hicache-matters">Why HiCache Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-guidelines">Configuration Guidelines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-hicache-parameters">Core HiCache Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-configurations-with-storage-backends-enabled">Key Configurations with Storage Backends Enabled</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout-optimization">Memory Layout Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefetch-policies">Prefetch Policies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-pd-disaggregation">Integration with PD Disaggregation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-with-hf3fs">Deployment with HF3FS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-with-mooncake">Deployment with Mooncake</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-storage-backend-integration">Custom Storage Backend Integration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-backend-loading">Dynamic Backend Loading</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community-and-support">Community and Support</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

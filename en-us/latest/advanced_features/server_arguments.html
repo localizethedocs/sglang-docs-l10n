@@ -1,0 +1,2555 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Server Arguments &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/server_arguments';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/server_arguments.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Hyperparameter Tuning" href="hyperparameter_tuning.html" />
+    <link rel="prev" title="Llama4 Usage" href="../basic_usage/llama4.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 16, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/server_arguments.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/server_arguments.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/server_arguments.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/server_arguments.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Server Arguments</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-launch-commands">Common launch commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-tokenizer">Model and tokenizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-server">HTTP server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-and-data-type">Quantization and data type</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-and-scheduling">Memory and scheduling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-options">Runtime options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-related">API related</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-parallelism">Data parallelism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-distributed-serving">Multi-node distributed serving</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-override-args">Model override args</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lora">LoRA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-backends-attention-sampling-grammar-gemm">Kernel Backends (Attention, Sampling, Grammar, GEMM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding">Speculative decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ngram-speculative-decoding">Ngram speculative decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe">MoE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mamba-cache">Mamba Cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#args-for-multi-item-scoring">Args for multi-item scoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-cache">Hierarchical cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lmcache">LMCache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-sparsity">Double Sparsity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offloading">Offloading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-debug-options">Optimization/debug options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-hooks">Forward hooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tensor-dumps">Debug tensor dumps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-disaggregation">PD disaggregation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-weight-loader">Custom weight loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-pd-multiplexing">For PD-Multiplexing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-deterministic-inference">For deterministic inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecated-arguments">Deprecated arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-file-support">Configuration file support</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="server-arguments">
+<h1>Server Arguments<a class="headerlink" href="#server-arguments" title="Link to this heading">#</a></h1>
+<p>This page provides a list of server arguments used in the command line to configure the behavior
+and performance of the language model server during deployment. These arguments enable users to
+customize key aspects of the server, including model selection, parallelism policies,
+memory management, and optimization techniques.
+You can find all arguments by <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">sglang.launch_server</span> <span class="pre">--help</span></code></p>
+<section id="common-launch-commands">
+<h2>Common launch commands<a class="headerlink" href="#common-launch-commands" title="Link to this heading">#</a></h2>
+<ul>
+<li><p>To use a configuration file, create a YAML file with your server arguments and specify it with <code class="docutils literal notranslate"><span class="pre">--config</span></code>. CLI arguments will override config file values.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create config.yaml</span>
+cat<span class="w"> </span>&gt;<span class="w"> </span>config.yaml<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+<span class="s">model-path: meta-llama/Meta-Llama-3-8B-Instruct</span>
+<span class="s">host: 0.0.0.0</span>
+<span class="s">port: 30000</span>
+<span class="s">tensor-parallel-size: 2</span>
+<span class="s">enable-metrics: true</span>
+<span class="s">log-requests: true</span>
+<span class="s">EOF</span>
+
+<span class="c1"># Launch server with config file</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--config<span class="w"> </span>config.yaml
+</pre></div>
+</div>
+</li>
+<li><p>To enable multi-GPU tensor parallelism, add <code class="docutils literal notranslate"><span class="pre">--tp</span> <span class="pre">2</span></code>. If it reports the error “peer access is not supported between these two devices”, add <code class="docutils literal notranslate"><span class="pre">--enable-p2p-check</span></code> to the server launch command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span>--tp<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>To enable multi-GPU data parallelism, add <code class="docutils literal notranslate"><span class="pre">--dp</span> <span class="pre">2</span></code>. Data parallelism is better for throughput if there is enough memory. It can also be used together with tensor parallelism. The following command uses 4 GPUs in total. We recommend <a class="reference internal" href="#../advanced_features/router.md"><span class="xref myst">SGLang Router</span></a> for data parallelism.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_router.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span>--dp<span class="w"> </span><span class="m">2</span><span class="w"> </span>--tp<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you see out-of-memory errors during serving, try to reduce the memory usage of the KV cache pool by setting a smaller value of <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code>. The default value is <code class="docutils literal notranslate"><span class="pre">0.9</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span>--mem-fraction-static<span class="w"> </span><span class="m">0</span>.7
+</pre></div>
+</div>
+</li>
+<li><p>See <a class="reference internal" href="hyperparameter_tuning.html"><span class="std std-doc">hyperparameter tuning</span></a> on tuning hyperparameters for better performance.</p></li>
+<li><p>For docker and Kubernetes runs, you need to set up shared memory which is used for communication between processes. See <code class="docutils literal notranslate"><span class="pre">--shm-size</span></code> for docker and <code class="docutils literal notranslate"><span class="pre">/dev/shm</span></code> size update for Kubernetes manifests.</p></li>
+<li><p>If you see out-of-memory errors during prefill for long prompts, try to set a smaller chunked prefill size.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span>--chunked-prefill-size<span class="w"> </span><span class="m">4096</span>
+</pre></div>
+</div>
+</li>
+<li><p>To enable <code class="docutils literal notranslate"><span class="pre">torch.compile</span></code> acceleration, add <code class="docutils literal notranslate"><span class="pre">--enable-torch-compile</span></code>. It accelerates small models on small batch sizes. By default, the cache path is located at <code class="docutils literal notranslate"><span class="pre">/tmp/torchinductor_root</span></code>, you can customize it using environment variable <code class="docutils literal notranslate"><span class="pre">TORCHINDUCTOR_CACHE_DIR</span></code>. For more details, please refer to <a class="reference external" href="https://pytorch.org/tutorials/recipes/torch_compile_caching_tutorial.html">PyTorch official documentation</a> and <a class="reference external" href="https://docs.sglang.io/references/torch_compile_cache.html">Enabling cache for torch.compile</a>.</p></li>
+<li><p>To enable torchao quantization, add <code class="docutils literal notranslate"><span class="pre">--torchao-config</span> <span class="pre">int4wo-128</span></code>. It supports other <a class="reference external" href="https://github.com/sgl-project/sglang/blob/v0.3.6/python/sglang/srt/server_args.py#L671">quantization strategies (INT8/FP8)</a> as well.</p></li>
+<li><p>To enable fp8 weight quantization, add <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">fp8</span></code> on a fp16 checkpoint or directly load a fp8 checkpoint without specifying any arguments.</p></li>
+<li><p>To enable fp8 kv cache quantization, add <code class="docutils literal notranslate"><span class="pre">--kv-cache-dtype</span> <span class="pre">fp8_e5m2</span></code>.</p></li>
+<li><p>To enable deterministic inference and batch invariant operations, add <code class="docutils literal notranslate"><span class="pre">--enable-deterministic-inference</span></code>. More details can be found in <a class="reference internal" href="deterministic_inference.html"><span class="std std-doc">deterministic inference document</span></a>.</p></li>
+<li><p>If the model does not have a chat template in the Hugging Face tokenizer, you can specify a <a class="reference internal" href="../references/custom_chat_template.html"><span class="std std-doc">custom chat template</span></a>.</p></li>
+<li><p>To run tensor parallelism on multiple nodes, add <code class="docutils literal notranslate"><span class="pre">--nnodes</span> <span class="pre">2</span></code>. If you have two nodes with two GPUs on each node and want to run TP=4, let <code class="docutils literal notranslate"><span class="pre">sgl-dev-0</span></code> be the hostname of the first node and <code class="docutils literal notranslate"><span class="pre">50000</span></code> be an available port, you can use the following commands. If you meet deadlock, please try to add <code class="docutils literal notranslate"><span class="pre">--disable-cuda-graph</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Node 0</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dist-init-addr<span class="w"> </span>sgl-dev-0:50000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--node-rank<span class="w"> </span><span class="m">0</span>
+
+<span class="c1"># Node 1</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dist-init-addr<span class="w"> </span>sgl-dev-0:50000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--nnodes<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--node-rank<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Please consult the documentation below and <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/server_args.py">server_args.py</a> to learn more about the arguments you may provide when launching a server.</p>
+</section>
+<section id="model-and-tokenizer">
+<h2>Model and tokenizer<a class="headerlink" href="#model-and-tokenizer" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--model-path</span></code><br><code class="docutils literal notranslate"><span class="pre">--model</span></code></p></td>
+<td><p>The path of the model weights. This can be a local folder or a Hugging Face repo ID.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tokenizer-path</span></code></p></td>
+<td><p>The path of the tokenizer.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tokenizer-mode</span></code></p></td>
+<td><p>Tokenizer mode. ‘auto’ will use the fast tokenizer if available, and ‘slow’ will always use the slow tokenizer.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">slow</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tokenizer-worker-num</span></code></p></td>
+<td><p>The worker num of the tokenizer manager.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--skip-tokenizer-init</span></code></p></td>
+<td><p>If set, skip init tokenizer and pass input_ids in generate request.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--load-format</span></code></p></td>
+<td><p>The format of the model weights to load. “auto” will try to load the weights in the safetensors format and fall back to the pytorch bin format if safetensors format is not available. “pt” will load the weights in the pytorch bin format. “safetensors” will load the weights in the safetensors format. “npcache” will load the weights in pytorch format and store a numpy cache to speed up the loading. “dummy” will initialize the weights with random values, which is mainly for profiling.”gguf” will load the weights in the gguf format. “bitsandbytes” will load the weights using bitsandbytes quantization.”layered” loads weights layer by layer so that one can quantize a layer before loading another to make the peak memory envelope smaller.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">safetensors</span></code>, <code class="docutils literal notranslate"><span class="pre">npcache</span></code>, <code class="docutils literal notranslate"><span class="pre">dummy</span></code>, <code class="docutils literal notranslate"><span class="pre">sharded_state</span></code>, <code class="docutils literal notranslate"><span class="pre">gguf</span></code>, <code class="docutils literal notranslate"><span class="pre">bitsandbytes</span></code>, <code class="docutils literal notranslate"><span class="pre">layered</span></code>, <code class="docutils literal notranslate"><span class="pre">remote</span></code>, <code class="docutils literal notranslate"><span class="pre">remote_instance</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--model-loader-extra-config</span></code></p></td>
+<td><p>Extra config for model loader. This will be passed to the model loader corresponding to the chosen load_format.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--trust-remote-code</span></code></p></td>
+<td><p>Whether or not to allow for custom models defined on the Hub in their own modeling files.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--context-length</span></code></p></td>
+<td><p>The model’s maximum context length. Defaults to None (will use the value from the model’s config.json instead).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--is-embedding</span></code></p></td>
+<td><p>Whether to use a CausalLM as an embedding model.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-multimodal</span></code></p></td>
+<td><p>Enable the multimodal functionality for the served model. If the model being served is not multimodal, nothing will happen</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--limit-mm-data-per-request</span></code></p></td>
+<td><p>Limit the number of multimodal inputs per request. e.g. ‘{“image”: 1, “video”: 1, “audio”: 1}’</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: JSON / Dict</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--revision</span></code></p></td>
+<td><p>The specific model version to use. It can be a branch name, a tag name, or a commit id. If unspecified, will use the default version.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--model-impl</span></code></p></td>
+<td><p>Which implementation of the model to use. * “auto” will try to use the SGLang implementation if it exists and fall back to the Transformers implementation if no SGLang implementation is available. * “sglang” will use the SGLang model implementation. * “transformers” will use the Transformers model implementation.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="http-server">
+<h2>HTTP server<a class="headerlink" href="#http-server" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--host</span></code></p></td>
+<td><p>The host of the HTTP server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--port</span></code></p></td>
+<td><p>The port of the HTTP server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">30000</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--skip-server-warmup</span></code></p></td>
+<td><p>If set, skip warmup.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--warmups</span></code></p></td>
+<td><p>Specify custom warmup functions (csv) to run before server starts eg. –warmups=warmup_name1,warmup_name2 will run the functions <code class="docutils literal notranslate"><span class="pre">warmup_name1</span></code> and <code class="docutils literal notranslate"><span class="pre">warmup_name2</span></code> specified in warmup.py before the server starts listening for requests</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--nccl-port</span></code></p></td>
+<td><p>The port for NCCL distributed environment setup. Defaults to a random port.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="quantization-and-data-type">
+<h2>Quantization and data type<a class="headerlink" href="#quantization-and-data-type" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--dtype</span></code></p></td>
+<td><p>Data type for model weights and activations. * “auto” will use FP16 precision for FP32 and FP16 models, and BF16 precision for BF16 models. * “half” for FP16. Recommended for AWQ quantization. * “float16” is the same as “half”. * “bfloat16” for a balance between precision and range. * “float” is shorthand for FP32 precision. * “float32” for FP32 precision.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">half</span></code>, <code class="docutils literal notranslate"><span class="pre">float16</span></code>, <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">float32</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--quantization</span></code></p></td>
+<td><p>The quantization method.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">awq</span></code>, <code class="docutils literal notranslate"><span class="pre">fp8</span></code>, <code class="docutils literal notranslate"><span class="pre">gptq</span></code>, <code class="docutils literal notranslate"><span class="pre">marlin</span></code>, <code class="docutils literal notranslate"><span class="pre">gptq_marlin</span></code>, <code class="docutils literal notranslate"><span class="pre">awq_marlin</span></code>, <code class="docutils literal notranslate"><span class="pre">bitsandbytes</span></code>, <code class="docutils literal notranslate"><span class="pre">gguf</span></code>, <code class="docutils literal notranslate"><span class="pre">modelopt</span></code>, <code class="docutils literal notranslate"><span class="pre">modelopt_fp4</span></code>, <code class="docutils literal notranslate"><span class="pre">petit_nvfp4</span></code>, <code class="docutils literal notranslate"><span class="pre">w8a8_int8</span></code>, <code class="docutils literal notranslate"><span class="pre">w8a8_fp8</span></code>, <code class="docutils literal notranslate"><span class="pre">moe_wna16</span></code>, <code class="docutils literal notranslate"><span class="pre">qoq</span></code>, <code class="docutils literal notranslate"><span class="pre">w4afp8</span></code>, <code class="docutils literal notranslate"><span class="pre">mxfp4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--quantization-param-path</span></code></p></td>
+<td><p>Path to the JSON file containing the KV cache scaling factors. This should generally be supplied, when KV cache dtype is FP8. Otherwise, KV cache scaling factors default to 1.0, which may cause accuracy issues.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: Optional[str]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--modelopt-quant</span></code></p></td>
+<td><p>The ModelOpt quantization configuration. Supported values: ‘fp8’, ‘int4_awq’, ‘w4a8_awq’, ‘nvfp4’, ‘nvfp4_awq’. This requires the NVIDIA Model Optimizer library to be installed: pip install nvidia-modelopt</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--modelopt-checkpoint-restore-path</span></code></p></td>
+<td><p>Path to restore a previously saved ModelOpt quantized checkpoint. If provided, the quantization process will be skipped and the model will be loaded from this checkpoint.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--modelopt-checkpoint-save-path</span></code></p></td>
+<td><p>Path to save the ModelOpt quantized checkpoint after quantization. This allows reusing the quantized model in future runs.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--kv-cache-dtype</span></code></p></td>
+<td><p>Data type for kv cache storage. “auto” will use model data type. “fp8_e5m2” and “fp8_e4m3” is supported for CUDA 11.8+.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">fp8_e5m2</span></code>, <code class="docutils literal notranslate"><span class="pre">fp8_e4m3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-fp32-lm-head</span></code></p></td>
+<td><p>If set, the LM head outputs (logits) are in FP32.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="memory-and-scheduling">
+<h2>Memory and scheduling<a class="headerlink" href="#memory-and-scheduling" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code></p></td>
+<td><p>The fraction of the memory used for static allocation (model weights and KV cache memory pool). Use a smaller value if you see out-of-memory errors.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code></p></td>
+<td><p>The maximum number of running requests.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-queued-requests</span></code></p></td>
+<td><p>The maximum number of queued requests. This option is ignored when using disaggregation-mode.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-total-tokens</span></code></p></td>
+<td><p>The maximum number of tokens in the memory pool. If not specified, it will be automatically calculated based on the memory usage fraction. This option is typically used for development and debugging purposes.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--chunked-prefill-size</span></code></p></td>
+<td><p>The maximum number of tokens in a chunk for the chunked prefill. Setting this to -1 means disabling chunked prefill.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-prefill-tokens</span></code></p></td>
+<td><p>The maximum number of tokens in a prefill batch. The real bound will be the maximum of this value and the model’s maximum context length.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">16384</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--schedule-policy</span></code></p></td>
+<td><p>The scheduling policy of the requests.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fcfs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lpm</span></code>, <code class="docutils literal notranslate"><span class="pre">random</span></code>, <code class="docutils literal notranslate"><span class="pre">fcfs</span></code>, <code class="docutils literal notranslate"><span class="pre">dfs-weight</span></code>, <code class="docutils literal notranslate"><span class="pre">lof</span></code>, <code class="docutils literal notranslate"><span class="pre">priority</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-priority-scheduling</span></code></p></td>
+<td><p>Enable priority scheduling. Requests with higher priority integer values will be scheduled first by default.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--schedule-low-priority-values-first</span></code></p></td>
+<td><p>If specified with –enable-priority-scheduling, the scheduler will schedule requests with lower priority integer values first.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--priority-scheduling-preemption-threshold</span></code></p></td>
+<td><p>Minimum difference in priorities for an incoming request to have to preempt running request(s).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--schedule-conservativeness</span></code></p></td>
+<td><p>How conservative the schedule policy is. A larger value means more conservative scheduling. Use a larger value if you see requests being retracted frequently.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--page-size</span></code></p></td>
+<td><p>The number of tokens in a page.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hybrid-kvcache-ratio</span></code></p></td>
+<td><p>Mix ratio in [0,1] between uniform and hybrid kv buffers (0.0 = pure uniform: swa_size / full_size = 1)(1.0 = pure hybrid: swa_size / full_size = local_attention_size / context_length)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Optional[float]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--swa-full-tokens-ratio</span></code></p></td>
+<td><p>The ratio of SWA layer KV tokens / full layer KV tokens, regardless of the number of swa:full layers. It should be between 0 and 1. E.g. 0.5 means if each swa layer has 50 tokens, then each full layer has 100 tokens.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.8</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-hybrid-swa-memory</span></code></p></td>
+<td><p>Disable the hybrid SWA memory.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="runtime-options">
+<h2>Runtime options<a class="headerlink" href="#runtime-options" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--device</span></code></p></td>
+<td><p>The device to use (‘cuda’, ‘xpu’, ‘hpu’, ‘npu’, ‘cpu’). Defaults to auto-detection if not specified.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--elastic-ep-backend</span></code></p></td>
+<td><p>Select the collective communication backend for elastic EP. Currently supports ‘mooncake’.</p></td>
+<td><p>None</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--mooncake-ib-device</span></code></p></td>
+<td><p>The InfiniBand devices for Mooncake Backend, accepts multiple comma-separated devices. Default is None, which triggers automatic device detection when Mooncake Backend is enabled.</p></td>
+<td><p>None</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tensor-parallel-size</span></code><br><code class="docutils literal notranslate"><span class="pre">--tp-size</span></code></p></td>
+<td><p>The tensor parallelism size.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--pipeline-parallel-size</span></code><br><code class="docutils literal notranslate"><span class="pre">--pp-size</span></code></p></td>
+<td><p>The pipeline parallelism size.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--pp-max-micro-batch-size</span></code></p></td>
+<td><p>The maximum micro batch size in pipeline parallelism.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--stream-interval</span></code></p></td>
+<td><p>The interval (or buffer size) for streaming in terms of the token length. A smaller value makes streaming smoother, while a larger value makes the throughput higher</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--stream-output</span></code></p></td>
+<td><p>Whether to output as a sequence of disjoint segments.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--random-seed</span></code></p></td>
+<td><p>The random seed.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--constrained-json-whitespace-pattern</span></code></p></td>
+<td><p>(outlines and llguidance backends only) Regex pattern for syntactic whitespaces allowed in JSON constrained output. For example, to allow the model to generate consecutive whitespaces, set the pattern to [\n\t ]*</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--constrained-json-disable-any-whitespace</span></code></p></td>
+<td><p>(xgrammar and llguidance backends only) Enforce compact representation in JSON constrained output.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--watchdog-timeout</span></code></p></td>
+<td><p>Set watchdog timeout in seconds. If a forward batch takes longer than this, the server will crash to prevent hanging.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">300</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--dist-timeout</span></code></p></td>
+<td><p>Set timeout for torch.distributed initialization.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--download-dir</span></code></p></td>
+<td><p>Model download directory for huggingface.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--base-gpu-id</span></code></p></td>
+<td><p>The base GPU ID to start allocating GPUs from. Useful when running multiple instances on the same machine.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--gpu-id-step</span></code></p></td>
+<td><p>The delta between consecutive GPU IDs that are used. For example, setting it to 2 will use GPU 0,2,4,…</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--sleep-on-idle</span></code></p></td>
+<td><p>Reduce CPU usage when sglang is idle.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--mm-process-config</span></code></p></td>
+<td><p>A JSON string for multimodal preprocessing configuration. It can contain keys: <code class="docutils literal notranslate"><span class="pre">image</span></code>, <code class="docutils literal notranslate"><span class="pre">video</span></code>, <code class="docutils literal notranslate"><span class="pre">audio</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--log-level</span></code></p></td>
+<td><p>The logging level of all loggers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">info</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--log-level-http</span></code></p></td>
+<td><p>The logging level of HTTP server. If not set, reuse –log-level by default.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--log-requests</span></code></p></td>
+<td><p>Log metadata, inputs, outputs of all requests. The verbosity is decided by –log-requests-level</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--log-requests-level</span></code></p></td>
+<td><p>0: Log metadata (no sampling parameters). 1: Log metadata and sampling parameters. 2: Log metadata, sampling parameters and partial input/output. 3: Log every input/output.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--crash-dump-folder</span></code></p></td>
+<td><p>Folder path to dump requests from the last 5 min before a crash (if any). If not specified, crash dumping is disabled.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--crash-on-nan</span></code></p></td>
+<td><p>Crash the server on nan logprobs.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--show-time-cost</span></code></p></td>
+<td><p>Show time cost of custom marks.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-metrics</span></code></p></td>
+<td><p>Enable log prometheus metrics.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-metrics-for-all-schedulers</span></code></p></td>
+<td><p>Enable –enable-metrics-for-all-schedulers when you want schedulers on all TP ranks (not just TP 0) to record request metrics separately. This is especially useful when dp_attention is enabled, as otherwise all metrics appear to come from TP 0.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tokenizer-metrics-custom-labels-header</span></code></p></td>
+<td><p>Specify the HTTP header for passing custom labels for tokenizer metrics.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">x-custom-labels</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tokenizer-metrics-allowed-custom-labels</span></code></p></td>
+<td><p>The custom labels allowed for tokenizer metrics. The labels are specified via a dict in ‘–tokenizer-metrics-custom-labels-header’ field in HTTP requests, e.g., {‘label1’: ‘value1’, ‘label2’: ‘value2’} is allowed if ‘–tokenizer-metrics-allowed-custom-labels label1 label2’ is set.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[str]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--bucket-time-to-first-token</span></code></p></td>
+<td><p>The buckets of time to first token, specified as a list of floats.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[float]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--bucket-inter-token-latency</span></code></p></td>
+<td><p>The buckets of inter-token latency, specified as a list of floats.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[float]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--bucket-e2e-request-latency</span></code></p></td>
+<td><p>The buckets of end-to-end request latency, specified as a list of floats.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[float]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--collect-tokens-histogram</span></code></p></td>
+<td><p>Collect prompt/generation tokens histogram.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--prompt-tokens-buckets</span></code></p></td>
+<td><p>The buckets rule of prompt tokens. Supports 3 rule types: ‘default’ uses predefined buckets; ‘tse <middle> <base> <count>’ generates two sides exponential distributed buckets (e.g., ‘tse 1000 2 8’ generates buckets [984.0, 992.0, 996.0, 998.0, 1000.0, 1002.0, 1004.0, 1008.0, 1016.0]).); ‘custom <value1> <value2> …’ uses custom bucket values (e.g., ‘custom 10 50 100 500’).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[str]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--generation-tokens-buckets</span></code></p></td>
+<td><p>The buckets rule for generation tokens histogram. Supports 3 rule types: ‘default’ uses predefined buckets; ‘tse <middle> <base> <count>’ generates two sides exponential distributed buckets (e.g., ‘tse 1000 2 8’ generates buckets [984.0, 992.0, 996.0, 998.0, 1000.0, 1002.0, 1004.0, 1008.0, 1016.0]).); ‘custom <value1> <value2> …’ uses custom bucket values (e.g., ‘custom 10 50 100 500’).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[str]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--gc-warning-threshold-secs</span></code></p></td>
+<td><p>The threshold for long GC warning. If a GC takes longer than this, a warning will be logged. Set to 0 to disable.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--decode-log-interval</span></code></p></td>
+<td><p>The log interval of decode batch.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">40</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-request-time-stats-logging</span></code></p></td>
+<td><p>Enable per request time stats logging</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--kv-events-config</span></code></p></td>
+<td><p>Config in json format for NVIDIA dynamo KV event publishing. Publishing will be enabled if this flag is used.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-trace</span></code></p></td>
+<td><p>Enable opentelemetry trace</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--oltp-traces-endpoint</span></code></p></td>
+<td><p>Config opentelemetry collector endpoint if –enable-trace is set. format: <ip>:<port></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">localhost:4317</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="api-related">
+<h2>API related<a class="headerlink" href="#api-related" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--api-key</span></code></p></td>
+<td><p>Set API key of the server. It is also used in the OpenAI API compatible server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--served-model-name</span></code></p></td>
+<td><p>Override the model name returned by the v1/models endpoint in OpenAI API server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--weight-version</span></code></p></td>
+<td><p>Version identifier for the model weights. Defaults to ‘default’ if not specified.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--chat-template</span></code></p></td>
+<td><p>The buliltin chat template name or the path of the chat template file. This is only used for OpenAI-compatible API server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--completion-template</span></code></p></td>
+<td><p>The buliltin completion template name or the path of the completion template file. This is only used for OpenAI-compatible API server. only for code completion currently.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--file-storage-path</span></code></p></td>
+<td><p>The path of the file storage in backend.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sglang_storage</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-cache-report</span></code></p></td>
+<td><p>Return number of cached tokens in usage.prompt_tokens_details for each openai request.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--reasoning-parser</span></code></p></td>
+<td><p>Specify the parser for reasoning models. Supported parsers: [deepseek-r1, deepseek-v3, glm45, gpt-oss, kimi, qwen3, qwen3-thinking, step3].</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepseek-r1</span></code>, <code class="docutils literal notranslate"><span class="pre">deepseek-v3</span></code>, <code class="docutils literal notranslate"><span class="pre">glm45</span></code>, <code class="docutils literal notranslate"><span class="pre">gpt-oss</span></code>, <code class="docutils literal notranslate"><span class="pre">kimi</span></code>, <code class="docutils literal notranslate"><span class="pre">qwen3</span></code>, <code class="docutils literal notranslate"><span class="pre">qwen3-thinking</span></code>, <code class="docutils literal notranslate"><span class="pre">step3</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tool-call-parser</span></code></p></td>
+<td><p>Specify the parser for handling tool-call interactions. Supported parsers: [deepseekv3, deepseekv31, glm, glm45, glm47, gpt-oss, kimi_k2, llama3, mistral, pythonic, qwen, qwen25, qwen3_coder, step3].</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepseekv3</span></code>, <code class="docutils literal notranslate"><span class="pre">deepseekv31</span></code>, <code class="docutils literal notranslate"><span class="pre">glm</span></code>, <code class="docutils literal notranslate"><span class="pre">glm45</span></code>, <code class="docutils literal notranslate"><span class="pre">glm47</span></code>, <code class="docutils literal notranslate"><span class="pre">gpt-oss</span></code>, <code class="docutils literal notranslate"><span class="pre">kimi_k2</span></code>, <code class="docutils literal notranslate"><span class="pre">llama3</span></code>, <code class="docutils literal notranslate"><span class="pre">mistral</span></code>, <code class="docutils literal notranslate"><span class="pre">pythonic</span></code>, <code class="docutils literal notranslate"><span class="pre">qwen</span></code>, <code class="docutils literal notranslate"><span class="pre">qwen25</span></code>, <code class="docutils literal notranslate"><span class="pre">qwen3_coder</span></code>, <code class="docutils literal notranslate"><span class="pre">step3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--sampling-defaults</span></code></p></td>
+<td><p>Where to get default sampling parameters. ‘openai’ uses SGLang/OpenAI defaults (temperature=1.0, top_p=1.0, etc.). ‘model’ uses the model’s generation_config.json to get the recommended sampling parameters if available. Default is ‘model’.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">openai</span></code>, <code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tool-server</span></code></p></td>
+<td><p>Either ‘demo’ or a comma-separated list of tool server urls to use for the model. If not specified, no tool server will be used.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="data-parallelism">
+<h2>Data parallelism<a class="headerlink" href="#data-parallelism" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--data-parallel-size</span></code><br><code class="docutils literal notranslate"><span class="pre">--dp-size</span></code></p></td>
+<td><p>The data parallelism size.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--load-balance-method</span></code></p></td>
+<td><p>The load balancing strategy for data parallelism. The Minimum Token algorithm can only be used when DP attention is applied. This algorithm performs load balancing based on the real-time token load of the DP workers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">round_robin</span></code>, <code class="docutils literal notranslate"><span class="pre">follow_bootstrap_room</span></code>, <code class="docutils literal notranslate"><span class="pre">shortest_queue</span></code>, <code class="docutils literal notranslate"><span class="pre">minimum_tokens</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--load-watch-interval</span></code></p></td>
+<td><p>The interval of load watching in seconds.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.1</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="multi-node-distributed-serving">
+<h2>Multi-node distributed serving<a class="headerlink" href="#multi-node-distributed-serving" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--dist-init-addr</span></code><br><code class="docutils literal notranslate"><span class="pre">--nccl-init-addr</span></code></p></td>
+<td><p>The host address for initializing distributed backend (e.g., <code class="docutils literal notranslate"><span class="pre">192.168.0.2:25000</span></code>).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--nnodes</span></code></p></td>
+<td><p>The number of nodes.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--node-rank</span></code></p></td>
+<td><p>The node rank.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="model-override-args">
+<h2>Model override args<a class="headerlink" href="#model-override-args" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--json-model-override-args</span></code></p></td>
+<td><p>A dictionary in JSON string format used to override default model configurations.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--preferred-sampling-params</span></code></p></td>
+<td><p>json-formatted sampling settings that will be returned in /get_model_info</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="lora">
+<h2>LoRA<a class="headerlink" href="#lora" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-lora</span></code></p></td>
+<td><p>Enable LoRA support for the model. This argument is automatically set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code> is provided for backward compatibility.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>Bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-lora-rank</span></code></p></td>
+<td><p>The maximum LoRA rank that should be supported. If not specified, it will be automatically inferred from the adapters provided in <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code>. This argument is needed when you expect to dynamically load adapters of larger LoRA rank after server startup.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--lora-target-modules</span></code></p></td>
+<td><p>The union set of all target modules where LoRA should be applied (e.g., <code class="docutils literal notranslate"><span class="pre">q_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">k_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">gate_proj</span></code>). If not specified, it will be automatically inferred from the adapters provided in <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code>. You can also set it to <code class="docutils literal notranslate"><span class="pre">all</span></code> to enable LoRA for all supported modules; note this may introduce minor performance overhead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">q_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">k_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">v_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">o_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">gate_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">up_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">down_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">qkv_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">gate_up_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code></p></td>
+<td><p>The list of LoRA adapters to load. Each adapter must be specified in one of the following formats: <code class="docutils literal notranslate"><span class="pre">&lt;PATH&gt;</span></code> | <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;=&lt;PATH&gt;</span></code> | JSON with schema <code class="docutils literal notranslate"><span class="pre">{&quot;lora_name&quot;:</span> <span class="pre">str,</span> <span class="pre">&quot;lora_path&quot;:</span> <span class="pre">str,</span> <span class="pre">&quot;pinned&quot;:</span> <span class="pre">bool}</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: List[str] / JSON objects</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-loras-per-batch</span></code></p></td>
+<td><p>Maximum number of adapters for a running batch, including base-only requests.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-loaded-loras</span></code></p></td>
+<td><p>If specified, limits the maximum number of LoRA adapters loaded in CPU memory at a time. Must be ≥ <code class="docutils literal notranslate"><span class="pre">--max-loras-per-batch</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--lora-eviction-policy</span></code></p></td>
+<td><p>LoRA adapter eviction policy when the GPU memory pool is full.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lru</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lru</span></code>, <code class="docutils literal notranslate"><span class="pre">fifo</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--lora-backend</span></code></p></td>
+<td><p>Choose the kernel backend for multi-LoRA serving.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">csgmv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">triton</span></code>, <code class="docutils literal notranslate"><span class="pre">csgmv</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-lora-chunk-size</span></code></p></td>
+<td><p>Maximum chunk size for the ChunkedSGMV LoRA backend. Only used when <code class="docutils literal notranslate"><span class="pre">--lora-backend</span></code> is <code class="docutils literal notranslate"><span class="pre">csgmv</span></code>. Larger values may improve performance.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">16</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">16</span></code>, <code class="docutils literal notranslate"><span class="pre">32</span></code>, <code class="docutils literal notranslate"><span class="pre">64</span></code>, <code class="docutils literal notranslate"><span class="pre">128</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="kernel-backends-attention-sampling-grammar-gemm">
+<h2>Kernel Backends (Attention, Sampling, Grammar, GEMM)<a class="headerlink" href="#kernel-backends-attention-sampling-grammar-gemm" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--attention-backend</span></code></p></td>
+<td><p>Choose the kernels for attention layers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">triton</span></code>, <code class="docutils literal notranslate"><span class="pre">torch_native</span></code>, <code class="docutils literal notranslate"><span class="pre">flex_attention</span></code>, <code class="docutils literal notranslate"><span class="pre">nsa</span></code>, <code class="docutils literal notranslate"><span class="pre">cutlass_mla</span></code>, <code class="docutils literal notranslate"><span class="pre">fa3</span></code>, <code class="docutils literal notranslate"><span class="pre">fa4</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer</span></code>, <code class="docutils literal notranslate"><span class="pre">flashmla</span></code>, <code class="docutils literal notranslate"><span class="pre">trtllm_mla</span></code>, <code class="docutils literal notranslate"><span class="pre">trtllm_mha</span></code>, <code class="docutils literal notranslate"><span class="pre">dual_chunk_flash_attn</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter</span></code>, <code class="docutils literal notranslate"><span class="pre">wave</span></code>, <code class="docutils literal notranslate"><span class="pre">intel_amx</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--prefill-attention-backend</span></code></p></td>
+<td><p>Choose the kernels for prefill attention layers (have priority over –attention-backend).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">triton</span></code>, <code class="docutils literal notranslate"><span class="pre">torch_native</span></code>, <code class="docutils literal notranslate"><span class="pre">flex_attention</span></code>, <code class="docutils literal notranslate"><span class="pre">nsa</span></code>, <code class="docutils literal notranslate"><span class="pre">cutlass_mla</span></code>, <code class="docutils literal notranslate"><span class="pre">fa3</span></code>, <code class="docutils literal notranslate"><span class="pre">fa4</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer</span></code>, <code class="docutils literal notranslate"><span class="pre">flashmla</span></code>, <code class="docutils literal notranslate"><span class="pre">trtllm_mla</span></code>, <code class="docutils literal notranslate"><span class="pre">trtllm_mha</span></code>, <code class="docutils literal notranslate"><span class="pre">dual_chunk_flash_attn</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter</span></code>, <code class="docutils literal notranslate"><span class="pre">wave</span></code>, <code class="docutils literal notranslate"><span class="pre">intel_amx</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--decode-attention-backend</span></code></p></td>
+<td><p>Choose the kernels for decode attention layers (have priority over –attention-backend).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">triton</span></code>, <code class="docutils literal notranslate"><span class="pre">torch_native</span></code>, <code class="docutils literal notranslate"><span class="pre">flex_attention</span></code>, <code class="docutils literal notranslate"><span class="pre">nsa</span></code>, <code class="docutils literal notranslate"><span class="pre">cutlass_mla</span></code>, <code class="docutils literal notranslate"><span class="pre">fa3</span></code>, <code class="docutils literal notranslate"><span class="pre">fa4</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer</span></code>, <code class="docutils literal notranslate"><span class="pre">flashmla</span></code>, <code class="docutils literal notranslate"><span class="pre">trtllm_mla</span></code>, <code class="docutils literal notranslate"><span class="pre">trtllm_mha</span></code>, <code class="docutils literal notranslate"><span class="pre">dual_chunk_flash_attn</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter</span></code>, <code class="docutils literal notranslate"><span class="pre">wave</span></code>, <code class="docutils literal notranslate"><span class="pre">intel_amx</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--sampling-backend</span></code></p></td>
+<td><p>Choose the kernels for sampling layers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">flashinfer</span></code>, <code class="docutils literal notranslate"><span class="pre">pytorch</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--grammar-backend</span></code></p></td>
+<td><p>Choose the backend for grammar-guided decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">xgrammar</span></code>, <code class="docutils literal notranslate"><span class="pre">outlines</span></code>, <code class="docutils literal notranslate"><span class="pre">llguidance</span></code>, <code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--mm-attention-backend</span></code></p></td>
+<td><p>Set multimodal attention backend.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code>, <code class="docutils literal notranslate"><span class="pre">fa3</span></code>, <code class="docutils literal notranslate"><span class="pre">triton_attn</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend_attn</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter_attn</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--nsa-prefill</span></code></p></td>
+<td><p>Choose the NSA backend for the prefill stage (overrides <code class="docutils literal notranslate"><span class="pre">--attention-backend</span></code> when running DeepSeek NSA-style attention).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">flashmla_sparse</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">flashmla_sparse</span></code>, <code class="docutils literal notranslate"><span class="pre">flashmla_decode</span></code>, <code class="docutils literal notranslate"><span class="pre">fa3</span></code>, <code class="docutils literal notranslate"><span class="pre">tilelang</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--nsa-decode</span></code></p></td>
+<td><p>Choose the NSA backend for the decode stage when running DeepSeek NSA-style attention. Overrides <code class="docutils literal notranslate"><span class="pre">--attention-backend</span></code> for decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">flashmla_kv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">flashmla_prefill</span></code>, <code class="docutils literal notranslate"><span class="pre">flashmla_kv</span></code>, <code class="docutils literal notranslate"><span class="pre">fa3</span></code>, <code class="docutils literal notranslate"><span class="pre">tilelang</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--fp8-gemm-backend</span></code></p></td>
+<td><p>Choose the runner backend for Blockwise FP8 GEMM operations. Options: ‘auto’ (default, auto-selects based on hardware), ‘deep_gemm’ (JIT-compiled; enabled by default on NVIDIA Hopper (SM90) and Blackwell (SM100) when DeepGEMM is installed), ‘flashinfer_trtllm’ (optimal for Blackwell and low-latency), ‘cutlass’ (optimal for Hopper/Blackwell GPUs and high-throughput), ‘triton’ (fallback, widely compatible), ‘aiter’ (ROCm only). <strong>NOTE</strong>: This replaces the deprecated environment variables SGLANG_ENABLE_FLASHINFER_FP8_GEMM and SGLANG_SUPPORT_CUTLASS_BLOCK_FP8.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">deep_gemm</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code>, <code class="docutils literal notranslate"><span class="pre">cutlass</span></code>, <code class="docutils literal notranslate"><span class="pre">triton</span></code>, <code class="docutils literal notranslate"><span class="pre">aiter</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-flashinfer-autotune</span></code></p></td>
+<td><p>Flashinfer autotune is enabled by default. Set this flag to disable the autotune.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="speculative-decoding">
+<h2>Speculative decoding<a class="headerlink" href="#speculative-decoding" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-algorithm</span></code></p></td>
+<td><p>Speculative algorithm.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EAGLE</span></code>, <code class="docutils literal notranslate"><span class="pre">EAGLE3</span></code>, <code class="docutils literal notranslate"><span class="pre">NEXTN</span></code>, <code class="docutils literal notranslate"><span class="pre">STANDALONE</span></code>, <code class="docutils literal notranslate"><span class="pre">NGRAM</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-draft-model-path</span></code><br><code class="docutils literal notranslate"><span class="pre">--speculative-draft-model</span></code></p></td>
+<td><p>The path of the draft model weights. This can be a local folder or a Hugging Face repo ID.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-draft-model-revision</span></code></p></td>
+<td><p>The specific draft model version to use. It can be a branch name, a tag name, or a commit id. If unspecified, will use the default version.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-num-steps</span></code></p></td>
+<td><p>The number of steps sampled from draft model in Speculative Decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span></code></p></td>
+<td><p>The number of tokens sampled from the draft model in eagle2 each step.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-num-draft-tokens</span></code></p></td>
+<td><p>The number of tokens sampled from the draft model in Speculative Decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-accept-threshold-single</span></code></p></td>
+<td><p>Accept a draft token if its probability in the target model is greater than this threshold.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-accept-threshold-acc</span></code></p></td>
+<td><p>The accept probability of a draft token is raised from its target probability p to min(1, p / threshold_acc).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-token-map</span></code></p></td>
+<td><p>The path of the draft model’s small vocab table.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-attention-mode</span></code></p></td>
+<td><p>Attention backend for speculative decoding operations (both target verify and draft extend). Can be one of ‘prefill’ (default) or ‘decode’.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">prefill</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">prefill</span></code>, <code class="docutils literal notranslate"><span class="pre">decode</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-moe-runner-backend</span></code></p></td>
+<td><p>MOE backend for EAGLE speculative decoding, see –moe-runner-backend for options. Same as moe runner backend if unset.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-moe-a2a-backend</span></code></p></td>
+<td><p>MOE A2A backend for EAGLE speculative decoding, see –moe-a2a-backend for options. Same as moe a2a backend if unset.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="ngram-speculative-decoding">
+<h2>Ngram speculative decoding<a class="headerlink" href="#ngram-speculative-decoding" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-min-match-window-size</span></code></p></td>
+<td><p>The minimum window size for pattern matching in ngram speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-max-match-window-size</span></code></p></td>
+<td><p>The maximum window size for pattern matching in ngram speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">12</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-min-bfs-breadth</span></code></p></td>
+<td><p>The minimum breadth for BFS (Breadth-First Search) in ngram speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-max-bfs-breadth</span></code></p></td>
+<td><p>The maximum breadth for BFS (Breadth-First Search) in ngram speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-match-type</span></code></p></td>
+<td><p>The match type for cache tree.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BFS</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BFS</span></code>, <code class="docutils literal notranslate"><span class="pre">PROB</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-branch-length</span></code></p></td>
+<td><p>The branch length for ngram speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">18</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--speculative-ngram-capacity</span></code></p></td>
+<td><p>The cache capacity for ngram speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">10000000</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="moe">
+<h2>MoE<a class="headerlink" href="#moe" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--expert-parallel-size</span></code><br><code class="docutils literal notranslate"><span class="pre">--ep-size</span></code><br><code class="docutils literal notranslate"><span class="pre">--ep</span></code></p></td>
+<td><p>The expert parallelism size.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--moe-a2a-backend</span></code></p></td>
+<td><p>Select the backend for all-to-all communication for expert parallelism.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">deepep</span></code>, <code class="docutils literal notranslate"><span class="pre">mooncake</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend_fuseep</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--moe-runner-backend</span></code></p></td>
+<td><p>Choose the runner backend for MoE.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">deep_gemm</span></code>, <code class="docutils literal notranslate"><span class="pre">triton</span></code>, <code class="docutils literal notranslate"><span class="pre">triton_kernel</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_cutlass</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_mxfp4</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_cutedsl</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--flashinfer-mxfp4-moe-precision</span></code></p></td>
+<td><p>Choose the computation precision of flashinfer mxfp4 moe</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">default</span></code>, <code class="docutils literal notranslate"><span class="pre">bf16</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-flashinfer-allreduce-fusion</span></code></p></td>
+<td><p>Enable FlashInfer allreduce fusion with Residual RMSNorm.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--deepep-mode</span></code></p></td>
+<td><p>Select the mode when enable DeepEP MoE, could be <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">low_latency</span></code> or <code class="docutils literal notranslate"><span class="pre">auto</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">auto</span></code>, which means <code class="docutils literal notranslate"><span class="pre">low_latency</span></code> for decode batch and <code class="docutils literal notranslate"><span class="pre">normal</span></code> for prefill batch.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">low_latency</span></code>, <code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--ep-num-redundant-experts</span></code></p></td>
+<td><p>Allocate this number of redundant experts in expert parallel.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--ep-dispatch-algorithm</span></code></p></td>
+<td><p>The algorithm to choose ranks for redundant experts in expert parallel.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--init-expert-location</span></code></p></td>
+<td><p>Initial location of EP experts.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">trivial</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-eplb</span></code></p></td>
+<td><p>Enable EPLB algorithm</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--eplb-algorithm</span></code></p></td>
+<td><p>Chosen EPLB algorithm</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--eplb-rebalance-num-iterations</span></code></p></td>
+<td><p>Number of iterations to automatically trigger a EPLB re-balance.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1000</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--eplb-rebalance-layers-per-chunk</span></code></p></td>
+<td><p>Number of layers to rebalance per forward pass.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--eplb-min-rebalancing-utilization-threshold</span></code></p></td>
+<td><p>Minimum threshold for GPU average utilization to trigger EPLB rebalancing. Must be in the range [0.0, 1.0].</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--expert-distribution-recorder-mode</span></code></p></td>
+<td><p>Mode of expert distribution recorder.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--expert-distribution-recorder-buffer-size</span></code></p></td>
+<td><p>Circular buffer size of expert distribution recorder. Set to -1 to denote infinite buffer.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-expert-distribution-metrics</span></code></p></td>
+<td><p>Enable logging metrics for expert balancedness</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--deepep-config</span></code></p></td>
+<td><p>Tuned DeepEP config suitable for your own cluster. It can be either a string with JSON content or a file path.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--moe-dense-tp-size</span></code></p></td>
+<td><p>TP size for MoE dense MLP layers. This flag is useful when, with large TP size, there are errors caused by weights in MLP layers having dimension smaller than the min dimension GEMM supports.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="mamba-cache">
+<h2>Mamba Cache<a class="headerlink" href="#mamba-cache" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-mamba-cache-size</span></code></p></td>
+<td><p>The maximum size of the mamba cache.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--mamba-ssm-dtype</span></code></p></td>
+<td><p>The data type of the SSM states in mamba cache.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float32</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float32</span></code>, <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--mamba-full-memory-ratio</span></code></p></td>
+<td><p>The ratio of mamba state memory to full kv cache memory.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.2</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--mamba-scheduler-strategy</span></code></p></td>
+<td><p>The strategy to use for mamba scheduler. <code class="docutils literal notranslate"><span class="pre">auto</span></code> currently defaults to <code class="docutils literal notranslate"><span class="pre">no_buffer</span></code>. 1. <code class="docutils literal notranslate"><span class="pre">no_buffer</span></code> does not support overlap scheduler due to not allocating extra mamba state buffers. Branching point caching support is feasible but not implemented. 2. <code class="docutils literal notranslate"><span class="pre">extra_buffer</span></code> supports overlap schedule by allocating extra mamba state buffers to track mamba state for caching (mamba state usage per running req becomes <code class="docutils literal notranslate"><span class="pre">2x</span></code> for non-spec; <code class="docutils literal notranslate"><span class="pre">1+(1/(2+speculative_num_draft_tokens))x</span></code> for spec dec (e.g. 1.16x if speculative_num_draft_tokens==4)). 2a. <code class="docutils literal notranslate"><span class="pre">extra_buffer</span></code> is strictly better for non-KV-cache-bound cases; for KV-cache-bound cases, the tradeoff depends on whether enabling overlap outweighs reduced max running requests. 2b. mamba caching at radix cache branching point is strictly better than non-branch but requires kernel support (currently only FLA backend), currently only extra_buffer supports branching.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">no_buffer</span></code>, <code class="docutils literal notranslate"><span class="pre">extra_buffer</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--mamba-track-interval</span></code></p></td>
+<td><p>The interval (in tokens) to track the mamba state during decode. Only used when <code class="docutils literal notranslate"><span class="pre">--mamba-scheduler-strategy</span></code> is <code class="docutils literal notranslate"><span class="pre">extra_buffer</span></code>. Must be divisible by page_size if set, and must be &gt;= speculative_num_draft_tokens when using speculative decoding.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">256</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="args-for-multi-item-scoring">
+<h2>Args for multi-item scoring<a class="headerlink" href="#args-for-multi-item-scoring" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--multi-item-scoring-delimiter</span></code></p></td>
+<td><p>Delimiter token ID for multi-item scoring. Used to combine Query and Items into a single sequence: Query<delimiter>Item1<delimiter>Item2<delimiter>… This enables efficient batch processing of multiple items against a single query.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="hierarchical-cache">
+<h2>Hierarchical cache<a class="headerlink" href="#hierarchical-cache" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-hierarchical-cache</span></code></p></td>
+<td><p>Enable hierarchical cache</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-ratio</span></code></p></td>
+<td><p>The ratio of the size of host KV cache memory pool to the size of device pool.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2.0</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-size</span></code></p></td>
+<td><p>The size of host KV cache memory pool in gigabytes, which will override the hicache_ratio if set.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-write-policy</span></code></p></td>
+<td><p>The write policy of hierarchical cache.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">write_through</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">write_back</span></code>, <code class="docutils literal notranslate"><span class="pre">write_through</span></code>, <code class="docutils literal notranslate"><span class="pre">write_through_selective</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--radix-eviction-policy</span></code></p></td>
+<td><p>The eviction policy of radix trees. ‘lru’ stands for Least Recently Used, ‘lfu’ stands for Least Frequently Used.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lru</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lru</span></code>, <code class="docutils literal notranslate"><span class="pre">lfu</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-io-backend</span></code></p></td>
+<td><p>The IO backend for KV cache transfer between CPU and GPU</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kernel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">direct</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel_ascend</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-mem-layout</span></code></p></td>
+<td><p>The layout of host memory pool for hierarchical cache.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">layer_first</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">layer_first</span></code>, <code class="docutils literal notranslate"><span class="pre">page_first</span></code>, <code class="docutils literal notranslate"><span class="pre">page_first_direct</span></code>, <code class="docutils literal notranslate"><span class="pre">page_first_kv_split</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend</span></code></p></td>
+<td><p>The storage backend for hierarchical KV cache. Built-in backends: file, mooncake, hf3fs, nixl, aibrix. For dynamic backend, use –hicache-storage-backend-extra-config to specify: backend_name (custom name), module_path (Python module path), class_name (backend class name).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">file</span></code>, <code class="docutils literal notranslate"><span class="pre">mooncake</span></code>, <code class="docutils literal notranslate"><span class="pre">hf3fs</span></code>, <code class="docutils literal notranslate"><span class="pre">nixl</span></code>, <code class="docutils literal notranslate"><span class="pre">aibrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dynamic</span></code>, <code class="docutils literal notranslate"><span class="pre">eic</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-storage-prefetch-policy</span></code></p></td>
+<td><p>Control when prefetching from the storage backend should stop.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">best_effort</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">best_effort</span></code>, <code class="docutils literal notranslate"><span class="pre">wait_complete</span></code>, <code class="docutils literal notranslate"><span class="pre">timeout</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend-extra-config</span></code></p></td>
+<td><p>A dictionary in JSON string format containing extra configuration for the storage backend.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="lmcache">
+<h2>LMCache<a class="headerlink" href="#lmcache" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-lmcache</span></code></p></td>
+<td><p>Using LMCache as an alternative hierarchical cache solution</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="double-sparsity">
+<h2>Double Sparsity<a class="headerlink" href="#double-sparsity" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-double-sparsity</span></code></p></td>
+<td><p>Enable double sparsity attention</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--ds-channel-config-path</span></code></p></td>
+<td><p>The path of the double sparsity channel config</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--ds-heavy-channel-num</span></code></p></td>
+<td><p>The number of heavy channels in double sparsity attention</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--ds-heavy-token-num</span></code></p></td>
+<td><p>The number of heavy tokens in double sparsity attention</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">256</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--ds-heavy-channel-type</span></code></p></td>
+<td><p>The type of heavy channels in double sparsity attention</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qk</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--ds-sparse-decode-threshold</span></code></p></td>
+<td><p>The minimum decode sequence length required before the double-sparsity backend switches from the dense fallback to the sparse decode kernel.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4096</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="offloading">
+<h2>Offloading<a class="headerlink" href="#offloading" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--cpu-offload-gb</span></code></p></td>
+<td><p>How many GBs of RAM to reserve for CPU offloading.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--offload-group-size</span></code></p></td>
+<td><p>Number of layers per group in offloading.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--offload-num-in-group</span></code></p></td>
+<td><p>Number of layers to be offloaded within a group.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--offload-prefetch-step</span></code></p></td>
+<td><p>Steps to prefetch in offloading.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--offload-mode</span></code></p></td>
+<td><p>Mode of offloading.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="optimization-debug-options">
+<h2>Optimization/debug options<a class="headerlink" href="#optimization-debug-options" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-radix-cache</span></code></p></td>
+<td><p>Disable RadixAttention for prefix caching.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--cuda-graph-max-bs</span></code></p></td>
+<td><p>Set the maximum batch size for cuda graph. It will extend the cuda graph capture batch size to this value.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--cuda-graph-bs</span></code></p></td>
+<td><p>Set the list of batch sizes for cuda graph.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[int]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-cuda-graph</span></code></p></td>
+<td><p>Disable cuda graph.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-cuda-graph-padding</span></code></p></td>
+<td><p>Disable cuda graph when padding is needed. Still uses cuda graph when padding is not needed.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-profile-cuda-graph</span></code></p></td>
+<td><p>Enable profiling of cuda graph capture.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-cudagraph-gc</span></code></p></td>
+<td><p>Enable garbage collection during CUDA graph capture. If disabled (default), GC is frozen during capture to speed up the process.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-nccl-nvls</span></code></p></td>
+<td><p>Enable NCCL NVLS for prefill heavy requests when available.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-symm-mem</span></code></p></td>
+<td><p>Enable NCCL symmetric memory for fast collectives.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-flashinfer-cutlass-moe-fp4-allgather</span></code></p></td>
+<td><p>Disables quantize before all-gather for flashinfer cutlass moe.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-tokenizer-batch-encode</span></code></p></td>
+<td><p>Enable batch tokenization for improved performance when processing multiple text inputs. Do not use with image inputs, pre-tokenized input_ids, or input_embeds.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-outlines-disk-cache</span></code></p></td>
+<td><p>Disable disk cache of outlines to avoid possible crashes related to file system or high concurrency.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-custom-all-reduce</span></code></p></td>
+<td><p>Disable the custom all-reduce kernel and fall back to NCCL.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-mscclpp</span></code></p></td>
+<td><p>Enable using mscclpp for small messages for all-reduce kernel and fall back to NCCL.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-torch-symm-mem</span></code></p></td>
+<td><p>Enable using torch symm mem for all-reduce kernel and fall back to NCCL. Only supports CUDA device SM90 and above. SM90 supports world size 4, 6, 8. SM10 supports world size 6, 8.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-overlap-schedule</span></code></p></td>
+<td><p>Disable the overlap scheduler, which overlaps the CPU scheduler with GPU model worker.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-mixed-chunk</span></code></p></td>
+<td><p>Enabling mixing prefill and decode in a batch when using chunked prefill.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-dp-attention</span></code></p></td>
+<td><p>Enabling data parallelism for attention and tensor parallelism for FFN. The dp size should be equal to the tp size. Currently DeepSeek-V2 and Qwen 2/3 MoE models are supported.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-dp-lm-head</span></code></p></td>
+<td><p>Enable vocabulary parallel across the attention TP group to avoid all-gather across DP groups, optimizing performance under DP attention.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-two-batch-overlap</span></code></p></td>
+<td><p>Enabling two micro batches to overlap.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-single-batch-overlap</span></code></p></td>
+<td><p>Let computation and communication overlap within one micro batch.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tbo-token-distribution-threshold</span></code></p></td>
+<td><p>The threshold of token distribution between two batches in micro-batch-overlap, determines whether to two-batch-overlap or two-chunk-overlap. Set to 0 denote disable two-chunk-overlap.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.48</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-torch-compile</span></code></p></td>
+<td><p>Optimize the model with torch.compile. Experimental feature.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-torch-compile-debug-mode</span></code></p></td>
+<td><p>Enable debug mode for torch compile.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-piecewise-cuda-graph</span></code></p></td>
+<td><p>Optimize the model with piecewise cuda graph for extend/prefill only. Experimental feature.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--piecewise-cuda-graph-tokens</span></code></p></td>
+<td><p>Set the list of tokens when using piecewise cuda graph.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: JSON list</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--torch-compile-max-bs</span></code></p></td>
+<td><p>Set the maximum batch size when using torch compile.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--piecewise-cuda-graph-max-tokens</span></code></p></td>
+<td><p>Set the maximum tokens when using piecewise cuda graph.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4096</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--torchao-config</span></code></p></td>
+<td><p>Optimize the model with torchao. Experimental feature. Current choices are: int8dq, int8wo, int4wo-&lt;group_size&gt;, fp8wo, fp8dq-per_tensor, fp8dq-per_row</p></td>
+<td><p>``</p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-nan-detection</span></code></p></td>
+<td><p>Enable the NaN detection for debugging purposes.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-p2p-check</span></code></p></td>
+<td><p>Enable P2P check for GPU access, otherwise the p2p access is allowed by default.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--triton-attention-reduce-in-fp32</span></code></p></td>
+<td><p>Cast the intermediate attention results to fp32 to avoid possible crashes related to fp16. This only affects Triton attention kernels.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--triton-attention-num-kv-splits</span></code></p></td>
+<td><p>The number of KV splits in flash decoding Triton kernel. Larger value is better in longer context scenarios. The default value is 8.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--triton-attention-split-tile-size</span></code></p></td>
+<td><p>The size of split KV tile in flash decoding Triton kernel. Used for deterministic inference.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--num-continuous-decode-steps</span></code></p></td>
+<td><p>Run multiple continuous decoding steps to reduce scheduling overhead. This can potentially increase throughput but may also increase time-to-first-token latency. The default value is 1, meaning only run one decoding step at a time.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--delete-ckpt-after-loading</span></code></p></td>
+<td><p>Delete the model checkpoint after loading the model.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-memory-saver</span></code></p></td>
+<td><p>Allow saving memory using release_memory_occupation and resume_memory_occupation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-weights-cpu-backup</span></code></p></td>
+<td><p>Save model weights to CPU memory during release_weights_occupation and resume_weights_occupation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--allow-auto-truncate</span></code></p></td>
+<td><p>Allow automatically truncating requests that exceed the maximum input length instead of returning an error.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-custom-logit-processor</span></code></p></td>
+<td><p>Enable users to pass custom logit processors to the server (disabled by default for security)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--flashinfer-mla-disable-ragged</span></code></p></td>
+<td><p>Not using ragged prefill wrapper when running flashinfer mla</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-shared-experts-fusion</span></code></p></td>
+<td><p>Disable shared experts fusion optimization for deepseek v3/r1.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-chunked-prefix-cache</span></code></p></td>
+<td><p>Disable chunked prefix cache feature for deepseek, which should save overhead for short sequences.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-fast-image-processor</span></code></p></td>
+<td><p>Adopt base image processor instead of fast image processor.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--keep-mm-feature-on-device</span></code></p></td>
+<td><p>Keep multimodal feature tensors on device after processing to save D2H copy.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-return-hidden-states</span></code></p></td>
+<td><p>Enable returning hidden states with responses.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--scheduler-recv-interval</span></code></p></td>
+<td><p>The interval to poll requests in scheduler. Can be set to &gt;1 to reduce the overhead of this.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--numa-node</span></code></p></td>
+<td><p>Sets the numa node for the subprocesses. i-th element corresponds to i-th subprocess.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[int]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-layerwise-nvtx-marker</span></code></p></td>
+<td><p>Enable layerwise NVTX profiling annotations for the model. This adds NVTX markers to every layer for detailed per-layer performance analysis with Nsight Systems.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-attn-tp-input-scattered</span></code></p></td>
+<td><p>Allow input of attention to be scattered when only using tensor parallelism, to reduce the computational load of operations such as qkv latent.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-nsa-prefill-context-parallel</span></code></p></td>
+<td><p>Context parallelism used in the long sequence prefill phase of DeepSeek v3.2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--nsa-prefill-cp-mode</span></code></p></td>
+<td><p>Token splitting mode for the prefill phase of DeepSeek v3.2 under context parallelism. Optional values: <code class="docutils literal notranslate"><span class="pre">in-seq-split</span></code> (default), <code class="docutils literal notranslate"><span class="pre">round-robin-split</span></code>. <code class="docutils literal notranslate"><span class="pre">round-robin-split</span></code> distributes tokens across ranks based on <code class="docutils literal notranslate"><span class="pre">token_idx</span> <span class="pre">%</span> <span class="pre">cp_size</span></code>. It supports multi-batch prefill, fused MoE, and FP8 KV cache.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">in-seq-split</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="forward-hooks">
+<h2>Forward hooks<a class="headerlink" href="#forward-hooks" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--forward-hooks</span></code></p></td>
+<td><p>JSON-formatted list of forward hook specifications. Each element must include <code class="docutils literal notranslate"><span class="pre">target_modules</span></code> (list of glob patterns matched against <code class="docutils literal notranslate"><span class="pre">model.named_modules()</span></code> names) and <code class="docutils literal notranslate"><span class="pre">hook_factory</span></code> (Python import path to a factory, e.g. <code class="docutils literal notranslate"><span class="pre">my_package.hooks:make_hook</span></code>). An optional <code class="docutils literal notranslate"><span class="pre">name</span></code> field is used for logging, and an optional <code class="docutils literal notranslate"><span class="pre">config</span></code> object is passed as a <code class="docutils literal notranslate"><span class="pre">dict</span></code> to the factory.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: JSON list</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="debug-tensor-dumps">
+<h2>Debug tensor dumps<a class="headerlink" href="#debug-tensor-dumps" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--debug-tensor-dump-output-folder</span></code></p></td>
+<td><p>The output folder for dumping tensors.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--debug-tensor-dump-input-file</span></code></p></td>
+<td><p>The input filename for dumping tensors</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--debug-tensor-dump-inject</span></code></p></td>
+<td><p>Inject the outputs from jax as the input of every layer.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-dynamic-batch-tokenizer</span></code></p></td>
+<td><p>Enable async dynamic batch tokenizer for improved performance when multiple requests arrive concurrently.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--dynamic-batch-tokenizer-batch-size</span></code></p></td>
+<td><p>[Only used if –enable-dynamic-batch-tokenizer is set] Maximum batch size for dynamic batch tokenizer.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--dynamic-batch-tokenizer-batch-timeout</span></code></p></td>
+<td><p>[Only used if –enable-dynamic-batch-tokenizer is set] Timeout in seconds for batching tokenization requests.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.002</span></code></p></td>
+<td><p>Type: float</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pd-disaggregation">
+<h2>PD disaggregation<a class="headerlink" href="#pd-disaggregation" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-mode</span></code></p></td>
+<td><p>Only used for PD disaggregation. “prefill” for prefill-only server, and “decode” for decode-only server. If not specified, it is not PD disaggregated</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code>, <code class="docutils literal notranslate"><span class="pre">prefill</span></code>, <code class="docutils literal notranslate"><span class="pre">decode</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-transfer-backend</span></code></p></td>
+<td><p>The backend for disaggregation transfer. Default is mooncake.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mooncake</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mooncake</span></code>, <code class="docutils literal notranslate"><span class="pre">nixl</span></code>, <code class="docutils literal notranslate"><span class="pre">ascend</span></code>, <code class="docutils literal notranslate"><span class="pre">fake</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-bootstrap-port</span></code></p></td>
+<td><p>Bootstrap server port on the prefill server. Default is 8998.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8998</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-decode-tp</span></code></p></td>
+<td><p>Decode tp size. If not set, it matches the tp size of the current engine. This is only set on the prefill server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-decode-dp</span></code></p></td>
+<td><p>Decode dp size. If not set, it matches the dp size of the current engine. This is only set on the prefill server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-prefill-pp</span></code></p></td>
+<td><p>Prefill pp size. If not set, it is default to 1. This is only set on the decode server.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-ib-device</span></code></p></td>
+<td><p>The InfiniBand devices for disaggregation transfer, accepts single device (e.g., –disaggregation-ib-device mlx5_0) or multiple comma-separated devices (e.g., –disaggregation-ib-device mlx5_0,mlx5_1). Default is None, which triggers automatic device detection when mooncake backend is enabled.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-decode-enable-offload-kvcache</span></code></p></td>
+<td><p>Enable async KV cache offloading on decode server (PD mode).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--num-reserved-decode-tokens</span></code></p></td>
+<td><p>Number of decode tokens that will have memory reserved when adding new request to the running batch.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">512</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disaggregation-decode-polling-interval</span></code></p></td>
+<td><p>The interval to poll requests in decode server. Can be set to &gt;1 to reduce the overhead of this.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="custom-weight-loader">
+<h2>Custom weight loader<a class="headerlink" href="#custom-weight-loader" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--custom-weight-loader</span></code></p></td>
+<td><p>The custom dataloader which used to update the model. Should be set with a valid import path, such as my_package.weight_load_func</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>List[str]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--weight-loader-disable-mmap</span></code></p></td>
+<td><p>Disable mmap while loading weight using safetensors.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--remote-instance-weight-loader-seed-instance-ip</span></code></p></td>
+<td><p>The ip of the seed instance for loading weights from remote instance.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--remote-instance-weight-loader-seed-instance-service-port</span></code></p></td>
+<td><p>The service port of the seed instance for loading weights from remote instance.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--remote-instance-weight-loader-send-weights-group-ports</span></code></p></td>
+<td><p>The communication group ports for loading weights from remote instance.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: JSON list</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="for-pd-multiplexing">
+<h2>For PD-Multiplexing<a class="headerlink" href="#for-pd-multiplexing" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-pdmux</span></code></p></td>
+<td><p>Enable PD-Multiplexing, PD running on greenctx stream.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--pdmux-config-path</span></code></p></td>
+<td><p>The path of the PD-Multiplexing config file.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--sm-group-num</span></code></p></td>
+<td><p>Number of sm partition groups.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8</span></code></p></td>
+<td><p>Type: int</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="for-deterministic-inference">
+<h2>For deterministic inference<a class="headerlink" href="#for-deterministic-inference" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-deterministic-inference</span></code></p></td>
+<td><p>Enable deterministic inference mode with batch invariant ops.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>bool flag (set to enable)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="deprecated-arguments">
+<h2>Deprecated arguments<a class="headerlink" href="#deprecated-arguments" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-ep-moe</span></code></p></td>
+<td><p>NOTE: –enable-ep-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--ep-size</span></code> to the same value as <code class="docutils literal notranslate"><span class="pre">--tp-size</span></code> instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-deepep-moe</span></code></p></td>
+<td><p>NOTE: –enable-deepep-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--moe-a2a-backend</span></code> to ‘deepep’ instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--prefill-round-robin-balance</span></code></p></td>
+<td><p>Note: Note: –prefill-round-robin-balance is deprecated now.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-flashinfer-cutlass-moe</span></code></p></td>
+<td><p>NOTE: –enable-flashinfer-cutlass-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--moe-runner-backend</span></code> to ‘flashinfer_cutlass’ instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-flashinfer-cutedsl-moe</span></code></p></td>
+<td><p>NOTE: –enable-flashinfer-cutedsl-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--moe-runner-backend</span></code> to ‘flashinfer_cutedsl’ instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-flashinfer-trtllm-moe</span></code></p></td>
+<td><p>NOTE: –enable-flashinfer-trtllm-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--moe-runner-backend</span></code> to ‘flashinfer_trtllm’ instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-triton-kernel-moe</span></code></p></td>
+<td><p>NOTE: –enable-triton-kernel-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--moe-runner-backend</span></code> to ‘triton_kernel’ instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-flashinfer-mxfp4-moe</span></code></p></td>
+<td><p>NOTE: –enable-flashinfer-mxfp4-moe is deprecated. Please set <code class="docutils literal notranslate"><span class="pre">--moe-runner-backend</span></code> to ‘flashinfer_mxfp4’ instead.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="configuration-file-support">
+<h2>Configuration file support<a class="headerlink" href="#configuration-file-support" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Defaults</p></th>
+<th class="head"><p>Options</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--config</span></code></p></td>
+<td><p>Read CLI options from a config file. Must be a YAML file with configuration options.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Type: str</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../basic_usage/llama4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Llama4 Usage</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hyperparameter_tuning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hyperparameter Tuning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-launch-commands">Common launch commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-tokenizer">Model and tokenizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-server">HTTP server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-and-data-type">Quantization and data type</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-and-scheduling">Memory and scheduling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-options">Runtime options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-related">API related</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-parallelism">Data parallelism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-distributed-serving">Multi-node distributed serving</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-override-args">Model override args</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lora">LoRA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-backends-attention-sampling-grammar-gemm">Kernel Backends (Attention, Sampling, Grammar, GEMM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding">Speculative decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ngram-speculative-decoding">Ngram speculative decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moe">MoE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mamba-cache">Mamba Cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#args-for-multi-item-scoring">Args for multi-item scoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-cache">Hierarchical cache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lmcache">LMCache</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-sparsity">Double Sparsity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offloading">Offloading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-debug-options">Optimization/debug options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-hooks">Forward hooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tensor-dumps">Debug tensor dumps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-disaggregation">PD disaggregation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-weight-loader">Custom weight loader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-pd-multiplexing">For PD-Multiplexing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#for-deterministic-inference">For deterministic inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecated-arguments">Deprecated arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-file-support">Configuration file support</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 16, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

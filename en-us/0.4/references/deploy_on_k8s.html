@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deploy On Kubernetes &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3e48b14c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references/deploy_on_k8s';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/references/deploy_on_k8s.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LWS Based PD Deploy" href="disaggregation/lws_pd_deploy.html" />
+    <link rel="prev" title="Multi-Node Deployment" href="multi_node.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 17, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/offline_engine_api.html">Offline Engine API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="general.html">General Guidance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Supports</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="advanced_deploy.html">Multi-Node Deployment</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="multi_node.html">Multi-Node Deployment</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Deploy On Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="disaggregation/lws_pd_deploy.html">LWS Based PD Deploy</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/references/deploy_on_k8s.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/references/deploy_on_k8s.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Freferences/deploy_on_k8s.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/references/deploy_on_k8s.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Deploy On Kubernetes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example">Basic example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rdma-roce-case">RDMA RoCE case</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#debug">Debug</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#roce-scenario">RoCE scenario</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keys-to-success">Keys to success</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remaining-issues">Remaining issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#todo">TODO</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deploy-on-kubernetes">
+<h1>Deploy On Kubernetes<a class="headerlink" href="#deploy-on-kubernetes" title="Link to this heading">#</a></h1>
+<p>This document is for deploying a RoCE network-based SGLang two-node inference service on a Kubernetes (K8S) cluster.</p>
+<p><a class="reference external" href="https://github.com/kubernetes-sigs/lws">LeaderWorkerSet (LWS)</a> is a Kubernetes API that aims to address common deployment patterns of AI/ML inference workloads. A major use case is for multi-host/multi-node distributed inference.</p>
+<p>SGLang can also be deployed with LWS on Kubernetes for distributed model serving.</p>
+<p>Please see this guide for more details on deploying SGLang on Kubernetes using LWS.</p>
+<p>Here we take the deployment of DeepSeek-R1 as an example.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>At least two Kubernetes nodes, each with two H20 systems and eight GPUs, are required.</p></li>
+<li><p>Make sure your K8S cluster has LWS correctly installed. If it hasn’t been set up yet, please follow the <a class="reference external" href="https://github.com/kubernetes-sigs/lws/blob/main/site/content/en/docs/installation/_index.md">installation instructions</a>. <strong>Note:</strong> For LWS versions ≤0.5.x, you must use the Downward API to obtain <code class="docutils literal notranslate"><span class="pre">LWS_WORKER_INDEX</span></code>, as native support for this feature was introduced in v0.6.0.</p></li>
+</ol>
+</section>
+<section id="basic-example">
+<h2>Basic example<a class="headerlink" href="#basic-example" title="Link to this heading">#</a></h2>
+<p>For the basic example documentation, refer to <a class="reference external" href="https://github.com/kubernetes-sigs/lws/tree/main/docs/examples/sglang">Deploy Distributed Inference Service with SGLang and LWS on GPUs</a>.</p>
+<p>However, that document only covers the basic NCCL socket mode.</p>
+<p>In this section, we’ll make some simple modifications to adapt the setup to the RDMA scenario.</p>
+</section>
+<section id="rdma-roce-case">
+<h2>RDMA RoCE case<a class="headerlink" href="#rdma-roce-case" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Check your env:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@node1<span class="w"> </span>~<span class="o">]</span><span class="c1"># ibstatus</span>
+Infiniband<span class="w"> </span>device<span class="w"> </span><span class="s1">&#39;mlx5_bond_0&#39;</span><span class="w"> </span>port<span class="w"> </span><span class="m">1</span><span class="w"> </span>status:
+<span class="w">        </span>default<span class="w"> </span>gid:<span class="w">     </span>fe80:0000:0000:0000:0225:9dff:fe64:c79a
+<span class="w">        </span>base<span class="w"> </span>lid:<span class="w">        </span>0x0
+<span class="w">        </span>sm<span class="w"> </span>lid:<span class="w">          </span>0x0
+<span class="w">        </span>state:<span class="w">           </span><span class="m">4</span>:<span class="w"> </span>ACTIVE
+<span class="w">        </span>phys<span class="w"> </span>state:<span class="w">      </span><span class="m">5</span>:<span class="w"> </span>LinkUp
+<span class="w">        </span>rate:<span class="w">            </span><span class="m">200</span><span class="w"> </span>Gb/sec<span class="w"> </span><span class="o">(</span>2X<span class="w"> </span>NDR<span class="o">)</span>
+<span class="w">        </span>link_layer:<span class="w">      </span>Ethernet
+
+Infiniband<span class="w"> </span>device<span class="w"> </span><span class="s1">&#39;mlx5_bond_1&#39;</span><span class="w"> </span>port<span class="w"> </span><span class="m">1</span><span class="w"> </span>status:
+<span class="w">        </span>default<span class="w"> </span>gid:<span class="w">     </span>fe80:0000:0000:0000:0225:9dff:fe6e:c3ec
+<span class="w">        </span>base<span class="w"> </span>lid:<span class="w">        </span>0x0
+<span class="w">        </span>sm<span class="w"> </span>lid:<span class="w">          </span>0x0
+<span class="w">        </span>state:<span class="w">           </span><span class="m">4</span>:<span class="w"> </span>ACTIVE
+<span class="w">        </span>phys<span class="w"> </span>state:<span class="w">      </span><span class="m">5</span>:<span class="w"> </span>LinkUp
+<span class="w">        </span>rate:<span class="w">            </span><span class="m">200</span><span class="w"> </span>Gb/sec<span class="w"> </span><span class="o">(</span>2X<span class="w"> </span>NDR<span class="o">)</span>
+<span class="w">        </span>link_layer:<span class="w">      </span>Ethernet
+
+Infiniband<span class="w"> </span>device<span class="w"> </span><span class="s1">&#39;mlx5_bond_2&#39;</span><span class="w"> </span>port<span class="w"> </span><span class="m">1</span><span class="w"> </span>status:
+<span class="w">        </span>default<span class="w"> </span>gid:<span class="w">     </span>fe80:0000:0000:0000:0225:9dff:fe73:0dd7
+<span class="w">        </span>base<span class="w"> </span>lid:<span class="w">        </span>0x0
+<span class="w">        </span>sm<span class="w"> </span>lid:<span class="w">          </span>0x0
+<span class="w">        </span>state:<span class="w">           </span><span class="m">4</span>:<span class="w"> </span>ACTIVE
+<span class="w">        </span>phys<span class="w"> </span>state:<span class="w">      </span><span class="m">5</span>:<span class="w"> </span>LinkUp
+<span class="w">        </span>rate:<span class="w">            </span><span class="m">200</span><span class="w"> </span>Gb/sec<span class="w"> </span><span class="o">(</span>2X<span class="w"> </span>NDR<span class="o">)</span>
+<span class="w">        </span>link_layer:<span class="w">      </span>Ethernet
+
+Infiniband<span class="w"> </span>device<span class="w"> </span><span class="s1">&#39;mlx5_bond_3&#39;</span><span class="w"> </span>port<span class="w"> </span><span class="m">1</span><span class="w"> </span>status:
+<span class="w">        </span>default<span class="w"> </span>gid:<span class="w">     </span>fe80:0000:0000:0000:0225:9dff:fe36:f7ff
+<span class="w">        </span>base<span class="w"> </span>lid:<span class="w">        </span>0x0
+<span class="w">        </span>sm<span class="w"> </span>lid:<span class="w">          </span>0x0
+<span class="w">        </span>state:<span class="w">           </span><span class="m">4</span>:<span class="w"> </span>ACTIVE
+<span class="w">        </span>phys<span class="w"> </span>state:<span class="w">      </span><span class="m">5</span>:<span class="w"> </span>LinkUp
+<span class="w">        </span>rate:<span class="w">            </span><span class="m">200</span><span class="w"> </span>Gb/sec<span class="w"> </span><span class="o">(</span>2X<span class="w"> </span>NDR<span class="o">)</span>
+<span class="w">        </span>link_layer:<span class="w">      </span>Ethernet
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Prepare the <code class="docutils literal notranslate"><span class="pre">lws.yaml</span></code> file for deploying on k8s.</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">leaderworkerset.x-k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LeaderWorkerSet</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">leaderWorkerTemplate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RecreateGroupOnPodRestart</span>
+<span class="w">    </span><span class="nt">leaderTemplate</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">leader</span>
+<span class="w">      </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">dnsPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterFirstWithHostNet</span>
+<span class="w">        </span><span class="nt">hostNetwork</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">hostIPC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang-leader</span>
+<span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang:latest</span>
+<span class="w">            </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">            </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NCCL_IB_GID_INDEX</span>
+<span class="w">                </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span>
+<span class="w">            </span><span class="nt">command</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-m</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang.launch_server</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--model-path</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/work/models</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--mem-fraction-static</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w">  </span><span class="s">&quot;0.93&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--torch-compile-max-bs</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--max-running-requests</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;20&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--tp</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;16&quot;</span><span class="w"> </span><span class="c1"># Size of Tensor Parallelism</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--dist-init-addr</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(LWS_LEADER_ADDRESS):20000</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--nnodes</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(LWS_GROUP_SIZE)</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--node-rank</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(LWS_WORKER_INDEX)</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--trust-remote-code</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--host</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;0.0.0.0&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--port</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;40000&quot;</span>
+<span class="w">            </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span>
+<span class="w">            </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40000</span>
+<span class="w">            </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">tcpSocket</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40000</span>
+<span class="w">              </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="w">              </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">            </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/shm</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dshm</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">model</span>
+<span class="w">                </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/work/models</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ib</span>
+<span class="w">                </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/infiniband</span>
+<span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dshm</span>
+<span class="w">            </span><span class="nt">emptyDir</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">medium</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Memory</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">model</span>
+<span class="w">            </span><span class="nt">hostPath</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&lt;</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">models</span><span class="nv"> </span><span class="s">dir</span><span class="nv"> </span><span class="s">&gt;&#39;</span><span class="w"> </span><span class="c1"># modify it according your models dir</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ib</span>
+<span class="w">            </span><span class="nt">hostPath</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/infiniband</span>
+<span class="w">    </span><span class="nt">workerTemplate</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">dnsPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterFirstWithHostNet</span>
+<span class="w">        </span><span class="nt">hostNetwork</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">hostIPC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang-worker</span>
+<span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang:latest</span>
+<span class="w">            </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">            </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NCCL_IB_GID_INDEX</span>
+<span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span>
+<span class="w">            </span><span class="nt">command</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-m</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang.launch_server</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--model-path</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/work/models</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--mem-fraction-static</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;0.93&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--torch-compile-max-bs</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--max-running-requests</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;20&quot;</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--tp</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;16&quot;</span><span class="w"> </span><span class="c1"># Size of Tensor Parallelism</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--dist-init-addr</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(LWS_LEADER_ADDRESS):20000</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--nnodes</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(LWS_GROUP_SIZE)</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--node-rank</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(LWS_WORKER_INDEX)</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--trust-remote-code</span>
+<span class="w">            </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span>
+<span class="w">            </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/shm</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dshm</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">model</span>
+<span class="w">                </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/work/models</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ib</span>
+<span class="w">                </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/infiniband</span>
+<span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dshm</span>
+<span class="w">            </span><span class="nt">emptyDir</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">medium</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Memory</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ib</span>
+<span class="w">            </span><span class="nt">hostPath</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/infiniband</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">model</span>
+<span class="w">            </span><span class="nt">hostPath</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/data1/models/deepseek_v3_moe</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang-leader</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">leaderworkerset.sigs.k8s.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sglang</span>
+<span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">leader</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40000</span>
+<span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40000</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Then use  <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">apply</span> <span class="pre">-f</span> <span class="pre">lws.yaml</span></code> you will get this output.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NAME           READY   STATUS    RESTARTS       AGE
+sglang-0       0/1     Running   0              9s
+sglang-0-1     1/1     Running   0              9s
+</pre></div>
+</div>
+<p>Wait for the sglang leader (<code class="docutils literal notranslate"><span class="pre">sglang-0</span></code>) status to change to 1/1, which indicates it is <code class="docutils literal notranslate"><span class="pre">Ready</span></code>.</p>
+<p>You can use the command <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">logs</span> <span class="pre">-f</span> <span class="pre">sglang-0</span></code> to view the logs of the leader node.</p>
+<p>Once successful, you should see output like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[2025-02-17 05:27:24 TP1] Capture cuda graph end. Time elapsed: 84.89 s
+[2025-02-17 05:27:24 TP6] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP0] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP7] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP3] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP2] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP4] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP1] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24 TP5] max_total_num_tokens=712400, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=50, context_len=163840
+[2025-02-17 05:27:24] INFO:     Started server process [1]
+[2025-02-17 05:27:24] INFO:     Waiting for application startup.
+[2025-02-17 05:27:24] INFO:     Application startup complete.
+[2025-02-17 05:27:24] INFO:     Uvicorn running on http://0.0.0.0:40000 (Press CTRL+C to quit)
+[2025-02-17 05:27:25] INFO:     127.0.0.1:48908 - &quot;GET /get_model_info HTTP/1.1&quot; 200 OK
+[2025-02-17 05:27:25 TP0] Prefill batch. #new-seq: 1, #new-token: 7, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.00, #running-req: 0, #queue-req: 0
+[2025-02-17 05:27:32] INFO:     127.0.0.1:48924 - &quot;POST /generate HTTP/1.1&quot; 200 OK
+[2025-02-17 05:27:32] The server is fired up and ready to roll!
+</pre></div>
+</div>
+<p>If it doesn’t start up successfully, please follow these steps to check for any remaining issues. Thanks!</p>
+<section id="debug">
+<h3>Debug<a class="headerlink" href="#debug" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">NCCL_DEBUG=TRACE</span></code> to check if it is a NCCL communication problem.</p></li>
+</ul>
+<p>This should resolve most NCCL-related issues.</p>
+<p><em><strong>Notice: If you find that NCCL_DEBUG=TRACE is not effective in the container environment, but the process is stuck or you encounter hard-to-diagnose issues, try switching to a different container image. Some images may not handle standard error output properly.</strong></em></p>
+<section id="roce-scenario">
+<h4>RoCE scenario<a class="headerlink" href="#roce-scenario" title="Link to this heading">#</a></h4>
+<ul>
+<li><p>Please make sure that RDMA devices are available in the cluster environment.</p></li>
+<li><p>Please make sure that the nodes in the cluster have Mellanox NICs with RoCE. In this example, we use Mellanox ConnectX 5 model NICs, and the proper OFED driver has been installed. If not, please refer to the document <a class="reference external" href="https://docs.nvidia.com/networking/display/mlnxofedv461000/installing+mellanox+ofed">Install OFED Driver</a> to install the driver.</p></li>
+<li><p>Check your env:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>lspci<span class="w"> </span>-nn<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Eth<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Mellanox
+<span class="m">0000</span>:7f:00.0<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0000</span>:7f:00.1<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0000</span>:c7:00.0<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0000</span>:c7:00.1<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0001</span>:08:00.0<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0001</span>:08:00.1<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0001</span>:a2:00.0<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+<span class="m">0001</span>:a2:00.1<span class="w"> </span>Ethernet<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span><span class="m">0200</span><span class="o">]</span>:<span class="w"> </span>Mellanox<span class="w"> </span>Technologies<span class="w"> </span>MT43244<span class="w"> </span>BlueField-3<span class="w"> </span>integrated<span class="w"> </span>ConnectX-7<span class="w"> </span>network<span class="w"> </span>controller<span class="w"> </span><span class="o">[</span>15b3:a2dc<span class="o">]</span><span class="w"> </span><span class="o">(</span>rev<span class="w"> </span><span class="m">01</span><span class="o">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the OFED driver:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ofed_info<span class="w"> </span>-s
+OFED-internal-23.07-0.5.0:
+</pre></div>
+</div>
+</li>
+<li><p>Show RDMA link status and check IB devices:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>rdma<span class="w"> </span>link<span class="w"> </span>show
+<span class="m">8</span>/1:<span class="w"> </span>mlx5_bond_0/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth0
+<span class="m">9</span>/1:<span class="w"> </span>mlx5_bond_1/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth2
+<span class="m">10</span>/1:<span class="w"> </span>mlx5_bond_2/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth4
+<span class="m">11</span>/1:<span class="w"> </span>mlx5_bond_3/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth6
+
+$<span class="w"> </span>ibdev2netdev
+<span class="m">8</span>/1:<span class="w"> </span>mlx5_bond_0/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth0
+<span class="m">9</span>/1:<span class="w"> </span>mlx5_bond_1/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth2
+<span class="m">10</span>/1:<span class="w"> </span>mlx5_bond_2/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth4
+<span class="m">11</span>/1:<span class="w"> </span>mlx5_bond_3/1:<span class="w"> </span>state<span class="w"> </span>ACTIVE<span class="w"> </span>physical_state<span class="w"> </span>LINK_UP<span class="w"> </span>netdev<span class="w"> </span>reth6
+</pre></div>
+</div>
+</li>
+<li><p>Test RoCE network speed on the host:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>yum<span class="w"> </span>install<span class="w"> </span>qperf
+<span class="c1"># for server：</span>
+execute<span class="w"> </span>qperf
+<span class="c1"># for client</span>
+qperf<span class="w"> </span>-t<span class="w"> </span><span class="m">60</span><span class="w"> </span>-cm1<span class="w"> </span>&lt;server_ip&gt;<span class="w">   </span>rc_rdma_write_bw
+</pre></div>
+</div>
+</li>
+<li><p>Check RDMA accessible in your container:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># ibv_devices</span>
+<span class="c1"># ibv_devinfo</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="keys-to-success">
+<h2>Keys to success<a class="headerlink" href="#keys-to-success" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>In the YAML configuration above, pay attention to the NCCL environment variable. For older versions of NCCL, you should check the NCCL_IB_GID_INDEX environment setting.</p></li>
+<li><p>NCCL_SOCKET_IFNAME is also crucial, but in a containerized environment, this typically isn’t an issue.</p></li>
+<li><p>In some cases, it’s necessary to configure GLOO_SOCKET_IFNAME correctly.</p></li>
+<li><p>NCCL_DEBUG is essential for troubleshooting, but I’ve found that sometimes it doesn’t show error logs within containers. This could be related to the Docker image you’re using. You may want to try switching images if needed.</p></li>
+<li><p>Avoid using Docker images based on Ubuntu 18.04, as they tend to have compatibility issues.</p></li>
+</ul>
+</section>
+<section id="remaining-issues">
+<h2>Remaining issues<a class="headerlink" href="#remaining-issues" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>In Kubernetes, Docker, or Containerd environments, we use hostNetwork to prevent performance degradation.</p></li>
+<li><p>We utilize privileged mode, which  isn’t secure. Additionally, in containerized environments, full GPU isolation cannot be achieved.</p></li>
+</ul>
+</section>
+<section id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Integrated with <a class="reference external" href="https://github.com/Mellanox/k8s-rdma-shared-dev-plugin">k8s-rdma-shared-dev-plugin</a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="multi_node.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Multi-Node Deployment</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="disaggregation/lws_pd_deploy.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">LWS Based PD Deploy</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example">Basic example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rdma-roce-case">RDMA RoCE case</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#debug">Debug</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#roce-scenario">RoCE scenario</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keys-to-success">Keys to success</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remaining-issues">Remaining issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#todo">TODO</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 17, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

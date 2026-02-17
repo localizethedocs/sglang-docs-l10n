@@ -1,0 +1,838 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Production Metrics &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a07d80b7"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references/production_metrics';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/references/production_metrics.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Hardware Supports" href="hardware.html" />
+    <link rel="prev" title="環境變數" href="environment_variables.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deepseek.html">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_completions.html">OpenAI APIs - Completions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_vision.html">OpenAI APIs - Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/openai_api_embeddings.html">OpenAI APIs - Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/offline_engine_api.html">離線引擎 API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Backend Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/attention_backend.html">Attention Backend</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../backend/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/function_calling.html">Tool and Function Calling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backend/vlm_query.html">Querying Qwen-VL</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frontend Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontend/frontend.html">SGLang Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontend/choices_methods.html">Choices Methods in SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Router</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../router/router.html">Router for Data Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="general.html">General Guidance</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">疑難排解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">常見問題集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learn_more.html">Learn more</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment_variables.html">環境變數</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Production Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Supports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_deploy.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_analysis_and_optimization.html">Performance Analysis &amp; Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/references/production_metrics.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/references/production_metrics.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Freferences/production_metrics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/references/production_metrics.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Production Metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-guide">Setup Guide</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">疑難排解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-files">Configuration Files</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-the-metrics-are-being-collected">Check if the metrics are being collected</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="production-metrics">
+<h1>Production Metrics<a class="headerlink" href="#production-metrics" title="連結到這個標頭">#</a></h1>
+<p>SGLang exposes the following metrics via Prometheus. The metrics are namespaced by <code class="docutils literal notranslate"><span class="pre">$name</span></code> (the model name).</p>
+<p>An example of the monitoring dashboard is available in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/examples/monitoring/grafana/dashboards/json/sglang-dashboard.json">examples/monitoring/grafana.json</a>.</p>
+<p>Here is an example of the metrics:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl http://localhost:30000/metrics
+# HELP sglang:prompt_tokens_total Number of prefill tokens processed.
+# TYPE sglang:prompt_tokens_total counter
+sglang:prompt_tokens_total{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 8.128902e+06
+# HELP sglang:generation_tokens_total Number of generation tokens processed.
+# TYPE sglang:generation_tokens_total counter
+sglang:generation_tokens_total{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.557572e+06
+# HELP sglang:token_usage The token usage
+# TYPE sglang:token_usage gauge
+sglang:token_usage{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.28
+# HELP sglang:cache_hit_rate The cache hit rate
+# TYPE sglang:cache_hit_rate gauge
+sglang:cache_hit_rate{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.007507552643049313
+# HELP sglang:time_to_first_token_seconds Histogram of time to first token in seconds.
+# TYPE sglang:time_to_first_token_seconds histogram
+sglang:time_to_first_token_seconds_sum{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 2.3518979474117756e+06
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.001&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.005&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.01&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.02&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.04&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.06&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 3.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.08&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.1&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.25&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;0.75&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;1.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 27.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;2.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 140.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;5.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 314.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;7.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 941.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;10.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1330.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;15.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1970.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;20.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 2326.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;25.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 2417.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;30.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 2513.0
+sglang:time_to_first_token_seconds_bucket{le=&quot;+Inf&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 11008.0
+sglang:time_to_first_token_seconds_count{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 11008.0
+# HELP sglang:e2e_request_latency_seconds Histogram of End-to-end request latency in seconds
+# TYPE sglang:e2e_request_latency_seconds histogram
+sglang:e2e_request_latency_seconds_sum{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 3.116093850019932e+06
+sglang:e2e_request_latency_seconds_bucket{le=&quot;0.3&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 0.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;0.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;0.8&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;1.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;1.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;2.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;2.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 6.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;5.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;10.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 10.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;15.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 11.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;20.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 14.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;30.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 247.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;40.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 486.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;50.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 845.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;60.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1513.0
+sglang:e2e_request_latency_seconds_bucket{le=&quot;+Inf&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 11228.0
+sglang:e2e_request_latency_seconds_count{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 11228.0
+# HELP sglang:time_per_output_token_seconds Histogram of time per output token in seconds.
+# TYPE sglang:time_per_output_token_seconds histogram
+sglang:time_per_output_token_seconds_sum{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 866964.5791549598
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.005&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.01&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 73.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.015&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 382.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.02&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 593.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.025&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 855.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.03&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1035.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.04&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 1815.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.05&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 11685.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.075&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 433413.0
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.1&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 4.950195e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.15&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.039435e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.2&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.171662e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.3&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.266055e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.4&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.296752e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.312226e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;0.75&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.339675e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;1.0&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.357747e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;2.5&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.389414e+06
+sglang:time_per_output_token_seconds_bucket{le=&quot;+Inf&quot;,model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.400757e+06
+sglang:time_per_output_token_seconds_count{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 7.400757e+06
+# HELP sglang:func_latency_seconds Function latency in seconds
+# TYPE sglang:func_latency_seconds histogram
+sglang:func_latency_seconds_sum{name=&quot;generate_request&quot;} 4.514771912145079
+sglang:func_latency_seconds_bucket{le=&quot;0.05&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.07500000000000001&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.1125&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.16875&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.253125&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.3796875&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.56953125&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;0.8542968750000001&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;1.2814453125&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;1.9221679687500002&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;2.8832519531250003&quot;,name=&quot;generate_request&quot;} 14006.0
+sglang:func_latency_seconds_bucket{le=&quot;4.3248779296875&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;6.487316894531251&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;9.730975341796876&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;14.596463012695313&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;21.89469451904297&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;32.84204177856446&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;49.26306266784668&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_bucket{le=&quot;+Inf&quot;,name=&quot;generate_request&quot;} 14007.0
+sglang:func_latency_seconds_count{name=&quot;generate_request&quot;} 14007.0
+# HELP sglang:num_running_reqs The number of running requests
+# TYPE sglang:num_running_reqs gauge
+sglang:num_running_reqs{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 162.0
+# HELP sglang:num_used_tokens The number of used tokens
+# TYPE sglang:num_used_tokens gauge
+sglang:num_used_tokens{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 123859.0
+# HELP sglang:gen_throughput The generate throughput (token/s)
+# TYPE sglang:gen_throughput gauge
+sglang:gen_throughput{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 86.50814177726902
+# HELP sglang:num_queue_reqs The number of requests in the waiting queue
+# TYPE sglang:num_queue_reqs gauge
+sglang:num_queue_reqs{model_name=&quot;meta-llama/Llama-3.1-8B-Instruct&quot;} 2826.0
+</pre></div>
+</div>
+<section id="setup-guide">
+<h2>Setup Guide<a class="headerlink" href="#setup-guide" title="連結到這個標頭">#</a></h2>
+<p>This section describes how to set up the monitoring stack (Prometheus + Grafana) provided in the <code class="docutils literal notranslate"><span class="pre">examples/monitoring</span></code> directory.</p>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p>Docker and Docker Compose installed</p></li>
+<li><p>SGLang server running with metrics enabled</p></li>
+</ul>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="連結到這個標頭">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Start your SGLang server with metrics enabled:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>&lt;your_model_path&gt;<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--enable-metrics
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;your_model_path&gt;</span></code> with the actual path to your model (e.g., <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3.1-8B-Instruct</span></code>). Ensure the server is accessible from the monitoring stack (you might need <code class="docutils literal notranslate"><span class="pre">--host</span> <span class="pre">0.0.0.0</span></code> if running in Docker). By default, the metrics endpoint will be available at <code class="docutils literal notranslate"><span class="pre">http://&lt;sglang_server_host&gt;:30000/metrics</span></code>.</p>
+</li>
+<li><p><strong>Navigate to the monitoring example directory:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/monitoring
+</pre></div>
+</div>
+</li>
+<li><p><strong>Start the monitoring stack:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</pre></div>
+</div>
+<p>This command will start Prometheus and Grafana in the background.</p>
+</li>
+<li><p><strong>Access the monitoring interfaces:</strong></p>
+<ul class="simple">
+<li><p><strong>Grafana:</strong> Open your web browser and go to <a class="reference external" href="http://localhost:3000">http://localhost:3000</a>.</p></li>
+<li><p><strong>Prometheus:</strong> Open your web browser and go to <a class="reference external" href="http://localhost:9090">http://localhost:9090</a>.</p></li>
+</ul>
+</li>
+<li><p><strong>Log in to Grafana:</strong></p>
+<ul class="simple">
+<li><p>Default Username: <code class="docutils literal notranslate"><span class="pre">admin</span></code></p></li>
+<li><p>Default Password: <code class="docutils literal notranslate"><span class="pre">admin</span></code>
+You will be prompted to change the password upon your first login.</p></li>
+</ul>
+</li>
+<li><p><strong>View the Dashboard:</strong>
+The SGLang dashboard is pre-configured and should be available automatically. Navigate to <code class="docutils literal notranslate"><span class="pre">Dashboards</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Browse</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">SGLang</span> <span class="pre">Monitoring</span></code> folder -&gt; <code class="docutils literal notranslate"><span class="pre">SGLang</span> <span class="pre">Dashboard</span></code>.</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h3>疑難排解<a class="headerlink" href="#troubleshooting" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><strong>Port Conflicts:</strong> If you encounter errors like &quot;port is already allocated,&quot; check if other services (including previous instances of Prometheus/Grafana) are using ports <code class="docutils literal notranslate"><span class="pre">9090</span></code> or <code class="docutils literal notranslate"><span class="pre">3000</span></code>. Use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> to find running containers and <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">&lt;container_id&gt;</span></code> to stop them, or use <code class="docutils literal notranslate"><span class="pre">lsof</span> <span class="pre">-i</span> <span class="pre">:&lt;port&gt;</span></code> to find other processes using the ports. You might need to adjust the ports in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file if they permanently conflict with other essential services on your system.</p></li>
+</ul>
+<p>To modify Grafana's port to the other one(like 3090) in your Docker Compose file, you need to explicitly specify the port mapping under the grafana service.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Option 1: Add GF_SERVER_HTTP_PORT to the environment section:
+```
+  environment:
+- GF_AUTH_ANONYMOUS_ENABLED=true
+- GF_SERVER_HTTP_PORT=3090  # &lt;-- Add this line
+```
+Option 2: Use port mapping:
+```
+grafana:
+  image: grafana/grafana:latest
+  container_name: grafana
+  ports:
+  - &quot;3090:3000&quot;  # &lt;-- Host:Container port mapping
+```
+</pre></div>
+</div>
+<ul>
+<li><p><strong>Connection Issues:</strong></p>
+<ul class="simple">
+<li><p>Ensure both Prometheus and Grafana containers are running (<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code>).</p></li>
+<li><p>Verify the Prometheus data source configuration in Grafana (usually auto-configured via <code class="docutils literal notranslate"><span class="pre">grafana/datasources/datasource.yaml</span></code>). Go to <code class="docutils literal notranslate"><span class="pre">Connections</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">sources</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Prometheus</span></code>. The URL should point to the Prometheus service (e.g., <code class="docutils literal notranslate"><span class="pre">http://prometheus:9090</span></code>).</p></li>
+<li><p>Confirm that your SGLang server is running and the metrics endpoint (<code class="docutils literal notranslate"><span class="pre">http://&lt;sglang_server_host&gt;:30000/metrics</span></code>) is accessible <em>from the Prometheus container</em>. If SGLang is running on your host machine and Prometheus is in Docker, use <code class="docutils literal notranslate"><span class="pre">host.docker.internal</span></code> (on Docker Desktop) or your machine's network IP instead of <code class="docutils literal notranslate"><span class="pre">localhost</span></code> in the <code class="docutils literal notranslate"><span class="pre">prometheus.yaml</span></code> scrape configuration.</p></li>
+</ul>
+</li>
+<li><p><strong>No Data on Dashboard:</strong></p>
+<ul>
+<li><p>Generate some traffic to your SGLang server to produce metrics. For example, run a benchmark:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span>--backend<span class="w"> </span>sglang<span class="w"> </span>--dataset-name<span class="w"> </span>random<span class="w"> </span>--num-prompts<span class="w"> </span><span class="m">100</span><span class="w"> </span>--random-input<span class="w"> </span><span class="m">128</span><span class="w"> </span>--random-output<span class="w"> </span><span class="m">128</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the Prometheus UI (<code class="docutils literal notranslate"><span class="pre">http://localhost:9090</span></code>) under <code class="docutils literal notranslate"><span class="pre">Status</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Targets</span></code> to see if the SGLang endpoint is being scraped successfully.</p></li>
+<li><p>Verify the <code class="docutils literal notranslate"><span class="pre">model_name</span></code> and <code class="docutils literal notranslate"><span class="pre">instance</span></code> labels in your Prometheus metrics match the variables used in the Grafana dashboard. You might need to adjust the Grafana dashboard variables or the labels in your Prometheus configuration.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="configuration-files">
+<h3>Configuration Files<a class="headerlink" href="#configuration-files" title="連結到這個標頭">#</a></h3>
+<p>The monitoring setup is defined by the following files within the <code class="docutils literal notranslate"><span class="pre">examples/monitoring</span></code> directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>: Defines the Prometheus and Grafana services.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prometheus.yaml</span></code>: Prometheus configuration, including scrape targets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana/datasources/datasource.yaml</span></code>: Configures the Prometheus data source for Grafana.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana/dashboards/config/dashboard.yaml</span></code>: Tells Grafana to load dashboards from the specified path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana/dashboards/json/sglang-dashboard.json</span></code>: The actual Grafana dashboard definition in JSON format.</p></li>
+</ul>
+<p>You can customize the setup by modifying these files. For instance, you might need to update the <code class="docutils literal notranslate"><span class="pre">static_configs</span></code> target in <code class="docutils literal notranslate"><span class="pre">prometheus.yaml</span></code> if your SGLang server runs on a different host or port.</p>
+<section id="check-if-the-metrics-are-being-collected">
+<h4>Check if the metrics are being collected<a class="headerlink" href="#check-if-the-metrics-are-being-collected" title="連結到這個標頭">#</a></h4>
+<p>Run <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">sglang.bench_serving</span> <span class="pre">--backend</span> <span class="pre">sglang</span> <span class="pre">--dataset-name</span> <span class="pre">random</span> <span class="pre">--num-prompts</span> <span class="pre">3000</span> <span class="pre">--random-input</span> <span class="pre">1024</span> <span class="pre">--random-output</span> <span class="pre">1024</span> <span class="pre">--random-range-ratio</span> <span class="pre">0.5</span></code> to generate some requests.</p>
+<p>Then you should be able to see the metrics in the Grafana dashboard.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="environment_variables.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">環境變數</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hardware.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Hardware Supports</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-guide">Setup Guide</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">疑難排解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-files">Configuration Files</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-the-metrics-are-being-collected">Check if the metrics are being collected</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

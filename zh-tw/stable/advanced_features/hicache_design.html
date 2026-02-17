@@ -1,0 +1,785 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>HiCache 系統設計與最佳化 &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/hicache_design';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/hicache_design.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Query VLM with Offline Engine" href="vlm_query.html" />
+    <link rel="prev" title="SGLang HiCache Best Practices" href="hicache_best_practices.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hicache_best_practices.html">SGLang HiCache Best Practices</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">HiCache 系統設計與最佳化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">重排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore 模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/hicache_design.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/hicache_design.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/hicache_design.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/hicache_design.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>HiCache 系統設計與最佳化</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-and-what-is-hicache">Why and What is HiCache?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-design">System Design</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hiradixtree-metadata-organization-in-hicache">HiRadixTree: Metadata Organization in HiCache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-workflow">Overall Workflow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-match">Local Match</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefetch-from-l3">Prefetch from L3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-write-back">Data Write-back</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-rank-synchronization">Multi-Rank Synchronization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transfer-optimization">Data Transfer Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-pd-disaggregation-deployment-mode">Integration with PD-Disaggregation Deployment Mode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unified-interfaces-and-rich-l3-storage-backends">Unified Interfaces and Rich L3 Storage Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-parameters">Related Parameters</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hicache-system-design-and-optimization">
+<h1>HiCache 系統設計與最佳化<a class="headerlink" href="#hicache-system-design-and-optimization" title="連結到這個標頭">#</a></h1>
+<p>This document provides a comprehensive overview of SGLang HiCache, covering its system architecture, workflow and key components. It also details configuration parameters, optimization techniques, and integration with various L3 storage backends, serving as a complete reference for users and developers to understand and tune HiCache for efficient LLM inference.</p>
+<section id="why-and-what-is-hicache">
+<h2>Why and What is HiCache?<a class="headerlink" href="#why-and-what-is-hicache" title="連結到這個標頭">#</a></h2>
+<p>In large language model inference, the prefill phase is often time-consuming: input sequences need to be first converted into Key-Value cache (KV cache) for subsequent decoding. When multiple requests share the same prefix, the KV cache for that prefix is identical. By caching and reusing these shared KV caches, redundant computation can be avoided. To address this, SGLang introduced RadixAttention, which leverages idle GPU memory to cache and reuse prefix KV caches, and <strong>HiCache</strong>, which extends this idea to host memory and distributed storage.</p>
+<p>Inspired by the classic three-level cache design of modern CPUs, HiCache organizes GPU memory as L1, host memory as L2, and distributed storage as L3. This hierarchy enables HiCache to fully exploit the &quot;idle&quot; storage space of GPUs and CPUs, while integrating distributed cache systems such as Mooncake, 3FS, NIXL, and AIBrix KVCache for global KV cache storage and scheduling. As a result, HiCache significantly expands KV cache capacity while maintaining strong read performance—especially in workloads such as multi-QA and long-context inference, where KV cache reuse is frequent. For detailed benchmark results, see <a class="reference external" href="https://lmsys.org/blog/2025-09-10-sglang-hicache/">this blog</a>.</p>
+</section>
+<section id="system-design">
+<h2>System Design<a class="headerlink" href="#system-design" title="連結到這個標頭">#</a></h2>
+<section id="overall-architecture">
+<h3>Overall Architecture<a class="headerlink" href="#overall-architecture" title="連結到這個標頭">#</a></h3>
+<p>In many modern CPU architectures, the small but fast L1 and L2 caches are private to each core, enabling rapid access to the hottest data, while the larger L3 cache is shared across all cores to significantly reduce redundancy within the cache. Similarly, in HiCache, the L1 and L2 KV caches are private to each inference instance, whereas the L3 KV cache is shared among all inference instances within the cluster.</p>
+</section>
+<section id="hiradixtree-metadata-organization-in-hicache">
+<h3>HiRadixTree: Metadata Organization in HiCache<a class="headerlink" href="#hiradixtree-metadata-organization-in-hicache" title="連結到這個標頭">#</a></h3>
+<p>For KV cache data organization, HiCache builds upon the RadixTree structure introduced in RadixAttention and proposes HiRadixTree. In RadixAttention, each node of the RadixTree corresponds to the KV cache of a consecutive span of tokens in GPU memory. A path from the root to a leaf node represents the prefix of a request, and shared prefixes across multiple requests can reuse the same nodes, thereby avoiding redundant storage.</p>
+<p>HiRadixTree extends this idea: each node corresponds to the KV cache of a span of consecutive tokens and records where that KV cache is stored—whether in local GPU memory, CPU memory, L3 storage, or multiple of these tiers. If stored locally, HiRadixTree maintains precise metadata, including the exact storage address. However, to reduce overhead, HiRadixTree does not store or continuously synchronize metadata for L3 KV cache. Instead, when accessing L3 data, it queries the backend in real time to retrieve the necessary metadata, such as whether the data exists and on which server and location it resides.</p>
+</section>
+<section id="overall-workflow">
+<h3>Overall Workflow<a class="headerlink" href="#overall-workflow" title="連結到這個標頭">#</a></h3>
+<p>The workflow of HiCache mainly involves three key operations: <strong>local match</strong>, <strong>prefetch</strong> and <strong>write-back</strong>. When the system receives a new request, it first searches the local L1 and L2 caches for matching KV caches. For parts not found locally, it attempts to prefetch from L3. After prefetching, all required KV caches are loaded into the GPU for computation. Once the prefill computation is complete, the system considers storing the newly generated data into L2 or L3.</p>
+<p><img alt="HiCache Workflow" src="https://lmsys.org/images/blog/hicache/hicache_overview.png" /></p>
+</section>
+<section id="local-match">
+<h3>Local Match<a class="headerlink" href="#local-match" title="連結到這個標頭">#</a></h3>
+<p>Local matching is the first step in HiCache's workflow, where incoming request tokens are matched against the HiRadixTree to locate cached KV data in local memory tiers (L1 GPU memory and L2 host memory).</p>
+<p>The matching algorithm traverses the HiRadixTree from the root node, following child nodes that match the token sequence prefix. At each node, the incoming token sequence is compared with the node’s stored token sequence. When <code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, matching is performed at the page granularity to optimize memory access patterns. If a match terminates within a node’s stored sequence, the node is automatically split to create an exact boundary, improving the efficiency of future matches.</p>
+<p>The algorithm returns a continuous prefix of the request, with the first part residing in L1 and the latter part in L2.</p>
+<p>Since the process only requires traversing the local HiRadixTree and does not involve any actual data copying, local matching is extremely fast.</p>
+</section>
+<section id="prefetch-from-l3">
+<h3>Prefetch from L3<a class="headerlink" href="#prefetch-from-l3" title="連結到這個標頭">#</a></h3>
+<p>Data prefetching is one of HiCache’s core optimization techniques, designed to proactively load KV caches from L3 storage into local L2 memory, thereby reducing access latency during subsequent operations.</p>
+<p><strong>Prefetch Trigger Conditions</strong>:
+After local matching, for the parts not found in L1 or L2, the system queries L3 to retrieve metadata for the next continuous matching KV caches. If the length of hit cache in L3 exceeds a threshold (default: 256 tokens, configurable), a prefetch operation is triggered.</p>
+<p><strong>Prefetch Strategies</strong>: HiCache provides three different prefetch termination strategies to address different scenario needs:</p>
+<ul class="simple">
+<li><p><strong>best_effort</strong>: Terminates immediately when GPU can execute prefill computation, with no waiting time, suitable for scenarios extremely sensitive to latency.</p></li>
+<li><p><strong>wait_complete</strong>: Must wait for all prefetch operations to complete, suitable for scenarios requiring high cache hit rates.</p></li>
+<li><p><strong>timeout</strong>: Terminates after specified time or when complete, balancing latency and cache hit rate needs.</p></li>
+</ul>
+<p>After prefetching stops, the data already fetched is used together with the local data for the prefill computation.</p>
+<p>For <strong>timeout</strong> strategy, HiCache introduces two configuration parameters to support fine-grained control over prefetch timeout conditions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prefetch_timeout_base</span></code>: the base timeout, representing overhead unrelated to the number of tokens (e.g., scheduling and synchronization).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prefetch_timeout_per_ki_token</span></code>: the incremental timeout per thousand tokens.</p></li>
+</ul>
+<p>The timeout is computed as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">timeout</span> <span class="o">=</span> <span class="n">prefetch_timeout_base</span> <span class="o">+</span> <span class="n">prefetch_timeout_per_ki_token</span> <span class="o">*</span> <span class="n">num_token_to_fetch</span> <span class="o">/</span> <span class="mi">1024</span>
+</pre></div>
+</div>
+</section>
+<section id="data-write-back">
+<h3>Data Write-back<a class="headerlink" href="#data-write-back" title="連結到這個標頭">#</a></h3>
+<p>The write-back mechanism is responsible for moving frequently accessed KV caches from L1 to L2 and L3, enabling larger and longer-term storage as well as cache sharing across instances.</p>
+<p><strong>Configurable Write-back Policies</strong>: HiCache supports three write-back strategies:</p>
+<ul class="simple">
+<li><p><strong>write_through</strong>: Every access is immediately written back to the next level. When bandwidth is sufficient, this strategy provides the strongest caching benefit.</p></li>
+<li><p><strong>write_through_selective</strong>: Data is written back only after the access frequency exceeds a threshold. This strategy backs up only hot data, reducing I/O overhead.</p></li>
+<li><p><strong>write_back</strong>: Data is written back to the next level only when it is evicted from the upper level. This strategy alleviates storage pressure and is suitable for scenarios where storage capacity is limited but memory utilization must be maximized.</p></li>
+</ul>
+<p><strong>Cross-instance Sharing</strong>: When data is written back from L2 to L3, only data not already present in L3 is transferred. KV caches stored in L3 can then be shared across all SGLang instances in the cluster (depending on the L3 backend implementation), significantly improving cache hit rates within the same memory budget.</p>
+</section>
+<section id="multi-rank-synchronization">
+<h3>Multi-Rank Synchronization<a class="headerlink" href="#multi-rank-synchronization" title="連結到這個標頭">#</a></h3>
+<p>During multi-GPU parallel computation, such as tensor parallelism (TP), HiCache must ensure consistent states across different ranks. Therefore, critical computation steps require the use of <code class="docutils literal notranslate"><span class="pre">all_reduce</span></code> for state synchronization.</p>
+<p>For example, during prefetching, <code class="docutils literal notranslate"><span class="pre">all_reduce(op=min)</span></code> is used to ensure that all ranks obtain the same number of L3 hits, preventing inconsistent judgments about whether the prefetch threshold has been reached. Similarly, after prefetching completes or terminates, <code class="docutils literal notranslate"><span class="pre">all_reduce(op=min)</span></code> is again required to guarantee consensus among ranks on the prefix length of the successfully retrieved KV cache.</p>
+</section>
+<section id="data-transfer-optimization">
+<h3>Data Transfer Optimization<a class="headerlink" href="#data-transfer-optimization" title="連結到這個標頭">#</a></h3>
+<p><strong>Zero-Copy Data Transfers</strong>: Both prefetching and write-back involve substantial data movement. Minimizing the number of data copies can significantly improve system performance. HiCache supports passing memory addresses and sizes directly when transferring data from L2 memory to an L3 backend.</p>
+<p><strong>“Batch-Oriented” Data Organization</strong>: The granularity of data reads and writes has a major impact on performance. To address this, HiCache L3 stores and transfers KV cache data at the granularity of <strong>pages</strong> and supports different data layouts beyond the existing <code class="docutils literal notranslate"><span class="pre">layer</span> <span class="pre">first</span></code> scheme, including <code class="docutils literal notranslate"><span class="pre">page</span> <span class="pre">first</span></code> and <code class="docutils literal notranslate"><span class="pre">page</span> <span class="pre">first</span> <span class="pre">direct</span></code>. Under the <code class="docutils literal notranslate"><span class="pre">page</span> <span class="pre">first</span></code> and <code class="docutils literal notranslate"><span class="pre">page</span> <span class="pre">first</span> <span class="pre">direct</span></code> layouts, all KV cache data belonging to the same page is placed in contiguous memory, allowing it to be passed as a single object to L3 using zero-copy transfers.</p>
+<p><img alt="HiCache L2 MEM layout" src="https://lmsys.org/images/blog/hicache/hicache_layout.png" /></p>
+<p>However, because GPU KV computation is naturally performed layer by layer, the GPU inherently operates in a <code class="docutils literal notranslate"><span class="pre">layer</span> <span class="pre">first</span></code> layout. When transferring <code class="docutils literal notranslate"><span class="pre">page</span> <span class="pre">first</span></code> data from L2 to the GPU, data must be transferred at the granularity of one token per layer. The <code class="docutils literal notranslate"><span class="pre">page</span> <span class="pre">first</span> <span class="pre">direct</span></code> layout mitigates this issue by grouping together all tokens of a given layer within a page, allowing transfers from L2 to GPU to be aggregated at the page-layer level.</p>
+<p><strong>CPU-to-GPU Transfer Optimizations</strong>: In HiCache, moving data from CPU memory to GPU is as performance-critical as prefetching data from L3 to L2. HiCache employs several optimizations for this process:</p>
+<ul class="simple">
+<li><p><strong>Compute-Transfer Overlap</strong>: During the prefill phase, when transferring data from CPU to GPU, HiCache overlaps layers by concurrently loading the KV cache of layer N+1 while computing layer N. This effectively hides data transfer latency.</p></li>
+<li><p><strong>GPU-assisted I/O Kernels</strong>: On top of <code class="docutils literal notranslate"><span class="pre">cudaMemcpyAsync</span></code>, HiCache implements a set of GPU-assisted I/O kernels specifically optimized for KV cache transfers between CPU and GPU. Compared to the baseline approach, these kernels achieve up to 3x higher transfer speed.</p></li>
+</ul>
+<p><strong>Write-back Optimization for MLA</strong>: For MHA (Multi-Head Attention) models under multi-TP, each rank holds <code class="docutils literal notranslate"><span class="pre">1/tp_size</span></code> of a token’s KV data. In contrast, for MLA (Multi-Layer Attention) models, all ranks hold the complete and identical KV data for each token. HiCache includes a dedicated optimization for MLA: only one rank initiates the write-back operation, ensuring that data is not redundantly stored across ranks.</p>
+</section>
+<section id="integration-with-pd-disaggregation-deployment-mode">
+<h3>Integration with PD-Disaggregation Deployment Mode<a class="headerlink" href="#integration-with-pd-disaggregation-deployment-mode" title="連結到這個標頭">#</a></h3>
+<p>SGLang supports a PD (Prefill-Decode) disaggregation deployment mode through the Mooncake TransferEngine (for details, see <a class="reference external" href="https://docs.sglang.io/advanced_features/pd_disaggregation.html">this doc</a>). In the PD-disaggregation deployment mode, HiCache can be enabled on both the prefill nodes and decode nodes to optimize prefill performance. If enabled on decode nodes, the decode output will also be written back to L3.</p>
+</section>
+<section id="unified-interfaces-and-rich-l3-storage-backends">
+<h3>Unified Interfaces and Rich L3 Storage Backends<a class="headerlink" href="#unified-interfaces-and-rich-l3-storage-backends" title="連結到這個標頭">#</a></h3>
+<p>HiCache encapsulates all read, write, and query operations on L3 backends within the <code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">HiCacheStorage(ABC)</span></code>, exposing a set of simple and consistent interfaces. This design supports a wide range of L3 storage backends and allows users to select the one that best fits their specific use cases.</p>
+<ul class="simple">
+<li><p><strong>Mooncake</strong>: Mooncake is a high-performance caching system for LLM inference that leverages RDMA and multi-NIC resources to enable zero-copy, ultra-fast data transfers. Try Mooncake <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/mem_cache/storage/mooncake_store">here</a>.</p></li>
+<li><p><strong>DeepSeek 3FS (HF3FS)</strong>: HF3FS is a Kubernetes-native distributed storage solution with operator-based deployment. Try HF3FS <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/mem_cache/storage/hf3fs">here</a>.</p></li>
+<li><p><strong>NIXL</strong>: NIXL provides a unified API for accessing various storage plugins, including but not limited to DeepSeek's 3FS, GPU Direct Storage (GDS) and Amazon S3-compatible object storage. Try NIXL <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/mem_cache/storage/nixl">here</a>.</p></li>
+<li><p><strong>AIBrix KVCache</strong>: AIBrix KVCache is a production-ready KVCache Offloading Framework, which enables efficient memory tiering and low-overhead cross-engine reuse. Try AIBrix KVCache <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/mem_cache/storage/aibrix_kvcache">here</a>.</p></li>
+<li><p><strong>HiCacheFile</strong>: A simple file-based storage backend for demonstration purposes.</p></li>
+</ul>
+<p>Specifically, <strong>LMCache</strong>, an efficient KV cache layer for enterprise-scale LLM inference, provides an alternative solution to HiCache. Try LMCache <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/python/sglang/srt/mem_cache/storage/lmcache">here</a>.</p>
+</section>
+</section>
+<section id="related-parameters">
+<h2>Related Parameters<a class="headerlink" href="#related-parameters" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--enable-hierarchical-cache</span></code></strong>: Enable hierarchical cache functionality. This is required to use HiCache.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-ratio</span> <span class="pre">HICACHE_RATIO</span></code></strong>: The ratio of the size of host KV cache memory pool to the size of device pool. For example, a value of 2 means the host memory pool is twice as large as the device memory pool. The value of this parameter must be greater than 1, as the current implementation requires the host memory allocated for the KV cache to be larger than the device memory allocated for the KV cache.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-size</span> <span class="pre">HICACHE_SIZE</span></code></strong>: The size of host KV cache memory pool in gigabytes. This parameter overrides <code class="docutils literal notranslate"><span class="pre">hicache-ratio</span></code> if set. For example, <code class="docutils literal notranslate"><span class="pre">--hicache-size</span> <span class="pre">30</span></code> allocates 30GB (1GB = 1e9 bytes) for the host memory pool <strong>for each rank</strong>. If there are 8 ranks, then the total memory size is 240GB. Just like <code class="docutils literal notranslate"><span class="pre">hicache-ratio</span></code>, the value of this parameter must be larger than the size of device memory allocated for KV cache.</p></li>
+</ul>
+<p><strong>Note</strong>: <code class="docutils literal notranslate"><span class="pre">--hicache-ratio</span></code> and <code class="docutils literal notranslate"><span class="pre">--hicache-size</span></code> are two critical parameters. In general, a larger HiCache size leads to a higher cache hit rate, which improves prefill performance. However, the relationship between cache size and hit rate is not linear. Once most reusable KV data—especially hot tokens—are already cached, further increasing the size may yield only marginal performance gains. Users can set these parameters based on their workload characteristics and performance requirements.</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--page-size</span> <span class="pre">PAGE_SIZE</span></code></strong>: The number of tokens per page. This parameter determines the granularity of KV cache storage and retrieval. Larger page sizes reduce metadata overhead and improve I/O efficiency for storage backends, but may lower the cache hit rate when only part of a page matches the stored KV cache. For workloads with long common prefixes, larger pages can improve performance, while workloads with more diverse prefixes may benefit from smaller pages. See <a class="reference internal" href="#data-transfer-optimization"><span class="std std-ref">Data Transfer Optimization</span></a> for how page granularity affects I/O performance.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-storage-prefetch-policy</span> <span class="pre">{best_effort,wait_complete,timeout}</span></code></strong>: Controls when prefetching from storage should stop. See <a class="reference internal" href="#prefetch-from-l3"><span class="std std-ref">Prefetch from L3</span></a> for details.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">best_effort</span></code>: Prefetch as much as possible without blocking</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wait_complete</span></code>: Wait for prefetch to complete before proceeding</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Terminates after specified time or when complete (Recommended for production environments, as setting an appropriate timeout helps the system meet required SLOs)</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-write-policy</span> <span class="pre">{write_back,write_through,write_through_selective}</span></code></strong>: Controls how data is written from faster to slower memory tiers. See <a class="reference internal" href="#data-write-back"><span class="std std-ref">Data Write-back</span></a> for details.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">write_through</span></code>: Immediately writes data to all tiers (strongest caching benefits)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write_through_selective</span></code>: Uses hit-count tracking to back up only frequently accessed data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write_back</span></code>: Writes data back to slower tiers only when eviction is needed (reduces I/O load)</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-io-backend</span> <span class="pre">{direct,kernel}</span></code></strong>: Choose the I/O backend for KV cache transfer between CPU and GPU. See <a class="reference internal" href="#data-transfer-optimization"><span class="std std-ref">Data Transfer Optimization</span></a> for details.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">direct</span></code>: Standard CUDA memory copy operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel</span></code>: GPU-assisted I/O kernels (recommended for better performance)</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-mem-layout</span> <span class="pre">{layer_first,page_first,page_first_direct}</span></code></strong>: Memory layout for the host memory pool. See <a class="reference internal" href="#data-transfer-optimization"><span class="std std-ref">Data Transfer Optimization</span></a> for details.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">layer_first</span></code>: Compatible with GPU computation kernels (default for GPU memory)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">page_first</span></code>: Optimized for I/O efficiency</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">page_first_direct</span></code>: Groups all tokens of a given layer within a page, allowing transfers from L2 to GPU to be aggregated at the page-layer level</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend</span> <span class="pre">{file,mooncake,hf3fs,nixl,aibrix,dynamic}</span></code></strong>: Choose the storage backend for the L3 tier. Built-in backends: file, mooncake, hf3fs, nixl, aibrix. For dynamic backend, use --hicache-storage-backend-extra-config to specify: <code class="docutils literal notranslate"><span class="pre">backend_name</span></code> (custom name), <code class="docutils literal notranslate"><span class="pre">module_path</span></code> (Python module path), <code class="docutils literal notranslate"><span class="pre">class_name</span></code> (backend class name). See <a class="reference internal" href="#unified-interfaces-and-rich-l3-storage-backends"><span class="std std-ref">Unified Interfaces and Rich L3 Storage Backends</span></a> for available backends.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--enable-lmcache</span></code></strong>: Using LMCache as an alternative hierarchical cache solution.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend-extra-config</span> <span class="pre">HICACHE_STORAGE_BACKEND_EXTRA_CONFIG</span></code></strong>: JSON string containing extra configuration for the storage backend, e.g., <code class="docutils literal notranslate"><span class="pre">--hicache-storage-backend-extra-config</span> <span class="pre">'{&quot;prefetch_threshold&quot;:512,</span> <span class="pre">&quot;prefetch_timeout_base&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;prefetch_timeout_per_ki_token&quot;:</span> <span class="pre">0.25}'</span> </code></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hicache_best_practices.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">SGLang HiCache Best Practices</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="vlm_query.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Query VLM with Offline Engine</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-and-what-is-hicache">Why and What is HiCache?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-design">System Design</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-architecture">Overall Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hiradixtree-metadata-organization-in-hicache">HiRadixTree: Metadata Organization in HiCache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-workflow">Overall Workflow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-match">Local Match</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefetch-from-l3">Prefetch from L3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-write-back">Data Write-back</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-rank-synchronization">Multi-Rank Synchronization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transfer-optimization">Data Transfer Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-pd-disaggregation-deployment-mode">Integration with PD-Disaggregation Deployment Mode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unified-interfaces-and-rich-l3-storage-backends">Unified Interfaces and Rich L3 Storage Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-parameters">Related Parameters</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Bench Serving Guide &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/bench_serving';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/developer_guide/bench_serving.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Troubleshooting and Frequently Asked Questions" href="../references/faq.html" />
+    <link rel="prev" title="Benchmark and Profiling" href="benchmark_and_profiling.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 16, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/developer_guide/bench_serving.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/developer_guide/bench_serving.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdeveloper_guide/bench_serving.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_guide/bench_serving.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bench Serving Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-does">What it does</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-backends-and-endpoints">Supported backends and endpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-model-and-tokenizer">Choosing model and tokenizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-concurrency-and-streaming">Rate, concurrency, and streaming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-key-options">Other key options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authentication">Authentication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-explained">Metrics explained</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jsonl-output-format">JSONL output format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-examples">End-to-end examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bench-serving-guide">
+<h1>Bench Serving Guide<a class="headerlink" href="#bench-serving-guide" title="Link to this heading">#</a></h1>
+<p>This guide explains how to benchmark online serving throughput and latency using <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">sglang.bench_serving</span></code>. It supports multiple inference backends via OpenAI-compatible and native endpoints, and produces both console metrics and optional JSONL outputs.</p>
+<section id="what-it-does">
+<h2>What it does<a class="headerlink" href="#what-it-does" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Generates synthetic or dataset-driven prompts and submits them to a target serving endpoint</p></li>
+<li><p>Measures throughput, time-to-first-token (TTFT), inter-token latency (ITL), per-request end-to-end latency, and more</p></li>
+<li><p>Supports streaming or non-streaming modes, rate control, and concurrency limits</p></li>
+</ul>
+</section>
+<section id="supported-backends-and-endpoints">
+<h2>Supported backends and endpoints<a class="headerlink" href="#supported-backends-and-endpoints" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sglang</span></code> / <code class="docutils literal notranslate"><span class="pre">sglang-native</span></code>: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/generate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sglang-oai</span></code>, <code class="docutils literal notranslate"><span class="pre">vllm</span></code>, <code class="docutils literal notranslate"><span class="pre">lmdeploy</span></code>: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/v1/completions</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sglang-oai-chat</span></code>, <code class="docutils literal notranslate"><span class="pre">vllm-chat</span></code>, <code class="docutils literal notranslate"><span class="pre">lmdeploy-chat</span></code>: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/v1/chat/completions</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trt</span></code> (TensorRT-LLM): <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/v2/models/ensemble/generate_stream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gserver</span></code>: Custom server (Not Implemented yet in this script)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truss</span></code>: <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/v1/models/model:predict</span></code></p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">--base-url</span></code> is provided, requests are sent to it. Otherwise, <code class="docutils literal notranslate"><span class="pre">--host</span></code> and <code class="docutils literal notranslate"><span class="pre">--port</span></code> are used. When <code class="docutils literal notranslate"><span class="pre">--model</span></code> is not provided, the script will attempt to query <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/v1/models</span></code> for an available model ID (OpenAI-compatible endpoints).</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Python 3.8+</p></li>
+<li><p>Dependencies typically used by this script: <code class="docutils literal notranslate"><span class="pre">aiohttp</span></code>, <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">requests</span></code>, <code class="docutils literal notranslate"><span class="pre">tqdm</span></code>, <code class="docutils literal notranslate"><span class="pre">transformers</span></code>, and for some datasets <code class="docutils literal notranslate"><span class="pre">datasets</span></code>, <code class="docutils literal notranslate"><span class="pre">pillow</span></code>, <code class="docutils literal notranslate"><span class="pre">pybase64</span></code>. Install as needed.</p></li>
+<li><p>An inference server running and reachable via the endpoints above</p></li>
+<li><p>If your server requires authentication, set environment variable <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> (used as <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;key&gt;</span></code>)</p></li>
+</ul>
+</section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<p>Run a basic benchmark against an sglang server exposing <code class="docutils literal notranslate"><span class="pre">/generate</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct
+</pre></div>
+</div>
+<p>Or, using an OpenAI-compatible endpoint (completions):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>vllm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--base-url<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct
+</pre></div>
+</div>
+</section>
+<section id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Link to this heading">#</a></h2>
+<p>Select with <code class="docutils literal notranslate"><span class="pre">--dataset-name</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sharegpt</span></code> (default): loads ShareGPT-style pairs; optionally restrict with <code class="docutils literal notranslate"><span class="pre">--sharegpt-context-len</span></code> and override outputs with <code class="docutils literal notranslate"><span class="pre">--sharegpt-output-len</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random</span></code>: random text lengths; sampled from ShareGPT token space</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random-ids</span></code>: random token ids (can lead to gibberish)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image</span></code>: generates images and wraps them in chat messages; supports custom resolutions, multiple formats, and different content types</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generated-shared-prefix</span></code>: synthetic dataset with shared long system prompts and short questions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mmmu</span></code>: samples from MMMU (Math split) and includes images</p></li>
+</ul>
+<p>Common dataset flags:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--num-prompts</span> <span class="pre">N</span></code>: number of requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--random-input-len</span></code>, <code class="docutils literal notranslate"><span class="pre">--random-output-len</span></code>, <code class="docutils literal notranslate"><span class="pre">--random-range-ratio</span></code>: for random/random-ids/image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--image-count</span></code>: Number of images per request (for <code class="docutils literal notranslate"><span class="pre">image</span></code> dataset).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--apply-chat-template</span></code>: apply tokenizer chat template when constructing prompts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dataset-path</span> <span class="pre">PATH</span></code>: file path for ShareGPT json; if blank and missing, it will be downloaded and cached</p></li>
+</ul>
+<p>Generated Shared Prefix flags (for <code class="docutils literal notranslate"><span class="pre">generated-shared-prefix</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--gsp-num-groups</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gsp-prompts-per-group</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gsp-system-prompt-len</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gsp-question-len</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gsp-output-len</span></code></p></li>
+</ul>
+<p>Image dataset flags (for <code class="docutils literal notranslate"><span class="pre">image</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--image-count</span></code>: Number of images per request</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--image-resolution</span></code>: Image resolution; supports presets (4k, 1080p, 720p, 360p) or custom ‘heightxwidth’ format (e.g., 1080x1920, 512x768)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--image-format</span></code>: Image format (jpeg or png)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--image-content</span></code>: Image content type (random or blank)</p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>To benchmark image dataset with 3 images per request, 500 prompts, 512 input length, and 512 output length, you can run:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen2.5-VL-3B-Instruct<span class="w"> </span>--disable-radix-cache
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--backend<span class="w"> </span>sglang-oai-chat<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataset-name<span class="w"> </span>image<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-prompts<span class="w"> </span><span class="m">500</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--image-count<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--image-resolution<span class="w"> </span>720p<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-input-len<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-output-len<span class="w"> </span><span class="m">512</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>To benchmark random dataset with 3000 prompts, 1024 input length, and 1024 output length, you can run:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen2.5-3B-Instruct
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-prompts<span class="w"> </span><span class="m">3000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-input<span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-output<span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-range-ratio<span class="w"> </span><span class="m">0</span>.5
+</pre></div>
+</div>
+</section>
+<section id="choosing-model-and-tokenizer">
+<h2>Choosing model and tokenizer<a class="headerlink" href="#choosing-model-and-tokenizer" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--model</span></code> is required unless the backend exposes <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/v1/models</span></code>, in which case the first model ID is auto-selected.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tokenizer</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">--model</span></code>. Both can be HF model IDs or local paths.</p></li>
+<li><p>For ModelScope workflows, setting <code class="docutils literal notranslate"><span class="pre">SGLANG_USE_MODELSCOPE=true</span></code> enables fetching via ModelScope (weights are skipped for speed).</p></li>
+<li><p>If your tokenizer lacks a chat template, the script warns because token counting can be less robust for gibberish outputs.</p></li>
+</ul>
+</section>
+<section id="rate-concurrency-and-streaming">
+<h2>Rate, concurrency, and streaming<a class="headerlink" href="#rate-concurrency-and-streaming" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--request-rate</span></code>: requests per second. <code class="docutils literal notranslate"><span class="pre">inf</span></code> sends all immediately (burst). Non-infinite rate uses a Poisson process for arrival times.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-concurrency</span></code>: caps concurrent in-flight requests regardless of arrival rate.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--disable-stream</span></code>: switch to non-streaming mode when supported; TTFT then equals total latency for chat completions.</p></li>
+</ul>
+</section>
+<section id="other-key-options">
+<h2>Other key options<a class="headerlink" href="#other-key-options" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-file</span> <span class="pre">FILE.jsonl</span></code>: append JSONL results to file; auto-named if unspecified</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-details</span></code>: include per-request arrays (generated texts, errors, ttfts, itls, input/output lens)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extra-request-body</span> <span class="pre">'{&quot;top_p&quot;:0.9,&quot;temperature&quot;:0.6}'</span></code>: merged into payload (sampling params, etc.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--disable-ignore-eos</span></code>: pass through EOS behavior (varies by backend)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--warmup-requests</span> <span class="pre">N</span></code>: run warmup requests with short output first (default 1)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flush-cache</span></code>: call <code class="docutils literal notranslate"><span class="pre">/flush_cache</span></code> (sglang) before main run</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--profile</span></code>: call <code class="docutils literal notranslate"><span class="pre">/start_profile</span></code> and <code class="docutils literal notranslate"><span class="pre">/stop_profile</span></code> (requires server to enable profiling, e.g., <code class="docutils literal notranslate"><span class="pre">SGLANG_TORCH_PROFILER_DIR</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--lora-name</span> <span class="pre">name1</span> <span class="pre">name2</span> <span class="pre">...</span></code>: randomly pick one per request and pass to backend (e.g., <code class="docutils literal notranslate"><span class="pre">lora_path</span></code> for sglang)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tokenize-prompt</span></code>: send integer IDs instead of text (currently supports <code class="docutils literal notranslate"><span class="pre">--backend</span> <span class="pre">sglang</span></code> only)</p></li>
+</ul>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">#</a></h2>
+<p>If your target endpoint requires OpenAI-style auth, set:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>sk-...yourkey...
+</pre></div>
+</div>
+<p>The script will add <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">$OPENAI_API_KEY</span></code> automatically for OpenAI-compatible routes.</p>
+</section>
+<section id="metrics-explained">
+<h2>Metrics explained<a class="headerlink" href="#metrics-explained" title="Link to this heading">#</a></h2>
+<p>Printed after each run:</p>
+<ul class="simple">
+<li><p>Request throughput (req/s)</p></li>
+<li><p>Input token throughput (tok/s) - includes both text and vision tokens</p></li>
+<li><p>Output token throughput (tok/s)</p></li>
+<li><p>Total token throughput (tok/s) - includes both text and vision tokens</p></li>
+<li><p>Total input text tokens and Total input vision tokens - per-modality breakdown</p></li>
+<li><p>Concurrency: aggregate time of all requests divided by wall time</p></li>
+<li><p>End-to-End Latency (ms): mean/median/std/p99 per-request total latency</p></li>
+<li><p>Time to First Token (TTFT, ms): mean/median/std/p99 for streaming mode</p></li>
+<li><p>Inter-Token Latency (ITL, ms): mean/median/std/p95/p99/max between tokens</p></li>
+<li><p>TPOT (ms): Token processing time after first token, i.e., <code class="docutils literal notranslate"><span class="pre">(latency</span> <span class="pre">-</span> <span class="pre">ttft)/(tokens-1)</span></code></p></li>
+<li><p>Accept length (sglang-only, if available): speculative decoding accept length</p></li>
+</ul>
+<p>The script also retokenizes generated text with the configured tokenizer and reports “retokenized” counts.</p>
+</section>
+<section id="jsonl-output-format">
+<h2>JSONL output format<a class="headerlink" href="#jsonl-output-format" title="Link to this heading">#</a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">--output-file</span></code> is set, one JSON object is appended per run. Base fields:</p>
+<ul class="simple">
+<li><p>Arguments summary: backend, dataset, request_rate, max_concurrency, etc.</p></li>
+<li><p>Duration and totals: completed, total_input_tokens, total_output_tokens, retokenized totals</p></li>
+<li><p>Throughputs and latency statistics as printed in the console</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">accept_length</span></code> when available (sglang)</p></li>
+</ul>
+<p>With <code class="docutils literal notranslate"><span class="pre">--output-details</span></code>, an extended object also includes arrays:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input_lens</span></code>, <code class="docutils literal notranslate"><span class="pre">output_lens</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ttfts</span></code>, <code class="docutils literal notranslate"><span class="pre">itls</span></code> (per request: ITL arrays)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generated_texts</span></code>, <code class="docutils literal notranslate"><span class="pre">errors</span></code></p></li>
+</ul>
+</section>
+<section id="end-to-end-examples">
+<h2>End-to-end examples<a class="headerlink" href="#end-to-end-examples" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>sglang native <code class="docutils literal notranslate"><span class="pre">/generate</span></code> (streaming):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--random-input-len<span class="w"> </span><span class="m">1024</span><span class="w"> </span>--random-output-len<span class="w"> </span><span class="m">1024</span><span class="w"> </span>--random-range-ratio<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">2000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--request-rate<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-concurrency<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-file<span class="w"> </span>sglang_random.jsonl<span class="w"> </span>--output-details
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>OpenAI-compatible Completions (e.g., vLLM):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>vllm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--base-url<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>sharegpt<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--sharegpt-output-len<span class="w"> </span><span class="m">256</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>OpenAI-compatible Chat Completions (streaming):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>vllm-chat<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--base-url<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">500</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--apply-chat-template
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Images (VLM) with chat template:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>your-vlm-model<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-count<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-resolution<span class="w"> </span>720p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--random-input-len<span class="w"> </span><span class="m">128</span><span class="w"> </span>--random-output-len<span class="w"> </span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--apply-chat-template
+</pre></div>
+</div>
+<p>4a) Images with custom resolution:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>your-vlm-model<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-count<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-resolution<span class="w"> </span>512x768<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--random-input-len<span class="w"> </span><span class="m">64</span><span class="w"> </span>--random-output-len<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--apply-chat-template
+</pre></div>
+</div>
+<p>4b) 1080p images with PNG format and blank content:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>your-vlm-model<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-count<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-resolution<span class="w"> </span>1080p<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-format<span class="w"> </span>png<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-content<span class="w"> </span>blank<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--random-input-len<span class="w"> </span><span class="m">64</span><span class="w"> </span>--random-output-len<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--apply-chat-template
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Generated shared prefix (long system prompts + short questions):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>generated-shared-prefix<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gsp-num-groups<span class="w"> </span><span class="m">64</span><span class="w"> </span>--gsp-prompts-per-group<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gsp-system-prompt-len<span class="w"> </span><span class="m">2048</span><span class="w"> </span>--gsp-question-len<span class="w"> </span><span class="m">128</span><span class="w"> </span>--gsp-output-len<span class="w"> </span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">1024</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Tokenized prompts (ids) for strict length control (sglang only):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tokenize-prompt<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--random-input-len<span class="w"> </span><span class="m">2048</span><span class="w"> </span>--random-output-len<span class="w"> </span><span class="m">256</span><span class="w"> </span>--random-range-ratio<span class="w"> </span><span class="m">0</span>.2
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Profiling and cache flush (sglang):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--profile<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--flush-cache
+</pre></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p>TensorRT-LLM streaming endpoint:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>trt<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--base-url<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>your-trt-llm-model<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-prompts<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disable-ignore-eos
+</pre></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>Evaluating large-scale KVCache sharing with mooncake trace (sglang only):</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>mode-name<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset-name<span class="w"> </span>mooncake<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mooncake-slowdown-factor<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mooncake-num-rounds<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mooncake-workload<span class="w"> </span>conversation<span class="p">|</span>mooncake<span class="p">|</span>agent<span class="p">|</span>synthetic
+<span class="w">  </span>--use-trace-timestamps<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--random-output-len<span class="w"> </span><span class="m">256</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>All requests failed: verify <code class="docutils literal notranslate"><span class="pre">--backend</span></code>, server URL/port, <code class="docutils literal notranslate"><span class="pre">--model</span></code>, and authentication. Check warmup errors printed by the script.</p></li>
+<li><p>Throughput seems too low: adjust <code class="docutils literal notranslate"><span class="pre">--request-rate</span></code> and <code class="docutils literal notranslate"><span class="pre">--max-concurrency</span></code>; verify server batch size/scheduling; ensure streaming is enabled if appropriate.</p></li>
+<li><p>Token counts look odd: prefer chat/instruct models with proper chat templates; otherwise tokenization of gibberish may be inconsistent.</p></li>
+<li><p>Image/MMMU datasets: ensure you installed extra deps (<code class="docutils literal notranslate"><span class="pre">pillow</span></code>, <code class="docutils literal notranslate"><span class="pre">datasets</span></code>, <code class="docutils literal notranslate"><span class="pre">pybase64</span></code>).</p></li>
+<li><p>Authentication errors (401/403): set <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> or disable auth on your server.</p></li>
+</ul>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The script raises the file descriptor soft limit (<code class="docutils literal notranslate"><span class="pre">RLIMIT_NOFILE</span></code>) to help with many concurrent connections.</p></li>
+<li><p>For sglang, <code class="docutils literal notranslate"><span class="pre">/get_server_info</span></code> is queried post-run to report speculative decoding accept length when available.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="benchmark_and_profiling.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Benchmark and Profiling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../references/faq.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Troubleshooting and Frequently Asked Questions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-does">What it does</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-backends-and-endpoints">Supported backends and endpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-model-and-tokenizer">Choosing model and tokenizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-concurrency-and-streaming">Rate, concurrency, and streaming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-key-options">Other key options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authentication">Authentication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-explained">Metrics explained</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jsonl-output-format">JSONL output format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-examples">End-to-end examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 16, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

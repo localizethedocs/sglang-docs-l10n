@@ -1,0 +1,1062 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LoRA Serving &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/lora';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/lora.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PD Disaggregation" href="pd_disaggregation.html" />
+    <link rel="prev" title="Expert Parallelism" href="expert_parallelism.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Feb 16, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/lora.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/lora.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/lora.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/lora.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LoRA Serving</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Arguments-for-LoRA-Serving">Arguments for LoRA Serving</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Serving-Single-Adaptor">Serving Single Adaptor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Serving-Multiple-Adaptors">Serving Multiple Adaptors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Dynamic-LoRA-loading">Dynamic LoRA loading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#OpenAI-compatible-API-usage">OpenAI-compatible API usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#LoRA-GPU-Pinning">LoRA GPU Pinning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Choosing-LoRA-Backend">Choosing LoRA Backend</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Future-Works">Future Works</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <style>
+    .output_area.stderr, .output_area.stdout {
+        color: #d3d3d3 !important; /* light gray */
+    }
+</style><section id="LoRA-Serving">
+<h1>LoRA Serving<a class="headerlink" href="#LoRA-Serving" title="Link to this heading">#</a></h1>
+<p>SGLang enables the use of <a class="reference external" href="https://arxiv.org/abs/2106.09685">LoRA adapters</a> with a base model. By incorporating techniques from <a class="reference external" href="https://arxiv.org/pdf/2311.03285">S-LoRA</a> and <a class="reference external" href="https://arxiv.org/pdf/2310.18547">Punica</a>, SGLang can efficiently support multiple LoRA adapters for different sequences within a single batch of inputs.</p>
+<section id="Arguments-for-LoRA-Serving">
+<h2>Arguments for LoRA Serving<a class="headerlink" href="#Arguments-for-LoRA-Serving" title="Link to this heading">#</a></h2>
+<p>The following server arguments are relevant for multi-LoRA serving:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">enable_lora</span></code>: Enable LoRA support for the model. This argument is automatically set to True if <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code> is provided for backward compatibility.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lora_paths</span></code>: The list of LoRA adapters to load. Each adapter must be specified in one of the following formats: | = | JSON with schema {“lora_name”:str,”lora_path”:str,”pinned”:bool}.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_loras_per_batch</span></code>: Maximum number of adaptors used by each batch. This argument can affect the amount of GPU memory reserved for multi-LoRA serving, so it should be set to a smaller value when memory is scarce. Defaults to be 8.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_loaded_loras</span></code>: If specified, it limits the maximum number of LoRA adapters loaded in CPU memory at a time. The value must be greater than or equal to <code class="docutils literal notranslate"><span class="pre">max-loras-per-batch</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lora_eviction_policy</span></code>: LoRA adapter eviction policy when GPU memory pool is full. <code class="docutils literal notranslate"><span class="pre">lru</span></code>: Least Recently Used (default, better cache efficiency). <code class="docutils literal notranslate"><span class="pre">fifo</span></code>: First-In-First-Out.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lora_backend</span></code>: The backend of running GEMM kernels for Lora modules. Currently we support Triton LoRA backend (<code class="docutils literal notranslate"><span class="pre">triton</span></code>) and Chunked SGMV backend (<code class="docutils literal notranslate"><span class="pre">csgmv</span></code>). In the future, faster backend built upon Cutlass or Cuda kernels will be added.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_lora_rank</span></code>: The maximum LoRA rank that should be supported. If not specified, it will be automatically inferred from the adapters provided in <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code>. This argument is needed when you expect to dynamically load adapters of larger LoRA rank after server startup.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lora_target_modules</span></code>: The union set of all target modules where LoRA should be applied (e.g., <code class="docutils literal notranslate"><span class="pre">q_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">k_proj</span></code>, <code class="docutils literal notranslate"><span class="pre">gate_proj</span></code>). If not specified, it will be automatically inferred from the adapters provided in <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code>. This argument is needed when you expect to dynamically load adapters of different target modules after server startup. You can also set it to <code class="docutils literal notranslate"><span class="pre">all</span></code> to enable LoRA for all supported modules. However, enabling LoRA on additional modules introduces a minor
+performance overhead. If your application is performance-sensitive, we recommend only specifying the modules for which you plan to load adapters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-lora-chunk-size</span></code>: Maximum chunk size for the ChunkedSGMV LoRA backend. Only used when –lora-backend is ‘csgmv’. Choosing a larger value might improve performance. Please tune this value based on your hardware and workload as needed. Defaults to 16.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tp_size</span></code>: LoRA serving along with Tensor Parallelism is supported by SGLang. <code class="docutils literal notranslate"><span class="pre">tp_size</span></code> controls the number of GPUs for tensor parallelism. More details on the tensor sharding strategy can be found in <a class="reference external" href="https://arxiv.org/pdf/2311.03285">S-Lora</a> paper.</p></li>
+</ul>
+<p>From client side, the user needs to provide a list of strings as input batch, and a list of adaptor names that each input sequence corresponds to.</p>
+</section>
+<section id="Usage">
+<h2>Usage<a class="headerlink" href="#Usage" title="Link to this heading">#</a></h2>
+<section id="Serving-Single-Adaptor">
+<h3>Serving Single Adaptor<a class="headerlink" href="#Serving-Single-Adaptor" title="Link to this heading">#</a></h3>
+<p><strong>Note:</strong> SGLang supports LoRA adapters through two APIs:</p>
+<ol class="arabic simple">
+<li><p><strong>OpenAI-Compatible API</strong> (<code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/completions</span></code>): Use the <code class="docutils literal notranslate"><span class="pre">model:adapter-name</span></code> syntax. See <a class="reference internal" href="../basic_usage/openai_api_completions.html#Using-LoRA-Adapters"><span class="std std-ref">OpenAI API with LoRA</span></a> for examples.</p></li>
+<li><p><strong>Native API</strong> (<code class="docutils literal notranslate"><span class="pre">/generate</span></code>): Pass <code class="docutils literal notranslate"><span class="pre">lora_path</span></code> in the request body (shown below).</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.test.doc_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_server_cmd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_server</span><span class="p">,</span> <span class="n">terminate_process</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+    <span class="c1"># Here we set max-loras-per-batch to 2: one slot for adaptor and another one for base model</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \</span>
+<span class="sd">    --enable-lora \</span>
+<span class="sd">    --lora-paths lora0=algoprog/fact-generation-llama-3.1-8b-instruct-lora \</span>
+<span class="sd">    --max-loras-per-batch 2 \</span>
+<span class="sd">    --log-level warning \</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="c1"># The first input uses lora0, and the second input uses the base model</span>
+    <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lora0&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output 0: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output 1: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Serving-Multiple-Adaptors">
+<h3>Serving Multiple Adaptors<a class="headerlink" href="#Serving-Multiple-Adaptors" title="Link to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">python3 -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \</span>
+<span class="sd">    --enable-lora \</span>
+<span class="sd">    --lora-paths lora0=algoprog/fact-generation-llama-3.1-8b-instruct-lora \</span>
+<span class="sd">    lora1=Nutanix/Meta-Llama-3.1-8B-Instruct_lora_4_alpha_16 \</span>
+<span class="sd">    --max-loras-per-batch 2 \</span>
+<span class="sd">    --log-level warning \</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">wait_for_server</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="c1"># The first input uses lora0, and the second input uses lora1</span>
+    <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lora0&quot;</span><span class="p">,</span> <span class="s2">&quot;lora1&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output 0: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output 1: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Dynamic-LoRA-loading">
+<h3>Dynamic LoRA loading<a class="headerlink" href="#Dynamic-LoRA-loading" title="Link to this heading">#</a></h3>
+<p>Instead of specifying all adapters during server startup via <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code>. You can also load &amp; unload LoRA adapters dynamically via the <code class="docutils literal notranslate"><span class="pre">/load_lora_adapter</span></code> and <code class="docutils literal notranslate"><span class="pre">/unload_lora_adapter</span></code> API.</p>
+<p>When using dynamic LoRA loading, it’s recommended to explicitly specify both <code class="docutils literal notranslate"><span class="pre">--max-lora-rank</span></code> and <code class="docutils literal notranslate"><span class="pre">--lora-target-modules</span></code> at startup. For backward compatibility, SGLang will infer these values from <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code> if they are not explicitly provided. However, in that case, you would have to ensure that all dynamically loaded adapters share the same shape (rank and target modules) as those in the initial <code class="docutils literal notranslate"><span class="pre">--lora-paths</span></code> or are strictly “smaller”.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lora0</span> <span class="o">=</span> <span class="s2">&quot;Nutanix/Meta-Llama-3.1-8B-Instruct_lora_4_alpha_16&quot;</span>  <span class="c1"># rank - 4, target modules - q_proj, k_proj, v_proj, o_proj, gate_proj</span>
+<span class="n">lora1</span> <span class="o">=</span> <span class="s2">&quot;algoprog/fact-generation-llama-3.1-8b-instruct-lora&quot;</span>  <span class="c1"># rank - 64, target modules - q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj</span>
+<span class="n">lora0_new</span> <span class="o">=</span> <span class="s2">&quot;philschmid/code-llama-3-1-8b-text-to-sql-lora&quot;</span>  <span class="c1"># rank - 256, target modules - q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj</span>
+
+
+<span class="c1"># The `--target-lora-modules` param below is technically not needed, as the server will infer it from lora0 which already has all the target modules specified.</span>
+<span class="c1"># We are adding it here just to demonstrate usage.</span>
+<span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    python3 -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \</span>
+<span class="sd">    --enable-lora \</span>
+<span class="sd">    --cuda-graph-max-bs 2 \</span>
+<span class="sd">    --max-loras-per-batch 2 \</span>
+<span class="sd">    --max-lora-rank 256</span>
+<span class="sd">    --lora-target-modules all</span>
+<span class="sd">    --log-level warning</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">wait_for_server</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Load adapter lora0</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/load_lora_adapter&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lora_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lora0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="n">lora0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LoRA adapter loaded successfully.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to load LoRA adapter.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<p>Load adapter lora1:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/load_lora_adapter&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lora_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lora1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="n">lora1</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LoRA adapter loaded successfully.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to load LoRA adapter.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<p>Check inference output:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="c1"># The first input uses lora0, and the second input uses lora1</span>
+    <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lora0&quot;</span><span class="p">,</span> <span class="s2">&quot;lora1&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora0: </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora1 (updated): </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Unload lora0 and replace it with a different adapter:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/unload_lora_adapter&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lora_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lora0&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/load_lora_adapter&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lora_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lora0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="n">lora0_new</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LoRA adapter loaded successfully.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to load LoRA adapter.&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<p>Check output again:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="c1"># The first input uses lora0, and the second input uses lora1</span>
+    <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lora0&quot;</span><span class="p">,</span> <span class="s2">&quot;lora1&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora0: </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora1 (updated): </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="OpenAI-compatible-API-usage">
+<h3>OpenAI-compatible API usage<a class="headerlink" href="#OpenAI-compatible-API-usage" title="Link to this heading">#</a></h3>
+<p>You can use LoRA adapters via the OpenAI-compatible APIs by specifying the adapter in the <code class="docutils literal notranslate"><span class="pre">model</span></code> field using the <code class="docutils literal notranslate"><span class="pre">base-model:adapter-name</span></code> syntax (for example, <code class="docutils literal notranslate"><span class="pre">qwen/qwen2.5-0.5b-instruct:adapter_a</span></code>). For more details and examples, see the “Using LoRA Adapters” section in the OpenAI API documentation: <a class="reference internal" href="../basic_usage/openai_api_completions.html"><span class="doc">openai_api_completions.ipynb</span></a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="LoRA-GPU-Pinning">
+<h3>LoRA GPU Pinning<a class="headerlink" href="#LoRA-GPU-Pinning" title="Link to this heading">#</a></h3>
+<p>Another advanced option is to specify adapters as <code class="docutils literal notranslate"><span class="pre">pinned</span></code> during loading. When an adapter is pinned, it is permanently assigned to one of the available GPU pool slots (as configured by <code class="docutils literal notranslate"><span class="pre">--max-loras-per-batch</span></code>) and will not be evicted from GPU memory during runtime. Instead, it remains resident until it is explicitly unloaded.</p>
+<p>This can improve performance in scenarios where the same adapter is frequently used across requests, by avoiding repeated memory transfers and reinitialization overhead. However, since GPU pool slots are limited, pinning adapters reduces the flexibility of the system to dynamically load other adapters on demand. If too many adapters are pinned, it may lead to degraded performance, or in the most extreme case (<code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">pinned</span> <span class="pre">adapters</span> <span class="pre">==</span> <span class="pre">max-loras-per-batch</span></code>), halt all unpinned requests.
+Therefore, currently SGLang limits maximal number of pinned adapters to <code class="docutils literal notranslate"><span class="pre">max-loras-per-batch</span> <span class="pre">-</span> <span class="pre">1</span></code> to prevent unexpected starvations.</p>
+<p>In the example below, we start a server with <code class="docutils literal notranslate"><span class="pre">lora1</span></code> loaded as pinned, <code class="docutils literal notranslate"><span class="pre">lora2</span></code> and <code class="docutils literal notranslate"><span class="pre">lora3</span></code> loaded as regular (unpinned) adapters. Please note that, we intentionally specify <code class="docutils literal notranslate"><span class="pre">lora2</span></code> and <code class="docutils literal notranslate"><span class="pre">lora3</span></code> in two different formats to demonstrate that both are supported.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    python3 -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \</span>
+<span class="sd">    --enable-lora \</span>
+<span class="sd">    --cuda-graph-max-bs 8 \</span>
+<span class="sd">    --max-loras-per-batch 3 \</span>
+<span class="sd">    --max-lora-rank 256 \</span>
+<span class="sd">    --lora-target-modules all \</span>
+<span class="sd">    --lora-paths \</span>
+<span class="sd">        {&quot;lora_name&quot;:&quot;lora0&quot;,&quot;lora_path&quot;:&quot;Nutanix/Meta-Llama-3.1-8B-Instruct_lora_4_alpha_16&quot;,&quot;pinned&quot;:true} \</span>
+<span class="sd">        {&quot;lora_name&quot;:&quot;lora1&quot;,&quot;lora_path&quot;:&quot;algoprog/fact-generation-llama-3.1-8b-instruct-lora&quot;} \</span>
+<span class="sd">        lora2=philschmid/code-llama-3-1-8b-text-to-sql-lora</span>
+<span class="sd">    --log-level warning</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">wait_for_server</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>You can also specify adapter as pinned during dynamic adapter loading. In the example below, we reload <code class="docutils literal notranslate"><span class="pre">lora2</span></code> as pinned adapter:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/unload_lora_adapter&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lora_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lora1&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/load_lora_adapter&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lora_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lora1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="s2">&quot;algoprog/fact-generation-llama-3.1-8b-instruct-lora&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pinned&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Pin the adapter to GPU</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Verify that the results are expected:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;List 3 countries and their capitals.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;sampling_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="c1"># The first input uses lora0, and the second input uses lora1</span>
+    <span class="s2">&quot;lora_path&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lora0&quot;</span><span class="p">,</span> <span class="s2">&quot;lora1&quot;</span><span class="p">,</span> <span class="s2">&quot;lora2&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/generate&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora0 (pinned): </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora1 (pinned): </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output from lora2 (not pinned): </span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Choosing-LoRA-Backend">
+<h2>Choosing LoRA Backend<a class="headerlink" href="#Choosing-LoRA-Backend" title="Link to this heading">#</a></h2>
+<p>SGLang supports two LoRA backends that you can choose from using the <code class="docutils literal notranslate"><span class="pre">--lora-backend</span></code> argument:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">triton</span></code>: Basic Triton-based backend.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">csgmv</span></code>: Default chunked SGMV backend optimized for high concurrency scenarios.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">csgmv</span></code> backend was recently introduced to improve performance especially at high-concurrency scenarios. Our benchmark shows that it achieves 20% to 80% latency improvements over the basic triton backend.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">server_process</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">launch_server_cmd</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    python3 -m sglang.launch_server \</span>
+<span class="sd">    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \</span>
+<span class="sd">    --enable-lora \</span>
+<span class="sd">    --lora-backend csgmv \</span>
+<span class="sd">    --max-loras-per-batch 16 \</span>
+<span class="sd">    --lora-paths lora1=path/to/lora1 lora2=path/to/lora2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminate_process</span><span class="p">(</span><span class="n">server_process</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Future-Works">
+<h2>Future Works<a class="headerlink" href="#Future-Works" title="Link to this heading">#</a></h2>
+<p>The development roadmap for LoRA-related features can be found in this <a class="reference external" href="https://github.com/sgl-project/sglang/issues/2929">issue</a>. Other features, including Embedding Layer, Unified Paging, Cutlass backend are still under development.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="expert_parallelism.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Expert Parallelism</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pd_disaggregation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">PD Disaggregation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Arguments-for-LoRA-Serving">Arguments for LoRA Serving</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Serving-Single-Adaptor">Serving Single Adaptor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Serving-Multiple-Adaptors">Serving Multiple Adaptors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Dynamic-LoRA-loading">Dynamic LoRA loading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#OpenAI-compatible-API-usage">OpenAI-compatible API usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#LoRA-GPU-Pinning">LoRA GPU Pinning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Choosing-LoRA-Backend">Choosing LoRA Backend</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Future-Works">Future Works</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Feb 16, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

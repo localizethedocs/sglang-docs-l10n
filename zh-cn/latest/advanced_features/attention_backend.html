@@ -1,0 +1,1128 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Attention Backend &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/attention_backend';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/attention_backend.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Speculative Decoding" href="speculative_decoding.html" />
+    <link rel="prev" title="Hyperparameter Tuning" href="hyperparameter_tuning.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 16 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/attention_backend.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/attention_backend.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/attention_backend.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/attention_backend.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Attention Backend</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-matrix">Support Matrix</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mha-backends">MHA Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mla-backends">MLA Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-attention-different-backends-for-prefill-vs-decode-experimental">Hybrid attention (different backends for prefill vs decode) (Experimental)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding-with-hybrid-attention">Speculative decoding with hybrid attention</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-guide">User Guide</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-command-for-different-attention-backends">Launch Command for Different Attention Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-to-add-a-new-attention-backend">Steps to add a new attention backend</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="attention-backend">
+<h1>Attention Backend<a class="headerlink" href="#attention-backend" title="链接到此标题。">#</a></h1>
+<p>SGLang supports a large variety of attention backends. Each of them has different pros and cons.
+You can test them according to your needs.</p>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>Selecting an optimal attention backend is crucial for maximizing your performance. Different backends excel in various scenarios, so choose based on your model, hardware, and use case. Not all backends are supported on all platforms and model architectures.</p>
+<p>If you don't specify <code class="docutils literal notranslate"><span class="pre">--attention-backend</span></code>, SGLang makes a best effort to automatically select the most performant backend based on your hardware and model architecture.</p>
+</div>
+<section id="support-matrix">
+<h2>Support Matrix<a class="headerlink" href="#support-matrix" title="链接到此标题。">#</a></h2>
+<p>The support matrix is split into two parts: MHA (standard attention) and MLA (multi-head latent attention). For an explanation of the key differences between MHA and MLA, please see the <a class="reference internal" href="../basic_usage/deepseek_v3.html#multi-head-latent-attention-mla-throughput-optimizations"><span class="std std-ref">SGLang documentation on DeepSeek MLA</span></a> and the original <a class="reference external" href="https://arxiv.org/pdf/2405.04434">DeepSeek MLA paper</a>.</p>
+<section id="mha-backends">
+<h3>MHA Backends<a class="headerlink" href="#mha-backends" title="链接到此标题。">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Backend</strong></p></th>
+<th class="head"><p><strong>Page Size &gt; 1 (native)</strong></p></th>
+<th class="head"><p><strong>FP8 KV Cache</strong></p></th>
+<th class="head"><p><strong>FP4 KV Cache</strong></p></th>
+<th class="head"><p><strong>Spec topk=1</strong></p></th>
+<th class="head"><p><strong>Spec topk&gt;1</strong></p></th>
+<th class="head"><p><strong>Sliding Window</strong></p></th>
+<th class="head"><p><strong>MultiModal</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>FlashInfer</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FA3 (FlashAttention 3)</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FA4 (FlashAttention 4)</strong></p></td>
+<td><p>128</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Triton</strong></p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Torch Native (SDPA)</strong></p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FlexAttention (PyTorch)</strong></p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>TRTLLM MHA</strong></p></td>
+<td><p>16, 32 or 64</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Dual Chunk FlashAttention</strong></p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>AITER (ROCm)</strong></p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Wave (ROCm)</strong></p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ascend (NPU)</strong></p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Intel XPU</strong></p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Intel AMX (CPU)</strong></p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="mla-backends">
+<h3>MLA Backends<a class="headerlink" href="#mla-backends" title="链接到此标题。">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Backend</strong></p></th>
+<th class="head"><p><strong>Native Page Sizes</strong></p></th>
+<th class="head"><p><strong>FP8 KV Cache</strong></p></th>
+<th class="head"><p><strong>FP4 KV Cache</strong></p></th>
+<th class="head"><p><strong>Chunked Prefix Cache</strong></p></th>
+<th class="head"><p><strong>Spec topk=1</strong></p></th>
+<th class="head"><p><strong>Spec topk&gt;1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>FlashInfer MLA</strong></p></td>
+<td><p>1</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FlashMLA</strong></p></td>
+<td><p>64</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Cutlass MLA</strong></p></td>
+<td><p>128</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>TRTLLM MLA (Blackwell)</strong></p></td>
+<td><p>32 or 64</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FA3 (FlashAttention 3)</strong></p></td>
+<td><p>n/a</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>⚠️ (page_size=1 only)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Triton</strong></p></td>
+<td><p>n/a</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>⚠️ (page_size=1 only)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FA4</strong></p></td>
+<td><p>1</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Ascend MLA (NPU)</strong></p></td>
+<td><p>128</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Multimodal attention is selected by <code class="docutils literal notranslate"><span class="pre">--mm-attention-backend</span></code>. The &quot;MultiModal&quot; column indicates whether a corresponding multimodal implementation exists for that backend family.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>FlashAttention 4 is prefill-only for now.</p></li>
+<li><p>NSA is specifically designed for <a class="reference external" href="https://lmsys.org/blog/2025-09-29-deepseek-V32/">DeepSeek V3.2 DSA</a>.</p></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>For the KV4 FA4 scenario, FA4 requires using a different --decode-attention-backend to run. Except for trtllm_mha being incompatible with FA4, all other decode backends behave as shown in the table.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>Speculative decoding topk: <code class="docutils literal notranslate"><span class="pre">topk</span></code> is the number of draft tokens sampled per step from the draft model. <code class="docutils literal notranslate"><span class="pre">topk</span> <span class="pre">=</span> <span class="pre">1</span></code> follows classic EAGLE; <code class="docutils literal notranslate"><span class="pre">topk</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> explores multiple branches and requires backend support in both draft and verification paths.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>Page size controls how many tokens are grouped into a KV cache block. For the prefix cache to take effect, the number of tokens must fill at least one complete page. For example, if your prompt is only 32 tokens and <code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">=</span> <span class="pre">64</span></code>, it won't fill a complete page and cannot be matched in the prefix cache (pages cannot be padded). With 65 tokens and <code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">=</span> <span class="pre">64</span></code>, only the first page of 64 tokens will be cached and matched; the remaining 1 token is discarded. Use <code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">=</span> <span class="pre">1</span></code> for maximum prefix reuse (token-level matching).</p>
+</div>
+<p>Many backends that do not natively operate on pages can emulate <code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> at the wrapper layer by expanding page tables to per-token indices. The &quot;Page Size &gt; 1 (native)&quot; column indicates true in-kernel paging. Some backends require fixed native page sizes and cannot be reduced/emulated differently: TRTLLM MHA (16/32/64), TRTLLM MLA (32/64), FlashMLA (64), Cutlass MLA (128), Ascend (128).</p>
+<p>MLA page-size constraints:</p>
+<ul class="simple">
+<li><p>FlashInfer MLA: page_size = 1.</p></li>
+<li><p>FlashMLA: page_size = 64.</p></li>
+<li><p>Cutlass MLA: page_size = 128.</p></li>
+<li><p>TRTLLM MLA: page_size ∈ {32, 64}.</p></li>
+</ul>
+</section>
+<section id="hybrid-attention-different-backends-for-prefill-vs-decode-experimental">
+<h3>Hybrid attention (different backends for prefill vs decode) (Experimental)<a class="headerlink" href="#hybrid-attention-different-backends-for-prefill-vs-decode-experimental" title="链接到此标题。">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Hybrid attention is an experimental feature.</p>
+</div>
+<p>You can mix-and-match attention backends for prefill and decode. This is useful when one backend excels at prefill and another excels at decode. For the implementation details, please see <code class="docutils literal notranslate"><span class="pre">python/sglang/srt/layers/attention/hybrid_attn_backend.py</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: Prefill with FA4, Decode with TRTLLM MLA (Blackwell)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>nvidia/DeepSeek-R1-FP4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>trtllm_mla<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--moe-runner-backend<span class="w"> </span>flashinfer_trtllm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization<span class="w"> </span>modelopt_fp4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prefill-attention-backend<span class="w"> </span>fa4
+</pre></div>
+</div>
+<section id="speculative-decoding-with-hybrid-attention">
+<h4>Speculative decoding with hybrid attention<a class="headerlink" href="#speculative-decoding-with-hybrid-attention" title="链接到此标题。">#</a></h4>
+<p>Hybrid attention also works with speculative decoding. The backend used for draft decoding and target verification depends on <code class="docutils literal notranslate"><span class="pre">--speculative-attention-mode</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--speculative-attention-mode</span> <span class="pre">decode</span></code> (recommended): draft/verify use the decode backend.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--speculative-attention-mode</span> <span class="pre">prefill</span></code> (default): draft/verify use the prefill backend.</p></li>
+</ul>
+<p>Constraints when combining hybrid attention with speculative decoding:</p>
+<ul class="simple">
+<li><p>If any attention backend is <code class="docutils literal notranslate"><span class="pre">trtllm_mha</span></code>, speculative decoding supports only <code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span> <span class="pre">1</span></code>.</p></li>
+<li><p>For paged MHA backends with <code class="docutils literal notranslate"><span class="pre">--page-size</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, only <code class="docutils literal notranslate"><span class="pre">flashinfer</span></code> is supported.</p></li>
+<li><p>CUDA Graph: the decode backend is always captured; the prefill backend is captured only when <code class="docutils literal notranslate"><span class="pre">--speculative-attention-mode</span> <span class="pre">prefill</span></code>.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>If you set only one of <code class="docutils literal notranslate"><span class="pre">--prefill-attention-backend</span></code> or <code class="docutils literal notranslate"><span class="pre">--decode-attention-backend</span></code>, the unspecified phase inherits <code class="docutils literal notranslate"><span class="pre">--attention-backend</span></code>.
+If both are specified and differ, SGLang automatically enables a hybrid wrapper to dispatch to the chosen backend per phase.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="user-guide">
+<h2>User Guide<a class="headerlink" href="#user-guide" title="链接到此标题。">#</a></h2>
+<section id="launch-command-for-different-attention-backends">
+<h3>Launch Command for Different Attention Backends<a class="headerlink" href="#launch-command-for-different-attention-backends" title="链接到此标题。">#</a></h3>
+<ul class="simple">
+<li><p>FlashInfer (Default for Non-Hopper Machines, e.g., A100, A40)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>flashinfer
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-V3<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>flashinfer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>FlashAttention 3 (Default for Hopper Machines, e.g., H100, H200, H20)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>fa3
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-V3<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>fa3
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Triton</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>triton
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-V3<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>triton<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>FlashMLA</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>flashmla<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>flashmla<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--kv-cache-dtype<span class="w"> </span>fp8_e4m3<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>TRTLLM MLA (Optimized for Blackwell Architecture, e.g., B200)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>trtllm_mla<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>TRTLLM MLA with FP8 KV Cache (Higher concurrency, lower memory footprint)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>trtllm_mla<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--kv-cache-dtype<span class="w"> </span>fp8_e4m3<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>FlashAttention 4 (MHA &amp; MLA)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prefill-attention-backend<span class="w"> </span>fa4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Cutlass MLA</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-R1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>cutlass_mla<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Ascend</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>ascend
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Intel XPU</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>intel_xpu
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Wave</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>wave
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>FlexAttention</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>flex_attention
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Dual Chunk FlashAttention</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>Qwen/Qwen2.5-14B-Instruct-1M<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>dual_chunk_flash_attn
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Torch Native</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attention-backend<span class="w"> </span>torch_native
+</pre></div>
+</div>
+</section>
+</section>
+<section id="steps-to-add-a-new-attention-backend">
+<h2>Steps to add a new attention backend<a class="headerlink" href="#steps-to-add-a-new-attention-backend" title="链接到此标题。">#</a></h2>
+<p>To add a new attention backend, you can learn from the existing backends
+(<code class="docutils literal notranslate"><span class="pre">python/sglang/srt/layers/attention/triton_backend.py</span></code>, <code class="docutils literal notranslate"><span class="pre">python/sglang/srt/layers/attention/flashattention_backend.py</span></code>)
+and follow the steps below.</p>
+<ol class="arabic simple">
+<li><p>Run without cuda graph. Support the two forward functions</p>
+<ul class="simple">
+<li><p>forward_extend</p>
+<ul>
+<li><p>Will be used for prefill, prefill with KV cache, and target verification</p></li>
+<li><p>It will be called once per layer</p></li>
+</ul>
+</li>
+<li><p>forward_decode</p>
+<ul>
+<li><p>Will be used for normal decode, and draft decode</p></li>
+<li><p>It will be called once per layer</p></li>
+</ul>
+</li>
+<li><p>init_forward_metadata</p>
+<ul>
+<li><p>Initialize the class and common metadata shared by all layers</p></li>
+<li><p>Call the plan function for optimizations like split_kv</p></li>
+<li><p>It will be called once per forward</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Run with cuda graph. It has two phases (capture and replay) and you need to implement three functions</p>
+<ul class="simple">
+<li><p>init_cuda_graph_state</p>
+<ul>
+<li><p>It will be called once during life time</p></li>
+<li><p>Create all common shared buffers</p></li>
+</ul>
+</li>
+<li><p>init_forward_metadata_capture_cuda_graph</p>
+<ul>
+<li><p>It will be called before capturing a cuda graph</p></li>
+<li><p>It is similar to init_forward_metadata but write the medatada to some pre-defined buffers</p></li>
+</ul>
+</li>
+<li><p>init_forward_metadata_replay_cuda_graph</p>
+<ul>
+<li><p>It will be called before replaying a cuda graph</p></li>
+<li><p>This function is in the critical path and needs to be fast</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hyperparameter_tuning.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Hyperparameter Tuning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="speculative_decoding.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Speculative Decoding</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-matrix">Support Matrix</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mha-backends">MHA Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mla-backends">MLA Backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-attention-different-backends-for-prefill-vs-decode-experimental">Hybrid attention (different backends for prefill vs decode) (Experimental)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speculative-decoding-with-hybrid-attention">Speculative decoding with hybrid attention</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-guide">User Guide</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-command-for-different-attention-backends">Launch Command for Different Attention Backends</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-to-add-a-new-attention-backend">Steps to add a new attention backend</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 02 月 16 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

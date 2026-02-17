@@ -1,0 +1,916 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Model Hooks &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/forward_hooks';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/forward_hooks.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 02 月 17 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">大語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">多模態語言模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_language_models.html">Diffusion Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/diffusion_models.html">Diffusion Models</a></li>
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">獎勵模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">重排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/classify_models.html">Classification API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/mindspore_models.html">MindSpore Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/forward_hooks.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/forward_hooks.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/forward_hooks.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/forward_hooks.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Model Hooks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-overview">Configuration overview</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-level-fields">Top-level fields</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hook-spec-schema">Hook spec schema</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#name-optional"><code class="docutils literal notranslate"><span class="pre">name</span></code> (optional)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-modules-required"><code class="docutils literal notranslate"><span class="pre">target_modules</span></code> (required)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hook-factory-required"><code class="docutils literal notranslate"><span class="pre">hook_factory</span></code> (required)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config-optional"><code class="docutils literal notranslate"><span class="pre">config</span></code> (optional)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hook-lifecycle-and-behavior">Hook lifecycle and behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-a-hook-factory">Writing a hook factory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="model-hooks">
+<h1>Model Hooks<a class="headerlink" href="#model-hooks" title="連結到這個標頭">#</a></h1>
+<p>SGLang supports attaching PyTorch forward hooks to specific submodules in the loaded model, configured entirely via <code class="docutils literal notranslate"><span class="pre">server_args</span></code> JSON.</p>
+<p>This is useful for:</p>
+<ul class="simple">
+<li><p>Logging intermediate activations</p></li>
+<li><p>Debugging model internals</p></li>
+<li><p>Exporting hidden states to external tooling</p></li>
+</ul>
+<p>Hooks are attached once during <code class="docutils literal notranslate"><span class="pre">ModelRunner.initialize</span></code> and run on every forward pass.</p>
+<hr class="docutils" />
+<section id="configuration-overview">
+<h2>Configuration overview<a class="headerlink" href="#configuration-overview" title="連結到這個標頭">#</a></h2>
+<p>Hooks are configured via a <code class="docutils literal notranslate"><span class="pre">ServerArgs</span></code> field:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ServerArgs</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="c1"># For forward hooks</span>
+    <span class="n">forward_hooks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>In JSON form, a minimal configuration looks like:</p>
+<div class="highlight-jsonc notranslate"><div class="highlight"><pre><span></span>{
+  &quot;forward_hooks&quot;: [
+    {
+      &quot;name&quot;: &quot;outer_linear_hooks&quot;,
+      &quot;target_modules&quot;: [&quot;outer.0&quot;, &quot;outer.1&quot;],
+      &quot;hook_factory&quot;: &quot;my_project.hooks:dummy_hook_factory&quot;,
+      &quot;config&quot;: {
+        &quot;tag&quot;: &quot;outer-layer&quot;
+      }
+    }
+  ]
+}
+</pre></div>
+</div>
+<section id="top-level-fields">
+<h3>Top-level fields<a class="headerlink" href="#top-level-fields" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">forward_hooks</span></code> (optional list of objects)
+Each element is a hook spec describing:</p>
+<ul>
+<li><p>Which modules to target</p></li>
+<li><p>Which Python factory to call</p></li>
+<li><p>What configuration to pass into that factory</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="hook-spec-schema">
+<h2>Hook spec schema<a class="headerlink" href="#hook-spec-schema" title="連結到這個標頭">#</a></h2>
+<p>Each entry in <code class="docutils literal notranslate"><span class="pre">forward_hooks</span></code> is a JSON object with the following shape:</p>
+<div class="highlight-jsonc notranslate"><div class="highlight"><pre><span></span>{
+  &quot;name&quot;: &quot;optional-descriptive-name&quot;,
+  &quot;target_modules&quot;: [&quot;pattern1&quot;, &quot;pattern2&quot;, &quot;...&quot;],
+  &quot;hook_factory&quot;: &quot;module.submodule:factory_name&quot;,
+  &quot;config&quot;: {
+    &quot;...&quot;: &quot;arbitrary JSON&quot;
+  }
+}
+</pre></div>
+</div>
+<section id="name-optional">
+<h3><code class="docutils literal notranslate"><span class="pre">name</span></code> (optional)<a class="headerlink" href="#name-optional" title="連結到這個標頭">#</a></h3>
+<ul>
+<li><p>Human-readable name for logging.</p></li>
+<li><p>Used only in log messages such as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Registered forward hook &#39;outer_linear_hooks&#39; on outer.0
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="target-modules-required">
+<h3><code class="docutils literal notranslate"><span class="pre">target_modules</span></code> (required)<a class="headerlink" href="#target-modules-required" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p>List of <strong>module name patterns</strong> used to match entries in <code class="docutils literal notranslate"><span class="pre">model.named_modules()</span></code>.</p></li>
+<li><p>Patterns are matched using <code class="docutils literal notranslate"><span class="pre">fnmatch.fnmatch</span></code>, so:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;outer.0&quot;</span></code> matches exactly <code class="docutils literal notranslate"><span class="pre">&quot;outer.0&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;outer.*&quot;</span></code> matches <code class="docutils literal notranslate"><span class="pre">&quot;outer.0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;outer.1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;outer.inner&quot;</span></code>, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;outer.inner.*&quot;</span></code> matches children under <code class="docutils literal notranslate"><span class="pre">outer.inner</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<div><p>If no modules match the given patterns, hook registration does <strong>not</strong> fail.
+Instead, SGLang logs a warning and continues:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>No modules matched hook spec &#39;name&#39; patterns=[&#39;...&#39;]
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="hook-factory-required">
+<h3><code class="docutils literal notranslate"><span class="pre">hook_factory</span></code> (required)<a class="headerlink" href="#hook-factory-required" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p>String path to the Python factory function that creates the hook.</p></li>
+<li><p>Supported formats:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;package.module:factory_name&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;package.module.submodule.factory_name&quot;</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>The path is resolved via:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">resolve_callable</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">module_name</span><span class="p">,</span> <span class="n">fn_name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid hook callable path &#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="s2">&quot;Expected &#39;module.submodule:factory&#39; or &#39;module.submodule.factory&#39;.&quot;</span>
+            <span class="p">)</span>
+        <span class="o">*</span><span class="n">mod_parts</span><span class="p">,</span> <span class="n">fn_name</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_parts</span><span class="p">)</span>
+
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">fn_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Module &#39;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{</span><span class="n">fn_name</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(from hook path &#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</pre></div>
+</div>
+<p><strong>Failure modes</strong>:</p>
+<ul class="simple">
+<li><p>If the path is malformed (not enough dots and no <code class="docutils literal notranslate"><span class="pre">:</span></code>), a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised at startup.</p></li>
+<li><p>If the module imports but the attribute is missing, an <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> is raised with a clear error message.</p></li>
+<li><p>If the hook factory returns <code class="docutils literal notranslate"><span class="pre">None</span></code>, a warning is logged and no hook is registered for that spec (initialization continues).</p></li>
+</ul>
+<p>The first two cause initialization to fail fast with a descriptive error; the last one is non-fatal.</p>
+</section>
+<section id="config-optional">
+<h3><code class="docutils literal notranslate"><span class="pre">config</span></code> (optional)<a class="headerlink" href="#config-optional" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p>Arbitrary JSON object.</p></li>
+<li><p>Passed directly to the hook factory as a Python <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
+<li><p>This lets you parameterize hook behavior from config (e.g. tags, log levels, sampling rates, etc.).</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="hook-lifecycle-and-behavior">
+<h2>Hook lifecycle and behavior<a class="headerlink" href="#hook-lifecycle-and-behavior" title="連結到這個標頭">#</a></h2>
+<p>Hooks are registered in <code class="docutils literal notranslate"><span class="pre">ModelRunner.initialize()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">server_args</span><span class="o">.</span><span class="n">forward_hooks</span><span class="p">:</span>
+    <span class="n">register_forward_hooks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">server_args</span><span class="o">.</span><span class="n">forward_hooks</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The actual registration logic is implemented by <code class="docutils literal notranslate"><span class="pre">register_forward_hooks</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">register_forward_hooks</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">hook_specs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    hook_specs is a list of dicts from server_args.forward_hooks.</span>
+<span class="sd">    Attaches forward hooks to the matching modules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name_to_module</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">named_modules</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">hook_specs</span><span class="p">:</span>
+        <span class="n">spec_name</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">target_patterns</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;target_modules&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_patterns</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Hook spec &#39;</span><span class="si">{</span><span class="n">spec_name</span><span class="si">}</span><span class="s2">&#39; has no &#39;target_modules&#39;, skipping&quot;</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">hook_factory_path</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hook_factory&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hook_factory_path</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Hook spec &#39;</span><span class="si">{</span><span class="n">spec_name</span><span class="si">}</span><span class="s2">&#39; has no &#39;hook_factory&#39;, skipping&quot;</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">hook_factory</span> <span class="o">=</span> <span class="n">resolve_callable</span><span class="p">(</span><span class="n">hook_factory_path</span><span class="p">)</span>
+
+        <span class="n">hook</span> <span class="o">=</span> <span class="n">hook_factory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">if</span> <span class="n">hook_factory</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">hook</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Hook factory &#39;</span><span class="si">{</span><span class="n">hook_factory_path</span><span class="si">}</span><span class="s2">&#39; for spec &#39;</span><span class="si">{</span><span class="n">spec_name</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="s2">&quot;returned None, not registering any hook&quot;</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Resolve patterns like &quot;model.layers.*.mlp&quot;</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">name_to_module</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">target_patterns</span><span class="p">):</span>
+                <span class="n">matched</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">matched</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No modules matched hook spec &#39;</span><span class="si">{</span><span class="n">spec_name</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;patterns=</span><span class="si">{</span><span class="n">target_patterns</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">matched</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hook</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">register_forward_hook</span><span class="p">(</span><span class="n">hook</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Registered forward hook &#39;</span><span class="si">{</span><span class="n">spec_name</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;on </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+<p>Key points:</p>
+<ul class="simple">
+<li><p>Hooks are <strong>forward hooks only</strong> (via <code class="docutils literal notranslate"><span class="pre">module.register_forward_hook</span></code>).</p></li>
+<li><p>They are attached once at initialization.</p></li>
+<li><p>Hook handles are currently not stored on <code class="docutils literal notranslate"><span class="pre">ModelRunner</span></code> (they cannot be removed later via this API).</p></li>
+<li><p>Failure to match any modules is non-fatal; a warning is logged instead.</p></li>
+<li><p>If a hook factory returns <code class="docutils literal notranslate"><span class="pre">None</span></code>, a warning is logged and that spec is skipped.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="writing-a-hook-factory">
+<h2>Writing a hook factory<a class="headerlink" href="#writing-a-hook-factory" title="連結到這個標頭">#</a></h2>
+<p>A hook factory is a regular Python function:</p>
+<ul class="simple">
+<li><p>Takes a <code class="docutils literal notranslate"><span class="pre">config:</span> <span class="pre">dict</span></code> (from JSON)</p></li>
+<li><p>Returns a forward hook function with signature <code class="docutils literal notranslate"><span class="pre">(module,</span> <span class="pre">inputs,</span> <span class="pre">output)</span></code></p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HOOK_CALLS</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dummy_hook_factory</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory that returns a forward hook capturing a tag from config.&quot;&quot;&quot;</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">hook</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="n">HOOK_CALLS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="n">tag</span><span class="p">,</span>
+                <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>  <span class="c1"># must return output if you don’t want to modify the tensor</span>
+
+    <span class="k">return</span> <span class="n">hook</span>
+</pre></div>
+</div>
+<p>In JSON:</p>
+<div class="highlight-jsonc notranslate"><div class="highlight"><pre><span></span>{
+  &quot;forward_hooks&quot;: [
+    {
+      &quot;name&quot;: &quot;capture_outer&quot;,
+      &quot;target_modules&quot;: [&quot;outer.0&quot;, &quot;outer.1&quot;],
+      &quot;hook_factory&quot;: &quot;my_project.hooks:dummy_hook_factory&quot;,
+      &quot;config&quot;: {
+        &quot;tag&quot;: &quot;outer&quot;
+      }
+    }
+  ]
+}
+</pre></div>
+</div>
+<p>This will:</p>
+<ul class="simple">
+<li><p>Resolve <code class="docutils literal notranslate"><span class="pre">my_project.hooks:dummy_hook_factory</span></code> to a Python callable.</p></li>
+<li><p>Call it with <code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">=</span> <span class="pre">{&quot;tag&quot;:</span> <span class="pre">&quot;outer&quot;}</span></code>.</p></li>
+<li><p>Use the returned hook for all modules matching <code class="docutils literal notranslate"><span class="pre">outer.0</span></code> and <code class="docutils literal notranslate"><span class="pre">outer.1</span></code>.</p></li>
+<li><p>Append metadata about each call to <code class="docutils literal notranslate"><span class="pre">HOOK_CALLS</span></code>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p>Define <code class="docutils literal notranslate"><span class="pre">forward_hooks</span></code> as a list of specs in <code class="docutils literal notranslate"><span class="pre">ServerArgs</span></code> to turn on the feature.</p></li>
+<li><p>Each spec:</p>
+<ul>
+<li><p>selects modules via <code class="docutils literal notranslate"><span class="pre">target_modules</span></code> (glob patterns over <code class="docutils literal notranslate"><span class="pre">model.named_modules()</span></code>),</p></li>
+<li><p>points to a hook factory via <code class="docutils literal notranslate"><span class="pre">hook_factory</span></code>,</p></li>
+<li><p>passes arbitrary <code class="docutils literal notranslate"><span class="pre">config</span></code> into that factory.</p></li>
+</ul>
+</li>
+<li><p>Hook factories are resolved via <code class="docutils literal notranslate"><span class="pre">resolve_callable</span></code>, which supports <code class="docutils literal notranslate"><span class="pre">module:factory</span></code> and <code class="docutils literal notranslate"><span class="pre">module.submodule.factory</span></code>.</p></li>
+<li><p>Hooks are standard PyTorch forward hooks, attached once at startup and invoked on every forward pass.</p></li>
+<li><p>Misconfiguration is either:</p>
+<ul>
+<li><p><strong>fatal and explicit</strong> (bad path / missing attribute), or</p></li>
+<li><p><strong>non-fatal with clear warnings</strong> (no targets matched, or factory returned <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-overview">Configuration overview</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-level-fields">Top-level fields</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hook-spec-schema">Hook spec schema</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#name-optional"><code class="docutils literal notranslate"><span class="pre">name</span></code> (optional)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-modules-required"><code class="docutils literal notranslate"><span class="pre">target_modules</span></code> (required)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hook-factory-required"><code class="docutils literal notranslate"><span class="pre">hook_factory</span></code> (required)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config-optional"><code class="docutils literal notranslate"><span class="pre">config</span></code> (optional)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hook-lifecycle-and-behavior">Hook lifecycle and behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-a-hook-factory">Writing a hook factory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 02 月 17 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
