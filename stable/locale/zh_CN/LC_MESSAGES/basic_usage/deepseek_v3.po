@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 08:37+0000\n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -627,10 +627,18 @@ msgid ""
 msgstr ""
 
 #: ../../../basic_usage/deepseek_v3.md:197
+msgid ""
+"To enable the experimental overlap scheduler for EAGLE speculative decoding, "
+"set the environment variable `SGLANG_ENABLE_SPEC_V2=1`. This can improve "
+"performance by enabling overlap scheduling between draft and verification "
+"stages."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_v3.md:201
 msgid "Reasoning Content for DeepSeek R1 & V3.1"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:199
+#: ../../../basic_usage/deepseek_v3.md:203
 msgid ""
 "See [Reasoning Parser](https://docs.sglang.io/advanced_features/"
 "separate_reasoning.html) and [Thinking Parameter for DeepSeek V3.1](https://"
@@ -638,18 +646,18 @@ msgid ""
 "Models)."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:202
+#: ../../../basic_usage/deepseek_v3.md:206
 msgid "Function calling for DeepSeek Models"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:204
+#: ../../../basic_usage/deepseek_v3.md:208
 msgid ""
 "Add arguments `--tool-call-parser deepseekv3` and `--chat-template ./"
 "examples/chat_template/tool_chat_template_deepseekv3.jinja`(recommended) to "
 "enable this feature. For example (running on 1 * H20 node):"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:206
+#: ../../../basic_usage/deepseek_v3.md:210
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model deepseek-ai/DeepSeek-V3-0324 \\\n"
@@ -662,12 +670,12 @@ msgid ""
 "jinja\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:217
-#: ../../../basic_usage/deepseek_v3.md:270
+#: ../../../basic_usage/deepseek_v3.md:221
+#: ../../../basic_usage/deepseek_v3.md:274
 msgid "Sample Request:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:219
+#: ../../../basic_usage/deepseek_v3.md:223
 msgid ""
 "curl \"http://127.0.0.1:30000/v1/chat/completions\" \\\n"
 "-H \"Content-Type: application/json\" \\\n"
@@ -681,11 +689,11 @@ msgid ""
 "today\"}]}'\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:225
+#: ../../../basic_usage/deepseek_v3.md:229
 msgid "Expected Response"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:227
+#: ../../../basic_usage/deepseek_v3.md:231
 msgid ""
 "{\"id\":\"6501ef8e2d874006bf555bc80cddc7c5\",\"object\":\"chat.completion\","
 "\"created\":1745993638,\"model\":\"deepseek-ai/DeepSeek-V3-0324\","
@@ -699,11 +707,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:231
+#: ../../../basic_usage/deepseek_v3.md:235
 msgid "Sample Streaming Request:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:232
+#: ../../../basic_usage/deepseek_v3.md:236
 msgid ""
 "curl \"http://127.0.0.1:30000/v1/chat/completions\" \\\n"
 "-H \"Content-Type: application/json\" \\\n"
@@ -717,11 +725,11 @@ msgid ""
 "Qingdao today\"}]}'\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:237
+#: ../../../basic_usage/deepseek_v3.md:241
 msgid "Expected Streamed Chunks (simplified for clarity):"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:238
+#: ../../../basic_usage/deepseek_v3.md:242
 msgid ""
 "data: {\"choices\":[{\"delta\":{\"tool_calls\":[{\"function\":{\"arguments\":"
 "\"{\\\"\"}}]}}]}\n"
@@ -742,48 +750,48 @@ msgid ""
 "data: [DONE]\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:249
+#: ../../../basic_usage/deepseek_v3.md:253
 msgid ""
 "The client needs to concatenate all arguments fragments to reconstruct the "
 "complete tool call:"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:250
+#: ../../../basic_usage/deepseek_v3.md:254
 msgid "{\"city\": \"Qingdao\"}\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:255
+#: ../../../basic_usage/deepseek_v3.md:259
 msgid "Use a lower `\"temperature\"` value for better results."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:256
+#: ../../../basic_usage/deepseek_v3.md:260
 msgid ""
 "To receive more consistent tool call results, it is recommended to use `--"
 "chat-template examples/chat_template/tool_chat_template_deepseekv3.jinja`. "
 "It provides an improved unified prompt."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:260
+#: ../../../basic_usage/deepseek_v3.md:264
 msgid "Thinking Budget for DeepSeek R1"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:262
+#: ../../../basic_usage/deepseek_v3.md:266
 msgid ""
 "In SGLang, we can implement thinking budget with `CustomLogitProcessor`."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:264
+#: ../../../basic_usage/deepseek_v3.md:268
 msgid "Launch a server with `--enable-custom-logit-processor` flag on."
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:266
+#: ../../../basic_usage/deepseek_v3.md:270
 msgid ""
 "python3 -m sglang.launch_server --model deepseek-ai/DeepSeek-R1 --tp 8 --"
 "port 30000 --host 0.0.0.0 --mem-fraction-static 0.9 --disable-cuda-graph --"
 "reasoning-parser deepseek-r1 --enable-custom-logit-processor\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:272
+#: ../../../basic_usage/deepseek_v3.md:276
 msgid ""
 "import openai\n"
 "from rich.pretty import pprint\n"
@@ -813,17 +821,17 @@ msgid ""
 "pprint(response)\n"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:298
+#: ../../../basic_usage/deepseek_v3.md:302
 msgid "FAQ"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:300
+#: ../../../basic_usage/deepseek_v3.md:304
 msgid ""
 "**Q: Model loading is taking too long, and I'm encountering an NCCL timeout. "
 "What should I do?**"
 msgstr ""
 
-#: ../../../basic_usage/deepseek_v3.md:302
+#: ../../../basic_usage/deepseek_v3.md:306
 msgid ""
 "A: If you're experiencing extended model loading times and an NCCL timeout, "
 "you can try increasing the timeout duration. Add the argument `--dist-"

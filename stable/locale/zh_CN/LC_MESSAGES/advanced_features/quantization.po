@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 08:37+0000\n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -603,6 +603,10 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/quantization.md:356
+msgid "torchao online quantization method"
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:358
 msgid ""
 "SGLang also supports quantization methods based on [torchao](https://github."
 "com/pytorch/ao). You can simply specify `--torchao-config` in the command "
@@ -611,7 +615,7 @@ msgid ""
 "launch the server with the following command:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:358
+#: ../../../advanced_features/quantization.md:360
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -619,14 +623,14 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:365
+#: ../../../advanced_features/quantization.md:367
 msgid ""
 "SGLang supports the following quantization methods based on torchao "
 "`[\"int8dq\", \"int8wo\", \"fp8wo\", \"fp8dq-per_tensor\", \"fp8dq-"
 "per_row\", \"int4wo-32\", \"int4wo-64\", \"int4wo-128\", \"int4wo-256\"]`."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:367
+#: ../../../advanced_features/quantization.md:369
 msgid ""
 "Note: According to [this issue](https://github.com/sgl-project/sglang/"
 "issues/2219#issuecomment-2561890230), `\"int8dq\"` method currently has some "
@@ -635,7 +639,7 @@ msgid ""
 "following command:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:369
+#: ../../../advanced_features/quantization.md:371
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -644,33 +648,54 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:377
-msgid "Reference"
-msgstr ""
-
 #: ../../../advanced_features/quantization.md:379
-msgid "[GPTQModel](https://github.com/ModelCloud/GPTQModel)"
-msgstr ""
-
-#: ../../../advanced_features/quantization.md:380
-msgid "[LLM Compressor](https://github.com/vllm-project/llm-compressor/)"
+msgid "`quark_int4fp8_moe` online quantization method"
 msgstr ""
 
 #: ../../../advanced_features/quantization.md:381
+msgid ""
+"SGLang running on AMD GPUs (CDNA3 or CDNA4 architecture) supports the "
+"quantization method `--quantization quark_int4fp8_moe`, that will replace "
+"[MoE layers](https://github.com/sgl-project/sglang/blob/v0.4.8/python/sglang/"
+"srt/layers/moe/fused_moe_triton/layer.py#L271) originally in high precision "
+"(bfloat16, float16 or float32) to use weights dynamically quantized to int4, "
+"that are upcasted to float8 during inference to run compute in float8 "
+"precision with activations dynamically quantized on the fly to float8."
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:383
+msgid ""
+"Other layers (e.g. projections in the attention layers) have their weights "
+"quantized online to float8 directly."
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:385
+msgid "Reference"
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:387
+msgid "[GPTQModel](https://github.com/ModelCloud/GPTQModel)"
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:388
+msgid "[LLM Compressor](https://github.com/vllm-project/llm-compressor/)"
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:389
 msgid ""
 "[NVIDIA Model Optimizer (ModelOpt)](https://github.com/NVIDIA/Model-"
 "Optimizer)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:382
+#: ../../../advanced_features/quantization.md:390
 msgid ""
 "[Torchao: PyTorch Architecture Optimization](https://github.com/pytorch/ao)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:383
+#: ../../../advanced_features/quantization.md:391
 msgid "[vLLM Quantization](https://docs.vllm.ai/en/latest/quantization/)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:384
+#: ../../../advanced_features/quantization.md:392
 msgid "[auto-round](https://github.com/intel/auto-round)"
 msgstr ""

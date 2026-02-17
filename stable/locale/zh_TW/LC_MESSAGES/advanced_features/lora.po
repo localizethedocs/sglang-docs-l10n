@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 08:37+0000\n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,12 +61,20 @@ msgstr ""
 
 #: ../../../advanced_features/lora.ipynb:47
 msgid ""
+"``enable_lora_overlap_loading``: Enable asynchronous LoRA weight loading in "
+"order to overlap H2D transfers with GPU compute. This should be enabled if "
+"you find that your LoRA workloads are bottlenecked by adapter weight "
+"loading, for example when frequently loading large LoRA adapters."
+msgstr ""
+
+#: ../../../advanced_features/lora.ipynb:49
+msgid ""
 "``lora_paths``: The list of LoRA adapters to load. Each adapter must be "
 "specified in one of the following formats: \\| = \\| JSON with schema "
 "{\"lora_name\":str,\"lora_path\":str,\"pinned\":bool}."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:49
+#: ../../../advanced_features/lora.ipynb:51
 msgid ""
 "``max_loras_per_batch``: Maximum number of adaptors used by each batch. This "
 "argument can affect the amount of GPU memory reserved for multi-LoRA "
@@ -74,21 +82,21 @@ msgid ""
 "Defaults to be 8."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:51
+#: ../../../advanced_features/lora.ipynb:53
 msgid ""
 "``max_loaded_loras``: If specified, it limits the maximum number of LoRA "
 "adapters loaded in CPU memory at a time. The value must be greater than or "
 "equal to ``max-loras-per-batch``."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:53
+#: ../../../advanced_features/lora.ipynb:55
 msgid ""
 "``lora_eviction_policy``: LoRA adapter eviction policy when GPU memory pool "
 "is full. ``lru``: Least Recently Used (default, better cache efficiency). "
 "``fifo``: First-In-First-Out."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:55
+#: ../../../advanced_features/lora.ipynb:57
 msgid ""
 "``lora_backend``: The backend of running GEMM kernels for Lora modules. "
 "Currently we support Triton LoRA backend (``triton``) and Chunked SGMV "
@@ -96,7 +104,7 @@ msgid ""
 "Cuda kernels will be added."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:57
+#: ../../../advanced_features/lora.ipynb:59
 msgid ""
 "``max_lora_rank``: The maximum LoRA rank that should be supported. If not "
 "specified, it will be automatically inferred from the adapters provided in "
@@ -104,7 +112,7 @@ msgid ""
 "load adapters of larger LoRA rank after server startup."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:59
+#: ../../../advanced_features/lora.ipynb:61
 msgid ""
 "``lora_target_modules``: The union set of all target modules where LoRA "
 "should be applied (e.g., ``q_proj``, ``k_proj``, ``gate_proj``). If not "
@@ -117,7 +125,7 @@ msgid ""
 "the modules for which you plan to load adapters."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:62
+#: ../../../advanced_features/lora.ipynb:64
 msgid ""
 "``--max-lora-chunk-size``: Maximum chunk size for the ChunkedSGMV LoRA "
 "backend. Only used when --lora-backend is 'csgmv'. Choosing a larger value "
@@ -125,7 +133,7 @@ msgid ""
 "workload as needed. Defaults to 16."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:64
+#: ../../../advanced_features/lora.ipynb:66
 msgid ""
 "``tp_size``: LoRA serving along with Tensor Parallelism is supported by "
 "SGLang. ``tp_size`` controls the number of GPUs for tensor parallelism. More "
@@ -133,25 +141,25 @@ msgid ""
 "arxiv.org/pdf/2311.03285>`__ paper."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:66
+#: ../../../advanced_features/lora.ipynb:68
 msgid ""
 "From client side, the user needs to provide a list of strings as input "
 "batch, and a list of adaptor names that each input sequence corresponds to."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:78
+#: ../../../advanced_features/lora.ipynb:80
 msgid "Usage"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:81
+#: ../../../advanced_features/lora.ipynb:83
 msgid "Serving Single Adaptor"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:92
+#: ../../../advanced_features/lora.ipynb:94
 msgid "**Note:** SGLang supports LoRA adapters through two APIs:"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:94
+#: ../../../advanced_features/lora.ipynb:96
 msgid ""
 "**OpenAI-Compatible API** (``/v1/chat/completions``, ``/v1/completions``): "
 "Use the ``model:adapter-name`` syntax. See `OpenAI API with LoRA <../"
@@ -159,7 +167,7 @@ msgid ""
 "examples."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:96
+#: ../../../advanced_features/lora.ipynb:98
 msgid ""
 "**Native API** (``/generate``): Pass ``lora_path`` in the request body "
 "(shown below)."
@@ -221,7 +229,7 @@ msgstr ""
 msgid "terminate_process(server_process)"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:174
+#: ../../../advanced_features/lora.ipynb:176
 msgid "Serving Multiple Adaptors"
 msgstr ""
 
@@ -263,18 +271,18 @@ msgid ""
 "print(f\"Output 1: {response.json()[1]['text']}\")"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:239
+#: ../../../advanced_features/lora.ipynb:241
 msgid "Dynamic LoRA loading"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:250
+#: ../../../advanced_features/lora.ipynb:252
 msgid ""
 "Instead of specifying all adapters during server startup via ``--lora-"
 "paths``. You can also load & unload LoRA adapters dynamically via the ``/"
 "load_lora_adapter`` and ``/unload_lora_adapter`` API."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:252
+#: ../../../advanced_features/lora.ipynb:254
 msgid ""
 "When using dynamic LoRA loading, it's recommended to explicitly specify both "
 "``--max-lora-rank`` and ``--lora-target-modules`` at startup. For backward "
@@ -318,7 +326,7 @@ msgid ""
 "wait_for_server(url)"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:292
+#: ../../../advanced_features/lora.ipynb:294
 msgid "Load adapter lora0"
 msgstr ""
 
@@ -338,7 +346,7 @@ msgid ""
 "    print(\"Failed to load LoRA adapter.\", response.json())"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:323
+#: ../../../advanced_features/lora.ipynb:325
 msgid "Load adapter lora1:"
 msgstr ""
 
@@ -358,7 +366,7 @@ msgid ""
 "    print(\"Failed to load LoRA adapter.\", response.json())"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:354
+#: ../../../advanced_features/lora.ipynb:356
 msgid "Check inference output:"
 msgstr ""
 
@@ -382,7 +390,7 @@ msgid ""
 "print(f\"Output from lora1 (updated): \\n{response.json()[1]['text']}\\n\")"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:389
+#: ../../../advanced_features/lora.ipynb:391
 msgid "Unload lora0 and replace it with a different adapter:"
 msgstr ""
 
@@ -409,15 +417,15 @@ msgid ""
 "    print(\"Failed to load LoRA adapter.\", response.json())"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:427
+#: ../../../advanced_features/lora.ipynb:429
 msgid "Check output again:"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:463
+#: ../../../advanced_features/lora.ipynb:465
 msgid "OpenAI-compatible API usage"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:465
+#: ../../../advanced_features/lora.ipynb:467
 msgid ""
 "You can use LoRA adapters via the OpenAI-compatible APIs by specifying the "
 "adapter in the ``model`` field using the ``base-model:adapter-name`` syntax "
@@ -427,11 +435,11 @@ msgid ""
 "openai_api_completions.ipynb>`__."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:486
+#: ../../../advanced_features/lora.ipynb:488
 msgid "LoRA GPU Pinning"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:497
+#: ../../../advanced_features/lora.ipynb:499
 msgid ""
 "Another advanced option is to specify adapters as ``pinned`` during loading. "
 "When an adapter is pinned, it is permanently assigned to one of the "
@@ -440,7 +448,7 @@ msgid ""
 "resident until it is explicitly unloaded."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:499
+#: ../../../advanced_features/lora.ipynb:501
 msgid ""
 "This can improve performance in scenarios where the same adapter is "
 "frequently used across requests, by avoiding repeated memory transfers and "
@@ -453,7 +461,7 @@ msgid ""
 "batch - 1`` to prevent unexpected starvations."
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:502
+#: ../../../advanced_features/lora.ipynb:504
 msgid ""
 "In the example below, we start a server with ``lora1`` loaded as pinned, "
 "``lora2`` and ``lora3`` loaded as regular (unpinned) adapters. Please note "
@@ -487,7 +495,7 @@ msgid ""
 "wait_for_server(url)"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:540
+#: ../../../advanced_features/lora.ipynb:542
 msgid ""
 "You can also specify adapter as pinned during dynamic adapter loading. In "
 "the example below, we reload ``lora2`` as pinned adapter:"
@@ -513,7 +521,7 @@ msgid ""
 ")"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:574
+#: ../../../advanced_features/lora.ipynb:576
 msgid "Verify that the results are expected:"
 msgstr ""
 
@@ -540,33 +548,31 @@ msgid ""
 "['text']}\\n\")"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:621
+#: ../../../advanced_features/lora.ipynb:623
 msgid "Choosing LoRA Backend"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:623
+#: ../../../advanced_features/lora.ipynb:625
 msgid ""
 "SGLang supports two LoRA backends that you can choose from using the ``--"
 "lora-backend`` argument:"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:625
-msgid "``triton``: Default basic Triton-based backend."
-msgstr ""
-
-#: ../../../advanced_features/lora.ipynb:626
-msgid ""
-"``csgmv``: Chunked SGMV backend optimized for high concurrency scenarios."
+#: ../../../advanced_features/lora.ipynb:627
+msgid "``triton``: Basic Triton-based backend."
 msgstr ""
 
 #: ../../../advanced_features/lora.ipynb:628
 msgid ""
+"``csgmv``: Default chunked SGMV backend optimized for high concurrency "
+"scenarios."
+msgstr ""
+
+#: ../../../advanced_features/lora.ipynb:630
+msgid ""
 "The ``csgmv`` backend was recently introduced to improve performance "
 "especially at high-concurrency scenarios. Our benchmark shows that it "
-"achieves 20% to 80% latency improvements over the basic triton backend. "
-"Currently it is at preview phase, we expect to make it our the default LoRA "
-"backend in future release. Before that, you can adopt it by manually setting "
-"the ``--lora-backend`` server config."
+"achieves 20% to 80% latency improvements over the basic triton backend."
 msgstr ""
 
 #: ../../../advanced_features/lora.ipynb:-1
@@ -583,11 +589,11 @@ msgid ""
 ")"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:667
+#: ../../../advanced_features/lora.ipynb:669
 msgid "Future Works"
 msgstr ""
 
-#: ../../../advanced_features/lora.ipynb:669
+#: ../../../advanced_features/lora.ipynb:671
 msgid ""
 "The development roadmap for LoRA-related features can be found in this "
 "`issue <https://github.com/sgl-project/sglang/issues/2929>`__. Other "
