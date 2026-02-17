@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/pd_multiplexing.md:2
+msgid "PD Multiplexing"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:5
+msgid "Server Arguments"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "Argument"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "Type/Default"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "Description"
+msgstr "描述"
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "`--enable-pdmux`"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "flag; default: disabled"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "Enable PD-Multiplexing (PD running on greenctx stream)."
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "`--pdmux-config-path <path>`"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "string path; none"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:0
+msgid "Path to the PD-Multiplexing YAML config file."
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:12
+msgid "YAML Configuration"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:14
+msgid "Example configuration for an H200 (132 SMs)"
+msgstr ""
+
+#: ../../../advanced_features/pd_multiplexing.md:16
+msgid ""
+"# Number of SM groups to divide the GPU into.\n"
+"# Includes two default groups:\n"
+"#   - Group 0: all SMs for prefill\n"
+"#   - Last group: all SMs for decode\n"
+"# The number of manual divisions must be (sm_group_num - 2).\n"
+"sm_group_num: 8\n"
+"\n"
+"# Optional manual divisions of SMs.\n"
+"# Each entry contains:\n"
+"#   - prefill_sm: number of SMs allocated for prefill\n"
+"#   - decode_sm: number of SMs allocated for decode\n"
+"#   - decode_bs_threshold: minimum decode batch size to select this group\n"
+"#\n"
+"# The sum of `prefill_sm` and `decode_sm` must equal the total number of "
+"SMs.\n"
+"# If provided, the number of entries must equal (sm_group_num - 2).\n"
+"manual_divisions:\n"
+"  - [112, 20, 1]\n"
+"  - [104, 28, 5]\n"
+"  - [96, 36, 10]\n"
+"  - [80, 52, 15]\n"
+"  - [64, 68, 20]\n"
+"  - [56, 76, 25]\n"
+"\n"
+"# Divisor for default stream index calculation.\n"
+"# Used when manual_divisions are not provided.\n"
+"# Formula:\n"
+"#   stream_idx = max(\n"
+"#       1,\n"
+"#       min(sm_group_num - 2,\n"
+"#           decode_bs * (sm_group_num - 2) // decode_bs_divisor\n"
+"#       )\n"
+"#   )\n"
+"decode_bs_divisor: 36\n"
+"\n"
+"# Maximum token budget for split_forward in the prefill stage.\n"
+"# Determines how many layers are executed per split_forward.\n"
+"# Formula:\n"
+"#   forward_count = max(1, split_forward_token_budget // extend_num_tokens)\n"
+"split_forward_token_budget: 65536\n"
+msgstr ""

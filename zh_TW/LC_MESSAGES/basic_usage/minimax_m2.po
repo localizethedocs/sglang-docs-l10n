@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-10 09:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/minimax_m2.md:1
+msgid "MiniMax M2.1/M2 Usage"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:3
+msgid ""
+"[MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1) and [MiniMax-"
+"M2](https://huggingface.co/MiniMaxAI/MiniMax-M2) are advanced large language "
+"models created by [MiniMax](https://www.minimax.io/)."
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:5
+msgid ""
+"MiniMax-M2 series redefines efficiency for agents. It's a compact, fast, and "
+"cost-effective MoE model (230 billion total parameters with 10 billion "
+"active parameters) built for elite performance in coding and agentic tasks, "
+"all while maintaining powerful general intelligence. With just 10 billion "
+"activated parameters, MiniMax-M2 provides the sophisticated, end-to-end tool "
+"use performance expected from today's leading models, but in a streamlined "
+"form factor that makes deployment and scaling easier than ever."
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:7
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:9
+msgid ""
+"This guide applies to the following models. You only need to update the "
+"model name during deployment. The following examples use **MiniMax-M2**:"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:11
+msgid "[MiniMaxAI/MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1)"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:12
+msgid "[MiniMaxAI/MiniMax-M2](https://huggingface.co/MiniMaxAI/MiniMax-M2)"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:14
+msgid "System Requirements"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:16
+msgid ""
+"The following are recommended configurations; actual requirements should be "
+"adjusted based on your use case:"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:18
+msgid "4x 96GB GPUs: Supported context length of up to 400K tokens."
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:19
+msgid "8x 144GB GPUs: Supported context length of up to 3M tokens."
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:21
+msgid "Deployment with Python"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:23
+msgid "4-GPU deployment command:"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:25
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path MiniMaxAI/MiniMax-M2 \\\n"
+"    --tp-size 4 \\\n"
+"    --tool-call-parser minimax-m2 \\\n"
+"    --reasoning-parser minimax-append-think \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --trust-remote-code \\\n"
+"    --port 8000 \\\n"
+"    --mem-fraction-static 0.85\n"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:37
+msgid "8-GPU deployment command:"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:39
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path MiniMaxAI/MiniMax-M2 \\\n"
+"    --tp-size 8 \\\n"
+"    --ep-size 8 \\\n"
+"    --tool-call-parser minimax-m2 \\\n"
+"    --reasoning-parser minimax-append-think \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --trust-remote-code \\\n"
+"    --port 8000 \\\n"
+"    --mem-fraction-static 0.85\n"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:52
+msgid "Testing Deployment"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:54
+msgid ""
+"After startup, you can test the SGLang OpenAI-compatible API with the "
+"following command:"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:56
+msgid ""
+"curl http://localhost:8000/v1/chat/completions \\\n"
+"    -H \"Content-Type: application/json\" \\\n"
+"    -d '{\n"
+"        \"model\": \"MiniMaxAI/MiniMax-M2\",\n"
+"        \"messages\": [\n"
+"            {\"role\": \"system\", \"content\": [{\"type\": \"text\", "
+"\"text\": \"You are a helpful assistant.\"}]},\n"
+"            {\"role\": \"user\", \"content\": [{\"type\": \"text\", "
+"\"text\": \"Who won the world series in 2020?\"}]}\n"
+"        ]\n"
+"    }'\n"
+msgstr ""
