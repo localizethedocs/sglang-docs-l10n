@@ -1,0 +1,508 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-10 09:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/quantized_kv_cache.md:1
+msgid "Quantized KV Cache"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:3
+msgid ""
+"Quantized KV cache reduces the memory footprint of key-value cache storage "
+"by using lower-precision data types (FP8 or FP4) instead of the default "
+"model precision in BF16. During autoregressive generation, LLMs cache "
+"previously computed key-value pairs to avoid redundant calculations. The KV "
+"cache typically consumes a significant portion of GPU memory, especially for "
+"long sequences."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:5
+msgid ""
+"Quantized KV cache is a memory optimization technique that primarily "
+"benefits throughput by allowing more tokens to be cached, but may introduce "
+"minimal accuracy degradation depending on the quantization format used."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:8
+msgid ""
+"**Performance Warning**: When quantized KV cache must be dequantized before "
+"use in attention operations, performance can be extremely slow if "
+"dequantization is not fused with the attention kernel. Always verify that "
+"your chosen attention backend supports quantized KV cache. Backends without "
+"fused support may experience significant throughput degradation, potentially "
+"negating the memory benefits."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:10
+msgid ""
+"**Backend Support**: Not all attention backends support quantized KV cache. "
+"Refer to [Attention Backend](attention_backend.md) for which backends "
+"support it."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:13
+msgid "Supported Formats"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:15
+msgid "SGLang supports the following quantized KV cache formats:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:17
+msgid "FP8 Format"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:19
+msgid ""
+"[OCP (Open Compute Project)](https://www.opencompute.org) specifies two "
+"common 8-bit floating point formats:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:21
+msgid ""
+"**E5M2** (5 exponent bits, 2 mantissa bits): Larger dynamic range "
+"(±57344.0), lower precision"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:22
+msgid ""
+"**E4M3** (4 exponent bits, 3 mantissa bits): Higher precision, smaller "
+"dynamic range (±240.0)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:24
+msgid "FP4 Format"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:27
+msgid "FP4 quantization is currently experimental."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:30
+msgid ""
+"[OCP (Open Compute Project)](https://www.opencompute.org) specifies MXFP4 "
+"(Microscaling FP4), a 4-bit floating-point format:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:32
+msgid ""
+"**E2M1** (1 sign bit, 2 exponent bits, 1 mantissa bit): Uses block-based "
+"microscaling where tensors are divided into blocks of consecutive elements, "
+"with each block sharing a single 8-bit exponential scaling factor. While OCP "
+"specifies blocks of 32 elements, SGLang's current implementation uses blocks "
+"of 16 elements for KV cache quantization."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:34
+msgid "Usage"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:36
+msgid "Enabling Quantized KV Cache"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:38
+msgid ""
+"To enable quantized KV cache, use the `--kv-cache-dtype` argument when "
+"launching the server:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:40
+msgid ""
+"# Enable FP8 E5M2 KV cache\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path deepseek-ai/DeepSeek-R1-0528 \\\n"
+"    --kv-cache-dtype fp8_e5m2 \\\n"
+"\n"
+"# Enable FP8 E4M3 KV cache\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path deepseek-ai/DeepSeek-R1-0528 \\\n"
+"    --kv-cache-dtype fp8_e4m3 \\\n"
+"\n"
+"# Enable FP4 E2M1 KV cache\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path nvidia/DeepSeek-R1-0528-NVFP4 \\\n"
+"    --kv-cache-dtype fp4_e2m1 \\\n"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:57
+msgid "Scaling Factors"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:59
+msgid ""
+"FP8 quantization requires scaling factors to properly quantize and "
+"dequantize the KV cache."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:62
+msgid "Currently, only per-tensor (scalar) scaling factors are supported."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:65
+msgid "Scaling factors can be:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:67
+msgid ""
+"**Loaded from checkpoints**: Pre-quantized models (e.g., ModelOpt) may "
+"include `k_scale` and `v_scale` parameters that are automatically loaded"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:68
+msgid ""
+"**Provided via JSON**: Supply scaling factors via `--quantization-param-"
+"path`."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:70
+msgid "The JSON file should follow this format:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:72
+msgid ""
+"{\n"
+"  \"kv_cache\": {\n"
+"    \"dtype\": \"float8_e4m3fn\",\n"
+"    \"scaling_factor\": {\n"
+"      \"0\": {\n"
+"        \"0\": 1.0,\n"
+"        \"1\": 1.0\n"
+"      }\n"
+"    }\n"
+"  }\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:86
+msgid ""
+"Where the outer keys in `scaling_factor` are tensor parallel ranks and inner "
+"keys are layer indices."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:89
+msgid ""
+"If scaling factors are not provided and not found in the checkpoint, it will "
+"default to 1.0, which may cause accuracy issues."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:93
+msgid ""
+"**FP4 (MXFP4)**: Unlike FP8, FP4 quantization handles scaling factors "
+"automatically on-the-fly during quantization and dequantization. No pre-"
+"quantized models or external scaling factor files are required—the block-"
+"based scaling factors are computed dynamically as needed."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:96
+msgid "Performance Considerations"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:98
+msgid "Memory Savings"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:100
+msgid "Quantized KV cache provides significant memory savings:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:101
+msgid ""
+"**BF16 → FP4**: Supports approximately 3.56× more tokens than BF16 "
+"(accounting for scaling factor overhead)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:104
+msgid ""
+"FP4 and FP8 quantization require additional memory for block-based scaling "
+"factors, which reduces the effective memory savings compared to the raw bit-"
+"width reduction. FP4 with block size 16 supports approximately 1.78× more "
+"tokens than FP8, and approximately 3.56× more tokens than BF16. The relative "
+"token capacity between FP8 and BF16 can be derived from these ratios."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:107
+msgid ""
+"This enables longer context lengths or more concurrent requests within the "
+"same memory budget."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:109
+msgid "Accuracy Impact"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:111
+msgid "FP8 Accuracy"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:113
+msgid ""
+"FP8 E4M3 quantization typically introduces minimal accuracy degradation. The "
+"impact depends on model architecture, sequence length, and quantization "
+"format (generally, E4M3 has better accuracy than E5M2)."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:115
+msgid "FP4 Accuracy"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:117
+msgid ""
+"FP4 (MXFP4) quantization provides significant memory savings with varying "
+"accuracy impact depending on model size and dataset complexity. Preliminary "
+"accuracy test results from [PR #10078](https://github.com/sgl-project/sglang/"
+"pull/10078) (MLA) and [PR #12612](https://github.com/sgl-project/sglang/"
+"pull/12612) (MHA) show:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:119
+msgid "**Large Models (e.g., Qwen3-235B-A22B, DeepSeek-R1-0528)**"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:121
+msgid ""
+"On large-scale models, FP4 maintains accuracy close to FP8/BF16, especially "
+"on simpler datasets:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "Model"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "Dataset"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "KV16"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "KV8 (FP8 E4M3)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "KV4 (FP4 E2M1)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "Qwen3-235B-A22B"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "gsm8k"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9168"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9181"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9186"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "aime25"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7733"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7333"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.6000"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "gpqa_diamond"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7010"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.6899"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.6778"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "DeepSeek-R1-0528"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9157"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9154"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9124"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.5067"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.4934"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.4000"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7707"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7697"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7273"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:132
+msgid "**Smaller Models (e.g., GPT-OSS-120B)**"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:134
+msgid ""
+"On smaller models, FP4 shows more pronounced accuracy drops, particularly on "
+"challenging datasets:"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "GPT-OSS-120B"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9161"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9163"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.9152"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7533"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.7667"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.3533"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.5081"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.5434"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:103
+msgid "0.3202"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:142
+msgid "**Key Observations:**"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:144
+msgid ""
+"**Simple datasets (e.g., gsm8k)**: FP4 maintains accuracy close to FP8/BF16 "
+"across model sizes"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:145
+msgid ""
+"**Model size matters**: Large models (200B+ parameters) generally tolerate "
+"FP4 quantization better than smaller models"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:146
+msgid ""
+"**Context length**: Accuracy degradation may be more pronounced in long-"
+"context scenarios, as the accumulation of the quantization error may become "
+"significant."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:149
+msgid ""
+"Evaluate FP4 accuracy on your specific model and workload. Large models on "
+"simpler tasks typically show minimal degradation, while smaller models or "
+"complex reasoning tasks may require FP8 or BF16 for acceptable accuracy."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:152
+msgid "Best Practices"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:154
+msgid ""
+"**Use pre-quantized models**: Prefer models quantized offline with scaling "
+"factors included in the checkpoint."
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:155
+msgid ""
+"**Choose the right format**: Use `fp8_e4m3` for better accuracy "
+"(recommended), `fp8_e5m2` for larger dynamic range, or `fp4_e2m1` for "
+"maximum memory savings (experimental)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:156
+msgid ""
+"**Check backend compatibility**: Verify that your chosen attention backend "
+"supports quantized KV cache"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:159
+msgid "[Quantization](quantization.md)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:160
+msgid "[Attention Backend](attention_backend.md)"
+msgstr ""
+
+#: ../../../advanced_features/quantized_kv_cache.md:161
+msgid "[Server Arguments](server_arguments.md)"
+msgstr ""

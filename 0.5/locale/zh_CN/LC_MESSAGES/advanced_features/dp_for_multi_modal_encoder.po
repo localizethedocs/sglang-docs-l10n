@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-09 11:10+0000\n"
+"POT-Creation-Date: 2026-02-10 09:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,108 +64,39 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/dp_for_multi_modal_encoder.md:17
-msgid "Pros and Cons for DP Multi-Modal Encoder"
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:19
-msgid ""
-"Unfavorable compute/communication ratio for small ViTs ViTs used in "
-"multimodal stacks are typically modest in parameter count and activation "
-"sizes. TP introduces per-layer all-reduce collectives (attention/MLP) whose "
-"latency and synchronization overhead outweigh the speedup of splitting "
-"relatively small GEMMs. With DP, each GPU runs a full ViT locally—no "
-"inference-time collectives—so latency is dominated by compute, not wire time."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:22
-msgid ""
-"Graph-capture gaps amplify TP overhead In production, the vision path often "
-"has dynamic shapes (pre/post-processing, variable resolution, patching) that "
-"break CUDA Graphs and limit torch.compile fusion. Without capture, we need "
-"to pay extra kernel-launch and framework overhead; TP then multiplies that "
-"cost with additional NCCL synchronizations. Keeping ViT in DP avoids "
-"layering collective latency on top of non-captured kernels."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:25
-msgid ""
-"Better interconnect hygiene for the true bottleneck (the LLM) The LLM’s "
-"prefill and decode phases benefit materially from TP on fast links. "
-"Offloading ViT to DP eliminates “chatty” small collectives on the same "
-"fabric, reducing congestion and jitter for the LLM’s large, bandwidth-hungry "
-"all-reduces."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:28
-msgid ""
-"Shorter and steadier critical path → lower TTFT TTFT ≈ T(image encode via "
-"ViT) + T(LLM prefill) + T(softmax/sample) DP has several advantages: (a) "
-"batch and prefetch ViT encodes independently, (b) overlap them with other "
-"requests’ LLM decodes on separate streams, (c) hand off compact visual "
-"embeddings to the TP LLM with minimal queuing."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:35
-msgid ""
-"For vision encoders that use hardware-unoptimized Conv3D operations, batch-"
-"level DP can provide another 40% improvement compared to regular TP."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:38
-msgid ""
-"Nevertheless, since the weights of the multi-modal encoder are replicated "
-"across each TP rank, there will be a minor increase in memory consumption "
-"and may cause OOM if you can barely fit the model already."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:41
 msgid "Command Example"
 msgstr ""
 
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:42
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:18
 msgid ""
 "You can enable batch-level DP by setting `mm-enable-dp-encoder`, for example:"
 msgstr ""
 
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:43
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:19
 msgid ""
-"SGLANG_MM_FEATURE_CACHE_MB=4096 \\\n"
-"SGLANG_USE_CUDA_IPC_TRANSPORT=1 \\\n"
-"SGLANG_VLM_CACHE_SIZE_MB=512 \\\n"
-"python3 -m sglang.launch_server --host 127.0.0.1 \\\n"
-"    --mem-fraction-static 0.7 \\\n"
-"    --port 30000 \\\n"
-"    --trust-remote-code \\\n"
-"    --dtype auto \\\n"
-"    --max-running-requests 4 \\\n"
-"    --chunked-prefill-size 8192 \\\n"
-"    --attention-backend flashinfer \\\n"
-"    --tp 4 \\\n"
-"    --enable-multimodal \\\n"
-"    --chat-template internvl-2-5 \\\n"
-"    --model OpenGVLab/InternVL2_5-8B \\\n"
-"    --disable-radix-cache \\\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen2.5-VL-7B-Instruct \\\n"
+"    --tp 2 \\\n"
 "    --mm-enable-dp-encoder\n"
 msgstr ""
 
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:62
-msgid ""
-"!!! important     Batch-level multi-modal DP is not to be confused with API "
-"request-level DP     (which is instead controlled by `data_parallel_size`)."
-msgstr ""
-
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:66
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:26
 msgid "Known supported models"
 msgstr ""
 
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:67
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:27
 msgid "Qwen2.5-VL (<https://github.com/sgl-project/sglang/pull/13126>)"
 msgstr ""
 
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:68
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:28
 msgid "Qwen3-VL (<https://github.com/sgl-project/sglang/pull/13724>)"
 msgstr ""
 
-#: ../../../advanced_features/dp_for_multi_modal_encoder.md:69
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:29
 msgid "InternVL (<https://github.com/sgl-project/sglang/pull/13925>)"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:30
+msgid ""
+"GLM-4.5V & GLM-4.6V (<https://github.com/sgl-project/sglang/pull/14097>)"
 msgstr ""
