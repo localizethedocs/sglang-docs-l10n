@@ -1,0 +1,548 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/expert_parallelism.md:1
+msgid "Expert Parallelism"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:3
+msgid ""
+"Expert Parallelism (EP) in SGLang distributes expert weights across multiple "
+"devices in Mixture-of-Experts (MoE) models, addressing memory bottlenecks "
+"and enabling efficient scaling for high-performance inference. It is "
+"particularly vital for serving large-scale MoE models where tokens are "
+"dynamically routed to specialized experts across GPUs. By leveraging "
+"optimized all-to-all communication and grouped matrix multiplications "
+"(GEMMs), EP reduces latency, boosts throughput, and minimizes idle GPU time. "
+"SGLang's EP offers strong extensibility through its modular framework, "
+"allowing seamless integration of custom kernels, backends, and optimizations "
+"without refactoring core logic, supporting diverse hardware and quantization "
+"schemes."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:5
+msgid "Supported Backends and Selection Guidance"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:7
+msgid ""
+"SGLang's EP integrates diverse, highly efficient backends for different use "
+"cases, allowing fine-grained control over performance trade-offs. Users "
+"specify backends via command-line flags:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:8
+msgid "`--moe-a2a-backend`: Selects the backend for all-to-all communication."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:9
+msgid "`--moe-runner-backend`: Selects the backend for MoE computation."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:11
+msgid "Backends for All-to-All Communication"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Backend"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Description"
+msgstr "描述"
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Use Cases"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "**`none` (default)**"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"Disables all-to-all for EP. Uses All-Reduce or All-Gather for token dispatch."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Hybrid EP and TP setups."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`deepep`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"DeepEP, a communication library for efficient token shuffling in MoE models."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Large-scale EP deployments."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`mooncake`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"An extension of DeepEP for elastic inference, leveraging RDMA for high-"
+"performance data transfers."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Elastic EP serving."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`ascend_fuseep`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Ascend NPU native fused all-to-all communication."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Ascend NPU deployments."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:20
+msgid ""
+"DeepEP and Mooncake backends support two modes for token dispatch: `normal` "
+"mode (optimized for prefill workloads with high throughput) and "
+"`low_latency` mode (optimized for decode workloads with low latency and CUDA "
+"Graph compatibility). Users are recommended to set `--deepep-mode auto` to "
+"enable automatic dispatch mode switching during runtime. Setting `--deepep-"
+"mode normal` or `--deepep-mode low_latency` is useful for debugging or "
+"development purposes."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:22
+msgid ""
+"Currently, DeepEP and Mooncake only support cases where `ep_size = tp_size`. "
+"For hybrid EP and TP (i.e., `ep_size < tp_size`), only the `none` backend "
+"(All-Reduce or All-Gather-based dispatching) is supported."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:24
+msgid "Backends for MoE Computation"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "**`auto` (default)**"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"Automatically selects the optimal backend based on model architecture, "
+"hardware (e.g., NVIDIA architecture like Ampere, Hopper, Blackwell), "
+"quantization scheme (e.g., FP8, FP4), and runtime conditions."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"General-purpose deployments; ensures compatibility and performance without "
+"user intervention."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`triton`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"Triton-based implementation for grouped GEMMs. To achieve higher "
+"performance, it's highly recommended to create [tuned configurations]"
+"(https://github.com/sgl-project/sglang/blob/main/benchmark/kernels/"
+"fused_moe_triton/README.md)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"Custom kernel development or scenarios requiring high extensibility with "
+"Torch compilation support."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`deep_gemm`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"DeepGEMM backend optimized for MoE matrix multiplications, supporting "
+"contiguous layouts for prefill and masked layouts for decode; often JIT-"
+"compiled for performance."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Large-scale EP deployments with FP8 block-wise quantization."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`cutlass`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "CUTLASS-based backend for efficient GEMMs."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "NVIDIA architectures with CUTLASS support."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`flashinfer_trtllm`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"FlashInfer integrated with TensorRT-LLM for accelerated MoE computations, "
+"supporting FP4 communication operators and high-performance GEMMs."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Blackwell with TRT-LLM."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`flashinfer_cutlass`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"FlashInfer combined with CUTLASS for high-performance grouped GEMMs in MoE "
+"layers, handling FP4/FP8 quantization efficiently."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Blackwell with FP4/FP8 models."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`flashinfer_mxfp4`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"FlashInfer variant optimized for MXFP4 (mixed FP4) quantization in MoE "
+"runners, focusing on memory-efficient low-precision inference."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Low-precision models with MXFP4."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`flashinfer_cutedsl`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"FlashInfer with a custom DSL for flexible and efficient MoE kernel "
+"generation, integrated with ModelOpt FP4 quantization."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Low-precision models with NVFP4."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:37
+#: ../../../advanced_features/expert_parallelism.md:106
+msgid "Examples"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:39
+msgid "Launch with DeepEP and DeepGEMM for DeepSeek-V3:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:41
+msgid ""
+"python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3 --moe-"
+"a2a-backend deepep --moe-runner-backend deep_gemm --tp 8 --ep 8\n"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:45
+msgid "Extensible EP Framework"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:47
+msgid ""
+"SGLang's EP framework provides modular abstractions for easy integration of "
+"custom kernels, backends, and optimizations. It decouples the MoE forward "
+"pass into stages (dispatch → pre-permute → core runner → post-permute → "
+"combine), enabling seamless extensions without refactoring core logic."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:49
+msgid "Framework Overview"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:51
+msgid ""
+"The framework centers on `FusedMoE` as the unified entry point for a single, "
+"extensible structure. Key components include:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:52
+msgid ""
+"**Dispatcher**: Manages dispatch/combine for backends like DeepEP "
+"(implements `BaseDispatcher` subclasses)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:53
+msgid ""
+"**MoeRunner**: Orchestrates grouped-GEMM execution via `MoeRunnerCore` "
+"implementations (e.g., `TritonRunnerCore`)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:54
+msgid ""
+"**PermuteMethodPool**: Auto-registers layout conversions (e.g., pre/post-"
+"permute via `register_pre_permute` and `register_post_permute` for dynamic "
+"modes, or `register_fused_func` for static, torch.compile-compatible fused "
+"operations)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:55
+msgid "**TopK Router**: Backend-agnostic expert selection."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:57
+msgid ""
+"This design supports multiple backends via `--moe-a2a-backend` and `--moe-"
+"runner-backend`, with quantization integrated through a standardized "
+"`apply()` method. The computation flow ensures modularity:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:59
+msgid ""
+"[input_hidden_states]\n"
+"          |\n"
+"          v\n"
+"     TopK.forward -> select_experts / triton_kernels.routing / bypass\n"
+"          |\n"
+"          v\n"
+"     [TopKOutput]\n"
+"          |\n"
+"          v\n"
+"   FusedMoE.forward -> Dispatcher.dispatch -> DeepEP / bypass\n"
+"          |                     |\n"
+"          |                     v\n"
+"          |              [DispatchOutput]\n"
+"          |                     |\n"
+"          |                     v\n"
+"          |             quant_method.apply -> MoeRunner.forward\n"
+"          |                     |              |\n"
+"          |                     |              v\n"
+"          |                     | pre-permute + grouped_gemm + post-permute\n"
+"          |                     |              |\n"
+"          |                     |--------------\n"
+"          |                     v\n"
+"          |               [CombineInput]\n"
+"          |                     |\n"
+"          |                     v\n"
+"          |            Dispatcher.combine -> DeepEP / bypass\n"
+"          |                     |\n"
+"          |---------------------\n"
+"          v\n"
+"[final_hidden_states]\n"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:92
+msgid ""
+"For details, see the [MoE Refactor Roadmap](https://github.com/sgl-project/"
+"sglang/issues/8715)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:94
+msgid "Implementing New Backends"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:96
+msgid "To add a new backend:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:97
+msgid ""
+"For a new all-to-all dispatcher, implement a `BaseDispatcher` subclass with "
+"`dispatch` and `combine` methods."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:98
+msgid ""
+"For a new MoE runner backend, define a `MoeRunnerCore` subclass for core "
+"operations (e.g., grouped GEMMs)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:99
+msgid ""
+"Define new input/output formats for the dispatcher or model runner (e.g., "
+"`RunnerInput`, `RunnerOutput`)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:100
+msgid "Register permute/unpermute methods to ensure compatibility:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:101
+msgid ""
+"**Fused Mode** (static, torch.compile-compatible): Use `register_fused_func` "
+"for end-to-end operations."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:102
+msgid ""
+"**Permute Mode** (dynamic): Register `register_pre_permute` and "
+"`register_post_permute` for flexible layouts."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:104
+msgid ""
+"See the [MoE Refactor Implementation PR](https://github.com/sgl-project/"
+"sglang/pull/9269) for full changes, including type hints and config "
+"expansions."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:108
+msgid ""
+"For an example implementation, see [moe_runner/triton.py](https://github.com/"
+"sgl-project/sglang/blob/main/python/sglang/srt/layers/moe/moe_runner/triton."
+"py), which demonstrates Triton-based grouped GEMMs with registered fused and "
+"permutation functions."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:110
+msgid "Computation and Communication Overlap"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:112
+msgid ""
+"SGLang's EP employs advanced overlap techniques to hide communication "
+"latency behind computation, maximizing GPU utilization in MoE layers."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:114
+msgid "Two-Batch Overlap (TBO)"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:116
+msgid ""
+"TBO splits requests into micro-batches, interleaving attention computation "
+"with dispatch/combine operations. Yield points in the execution graph allow "
+"pausing for overlaps, increasing overall throughput without peak memory "
+"spikes:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:118
+msgid ""
+"operations = [\n"
+"    self._forward_attn,\n"
+"    YieldOperation(),  # Overlap with dispatch of prior micro-batch\n"
+"    self._forward_dispatch,\n"
+"    self._forward_mlp,\n"
+"    YieldOperation(),  # Overlap with combine\n"
+"    self._forward_combine,\n"
+"]\n"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:129
+msgid ""
+"Users need to specify `--enable-two-batch-overlap` to unlock up to 2x "
+"throughput. For details, see the [Large-Scale EP Blog](https://lmsys.org/"
+"blog/2025-05-05-large-scale-ep/#two-batch-overlap)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:131
+msgid "Single-Batch Overlap (SBO)"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:133
+msgid ""
+"SGLang introduces a dispatcher-hook system for Single-Batch Overlap (SBO), "
+"enabling the overlap of operations within a single batch—such as shared "
+"experts computation with communication—while decentralizing logic to enhance "
+"modularity. These hooks execute before and after the `dispatch` and "
+"`combine` operations without modifying core MoE modules. This design "
+"simplifies interfaces, reduces coupling, and improves extensibility. For "
+"implementation details and an example of overlapping shared experts with "
+"DeepEP's combine operation, refer to [PR #13327](https://github.com/sgl-"
+"project/sglang/pull/13327). Users can set `--enable-single-batch-overlap` to "
+"enable this feature."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:136
+msgid "Workload Balancer"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:138
+msgid ""
+"SGLang integrates the [Expert Parallelism Load Balancer (EPLB)](https://"
+"github.com/deepseek-ai/EPLB) from DeepSeek to address routing imbalances in "
+"MoE models. By analyzing expert activation statistics, EPLB computes an "
+"optimal expert arrangement, strategically placing or replicating experts to "
+"minimize GPU utilization variance, reduce idle cycles, and enhance "
+"scalability."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:140
+msgid ""
+"To enable EPLB, use the flags `--enable-eplb`. For optimal performance, "
+"increase batch sizes to stabilize activation statistics and configure "
+"periodic rebalancing (e.g., every 1000 requests) to adapt to evolving "
+"workloads. Simulations demonstrate significant improvements in load "
+"balancedness (ratio of mean to max computation time), correlating strongly "
+"with throughput gains."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:142
+msgid ""
+"For more details, refer to the [EPLB Section in the Large-Scale EP Blog]"
+"(https://lmsys.org/blog/2025-05-05-large-scale-ep/#expert-parallelism-load-"
+"balancer) and the [EPLB Repository](https://github.com/deepseek-ai/eplb)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:145
+msgid "EP with Spectulative Decoding"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:148
+msgid ""
+"When utilizing speculative decoding with MTP on MoE architectures, use the "
+"`--speculative-moe-runner-backend` and `--speculative-moe-a2a-backend` "
+"arguments to customize the MoE layer behavior for the draft model. While "
+"they default to the target model’s settings, users can differentiate them "
+"for varying precisions between target and draft models."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:150
+msgid ""
+"For model like `nvidia/DeepSeek-R1-0528-NVFP4-v2`, the target model uses "
+"NVFP4 precision while the draft model uses BF16. To apply "
+"`flashinfer_trtllm` kernel for target MoE layer while falling back to triton "
+"fused MoE kernel for draft MoE layer, users can set the arguments as follows:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:151
+msgid ""
+"...\n"
+"--moe-runner-backend flashinfer_trtllm \\\n"
+"--speculative-moe-runner-backend triton \\\n"
+"...\n"
+msgstr ""

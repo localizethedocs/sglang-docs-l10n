@@ -1,0 +1,580 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../supported_models/rerank_models.md:1
+msgid "Rerank Models"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:3
+msgid ""
+"SGLang offers comprehensive support for rerank models by incorporating "
+"optimized serving frameworks with a flexible programming interface. This "
+"setup enables efficient processing of cross-encoder reranking tasks, "
+"improving the accuracy and relevance of search result ordering. SGLang’s "
+"design ensures high throughput and low latency during reranker model "
+"deployment, making it ideal for semantic-based result refinement in large-"
+"scale retrieval systems."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:6
+msgid "Rerank models in SGLang fall into two categories:"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:8
+msgid ""
+"**Cross-encoder rerank models**: run with `--is-embedding` (embedding "
+"runner)."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:9
+msgid ""
+"**Decoder-only rerank models**: run **without** `--is-embedding` and use "
+"next-token logprob scoring (yes/no)."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:10
+msgid "Text-only (e.g. Qwen3-Reranker)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:11
+msgid "Multimodal (e.g. Qwen3-VL-Reranker): also supports image/video content"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:13
+msgid "Some models may require `--trust-remote-code`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:16
+msgid "Supported rerank models"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Model Family (Rerank)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Example HuggingFace Identifier"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Chat Template"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "Description"
+msgstr "描述"
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "**BGE-Reranker (BgeRerankModel)**"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "`BAAI/bge-reranker-v2-m3`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "N/A"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid ""
+"Currently only support `attention-backend` `triton` and `torch_native`. High-"
+"performance cross-encoder reranker model from BAAI. Suitable for reranking "
+"search results based on semantic relevance."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "**Qwen3-Reranker (decoder-only yes/no)**"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "`Qwen/Qwen3-Reranker-8B`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "`examples/chat_template/qwen3_reranker.jinja`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid ""
+"Decoder-only reranker using next-token logprob scoring for labels (yes/no). "
+"Launch **without** `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "**Qwen3-VL-Reranker (multimodal yes/no)**"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "`Qwen/Qwen3-VL-Reranker-2B`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid "`examples/chat_template/qwen3_vl_reranker.jinja`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:5
+msgid ""
+"Multimodal decoder-only reranker supporting text, images, and videos. Uses "
+"yes/no logprob scoring. Launch **without** `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:25
+msgid "Cross-Encoder Rerank (embedding runner)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:27
+#: ../../../supported_models/rerank_models.md:78
+#: ../../../supported_models/rerank_models.md:171
+msgid "Launch Command"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:29
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path BAAI/bge-reranker-v2-m3 \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --disable-radix-cache \\\n"
+"  --chunked-prefill-size -1 \\\n"
+"  --attention-backend triton \\\n"
+"  --is-embedding \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:40
+msgid "Example Client Request"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:42
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000/v1/rerank\"\n"
+"\n"
+"payload = {\n"
+"    \"model\": \"BAAI/bge-reranker-v2-m3\",\n"
+"    \"query\": \"what is panda?\",\n"
+"    \"documents\": [\n"
+"        \"hi\",\n"
+"        \"The giant panda (Ailuropoda melanoleuca), sometimes called a panda "
+"bear or simply panda, is a bear species endemic to China.\"\n"
+"    ],\n"
+"    \"top_n\": 1,\n"
+"    \"return_documents\": True\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=payload)\n"
+"response_json = response.json()\n"
+"\n"
+"for item in response_json:\n"
+"    if item.get(\"document\"):\n"
+"        print(f\"Score: {item['score']:.2f} - Document: "
+"'{item['document']}'\")\n"
+"    else:\n"
+"        print(f\"Score: {item['score']:.2f} - Index: {item['index']}\")\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:68
+#: ../../../supported_models/rerank_models.md:113
+msgid "**Request Parameters:**"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:70
+#: ../../../supported_models/rerank_models.md:115
+msgid "`query` (required): The query text to rank documents against"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:71
+#: ../../../supported_models/rerank_models.md:116
+msgid "`documents` (required): List of documents to be ranked"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:72
+#: ../../../supported_models/rerank_models.md:117
+msgid "`model` (required): Model to use for reranking"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:73
+#: ../../../supported_models/rerank_models.md:119
+msgid ""
+"`top_n` (optional): Maximum number of documents to return. Defaults to "
+"returning all documents. If specified value is greater than the total number "
+"of documents, all documents will be returned."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:74
+#: ../../../supported_models/rerank_models.md:120
+msgid ""
+"`return_documents` (optional): Whether to return documents in the response. "
+"Defaults to `True`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:76
+msgid "Qwen3-Reranker (decoder-only yes/no rerank)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:80
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-Reranker-0.6B \\\n"
+"  --trust-remote-code \\\n"
+"  --disable-radix-cache \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 8001 \\\n"
+"  --chat-template examples/chat_template/qwen3_reranker.jinja\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:91
+msgid ""
+"Qwen3-Reranker uses decoder-only logprob scoring (yes/no). Do NOT launch it "
+"with `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:94
+msgid ""
+"Example Client Request (supports optional instruct, top_n, and "
+"return_documents)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:96
+msgid ""
+"curl -X POST http://127.0.0.1:8001/v1/rerank \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"    \"model\": \"Qwen3-Reranker-0.6B\",\n"
+"    \"query\": \"法国首都是哪里？\",\n"
+"    \"documents\": [\n"
+"      \"法国的首都是巴黎。\",\n"
+"      \"德国的首都是柏林。\",\n"
+"      \"香蕉是黄色的水果。\"\n"
+"    ],\n"
+"    \"instruct\": \"Given a web search query, retrieve relevant passages "
+"that answer the query.\",\n"
+"    \"top_n\": 2,\n"
+"    \"return_documents\": true\n"
+"  }'\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:118
+#: ../../../supported_models/rerank_models.md:304
+msgid "`instruct` (optional): Instruction text for the reranker"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:122
+msgid "Response Format"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:124
+msgid "`/v1/rerank` returns a list of objects (sorted by descending score):"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:126
+msgid "`score`: float, higher means more relevant"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:127
+msgid ""
+"`document`: the original document string (only included when "
+"`return_documents` is `true`)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:128
+msgid "`index`: the original index in the input `documents`"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:129
+msgid "`meta_info`: optional debug/usage info (may be present for some models)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:131
+msgid ""
+"The number of returned results is controlled by the `top_n` parameter. If "
+"`top_n` is not specified or is greater than the total number of documents, "
+"all documents are returned."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:133
+msgid "Example (with `return_documents: true`):"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:135
+msgid ""
+"[\n"
+"  {\"score\": 0.99, \"document\": \"法国的首都是巴黎。\", \"index\": 0},\n"
+"  {\"score\": 0.01, \"document\": \"德国的首都是柏林。\", \"index\": 1},\n"
+"  {\"score\": 0.00, \"document\": \"香蕉是黄色的水果。\", \"index\": 2}\n"
+"]\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:143
+msgid "Example (with `return_documents: false`):"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:145
+msgid ""
+"[\n"
+"  {\"score\": 0.99, \"index\": 0},\n"
+"  {\"score\": 0.01, \"index\": 1},\n"
+"  {\"score\": 0.00, \"index\": 2}\n"
+"]\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:153
+msgid "Example (with `top_n: 2`):"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:155
+msgid ""
+"[\n"
+"  {\"score\": 0.99, \"document\": \"法国的首都是巴黎。\", \"index\": 0},\n"
+"  {\"score\": 0.01, \"document\": \"德国的首都是柏林。\", \"index\": 1}\n"
+"]\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:162
+#: ../../../supported_models/rerank_models.md:308
+msgid "Common Pitfalls"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:164
+msgid ""
+"If you launch Qwen3-Reranker with `--is-embedding`, `/v1/rerank` cannot "
+"compute yes/no logprob scores. Relaunch **without** `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:165
+msgid ""
+"If you see a validation error like \"score should be a valid number\" and "
+"the backend returned a list, upgrade to a version that coerces "
+"`embedding[0]` into `score` for rerank responses."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:167
+msgid "Qwen3-VL-Reranker (multimodal decoder-only rerank)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:169
+msgid ""
+"Qwen3-VL-Reranker extends the Qwen3-Reranker to support multimodal content, "
+"allowing reranking of documents containing text, images, and videos."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:173
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-Reranker-2B \\\n"
+"  --trust-remote-code \\\n"
+"  --disable-radix-cache \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000 \\\n"
+"  --chat-template examples/chat_template/qwen3_vl_reranker.jinja\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:184
+msgid ""
+"Qwen3-VL-Reranker uses decoder-only logprob scoring (yes/no) like Qwen3-"
+"Reranker. Do NOT launch it with `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:187
+msgid "Text-Only Reranking (backward compatible)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:189
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000/v1/rerank\"\n"
+"\n"
+"payload = {\n"
+"    \"model\": \"Qwen3-VL-Reranker-2B\",\n"
+"    \"query\": \"What is machine learning?\",\n"
+"    \"documents\": [\n"
+"        \"Machine learning is a branch of artificial intelligence that "
+"enables computers to learn from data.\",\n"
+"        \"The weather in Paris is usually mild with occasional rain.\",\n"
+"        \"Deep learning is a subset of machine learning using neural "
+"networks with many layers.\",\n"
+"    ],\n"
+"    \"instruct\": \"Retrieve passages that answer the question.\",\n"
+"    \"return_documents\": True\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=payload)\n"
+"results = response.json()\n"
+"\n"
+"for item in results:\n"
+"    print(f\"Score: {item['score']:.4f} - {item['document'][:60]}...\")\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:213
+msgid "Image Reranking (text query, image/mixed documents)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:215
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000/v1/rerank\"\n"
+"\n"
+"payload = {\n"
+"    \"query\": \"A woman playing with her dog on a beach at sunset.\",\n"
+"    \"documents\": [\n"
+"        # Document 1: Text description\n"
+"        \"A woman shares a joyful moment with her golden retriever on a sun-"
+"drenched beach at sunset.\",\n"
+"        # Document 2: Image URL\n"
+"        [\n"
+"            {\n"
+"                \"type\": \"image_url\",\n"
+"                \"image_url\": {\n"
+"                    \"url\": \"https://example.com/beach_dog.jpeg\"\n"
+"                }\n"
+"            }\n"
+"        ],\n"
+"        # Document 3: Text + Image (mixed)\n"
+"        [\n"
+"            {\"type\": \"text\", \"text\": \"A joyful scene at the beach:"
+"\"},\n"
+"            {\n"
+"                \"type\": \"image_url\",\n"
+"                \"image_url\": {\n"
+"                    \"url\": \"https://example.com/beach_dog.jpeg\"\n"
+"                }\n"
+"            }\n"
+"        ]\n"
+"    ],\n"
+"    \"instruct\": \"Retrieve images or text relevant to the user's query."
+"\",\n"
+"    \"return_documents\": False\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=payload)\n"
+"results = response.json()\n"
+"\n"
+"for item in results:\n"
+"    print(f\"Index: {item['index']}, Score: {item['score']:.4f}\")\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:256
+msgid "Multimodal Query Reranking (query with image)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:258
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://127.0.0.1:30000/v1/rerank\"\n"
+"\n"
+"payload = {\n"
+"    # Query with text and image\n"
+"    \"query\": [\n"
+"        {\"type\": \"text\", \"text\": \"Find similar images to this:\"},\n"
+"        {\n"
+"            \"type\": \"image_url\",\n"
+"            \"image_url\": {\n"
+"                \"url\": \"https://example.com/reference_image.jpeg\"\n"
+"            }\n"
+"        }\n"
+"    ],\n"
+"    \"documents\": [\n"
+"        \"A cat sleeping on a couch.\",\n"
+"        \"A woman and her dog enjoying the sunset at the beach.\",\n"
+"        \"A busy city street with cars and pedestrians.\",\n"
+"        [\n"
+"            {\n"
+"                \"type\": \"image_url\",\n"
+"                \"image_url\": {\n"
+"                    \"url\": \"https://example.com/similar_image.jpeg\"\n"
+"                }\n"
+"            }\n"
+"        ]\n"
+"    ],\n"
+"    \"instruct\": \"Find images or descriptions similar to the query image."
+"\"\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=payload)\n"
+"results = response.json()\n"
+"\n"
+"for item in results:\n"
+"    print(f\"Index: {item['index']}, Score: {item['score']:.4f}\")\n"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:297
+msgid "Request Parameters (Multimodal)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:299
+msgid ""
+"`query` (required): Can be a string (text-only) or a list of content parts:"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:300
+msgid "`{\"type\": \"text\", \"text\": \"...\"}` for text"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:301
+msgid ""
+"`{\"type\": \"image_url\", \"image_url\": {\"url\": \"...\"}}` for images"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:302
+msgid ""
+"`{\"type\": \"video_url\", \"video_url\": {\"url\": \"...\"}}` for videos"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:303
+msgid ""
+"`documents` (required): List where each document can be a string or list of "
+"content parts (same format as query)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:305
+msgid "`top_n` (optional): Maximum number of documents to return"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:306
+msgid ""
+"`return_documents` (optional): Whether to return documents in the response "
+"(default: `false`)"
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:310
+msgid ""
+"Always use `--chat-template examples/chat_template/qwen3_vl_reranker.jinja` "
+"for Qwen3-VL-Reranker."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:311
+msgid "Do NOT launch with `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:312
+msgid ""
+"For best results, use `--disable-radix-cache` to avoid caching issues with "
+"multimodal content."
+msgstr ""
+
+#: ../../../supported_models/rerank_models.md:313
+msgid ""
+"**Note**: Currently only `Qwen3-VL-Reranker-2B` is tested and supported. The "
+"8B model may have different behavior and is not guaranteed to work with this "
+"template."
+msgstr ""

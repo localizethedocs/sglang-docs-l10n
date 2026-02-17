@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-06 08:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:1
+msgid "DP for Multi-Modal Encoder in SGLang"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:3
+msgid ""
+"A typical VLM architecture involves two main components: an multi-modal "
+"encoder and a text decoder."
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:5
+msgid ""
+"Most VLMs utilize a Vision Transformer (ViT) as their multi-modal encoder, "
+"it is responsible for processing visual data, extracting features (objects, "
+"colors, textures, etc.), and transforming them into a format that can be "
+"understood by the model."
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:7
+msgid ""
+"The text deocoder is based on LLM. It processes textual data and generates "
+"output based on the encoded visual features."
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:9
+msgid ""
+"However, since the size of ViT is very small compared to language decoders, "
+"there is relatively little gain from TP. On the other hand, TP incurs "
+"significant communication overhead because of all-reduce being performed "
+"after every layer."
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:13
+msgid ""
+"Placing the ViT in data parallel while keeping the LLM in tensor parallel "
+"consistently lowers TTFT and boosts end-to-end throughput. In this hybrid "
+"layout, the vision front-end becomes parallel and lightweight, while scarce "
+"interconnect bandwidth and collective ops are reserved for the LLM."
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:15
+msgid ""
+"Data parallelism replicates the entire model across multiple GPU sets and "
+"processes different batches of requests in parallel."
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:17
+msgid "Command Example"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:18
+msgid ""
+"You can enable batch-level DP by setting `mm-enable-dp-encoder`, for example:"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:19
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path Qwen/Qwen2.5-VL-7B-Instruct \\\n"
+"    --tp 2 \\\n"
+"    --mm-enable-dp-encoder\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:26
+msgid "Known supported models"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:27
+msgid "Qwen2.5-VL (<https://github.com/sgl-project/sglang/pull/13126>)"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:28
+msgid "Qwen3-VL (<https://github.com/sgl-project/sglang/pull/13724>)"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:29
+msgid "InternVL (<https://github.com/sgl-project/sglang/pull/13925>)"
+msgstr ""
+
+#: ../../../advanced_features/dp_for_multi_modal_encoder.md:30
+msgid ""
+"GLM-4.5V & GLM-4.6V (<https://github.com/sgl-project/sglang/pull/14097>)"
+msgstr ""
