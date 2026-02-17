@@ -1,0 +1,266 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../developer_guide/evaluating_new_models.md:1
+msgid "Evaluating New Models with SGLang"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:3
+msgid ""
+"This document provides commands for evaluating models' accuracy and "
+"performance. Before open-sourcing new models, we strongly suggest running "
+"these commands to verify whether the score matches your internal benchmark "
+"results."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:5
+msgid ""
+"**For cross verification, please submit commands for installation, server "
+"launching, and benchmark running with all the scores and hardware "
+"requirements when open-sourcing your models.**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:7
+msgid ""
+"[Reference: MiniMax M2](https://github.com/sgl-project/sglang/pull/12129)"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:9
+msgid "Accuracy"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:11
+#: ../../../developer_guide/evaluating_new_models.md:91
+msgid "LLMs"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:13
+msgid "SGLang provides built-in scripts to evaluate common benchmarks."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:15
+msgid "**MMLU**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:17
+msgid ""
+"python -m sglang.test.run_eval \\\n"
+"  --eval-name mmlu \\\n"
+"  --port 30000 \\\n"
+"  --num-examples 1000 \\\n"
+"  --max-tokens 8192\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:25
+msgid "**GSM8K**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:27
+msgid ""
+"python -m sglang.test.few_shot_gsm8k \\\n"
+"  --host http://127.0.0.1 \\\n"
+"  --port 30000 \\\n"
+"  --num-questions 200 \\\n"
+"  --num-shots 5\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:35
+msgid "**HellaSwag**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:37
+msgid ""
+"python benchmark/hellaswag/bench_sglang.py \\\n"
+"  --host http://127.0.0.1 \\\n"
+"  --port 30000 \\\n"
+"  --num-questions 200 \\\n"
+"  --num-shots 20\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:45
+msgid "**GPQA**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:47
+msgid ""
+"python -m sglang.test.run_eval \\\n"
+"  --eval-name gpqa \\\n"
+"  --port 30000 \\\n"
+"  --num-examples 198 \\\n"
+"  --max-tokens 120000 \\\n"
+"  --repeat 8\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:57
+msgid ""
+"For reasoning models, add `--thinking-mode <mode>` (e.g., `qwen3`, `deepseek-"
+"r1`, `deepseek-v3`). You may skip it if the model has forced thinking "
+"enabled."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:60
+msgid "**HumanEval**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:62
+msgid ""
+"pip install human_eval\n"
+"\n"
+"python -m sglang.test.run_eval \\\n"
+"  --eval-name humaneval \\\n"
+"  --num-examples 10 \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:71
+msgid "VLMs"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:73
+msgid "**MMMU**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:75
+msgid ""
+"python benchmark/mmmu/bench_sglang.py \\\n"
+"  --port 30000 \\\n"
+"  --concurrency 64\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:82
+msgid ""
+"You can set max tokens by passing `--extra-request-body '{\"max_tokens\": "
+"4096}'`."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:85
+msgid ""
+"For models capable of processing video, we recommend extending the "
+"evaluation to include `VideoMME`, `MVBench`, and other relevant benchmarks."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:87
+msgid "Performance"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:89
+msgid ""
+"Performance benchmarks measure **Latency** (Time To First Token - TTFT) and "
+"**Throughput** (tokens/second)."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:93
+msgid "**Latency-Sensitive Benchmark**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:95
+msgid ""
+"This simulates a scenario with low concurrency (e.g., single user) to "
+"measure latency."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:97
+msgid ""
+"python -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000 \\\n"
+"  --dataset-name random \\\n"
+"  --num-prompts 10 \\\n"
+"  --max-concurrency 1\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:107
+msgid "**Throughput-Sensitive Benchmark**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:109
+msgid ""
+"This simulates a high-traffic scenario to measure maximum system throughput."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:111
+msgid ""
+"python -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000 \\\n"
+"  --dataset-name random \\\n"
+"  --num-prompts 1000 \\\n"
+"  --max-concurrency 100\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:121
+msgid "**Single Batch Performance**"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:123
+msgid ""
+"You can also benchmark the performance of processing a single batch offline."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:125
+msgid ""
+"python -m sglang.bench_one_batch_server \\\n"
+"  --model <model-path> \\\n"
+"  --batch-size 8 \\\n"
+"  --input-len 1024 \\\n"
+"  --output-len 1024\n"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:133
+msgid "You can run more granular benchmarks:"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:135
+msgid "**Low Concurrency**: `--num-prompts 10 --max-concurrency 1`"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:136
+msgid "**Medium Concurrency**: `--num-prompts 80 --max-concurrency 16`"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:137
+msgid "**High Concurrency**: `--num-prompts 500 --max-concurrency 100`"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:139
+msgid "Reporting Results"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:141
+msgid "For each evaluation, please report:"
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:143
+msgid ""
+"**Metric Score**: Accuracy % (LLMs and VLMs); Latency (ms) and Throughput "
+"(tok/s) (LLMs only)."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:144
+msgid "**Environment settings**: GPU type/count, SGLang commit hash."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:145
+msgid "**Launch configuration**: Model path, TP size, and any special flags."
+msgstr ""
+
+#: ../../../developer_guide/evaluating_new_models.md:146
+msgid "**Evaluation parameters**: Number of shots, examples, max tokens."
+msgstr ""

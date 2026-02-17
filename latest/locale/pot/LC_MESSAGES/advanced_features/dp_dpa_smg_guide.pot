@@ -1,0 +1,1035 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:1
+msgid "DP, DPA and SGLang DP Router"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:3
+msgid ""
+"This guide explains the difference between Data Parallelism (DP) and Data "
+"Parallelism Attention (DPA), how to enable each mode correctly, and how to "
+"use the SGLang Model Gateway (SMG) for production-grade DP deployments."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:5
+msgid "Data Parallelism (DP)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:7
+msgid ""
+"**Data Parallelism (DP)** is the most common parallelism strategy that "
+"replicates the entire model across multiple GPU sets and processes different "
+"batches of requests in parallel. Each GPU set handles independent requests. "
+"With dedicated routing strategies, as we will introduce later, with those "
+"proper routing algorithms in SGLang Model Gateway, the throughput of your "
+"serving system could be multiplied nearly linearly."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:9
+msgid "Key characteristics"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:11
+msgid "Each replica has a full copy of the model"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:12
+msgid "Requests are distributed/scattered across replicas"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:13
+msgid ""
+"No inter-replica communication during one request's inference (for simple DP)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:15
+msgid "Data Parallelism Attention (DPA)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:17
+msgid ""
+"**Data Parallelism Attention (DPA)**, also known as DP Attention, is an "
+"advanced parallelism strategy. While DPA provides the most significant "
+"benefits for **Multi-Head Latent Attention (MLA)** models (such as DeepSeek, "
+"MiniMax, Kimi-K2), it also supports **standard attention models** like Qwen."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:19
+msgid "The Problem with Tensor Parallelism for MLA Models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:21
+msgid ""
+"The most common parallelism strategy for inference is **Tensor Parallelism "
+"(TP)**. However, TP might not be the most efficient strategy for certain "
+"models. For example, DeepSeek models use MLA and only have **one KV head**. "
+"If we use tensor parallelism on 8 GPUs, it will lead to:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:23
+msgid "**Duplicated KV cache** across all GPUs"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:24
+msgid "**Unwanted memory usage** that limits batch size"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:25
+msgid "**Reduced throughput** due to memory constraints"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:27
+msgid "How DPA Works"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:29
+msgid ""
+"DPA addresses these limitations by applying **data parallelism specifically "
+"to the attention component**."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:31
+msgid ""
+"<table>\n"
+"<tr>\n"
+"<td width=\"50%\">\n"
+"<img src=\"../_static/image/dpa.png\" alt=\"DPA + EP Architecture\" "
+"width=\"100%\">\n"
+"</td>\n"
+"<td width=\"50%\" valign=\"top\">\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:38
+msgid "**Each DP replica:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:40
+msgid ""
+"Processes different batches independently (can be in different forward "
+"modes: prefill, decode, or idle)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:41
+msgid "Maintains its own KV cache (no duplication)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:42
+msgid "Enables significantly larger batch sizes due to memory savings"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:44
+msgid "**Communication patterns in DPA + EP:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:46
+msgid ""
+"**All2All (Dispatch)**: Routes tokens to expert sub-groups based on gating "
+"decisions"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:47
+msgid ""
+"**All2All (Combine)**: Gathers computed results from experts back to "
+"original token positions"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:49
+msgid ""
+"</td>\n"
+"</tr>\n"
+"</table>\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:53
+msgid "Key benefits of DPA"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:55
+msgid ""
+"**Significantly reduced KV cache memory**: Each DP replica only stores KV "
+"cache for its own batches"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:56
+msgid "**Larger batch sizes**: Memory savings enable larger batch sizes"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:57
+msgid ""
+"**Improved decoding throughput**: Significant throughput gains for MLA-based "
+"models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:58
+msgid ""
+"**Independent forward modes**: Each DP replica can be in different forward "
+"modes (prefill, decode, or idle) and handles its assigned batches "
+"independently during attention computation"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:60
+msgid "DPA with Expert Parallelism for MoE"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:62
+msgid ""
+"For MoE models like DeepSeek, DPA is **often** paired with Expert "
+"Parallelism (EP) for best throughput at scale. However, **DPA does not "
+"require EP**: you can enable DPA without EP if your deployment does not need "
+"expert sharding."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:64
+msgid "Distribute 256+ expert weights across GPUs (cannot fit on a single GPU)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:65
+msgid "Enable efficient all-to-all token routing via DeepEP"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:66
+msgid ""
+"Scale to large clusters (up to 5x throughput improvement over vanilla TP)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:68
+msgid "Recommended setup for DeepSeek"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:70
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path deepseek-ai/DeepSeek-V3 \\\n"
+"    --tp 8 \\\n"
+"    --dp-size 8 \\\n"
+"    --ep 8 \\\n"
+"    --enable-dp-attention \\\n"
+"    --moe-a2a-backend deepep \\\n"
+"    --moe-runner-backend deep_gemm\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:81
+msgid ""
+"**Note**: `--dp-size` must be explicitly set when using `--enable-dp-"
+"attention`. If `dp_size` is 1 (default), DPA will be disabled."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:83
+msgid ""
+"For detailed EP configuration (DeepEP, Two-Batch Overlap, EPLB), see [Expert "
+"Parallelism](expert_parallelism.md)."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:85
+msgid "Target Models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:87
+msgid "DPA supports the following model architectures:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:89
+msgid ""
+"**MLA (Multi-Head Latent Attention) models** - where DPA provides the most "
+"significant benefits:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:90
+msgid "DeepSeek family (DeepSeek-V2, DeepSeek-V3, DeepSeek-R1)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:91
+msgid "MiniMax models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:92
+msgid "Kimi-K2"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:93
+msgid "Other models using MLA architecture"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:95
+msgid "**Standard attention models** - also supported:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:96
+msgid ""
+"Qwen models (see [PR #6121](https://github.com/sgl-project/sglang/pull/6121))"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:98
+msgid ""
+"For models like Llama, with standard GQA, standard DP, or TP is typically "
+"recommended."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:100
+msgid ""
+"To enable DPA, add `--enable-dp-attention` to your server launch command."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:102
+msgid "Activation Logic"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:104
+msgid ""
+"DPA is enabled explicitly via server arguments (CLI or config). You must set "
+"both `--dp-size` and `--enable-dp-attention`:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:106
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path deepseek-ai/DeepSeek-V3 \\\n"
+"    --tp 8 \\\n"
+"    --dp-size 8 \\\n"
+"    --enable-dp-attention\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:114
+msgid ""
+"**Important**: `--dp-size` must be greater than 1 for DPA to work. When "
+"`dp_size == 1` (default), `--enable-dp-attention` is automatically disabled. "
+"The constraint `tp_size % dp_size == 0` must also be satisfied."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:116
+msgid "Standard DP for MLA models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:118
+msgid ""
+"Note that MLA models, of course, also support DP. Suppose you want to enable "
+"standard DP for MLA models. First, launch each MLA model's replica "
+"independently. You may launch these replicas one by one with DPA enabled. "
+"After launching each MLA model's replica, launch an SMG and connect all the "
+"replicas to the SMG. A detailed explanation of SMG is as follows."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:120
+msgid "Modern Data Parallelism SGLang Model Gateway (SMG)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:122
+msgid "Native DP Mode"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:124
+msgid ""
+"Native DP (built-in Data Parallelism) in SGLang creates multiple worker "
+"processes within a single SGLang instance, under the control of "
+"`DataParallelController` with the launching parameter of `dp-size`."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:127
+msgid ""
+"# Native DP mode\n"
+"python -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --dp-size 4\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:134
+msgid "**Limitations:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:136
+msgid ""
+"Built-in in-process load balancing only (e.g., `round_robin`, "
+"`total_requests`, `total_tokens`)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:137
+msgid "No cache-aware routing"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:138
+msgid "Limited observability and metrics"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:139
+msgid "No fault tolerance or circuit breakers"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:140
+msgid "Not suitable for production workloads"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:142
+msgid ""
+"⚠️ Native DP is **highly not recommended for use right now**. It is only used "
+"in some ancient/outdated RL frameworks. You can use SGLang Model Gateway "
+"(SMG) to power up your data parallelism in any use case."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:144
+msgid "SMG-Based DP (Recommended)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:146
+msgid ""
+"Starting from September 2024, SGLang Model Gateway, i.e., SMG, formerly "
+"named as SGLang DP Router, was built especially as a production-ready DP "
+"routing system with Rust. It starts from DP routing, but later we further "
+"expanded its scope to coordinate RL, PD Disaggregation, and other scenarios. "
+"This doc only discusses SMG's usage in DP routing. For other usage, please "
+"refer to [SGLang Model Gateway Documentation](sgl_model_gateway.md)."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:148
+msgid ""
+"To achieve the best production-level routing performance and reduce the "
+"overhead to an extreme extent, we use Rust to build SMG, but not Python, "
+"since Python is never FAST enough."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:150
+msgid ""
+"**We strongly recommend using the SGLang Model Gateway (SMG) for production-"
+"grade Data Parallelism.** SMG provides significant advantages over native DP "
+"mode."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:152
+msgid ""
+"# SMG-based DP mode (Recommended)\n"
+"python -m sglang_router.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --dp-size 4\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:159
+msgid ""
+"⚠️ Note that **SMG and Naive DP share the same launching parameter, `--dp-"
+"size`**. But the entrypoint of Naive DP is `python -m sglang.launch_server`, "
+"and SMG's entrypoint is `python -m sglang_router.launch_server`."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:161
+msgid "**Advantages of SMG-Based DP:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Feature"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Native DP"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "SMG-Based DP"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Load Balancing**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Built-in in-process methods"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Advanced policies (cache-aware, power-of-two, etc.)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Cache Awareness**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "❌ No"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "✅ Yes - significantly higher cache hit rate"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Throughput**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Baseline"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Significant improvement"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Multi-Node Support**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Limited"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "✅ Full support"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Worker Health Monitoring**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Basic"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "✅ Circuit breakers, health checks"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Reliability**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "✅ Retries, rate limiting, queuing"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Observability**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Basic metrics"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "✅ 40+ Prometheus metrics, OpenTelemetry"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Hot Worker Add/Remove**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "✅ Yes"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:174
+msgid "SMG's Performance"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:176
+msgid ""
+"The cache-aware routing policy in SMG significantly improves performance for "
+"workloads with shared prefixes:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Metric"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Without Cache-Aware"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "With Cache-Aware SMG"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Throughput (token/s)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "82,665"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "158,596 (+92%)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Cache Hit Rate"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "20%"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "75% (+275%)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:183
+msgid ""
+"*Benchmark from [SGLang v0.4 blog](https://lmsys.org/blog/2024-12-04-sglang-"
+"v0-4/), workload with multiple long prefix groups, 8x A100 80GB GPUs, dp-"
+"size=8*"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:185
+msgid "When to Use Each"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:187
+msgid "**Use Native DP when:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:189
+msgid "~Never use Native/Naive DP~"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:190
+msgid "Learning material of DP routing"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:192
+msgid "**Use SMG-Based DP when:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:194
+msgid "In any case, when you think DP is needed"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:195
+msgid "Production deployments"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:196
+msgid "Multi-node distributed setups"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:197
+msgid "Workloads with shared prefixes (high cache reuse potential)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:198
+msgid "You need high availability and reliability features"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:199
+msgid "You require detailed observability and metrics"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:200
+msgid "You want to have highly efficient RL rollout systems"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:202
+msgid ""
+"Note that for RL rollout systems, **there are four crucial reasons that SMG-"
+"Based DP is far better than naive DP routing**. Details can be found at "
+"[Load Balancing Router in RL](./sglang_for_rl.md#load-balancing-router)."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:204
+msgid "Quick Start For SMG"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:206
+msgid "**Installation**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:208
+msgid ""
+"pip install sglang-router\n"
+"# or\n"
+"pip install \"sglang[all]\"\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:214
+msgid "**Option A: Co-launch Workers and SMG (Simplest)**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:216
+msgid ""
+"This is the easiest way to get started - SMG and workers are launched "
+"together:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:218
+msgid ""
+"python -m sglang_router.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --dp-size 4 \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:226
+msgid "**Option B: Separate Launch (Multi-Node)**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:228
+msgid "For distributed deployments across multiple machines:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:230
+msgid "Launch workers on each node"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:232
+msgid ""
+"# Node 1\n"
+"python -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --port 8000\n"
+"\n"
+"# Node 2\n"
+"python -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --port 8000\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:244
+msgid "Launch SMG pointing to workers"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:246
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"    --worker-urls http://node1:8000 http://node2:8000 \\\n"
+"    --policy cache_aware \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:254
+msgid "**Option C: Dynamic Worker Registration**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:256
+msgid "For elastic deployments where workers can be added/removed dynamically:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:258
+msgid ""
+"# Launch SMG first\n"
+"python -m sglang_router.launch_router \\\n"
+"    --policy cache_aware \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+"\n"
+"# Register workers dynamically\n"
+"curl -X POST http://localhost:30000/workers \\\n"
+"    -H \"Content-Type: application/json\" \\\n"
+"    -d '{\"url\": \"http://worker1:8000\"}'\n"
+"\n"
+"curl -X POST http://localhost:30000/workers \\\n"
+"    -H \"Content-Type: application/json\" \\\n"
+"    -d '{\"url\": \"http://worker2:8000\"}'\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:275
+msgid "Load Balancing Policies"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:277
+msgid "SMG supports multiple load balancing policies:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Policy"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Best For"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "`cache_aware`"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Combines cache locality with load balancing"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Recommended for most workloads**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "`round_robin`"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Cycles through workers in order"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Simple, predictable distribution"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "`random`"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Random worker selection"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Baseline, testing"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "`power_of_two`"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Samples two workers, picks lighter one"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Low latency requirements"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:286
+msgid "**Cache-Aware Policy (Default, Recommended)**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:288
+msgid ""
+"The cache-aware policy provides the best performance for most workloads:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:290
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"    --worker-urls http://worker1:8000 http://worker2:8000 \\\n"
+"    --policy cache_aware \\\n"
+"    --cache-threshold 0.5 \\\n"
+"    --balance-abs-threshold 32 \\\n"
+"    --balance-rel-threshold 1.5 \\\n"
+"    --eviction-interval-secs 120 \\\n"
+"    --max-tree-size 67108864\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:301
+msgid "**How it works:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:303
+msgid ""
+"Maintains an approximate radix tree for each worker based on request history"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:304
+msgid "Routes requests to workers with the highest prefix match (cache hit)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:305
+msgid "Falls back to shortest-queue routing when load is imbalanced"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:306
+msgid "Automatically evicts old entries to prevent memory overflow"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:308
+msgid "Best Practices"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:310
+msgid ""
+"**Start with `cache_aware` policy** - It provides the best balance between "
+"cache locality and load distribution for most workloads"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:311
+msgid ""
+"**Use SMG for production** - Prefer `sglang_router.launch_server` over "
+"`sglang.launch_server` for better reliability and observability"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:312
+msgid ""
+"**Enable health checks** - Configure `--router-health-check-interval-secs` "
+"to detect and remove unhealthy workers automatically"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:314
+msgid "**Recommended command with best practices applied:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:316
+msgid ""
+"python -m sglang_router.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --dp-size 4 \\\n"
+"    --router-policy cache_aware \\\n"
+"    --router-health-check-interval-secs 30 \\\n"
+"    --router-prometheus-port 10001 \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --port 30000\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:327
+msgid ""
+"For advanced configuration (circuit breakers, retries, Prometheus metrics, "
+"K8s integration), see [SGLang Model Gateway Documentation](sgl_model_gateway."
+"md)."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:329
+msgid "Verifying Traffic Distribution"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:331
+msgid ""
+"After launching SMG, verify that traffic is being distributed correctly:"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:333
+msgid "**1. Check worker status:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:335
+msgid "curl http://localhost:30000/workers\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:339
+msgid "**2. Check load distribution:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:341
+msgid "curl http://localhost:30000/get_loads\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:345
+msgid "**3. Monitor metrics (if Prometheus enabled):**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:347
+msgid ""
+"# Key metrics to check\n"
+"smg_router_requests_total{model=\"...\"}\n"
+"smg_worker_requests_active{worker=\"...\"}\n"
+"sglang_cache_hit_rate{source=\"...\"}\n"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:354
+msgid ""
+"For detailed metrics and monitoring setup, see [SGLang Model Gateway "
+"Documentation](sgl_model_gateway.md)."
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:356
+msgid "Reference"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Strategy"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Use Case"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Key Benefit"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Native DP** (`--dp-size`)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Never"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Easy to understand, not rust based"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**SMG-Based DP**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**Production (recommended)**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Cache-aware routing, high availability"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**DPA** (`--dp-size N --enable-dp-attention`)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "DeepSeek/MLA models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Eliminates KV cache duplication, improved throughput"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "**DPA + EP**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "DeepSeek MoE models"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:0
+msgid "Significant throughput improvement vs vanilla TP"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:365
+msgid "**Recommended production setup for DeepSeek:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:366
+msgid ""
+"Enable **DPA** for attention layers (`--dp-size 8 --enable-dp-attention`)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:367
+msgid "Enable **EP** for MoE layers (`--ep 8 --moe-a2a-backend deepep`)"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:368
+msgid "Use **SMG** with **cache_aware** policy"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:370
+msgid "**Related documentation:**"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:371
+msgid ""
+"[Expert Parallelism](expert_parallelism.md) - DeepEP, Two-Batch Overlap, EPLB"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:372
+msgid ""
+"[SGLang Model Gateway Documentation](sgl_model_gateway.md) - SMG "
+"configuration & troubleshooting"
+msgstr ""
+
+#: ../../../advanced_features/dp_dpa_smg_guide.md:373
+msgid ""
+"[Large-Scale EP Blog](https://lmsys.org/blog/2025-05-05-large-scale-ep/) - "
+"96 GPU deployment guide"
+msgstr ""

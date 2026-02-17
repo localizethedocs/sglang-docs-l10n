@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-10 08:34+0000\n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,166 +17,573 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../../advanced_features/speculative_decoding.ipynb:2
-msgid ""
-"<style>\n"
-"    .output_area.stderr, .output_area.stdout {\n"
-"        color: #d3d3d3 !important; /* light gray */\n"
-"    }\n"
-"</style>"
-msgstr ""
-
-#: ../../../advanced_features/speculative_decoding.ipynb:9
+#: ../../../advanced_features/speculative_decoding.md:1
 msgid "Speculative Decoding"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:11
+#: ../../../advanced_features/speculative_decoding.md:3
 msgid ""
-"SGLang now provides an EAGLE-based (EAGLE-2/EAGLE-3) speculative decoding "
-"option. Our implementation aims to maximize speed and efficiency and is "
-"considered to be among the fastest in open-source LLM engines."
+"SGLang provides several speculative decoding options, including EAGLE-2/"
+"EAGLE-3, MTP, classic draft-model decoding, and an NGRAM-based variant. Our "
+"implementation aims to maximize speed and efficiency and is considered to be "
+"among the fastest in open-source LLM engines."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:14
-msgid "Performance Highlights"
+#: ../../../advanced_features/speculative_decoding.md:5
+msgid "Summary"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:16
+#: ../../../advanced_features/speculative_decoding.md:7
+msgid "Jump to sections"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:9
+msgid "[EAGLE Decoding](#eagle-decoding)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:10
+msgid "[EAGLE-2 Decoding](#eagle-2-decoding)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:11
 msgid ""
-"Please see below for the huge improvements on throughput for LLaMA-Instruct "
-"3.1 8B tested on MT bench that can be achieved via EAGLE3 decoding. For "
-"further details please see the `EAGLE3 paper <https://arxiv.org/"
-"pdf/2503.01840>`__."
+"[EAGLE-2 Decoding with torch.compile](#eagle-2-decoding-with-torchcompile)"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:19
+#: ../../../advanced_features/speculative_decoding.md:12
+msgid ""
+"[EAGLE-2 Decoding via Frequency-Ranked Speculative Sampling](#eagle-2-"
+"decoding-via-frequency-ranked-speculative-sampling)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:13
+msgid "[EAGLE-3 Decoding](#eagle-3-decoding)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:14
+msgid "[Multi Token Prediction](#multi-token-prediction)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:15
+msgid ""
+"[Standalone Speculative Decoding (Small Draft Model)](#standalone-"
+"speculative-decoding-small-draft-model)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:16
+msgid ""
+"[Speculative Decoding V2 (Overlap Scheduler)](#speculative-decoding-v2-"
+"overlap-scheduler)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:17
+msgid "[Ngram Speculative Decoding](#ngram-speculative-decoding)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:18
+msgid "[Full Parameter Reference](#full-parameter-reference)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:19
+msgid "[OOM Troubleshooting](#oom-troubleshooting)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:20
+msgid "[References](#references)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:22
+msgid "Quick guidance"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:24
+msgid ""
+"**Best speed/quality (recommended)**: Use **EAGLE-3** with `--speculative-"
+"algorithm EAGLE3`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:25
+msgid ""
+"**Strong default / broad compatibility**: Use **EAGLE-2** with `--"
+"speculative-algorithm EAGLE`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:26
+msgid ""
+"**Lower `lm_head` overhead for EAGLE-2**: Enable **FR-Spec** with `--"
+"speculative-token-map`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:27
+msgid ""
+"**Model is MTP-enabled**: Use **MTP via speculative decoding** (often with "
+"small `speculative_num_steps/topk/num_draft_tokens`, see the example "
+"section)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:28
+msgid ""
+"**You have a smaller draft LLM**: Use **STANDALONE** (`--speculative-"
+"algorithm STANDALONE`)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:29
+msgid ""
+"**No extra model available**: Use **NGRAM** (`--speculative-algorithm "
+"NGRAM`, CUDA-only)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:30
+msgid ""
+"**Want overlap scheduler (experimental)**: Enable **SpecV2** with "
+"`SGLANG_ENABLE_SPEC_V2=True` (requires `--speculative-eagle-topk 1`)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:32
+msgid "Method comparison (mini table)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "Method"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:19
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Draft source"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Separate draft model?"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "How to enable"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Notes / constraints"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "EAGLE-2"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "EAGLE draft model (feature drafting + tree)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Typically yes"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-algorithm EAGLE` + `--speculative-draft-model-path ...`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Tune `--speculative-num-steps`, `--speculative-eagle-topk`, `--speculative-"
+"num-draft-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "EAGLE-2 + `torch.compile`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Same as EAGLE-2"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Add `--enable-torch-compile` (optionally `--torch-compile-max-bs`)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Further kernel-level optimizations"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "EAGLE-2 + FR-Spec"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Same as EAGLE-2 + token subset"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Add `--speculative-token-map ...`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Reduces `lm_head` overhead with high-frequency token vocab"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "EAGLE-3"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "EAGLE3 draft model"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Yes"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-algorithm EAGLE3` + `--speculative-draft-model-path ...`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Best throughput in the benchmark above"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "MTP"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Built-in multi-token heads (model-specific)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Often no"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "See **Multi Token Prediction** section"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Uses speculative workflow; draft path may be auto-handled for some models"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "STANDALONE"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Smaller draft LLM (token-level)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"`--speculative-algorithm STANDALONE` + `--speculative-draft-model-path ...`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Does **not** support `--enable-dp-attention`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "SpecV2 (experimental)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "V2 workers + overlap scheduler"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "N/A"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+#: ../../../advanced_features/speculative_decoding.md:335
+msgid "`SGLANG_ENABLE_SPEC_V2=True`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Only supports `--speculative-eagle-topk 1`; applies to `EAGLE`, `EAGLE3`, "
+"`STANDALONE`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "NGRAM"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Ngram cache from previous tokens"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "No"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+#: ../../../advanced_features/speculative_decoding.md:382
+msgid "`--speculative-algorithm NGRAM`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"CUDA-only; no `--enable-dp-attention`; disables overlap scheduler & mixed "
+"chunked prefill"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:45
+msgid "Performance Highlights"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:47
+msgid ""
+"Please see below for the huge improvements on throughput for LLaMA-Instruct "
+"3.1 8B tested on MT bench that can be achieved via EAGLE3 decoding. For "
+"further details please see the [EAGLE3 paper](https://arxiv.org/"
+"pdf/2503.01840)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "Throughput (tokens/s)"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:21
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "SGLang (w/o speculative, 1x H100)"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:21
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "158.34 tokens/s"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:22
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "SGLang + EAGLE-2 (1x H100)"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:22
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "244.10 tokens/s"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:23
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "SGLang + EAGLE-3 (1x H100)"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:23
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid "373.25 tokens/s"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:36
+#: ../../../advanced_features/speculative_decoding.md:58
 msgid "EAGLE Decoding"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:38
+#: ../../../advanced_features/speculative_decoding.md:60
 msgid ""
 "To enable EAGLE speculative decoding the following parameters are relevant:"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:40
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Parameter"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-draft-model-path`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid ""
-"``speculative_draft_model_path``: Specifies draft model. This parameter is "
-"required."
+"Draft model path/weights. **Typically required** for EAGLE/EAGLE3 and "
+"STANDALONE. For some MTP-enabled models, this can be omitted."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:41
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`None`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-num-steps`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid ""
-"``speculative_num_steps``: Depth of autoregressive drafting. Increases "
-"speculation range but risks rejection cascades. Default is 5."
+"Depth of autoregressive drafting. Increases speculation range but risks "
+"rejection cascades."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:42
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Auto (`5` for Llama/Grok; `3` for many other models)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-eagle-topk`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid ""
-"``speculative_eagle_topk``: Branching factor per step. Improves candidate "
-"diversity, will lead to higher acceptance rate, but more lead to higher "
-"memory/compute consumption. Default is 4."
+"Branching factor per step. Improves candidate diversity and acceptance rate, "
+"but increases memory/compute consumption."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:43
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Auto (`4` for Llama/Grok; `1` for many other models)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-num-draft-tokens`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
 msgid ""
-"``speculative_num_draft_tokens``: Maximum parallel verification capacity. "
-"Allows deeper tree evaluation but will lead to higher GPU memory usage. "
-"Default is 8."
+"Maximum parallel verification capacity. Allows deeper tree evaluation but "
+"increases GPU memory usage."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:45
-msgid "These parameters are the same for EAGLE-2 and EAGLE-3."
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Auto (`8` for Llama/Grok; `4` for many other models). If `topk=1`, it is "
+"adjusted to `num_steps + 1`."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:47
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-accept-threshold-single`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Acceptance threshold for single-token verification. Lower values accept more "
+"aggressively."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`1.0`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-accept-threshold-acc`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Accumulated acceptance threshold across steps."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-attention-mode`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Attention mode for speculative operations (`prefill` or `decode`), affecting "
+"both target verification and draft extension."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`\"prefill\"`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-draft-attention-backend`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Override attention backend for the draft model."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`None` (same as target)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-draft-model-quantization`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Quantization method for the draft model. Use `\"unquant\"` to force no "
+"quantization even when the target model is quantized."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Same as target model"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-draft-model-revision`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Specific revision/commit of the draft model to load."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"`None` (auto-set to `\"main\"` when `--speculative-draft-model-path` is set "
+"and revision is omitted)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-draft-load-format`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Load format for the draft model weights."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:76
+msgid ""
+"These parameters are mostly the same for EAGLE-2 and EAGLE-3. `--speculative-"
+"token-map` is ignored for EAGLE-3 models. For `--speculative-num-steps`, `--"
+"speculative-eagle-topk`, and `--speculative-num-draft-tokens`: leave all "
+"three unset to use auto-tuning, or set all three explicitly when tuning."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:79
 msgid ""
 "You can find the best combinations of these parameters with "
-"`bench_speculative.py <https://github.com/sgl-project/sglang/blob/main/"
-"scripts/playground/bench_speculative.py>`__."
+"[bench_speculative.py](https://github.com/sgl-project/sglang/blob/main/"
+"scripts/playground/bench_speculative.py)."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:49
-msgid ""
-"In the documentation below, we set ``--cuda-graph-max-bs`` to be a small "
-"value for faster engine startup. For your own workloads, please tune the "
-"above parameters together with ``--cuda-graph-max-bs``, ``--max-running-"
-"requests``, ``--mem-fraction-static`` for the best performance."
-msgstr ""
-
-#: ../../../advanced_features/speculative_decoding.ipynb:61
+#: ../../../advanced_features/speculative_decoding.md:82
 msgid "EAGLE-2 decoding"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:63
+#: ../../../advanced_features/speculative_decoding.md:84
 msgid ""
-"You can enable EAGLE-2 decoding by setting ``--speculative-algorithm EAGLE`` "
+"You can enable EAGLE-2 decoding by setting `--speculative-algorithm EAGLE` "
 "and choosing an appropriate model."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
-msgid "[ ]:"
+#: ../../../advanced_features/speculative_decoding.md:86
+msgid "**Launch the server:**"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:88
 msgid ""
-"from sglang.test.doc_patch import launch_server_cmd\n"
-"from sglang.utils import wait_for_server, print_highlight, "
-"terminate_process\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model meta-llama/Llama-2-7b-chat-hf \\\n"
+"    --speculative-algorithm EAGLE \\\n"
+"    --speculative-draft-model-path lmsys/sglang-EAGLE-llama2-chat-7B \\\n"
+"    --speculative-num-steps 3 \\\n"
+"    --speculative-eagle-topk 4 \\\n"
+"    --speculative-num-draft-tokens 16 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --log-level warning\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:101
+#: ../../../advanced_features/speculative_decoding.md:140
+#: ../../../advanced_features/speculative_decoding.md:184
+#: ../../../advanced_features/speculative_decoding.md:223
+#: ../../../advanced_features/speculative_decoding.md:262
+#: ../../../advanced_features/speculative_decoding.md:309
+#: ../../../advanced_features/speculative_decoding.md:356
+#: ../../../advanced_features/speculative_decoding.md:416
+msgid "**Send a request:**"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:103
+#: ../../../advanced_features/speculative_decoding.md:142
+msgid ""
+"import openai\n"
 "\n"
-"import openai"
-msgstr ""
-
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
-msgid ""
-"server_process, port = launch_server_cmd(\n"
-"    \"\"\"\n"
-"python3 -m sglang.launch_server --model meta-llama/Llama-2-7b-chat-hf  --"
-"speculative-algorithm EAGLE \\\n"
-"    --speculative-draft-model-path lmsys/sglang-EAGLE-llama2-chat-7B --"
-"speculative-num-steps 3 \\\n"
-"    --speculative-eagle-topk 4 --speculative-num-draft-tokens 16 --cuda-"
-"graph-max-bs 8 --log-level warning\n"
-"\"\"\"\n"
-")\n"
-"\n"
-"wait_for_server(f\"http://localhost:{port}\")"
-msgstr ""
-
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
-msgid ""
-"client = openai.Client(base_url=f\"http://127.0.0.1:{port}/v1\", "
+"client = openai.Client(base_url=\"http://127.0.0.1:30000/v1\", "
 "api_key=\"None\")\n"
 "\n"
 "response = client.chat.completions.create(\n"
@@ -189,90 +596,84 @@ msgid ""
 "    max_tokens=64,\n"
 ")\n"
 "\n"
-"print_highlight(f\"Response: {response}\")"
+"print(response.choices[0].message.content)\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
-msgid "terminate_process(server_process)"
+#: ../../../advanced_features/speculative_decoding.md:122
+msgid "EAGLE-2 Decoding with `torch.compile`"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:133
-msgid "EAGLE-2 Decoding with ``torch.compile``"
-msgstr ""
-
-#: ../../../advanced_features/speculative_decoding.ipynb:135
+#: ../../../advanced_features/speculative_decoding.md:124
 msgid ""
-"You can also enable ``torch.compile`` for further optimizations and "
-"optionally set ``--torch-compile-max-bs``:"
+"You can also enable `torch.compile` for further optimizations and optionally "
+"set `--torch-compile-max-bs`:"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:126
 msgid ""
-"server_process, port = launch_server_cmd(\n"
-"    \"\"\"\n"
-"python3 -m sglang.launch_server --model meta-llama/Llama-2-7b-chat-hf  --"
-"speculative-algorithm EAGLE \\\n"
-"    --speculative-draft-model-path lmsys/sglang-EAGLE-llama2-chat-7B --"
-"speculative-num-steps 5 \\\n"
-"        --speculative-eagle-topk 8 --speculative-num-draft-tokens 64 --mem-"
-"fraction 0.6 \\\n"
-"            --enable-torch-compile --torch-compile-max-bs 2 --log-level "
-"warning\n"
-"\"\"\"\n"
-")\n"
-"\n"
-"wait_for_server(f\"http://localhost:{port}\")"
+"python3 -m sglang.launch_server \\\n"
+"    --model meta-llama/Llama-2-7b-chat-hf \\\n"
+"    --speculative-algorithm EAGLE \\\n"
+"    --speculative-draft-model-path lmsys/sglang-EAGLE-llama2-chat-7B \\\n"
+"    --speculative-num-steps 3 \\\n"
+"    --speculative-eagle-topk 4 \\\n"
+"    --speculative-num-draft-tokens 16 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --enable-torch-compile \\\n"
+"    --torch-compile-max-bs 8 \\\n"
+"    --log-level warning\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:194
+#: ../../../advanced_features/speculative_decoding.md:161
 msgid "EAGLE-2 Decoding via Frequency-Ranked Speculative Sampling"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:196
+#: ../../../advanced_features/speculative_decoding.md:163
 msgid ""
 "By employing a truncated high-frequency token vocabulary in the draft model, "
-"Eagle speculative decoding reduces ``lm_head`` computational overhead while "
+"Eagle speculative decoding reduces `lm_head` computational overhead while "
 "accelerating the pipeline without quality degradation. For more details, "
-"checkout `the paper <https://arxiv.org/pdf/arXiv:2502.14856>`__."
+"checkout [the paper](https://arxiv.org/pdf/2502.14856)."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:198
+#: ../../../advanced_features/speculative_decoding.md:165
 msgid ""
-"In our implementation, set ``--speculative-token-map`` to enable the "
-"optimization. You can get the high-frequency token in FR-Spec from `this "
-"model <https://huggingface.co/thunlp/LLaMA3-Instruct-8B-FR-Spec>`__. Or you "
-"can obtain high-frequency token by directly downloading these token from "
-"`this repo <https://github.com/thunlp/FR-Spec/tree/main?tab=readme-ov-"
-"file#prepare-fr-spec-vocabulary-subset>`__."
+"In our implementation, set `--speculative-token-map` to enable the "
+"optimization. You can get the high-frequency token in FR-Spec from [this "
+"model](https://huggingface.co/thunlp/LLaMA3-Instruct-8B-FR-Spec). Or you can "
+"obtain high-frequency token by directly downloading these token from [this "
+"repo](https://github.com/thunlp/FR-Spec/tree/main?tab=readme-ov-file#prepare-"
+"fr-spec-vocabulary-subset)."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:200
+#: ../../../advanced_features/speculative_decoding.md:167
 msgid ""
-"Thanks for the contribution from `Weilin Zhao <https://github.com/"
-"Achazwl>`__ and `Zhousx <https://github.com/Zhou-sx>`__."
+"Thanks for the contribution from [Weilin Zhao](https://github.com/Achazwl) "
+"and [Zhousx](https://github.com/Zhou-sx)."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:169
 msgid ""
-"server_process, port = launch_server_cmd(\n"
-"    \"\"\"\n"
-"python3 -m sglang.launch_server --model meta-llama/Meta-Llama-3-8B-Instruct "
-"--speculative-algorithm EAGLE \\\n"
-"    --speculative-draft-model-path lmsys/sglang-EAGLE-LLaMA3-Instruct-8B --"
-"speculative-num-steps 5 \\\n"
-"    --speculative-eagle-topk 8 --speculative-num-draft-tokens 64 --"
-"speculative-token-map thunlp/LLaMA3-Instruct-8B-FR-Spec/freq_32768.pt \\\n"
-"    --mem-fraction 0.7 --cuda-graph-max-bs 2 --dtype float16  --log-level "
-"warning\n"
-"\"\"\"\n"
-")\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model meta-llama/Meta-Llama-3-8B-Instruct \\\n"
+"    --speculative-algorithm EAGLE \\\n"
+"    --speculative-draft-model-path lmsys/sglang-EAGLE-LLaMA3-Instruct-8B \\\n"
+"    --speculative-num-steps 3 \\\n"
+"    --speculative-eagle-topk 4 \\\n"
+"    --speculative-num-draft-tokens 16 \\\n"
+"    --speculative-token-map thunlp/LLaMA3-Instruct-8B-FR-Spec/freq_32768.pt "
+"\\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --dtype float16 \\\n"
+"    --log-level warning\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:186
+msgid ""
+"import openai\n"
 "\n"
-"wait_for_server(f\"http://localhost:{port}\")"
-msgstr ""
-
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
-msgid ""
-"client = openai.Client(base_url=f\"http://127.0.0.1:{port}/v1\", "
+"client = openai.Client(base_url=\"http://127.0.0.1:30000/v1\", "
 "api_key=\"None\")\n"
 "\n"
 "response = client.chat.completions.create(\n"
@@ -285,39 +686,40 @@ msgid ""
 "    max_tokens=64,\n"
 ")\n"
 "\n"
-"print_highlight(f\"Response: {response}\")"
+"print(response.choices[0].message.content)\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:259
+#: ../../../advanced_features/speculative_decoding.md:205
 msgid "EAGLE-3 Decoding"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:261
+#: ../../../advanced_features/speculative_decoding.md:207
 msgid ""
-"You can enable EAGLE-3 decoding by setting ``--speculative-algorithm "
-"EAGLE3`` and choosing an appropriate model."
+"You can enable EAGLE-3 decoding by setting `--speculative-algorithm EAGLE3` "
+"and choosing an appropriate model."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:209
 msgid ""
-"server_process, port = launch_server_cmd(\n"
-"    \"\"\"\n"
-"python3 -m sglang.launch_server --model meta-llama/Llama-3.1-8B-Instruct  --"
-"speculative-algorithm EAGLE3 \\\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --speculative-algorithm EAGLE3 \\\n"
 "    --speculative-draft-model-path jamesliu1/sglang-EAGLE3-Llama-3.1-"
-"Instruct-8B --speculative-num-steps 5 \\\n"
-"        --speculative-eagle-topk 8 --speculative-num-draft-tokens 32 --mem-"
-"fraction 0.6 \\\n"
-"        --cuda-graph-max-bs 2 --dtype float16 --log-level warning\n"
-"\"\"\"\n"
-")\n"
-"\n"
-"wait_for_server(f\"http://localhost:{port}\")"
+"Instruct-8B \\\n"
+"    --speculative-num-steps 3 \\\n"
+"    --speculative-eagle-topk 4 \\\n"
+"    --speculative-num-draft-tokens 16 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --dtype float16 \\\n"
+"    --log-level warning\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:225
 msgid ""
-"client = openai.Client(base_url=f\"http://127.0.0.1:{port}/v1\", "
+"import openai\n"
+"\n"
+"client = openai.Client(base_url=\"http://127.0.0.1:30000/v1\", "
 "api_key=\"None\")\n"
 "\n"
 "response = client.chat.completions.create(\n"
@@ -330,41 +732,41 @@ msgid ""
 "    max_tokens=64,\n"
 ")\n"
 "\n"
-"print_highlight(f\"Response: {response}\")"
+"print(response.choices[0].message.content)\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:320
+#: ../../../advanced_features/speculative_decoding.md:244
 msgid "Multi Token Prediction"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:322
+#: ../../../advanced_features/speculative_decoding.md:246
 msgid ""
-"We support `MTP(Multi-Token Prediction) <https://arxiv.org/"
-"pdf/2404.19737>`__ in SGLang by using speculative decoding. We use Xiaomi/"
-"MiMo-7B-RL model as example here (deepseek mtp usage refer to `deepseek doc "
-"<../basic_usage/deepseek.md#multi-token-prediction>`__)"
+"We support [MTP(Multi-Token Prediction)](https://arxiv.org/pdf/2404.19737) "
+"in SGLang by using speculative decoding. We use `XiaomiMiMo/MiMo-7B-RL` as "
+"an example here (for DeepSeek MTP usage, refer to [deepseek_v32 doc](../"
+"basic_usage/deepseek_v32.md#multi-token-prediction))."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:248
 msgid ""
-"server_process, port = launch_server_cmd(\n"
-"    \"\"\"\n"
-"    python3 -m sglang.launch_server --model-path XiaomiMiMo/MiMo-7B-RL --"
-"host 0.0.0.0 --trust-remote-code \\\n"
-"    --speculative-algorithm EAGLE --speculative-num-steps 1 --speculative-"
-"eagle-topk 1 --speculative-num-draft-tokens 2 \\\n"
-"    --mem-fraction 0.5 --log-level warning\n"
-"\"\"\"\n"
-")\n"
-"\n"
-"wait_for_server(f\"http://localhost:{port}\")"
+"python3 -m sglang.launch_server \\\n"
+"    --model XiaomiMiMo/MiMo-7B-RL \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --trust-remote-code \\\n"
+"    --speculative-algorithm EAGLE \\\n"
+"    --speculative-num-steps 1 \\\n"
+"    --speculative-eagle-topk 1 \\\n"
+"    --speculative-num-draft-tokens 2 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --log-level warning\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:-1
+#: ../../../advanced_features/speculative_decoding.md:264
 msgid ""
 "import requests\n"
 "\n"
-"url = f\"http://localhost:{port}/v1/chat/completions\"\n"
+"url = \"http://localhost:30000/v1/chat/completions\"\n"
 "\n"
 "data = {\n"
 "    \"model\": \"XiaomiMiMo/MiMo-7B-RL\",\n"
@@ -373,61 +775,714 @@ msgid ""
 "}\n"
 "\n"
 "response = requests.post(url, json=data)\n"
-"print_highlight(response.json())"
+"print(response.json())\n"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:379
+#: ../../../advanced_features/speculative_decoding.md:280
+msgid "Standalone Speculative Decoding (Small Draft Model)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:282
+msgid ""
+"Besides EAGLE/MTP, SGLang also supports **token-level speculative decoding** "
+"using a smaller **draft model**. Enable it with `--speculative-algorithm "
+"STANDALONE` and provide a draft model via `--speculative-draft-model-path`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:284
+msgid "Relevant parameters:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Draft model weights (smaller than the target model)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Draft depth (how many steps the draft model runs autoregressively)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`3` (auto default for STANDALONE)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Branching factor (token candidates per step)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`1` (auto default for STANDALONE)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Verification capacity."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`4` (auto default for STANDALONE)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Quantization for the draft model. Use `\"unquant\"` to disable quantization "
+"on the draft even when the target is quantized."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Same as target"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:294
+msgid ""
+"**Note:** Standalone speculative decoding currently **does not support** `--"
+"enable-dp-attention`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:296
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model Qwen/Qwen2.5-7B-Instruct \\\n"
+"    --speculative-algorithm STANDALONE \\\n"
+"    --speculative-draft-model-path Qwen/Qwen2.5-1.5B-Instruct \\\n"
+"    --speculative-num-steps 4 \\\n"
+"    --speculative-eagle-topk 2 \\\n"
+"    --speculative-num-draft-tokens 7 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --log-level warning\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:311
+#: ../../../advanced_features/speculative_decoding.md:358
+#: ../../../advanced_features/speculative_decoding.md:418
+msgid ""
+"import openai\n"
+"\n"
+"client = openai.Client(base_url=\"http://127.0.0.1:30000/v1\", "
+"api_key=\"None\")\n"
+"\n"
+"response = client.chat.completions.create(\n"
+"    model=\"Qwen/Qwen2.5-7B-Instruct\",\n"
+"    messages=[\n"
+"        {\"role\": \"user\", \"content\": \"List 3 countries and their "
+"capitals.\"},\n"
+"    ],\n"
+"    temperature=0,\n"
+"    max_tokens=64,\n"
+")\n"
+"\n"
+"print(response.choices[0].message.content)\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:330
+msgid "Speculative Decoding V2 (Overlap Scheduler)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:332
+msgid ""
+"SGLang provides an **experimental Speculative Decoding V2** implementation "
+"that enables an overlap scheduler and uses V2 speculative workers (e.g. "
+"`StandaloneWorkerV2`, `EAGLEWorkerV2`)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:334
+msgid "To enable it, set the environment variable:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:337
+#: ../../../advanced_features/speculative_decoding.md:397
+msgid "Notes:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:338
+msgid ""
+"SpecV2 currently only supports `--speculative-eagle-topk 1`. When SpecV2 is "
+"enabled, **set `--speculative-eagle-topk 1` explicitly**."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:339
+msgid ""
+"If you explicitly set `--speculative-eagle-topk > 1`, the server will error."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:340
+msgid ""
+"If you omit `--speculative-eagle-topk`, auto-tuning may pick `topk > 1` for "
+"some models (e.g. Llama). This is incompatible with SpecV2 and may not "
+"always trigger an immediate config error, so set `--speculative-eagle-topk "
+"1` explicitly."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:341
+msgid "This applies to `EAGLE`, `EAGLE3`, and `STANDALONE`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:343
+msgid ""
+"SGLANG_ENABLE_SPEC_V2=True python3 -m sglang.launch_server \\\n"
+"    --model Qwen/Qwen2.5-7B-Instruct \\\n"
+"    --speculative-algorithm STANDALONE \\\n"
+"    --speculative-draft-model-path Qwen/Qwen2.5-1.5B-Instruct \\\n"
+"    --speculative-num-steps 4 \\\n"
+"    --speculative-eagle-topk 1 \\\n"
+"    --speculative-num-draft-tokens 5 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --log-level warning\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:377
+msgid "Ngram Speculative Decoding"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:379
+msgid ""
+"SGLang also supports **ngram-based speculative decoding** (no separate draft "
+"model). It retrieves draft tokens from an ngram cache built from previously "
+"generated tokens, and then verifies them with the target model."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:381
+msgid "Enable it with:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:384
+#: ../../../advanced_features/speculative_decoding.md:461
+msgid "Ngram-specific parameters"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Number of draft tokens verified per step. If omitted, defaults to `--"
+"speculative-ngram-max-match-window-size`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`12` (with default ngram settings)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-min-match-window-size`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Minimum matching window size."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`1`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-max-match-window-size`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Maximum matching window size."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`12`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-min-bfs-breadth`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Minimum BFS breadth."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-max-bfs-breadth`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Maximum BFS breadth."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`10`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-match-type`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Match type: `\"BFS\"` or `\"PROB\"`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`\"BFS\"`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-branch-length`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "How many recent tokens to insert into the cache."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`18`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-ngram-capacity`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Cache capacity (number of entries)."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`10,000,000`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:398
+msgid "Ngram speculative decoding **only supports CUDA**."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:399
+msgid "It currently **does not support** `--enable-dp-attention`."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:400
+msgid "It disables the overlap scheduler and mixed chunked prefill."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:401
+msgid ""
+"If `--speculative-ngram-max-bfs-breadth > 1` (thus `speculative_eagle_topk > "
+"1`) and `page_size > 1`, use `--attention-backend flashinfer`; otherwise the "
+"server will error."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:402
+msgid ""
+"Optional: set `SGLANG_NGRAM_FORCE_GREEDY_VERIFY=True` to force greedy "
+"verification."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:404
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model Qwen/Qwen2.5-7B-Instruct \\\n"
+"    --speculative-algorithm NGRAM \\\n"
+"    --speculative-num-draft-tokens 16 \\\n"
+"    --speculative-ngram-max-match-window-size 12 \\\n"
+"    --speculative-ngram-max-bfs-breadth 10 \\\n"
+"    --mem-fraction-static 0.7 \\\n"
+"    --cuda-graph-max-bs 8 \\\n"
+"    --log-level warning\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:437
+msgid "Full Parameter Reference"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:439
+msgid ""
+"Below is a comprehensive list of all speculative decoding parameters "
+"available in SGLang:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:441
+msgid "Core parameters"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Type"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-algorithm`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`str`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Algorithm to use: `EAGLE`, `EAGLE3`, `STANDALONE`, `NGRAM`, `NEXTN` (alias "
+"of `EAGLE`)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Path to the draft model weights"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Specific revision/commit of the draft model (`\"main\"` is auto-used when "
+"draft path is set and revision is omitted)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Load format for draft model weights"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`int`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`None` (auto-chosen when omitted)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Autoregressive drafting depth"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Branching factor per drafting step"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Maximum number of draft tokens for verification"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`float`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Single-token acceptance threshold"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Accumulated acceptance threshold"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-token-map`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Path to FR-Spec high-frequency token map"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid ""
+"Attention mode for speculative operations (`\"prefill\"` or `\"decode\"`)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Override attention backend for the draft model"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-moe-runner-backend`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "MoE runner backend for the draft model"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--speculative-moe-a2a-backend`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "MoE all-to-all backend for the draft model"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Quantization for the draft model (`\"unquant\"` to disable)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Minimum ngram matching window"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Maximum ngram matching window"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Minimum BFS breadth"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Maximum BFS breadth"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Match type: `\"BFS\"` or `\"PROB\"`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Recent tokens to insert into cache"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Cache capacity"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:473
+msgid "Environment variables"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Variable"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`SGLANG_ENABLE_SPEC_V2`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`False`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Enable Speculative Decoding V2 (overlap scheduler)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`SGLANG_NGRAM_FORCE_GREEDY_VERIFY`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Force greedy verification for ngram decoding"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:480
+msgid "Other related flags"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--enable-multi-layer-eagle`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Enable multi-layer EAGLE (auto-enabled for MiMoV2 and Step3p5 models)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--enable-torch-compile`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Enable `torch.compile` for kernel-level optimizations"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "`--torch-compile-max-bs`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:0
+msgid "Maximum batch size for `torch.compile`"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:490
+msgid "OOM Troubleshooting"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:492
+msgid ""
+"[!WARNING] **Out of Memory (OOM)?** Speculative decoding may increase GPU "
+"memory usage because the draft tree, CUDA graphs, and verification-related "
+"buffers consume additional VRAM. If you encounter OOM errors, try the "
+"following adjustments."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:495
+msgid "Step 1: Reduce draft tree size (most effective)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:497
+msgid ""
+"These three parameters directly control how much memory the draft tree "
+"consumes:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:499
+msgid ""
+"# Before (aggressive, high memory)\n"
+"--speculative-num-steps 5 --speculative-eagle-topk 8 --speculative-num-draft-"
+"tokens 64\n"
+"\n"
+"# After (conservative, lower memory)\n"
+"--speculative-num-steps 3 --speculative-eagle-topk 4 --speculative-num-draft-"
+"tokens 16\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:507
+msgid ""
+"**`--speculative-num-draft-tokens`**: This is the single most impactful "
+"parameter. Reducing from 64 → 16 can cut draft-related memory by ~75%. Start "
+"here."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:508
+msgid ""
+"**`--speculative-eagle-topk`**: Reducing from 8 → 4 or even 2 halves the "
+"branching factor."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:509
+msgid ""
+"**`--speculative-num-steps`**: Reducing from 5 → 3 shortens the draft depth."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:511
+msgid "Step 2: Lower static memory fraction"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:513
+msgid ""
+"# Give more room for dynamic allocations (CUDA graphs, draft model, etc.)\n"
+"--mem-fraction-static 0.5   # when omitted, this value is auto-computed\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:518
+msgid "Step 3: Reduce CUDA graph batch size"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:520
+msgid ""
+"# Fewer CUDA graph captures = less memory reserved\n"
+"--cuda-graph-max-bs 4   # or even 2 for tight memory situations\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:525
+msgid "Step 4: Limit concurrent requests"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:527
+msgid ""
+"# Fewer concurrent requests lowers in-flight load and can reduce OOM risk\n"
+"--max-running-requests 4\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:532
+msgid "Step 5: Use quantization"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:534
+msgid ""
+"# Quantize the target model (if supported by your checkpoint/hardware)\n"
+"--quantization fp8\n"
+"\n"
+"# Or quantize only the draft model (keep target at full precision)\n"
+"--speculative-draft-model-quantization fp8\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:542
+msgid "Step 6: Use a smaller dtype"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:544
+msgid "--dtype float16   # instead of bfloat16/float32 (when supported)\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:548
+msgid "Step 7: Use FR-Spec to reduce lm_head memory (EAGLE-2 / STANDALONE)"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:550
+msgid ""
+"--speculative-token-map thunlp/LLaMA3-Instruct-8B-FR-Spec/freq_32768.pt\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:553
+msgid ""
+"Note: For EAGLE-3, `--speculative-token-map` is ignored because EAGLE-3 "
+"models already provide built-in hot-token handling."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:555
+msgid "Quick OOM recovery recipe"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:557
+msgid ""
+"If you're hitting OOM and just want something that works, start with this "
+"minimal configuration and scale up:"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:559
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model <your-model> \\\n"
+"    --speculative-algorithm EAGLE \\\n"
+"    --speculative-draft-model-path <your-draft-model> \\\n"
+"    --speculative-num-steps 2 \\\n"
+"    --speculative-eagle-topk 2 \\\n"
+"    --speculative-num-draft-tokens 8 \\\n"
+"    --cuda-graph-max-bs 2 \\\n"
+"    --mem-fraction-static 0.5 \\\n"
+"    --max-running-requests 4 \\\n"
+"    --dtype float16 \\\n"
+"    --log-level warning\n"
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:574
+msgid ""
+"Then gradually increase `--speculative-num-draft-tokens`, `--speculative-"
+"eagle-topk`, and `--cuda-graph-max-bs` until you find the sweet spot for "
+"your GPU."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:576
+msgid ""
+"[!TIP] **Memory budget rule of thumb**: during automatic `--mem-fraction-"
+"static` estimation, STANDALONE reserves about 6 GB and EAGLE/EAGLE3 reserves "
+"about 2 GB as additional headroom. Plan your `--mem-fraction-static` "
+"accordingly."
+msgstr ""
+
+#: ../../../advanced_features/speculative_decoding.md:581
 msgid "References"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:381
+#: ../../../advanced_features/speculative_decoding.md:583
 msgid "EAGLE process is as follows:"
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:383
+#: ../../../advanced_features/speculative_decoding.md:585
 msgid ""
 "Within EAGLE the draft model predicts the next feature vector, i.e. the last "
-"hidden state of the original LLM, using the feature sequence :math:"
-"`(f_1, ..., f_k)` and the token sequence :math:`(t_2, ..., t_{k+1})`."
+"hidden state of the original LLM, using the feature sequence $(f_1, ..., "
+"f_k)$ and the token sequence $(t_2, ..., t_{k+1})$."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:384
+#: ../../../advanced_features/speculative_decoding.md:586
 msgid ""
-"The next token is then sampled from :math:`p_{k+2}=\\text{LMHead}(f_{k+1})`. "
+"The next token is then sampled from $p_{k+2}=\\text{LMHead}(f_{k+1})$. "
 "Afterwards, the two sequences are extended in a tree style—branching out "
 "multiple potential continuations, with the branching factor per step "
-"controlled by the ``speculative_eagle_topk`` parameter—to ensure a more "
+"controlled by the `speculative_eagle_topk` parameter—to ensure a more "
 "coherent connection of context, and are given as input again."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:385
+#: ../../../advanced_features/speculative_decoding.md:587
 msgid ""
-"EAGLE-2 additionally uses the draft model to evaluate how probable certain "
-"branches in the draft tree are, dynamically stopping the expansion of "
-"unlikely branches. After the expansion phase, reranking is employed to "
-"select only the top ``speculative_num_draft_tokens`` final nodes as draft "
-"tokens."
+"In SGLang's EAGLE-2 implementation, the draft tree is expanded for the "
+"configured steps and then reranked to select the top "
+"`speculative_num_draft_tokens` final nodes as draft tokens."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:386
+#: ../../../advanced_features/speculative_decoding.md:588
 msgid ""
 "EAGLE-3 removes the feature prediction objective, incorporates low and mid-"
 "layer features, and is trained in an on-policy manner."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:388
+#: ../../../advanced_features/speculative_decoding.md:590
 msgid ""
-"This enhances drafting accuracy by operating on the features instead of "
-"tokens for more regular inputs and passing the tokens from the next timestep "
-"additionally to minimize randomness effects from sampling. Furthermore the "
-"dynamic adjustment of the draft tree and selection of reranked final nodes "
-"increases acceptance rate of draft tokens further. For more details see "
-"`EAGLE-2 <https://arxiv.org/abs/2406.16858>`__ and `EAGLE-3 <https://arxiv."
-"org/abs/2503.01840>`__ paper."
+"This enhances drafting accuracy by operating on features instead of tokens "
+"for more regular inputs and by additionally passing tokens from the next "
+"timestep to reduce sampling randomness. For more details, see the [EAGLE-2]"
+"(https://arxiv.org/abs/2406.16858) and [EAGLE-3](https://arxiv.org/"
+"abs/2503.01840) papers."
 msgstr ""
 
-#: ../../../advanced_features/speculative_decoding.ipynb:390
+#: ../../../advanced_features/speculative_decoding.md:592
 msgid ""
-"For guidance how to train your own EAGLE model please see the `EAGLE repo "
-"<https://github.com/SafeAILab/EAGLE/tree/main?tab=readme-ov-file#train>`__."
+"For guidance how to train your own EAGLE model please see the [EAGLE repo]"
+"(https://github.com/SafeAILab/EAGLE/tree/main?tab=readme-ov-file#train)."
 msgstr ""

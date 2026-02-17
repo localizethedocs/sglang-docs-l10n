@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-05 08:33+0000\n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,25 +111,60 @@ msgstr ""
 msgid "Elastic EP serving."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:19
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`mori`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid ""
+"MORI-EP, AMD's native all-to-all communication implementation optimized for "
+"ROCm."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "AMD GPU deployments."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`flashinfer`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Flashinfer implementation of all-to-all."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "`ascend_fuseep`"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Ascend NPU native fused all-to-all communication."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:0
+msgid "Ascend NPU deployments."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:22
 msgid ""
 "DeepEP and Mooncake backends support two modes for token dispatch: `normal` "
 "mode (optimized for prefill workloads with high throughput) and "
 "`low_latency` mode (optimized for decode workloads with low latency and CUDA "
-"Graph compatibility). Users are recommended to set `--deepep-mode auto` to "
-"enable automatic dispatch mode switching during runtime. Setting `--deepep-"
-"mode normal` or `--deepep-mode low_latency` is useful for debugging or "
-"development purposes."
+"Graph compatibility). MORI backend only supports `normal` mode now. Users "
+"are recommended to set `--deepep-mode auto` to enable automatic dispatch "
+"mode switching during runtime. Setting `--deepep-mode normal` or `--deepep-"
+"mode low_latency` is useful for debugging or development purposes."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:21
+#: ../../../advanced_features/expert_parallelism.md:24
 msgid ""
-"Currently, DeepEP and Mooncake only support cases where `ep_size = tp_size`. "
-"For hybrid EP and TP (i.e., `ep_size < tp_size`), only the `none` backend "
-"(All-Reduce or All-Gather-based dispatching) is supported."
+"Currently, DeepEP, Mooncake, `ascend_fuseep` and MORI only support cases "
+"where `ep_size = tp_size`. For hybrid EP and TP (i.e., `ep_size < tp_size`), "
+"only the `none` backend (All-Reduce or All-Gather-based dispatching) is "
+"supported."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:23
+#: ../../../advanced_features/expert_parallelism.md:26
 msgid "Backends for MoE Computation"
 msgstr ""
 
@@ -251,26 +286,26 @@ msgstr ""
 msgid "Low-precision models with NVFP4."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:36
-#: ../../../advanced_features/expert_parallelism.md:105
+#: ../../../advanced_features/expert_parallelism.md:39
+#: ../../../advanced_features/expert_parallelism.md:108
 msgid "Examples"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:38
+#: ../../../advanced_features/expert_parallelism.md:41
 msgid "Launch with DeepEP and DeepGEMM for DeepSeek-V3:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:40
+#: ../../../advanced_features/expert_parallelism.md:43
 msgid ""
 "python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V3 --moe-"
 "a2a-backend deepep --moe-runner-backend deep_gemm --tp 8 --ep 8\n"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:44
+#: ../../../advanced_features/expert_parallelism.md:47
 msgid "Extensible EP Framework"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:46
+#: ../../../advanced_features/expert_parallelism.md:49
 msgid ""
 "SGLang's EP framework provides modular abstractions for easy integration of "
 "custom kernels, backends, and optimizations. It decouples the MoE forward "
@@ -278,29 +313,29 @@ msgid ""
 "combine), enabling seamless extensions without refactoring core logic."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:48
+#: ../../../advanced_features/expert_parallelism.md:51
 msgid "Framework Overview"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:50
+#: ../../../advanced_features/expert_parallelism.md:53
 msgid ""
 "The framework centers on `FusedMoE` as the unified entry point for a single, "
 "extensible structure. Key components include:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:51
+#: ../../../advanced_features/expert_parallelism.md:54
 msgid ""
 "**Dispatcher**: Manages dispatch/combine for backends like DeepEP "
 "(implements `BaseDispatcher` subclasses)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:52
+#: ../../../advanced_features/expert_parallelism.md:55
 msgid ""
 "**MoeRunner**: Orchestrates grouped-GEMM execution via `MoeRunnerCore` "
 "implementations (e.g., `TritonRunnerCore`)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:53
+#: ../../../advanced_features/expert_parallelism.md:56
 msgid ""
 "**PermuteMethodPool**: Auto-registers layout conversions (e.g., pre/post-"
 "permute via `register_pre_permute` and `register_post_permute` for dynamic "
@@ -308,18 +343,18 @@ msgid ""
 "operations)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:54
+#: ../../../advanced_features/expert_parallelism.md:57
 msgid "**TopK Router**: Backend-agnostic expert selection."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:56
+#: ../../../advanced_features/expert_parallelism.md:59
 msgid ""
 "This design supports multiple backends via `--moe-a2a-backend` and `--moe-"
 "runner-backend`, with quantization integrated through a standardized "
 "`apply()` method. The computation flow ensures modularity:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:58
+#: ../../../advanced_features/expert_parallelism.md:61
 msgid ""
 "[input_hidden_states]\n"
 "          |\n"
@@ -353,62 +388,62 @@ msgid ""
 "[final_hidden_states]\n"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:91
+#: ../../../advanced_features/expert_parallelism.md:94
 msgid ""
 "For details, see the [MoE Refactor Roadmap](https://github.com/sgl-project/"
 "sglang/issues/8715)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:93
+#: ../../../advanced_features/expert_parallelism.md:96
 msgid "Implementing New Backends"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:95
+#: ../../../advanced_features/expert_parallelism.md:98
 msgid "To add a new backend:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:96
+#: ../../../advanced_features/expert_parallelism.md:99
 msgid ""
 "For a new all-to-all dispatcher, implement a `BaseDispatcher` subclass with "
 "`dispatch` and `combine` methods."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:97
+#: ../../../advanced_features/expert_parallelism.md:100
 msgid ""
 "For a new MoE runner backend, define a `MoeRunnerCore` subclass for core "
 "operations (e.g., grouped GEMMs)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:98
+#: ../../../advanced_features/expert_parallelism.md:101
 msgid ""
 "Define new input/output formats for the dispatcher or model runner (e.g., "
 "`RunnerInput`, `RunnerOutput`)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:99
+#: ../../../advanced_features/expert_parallelism.md:102
 msgid "Register permute/unpermute methods to ensure compatibility:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:100
+#: ../../../advanced_features/expert_parallelism.md:103
 msgid ""
 "**Fused Mode** (static, torch.compile-compatible): Use `register_fused_func` "
 "for end-to-end operations."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:101
+#: ../../../advanced_features/expert_parallelism.md:104
 msgid ""
 "**Permute Mode** (dynamic): Register `register_pre_permute` and "
 "`register_post_permute` for flexible layouts."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:103
+#: ../../../advanced_features/expert_parallelism.md:106
 msgid ""
 "See the [MoE Refactor Implementation PR](https://github.com/sgl-project/"
 "sglang/pull/9269) for full changes, including type hints and config "
 "expansions."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:107
+#: ../../../advanced_features/expert_parallelism.md:110
 msgid ""
 "For an example implementation, see [moe_runner/triton.py](https://github.com/"
 "sgl-project/sglang/blob/main/python/sglang/srt/layers/moe/moe_runner/triton."
@@ -416,21 +451,21 @@ msgid ""
 "permutation functions."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:109
+#: ../../../advanced_features/expert_parallelism.md:112
 msgid "Computation and Communication Overlap"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:111
+#: ../../../advanced_features/expert_parallelism.md:114
 msgid ""
 "SGLang's EP employs advanced overlap techniques to hide communication "
 "latency behind computation, maximizing GPU utilization in MoE layers."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:113
+#: ../../../advanced_features/expert_parallelism.md:116
 msgid "Two-Batch Overlap (TBO)"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:115
+#: ../../../advanced_features/expert_parallelism.md:118
 msgid ""
 "TBO splits requests into micro-batches, interleaving attention computation "
 "with dispatch/combine operations. Yield points in the execution graph allow "
@@ -438,7 +473,7 @@ msgid ""
 "spikes:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:117
+#: ../../../advanced_features/expert_parallelism.md:120
 msgid ""
 "operations = [\n"
 "    self._forward_attn,\n"
@@ -450,18 +485,18 @@ msgid ""
 "]\n"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:128
+#: ../../../advanced_features/expert_parallelism.md:131
 msgid ""
 "Users need to specify `--enable-two-batch-overlap` to unlock up to 2x "
 "throughput. For details, see the [Large-Scale EP Blog](https://lmsys.org/"
 "blog/2025-05-05-large-scale-ep/#two-batch-overlap)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:130
+#: ../../../advanced_features/expert_parallelism.md:133
 msgid "Single-Batch Overlap (SBO)"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:132
+#: ../../../advanced_features/expert_parallelism.md:135
 msgid ""
 "SGLang introduces a dispatcher-hook system for Single-Batch Overlap (SBO), "
 "enabling the overlap of operations within a single batch—such as shared "
@@ -475,11 +510,11 @@ msgid ""
 "enable this feature."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:135
+#: ../../../advanced_features/expert_parallelism.md:138
 msgid "Workload Balancer"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:137
+#: ../../../advanced_features/expert_parallelism.md:140
 msgid ""
 "SGLang integrates the [Expert Parallelism Load Balancer (EPLB)](https://"
 "github.com/deepseek-ai/EPLB) from DeepSeek to address routing imbalances in "
@@ -489,28 +524,28 @@ msgid ""
 "scalability."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:139
+#: ../../../advanced_features/expert_parallelism.md:142
 msgid ""
-"To enable EPLB, use the flags `--enable-eplb true --load-balance-method "
-"eplb`. For optimal performance, increase batch sizes to stabilize activation "
-"statistics and configure periodic rebalancing (e.g., every 1000 requests) to "
-"adapt to evolving workloads. Simulations demonstrate significant "
-"improvements in load balancedness (ratio of mean to max computation time), "
-"correlating strongly with throughput gains."
+"To enable EPLB, use the flags `--enable-eplb`. For optimal performance, "
+"increase batch sizes to stabilize activation statistics and configure "
+"periodic rebalancing (e.g., every 1000 requests) to adapt to evolving "
+"workloads. Simulations demonstrate significant improvements in load "
+"balancedness (ratio of mean to max computation time), correlating strongly "
+"with throughput gains."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:141
+#: ../../../advanced_features/expert_parallelism.md:144
 msgid ""
 "For more details, refer to the [EPLB Section in the Large-Scale EP Blog]"
 "(https://lmsys.org/blog/2025-05-05-large-scale-ep/#expert-parallelism-load-"
 "balancer) and the [EPLB Repository](https://github.com/deepseek-ai/eplb)."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:144
+#: ../../../advanced_features/expert_parallelism.md:147
 msgid "EP with Spectulative Decoding"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:147
+#: ../../../advanced_features/expert_parallelism.md:150
 msgid ""
 "When utilizing speculative decoding with MTP on MoE architectures, use the "
 "`--speculative-moe-runner-backend` and `--speculative-moe-a2a-backend` "
@@ -519,7 +554,7 @@ msgid ""
 "for varying precisions between target and draft models."
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:149
+#: ../../../advanced_features/expert_parallelism.md:152
 msgid ""
 "For model like `nvidia/DeepSeek-R1-0528-NVFP4-v2`, the target model uses "
 "NVFP4 precision while the draft model uses BF16. To apply "
@@ -527,10 +562,136 @@ msgid ""
 "fused MoE kernel for draft MoE layer, users can set the arguments as follows:"
 msgstr ""
 
-#: ../../../advanced_features/expert_parallelism.md:150
+#: ../../../advanced_features/expert_parallelism.md:153
 msgid ""
 "...\n"
 "--moe-runner-backend flashinfer_trtllm \\\n"
 "--speculative-moe-runner-backend triton \\\n"
 "...\n"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:161
+msgid "Ascend NPU Guidance"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:164
+msgid "Guidance on SGLang configuration in Ascend NPU"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:165
+msgid ""
+"`--moe-a2a-backend` only supports `deepep` and `ascend_fuseep` backends,"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:166
+msgid "`deepep`: The mechanism is consistent with the above description."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:167
+msgid ""
+"`ascend_fuseep`: Offer a large fused operator which integrates all "
+"operations between dispatch and combine to boost MoE computation. Only used "
+"for decode stage in PD Disaggregation Mode."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:168
+msgid "`--moe-runner-backend` parameter does not need to be configured."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:169
+msgid "`--deepep-mode`:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:170
+msgid "In PD mixed mode, please set `--deepep-mode auto`."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:171
+msgid ""
+"In PD Disaggregation Mode, prefill instance sets `--deepep-mode normal`, and "
+"decode instance sets `--deepep-mode low_latency`."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:174
+msgid "DeepEP Ascend Introduction"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:176
+msgid ""
+"DeepEP Ascend is the adapted version of the DeepEP communication library for "
+"Huawei Ascend NPUs, specifically designed for Mixture-of-Experts (MoE) model "
+"Expert Parallelism (EP). It supports the Ant-moving Function (Split the "
+"sequence length into rounds for streaming batch transmission) to optimize "
+"the buffer size occupied during collective communication in prefill stage, "
+"especially for long sequences."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:179
+msgid ""
+"Ant-moving Function can be enabled for both the dispatch and combine phases "
+"via the following environment variables:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:180
+msgid ""
+"`DEEPEP_NORMAL_LONG_SEQ_PER_ROUND_TOKENS`: Enable ant-moving function in "
+"dispatch stage. Indicates the number of tokens transmitted per round on each "
+"rank, default 8192."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:181
+msgid ""
+"`DEEPEP_NORMAL_LONG_SEQ_ROUND`: Enable ant-moving function in dispatch "
+"stage. Indicates the number of rounds transmitted on each rank, default 1."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:182
+msgid ""
+"`DEEPEP_NORMAL_COMBINE_ENABLE_LONG_SEQ`: Enable ant-moving function in "
+"combine stage, default 0 (means disabled)."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:184
+msgid ""
+"`DEEPEP_NORMAL_LONG_SEQ_PER_ROUND_TOKENS * DEEPEP_NORMAL_LONG_SEQ_ROUND` "
+"means input sequence length. When the input sequence length exceeds 8192, it "
+"is recommended to enable the ant-moving function in both dispatch and "
+"combine phase."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:186
+msgid ""
+"The environment variable `HCCL_BUFFSIZE` is used to configure the buffer "
+"size (MB) actually allocated. Its calculation formula is as follows:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:187
+msgid ""
+"# Enable Ant-moving Function\n"
+"HCCL_BUFFSIZE >= 2 * (102MB + 4MB + DEEPEP_NORMAL_LONG_SEQ_PER_ROUND_TOKENS "
+"* (hidden_size + hidden_size + hidden_size) * topk) + PADDING_BUFFSIZE\n"
+"\n"
+"# Disable Ant-moving Function\n"
+"HCCL_BUFFSIZE >= 2 * (102MB + 4MB + TOTAL_SEQ_LEN * (hidden_size + "
+"hidden_size) * topk) + PADDING_BUFFSIZE\n"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:194
+msgid "Wherein the parameters are described as follows:"
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:195
+msgid "`hidden_size`: hidden size in model config."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:196
+msgid "`topk`: The number of selected routing experts."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:197
+msgid "`TOTAL_SEQ_LEN`: input sequence length."
+msgstr ""
+
+#: ../../../advanced_features/expert_parallelism.md:198
+msgid "`PADDING_BUFFSIZE`: A value of 20 or greater is recommended."
 msgstr ""

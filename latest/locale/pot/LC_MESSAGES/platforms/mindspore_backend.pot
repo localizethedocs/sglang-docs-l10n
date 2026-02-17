@@ -1,0 +1,262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/mindspore_backend.md:1
+msgid "MindSpore Models"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:3
+msgid "Introduction"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:5
+msgid ""
+"MindSpore is a high-performance AI framework optimized for Ascend NPUs. This "
+"doc guides users to run MindSpore models in SGLang."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:7
+msgid "Requirements"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:9
+msgid ""
+"MindSpore currently only supports Ascend NPU devices. Users need to first "
+"install Ascend CANN software packages. The CANN software packages can be "
+"downloaded from the [Ascend Official Website](https://www.hiascend.com). The "
+"recommended version is 8.3.RC2."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:12
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:14
+msgid "Currently, the following models are supported:"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:16
+msgid "**Qwen3**: Dense and MoE models"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:17
+msgid "**DeepSeek V3/R1**"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:18
+msgid "*More models coming soon...*"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:20
+msgid "Installation"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:22
+msgid ""
+"**Note**: Currently, MindSpore models are provided by an independent package "
+"`sgl-mindspore`. Support for MindSpore is built upon current SGLang support "
+"for Ascend NPU platform. Please first [install SGLang for Ascend NPU]"
+"(ascend_npu.md) and then install `sgl-mindspore`:"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:24
+msgid ""
+"git clone https://github.com/mindspore-lab/sgl-mindspore.git\n"
+"cd sgl-mindspore\n"
+"pip install -e .\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:31
+msgid "Run Model"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:33
+msgid ""
+"Current SGLang-MindSpore supports Qwen3 and DeepSeek V3/R1 models. This doc "
+"uses Qwen3-8B as an example."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:35
+msgid "Offline infer"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:37
+msgid "Use the following script for offline infer:"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:39
+msgid ""
+"import sglang as sgl\n"
+"\n"
+"# Initialize the engine with MindSpore backend\n"
+"llm = sgl.Engine(\n"
+"    model_path=\"/path/to/your/model\",  # Local model path\n"
+"    device=\"npu\",                      # Use NPU device\n"
+"    model_impl=\"mindspore\",            # MindSpore implementation\n"
+"    attention_backend=\"ascend\",        # Attention backend\n"
+"    tp_size=1,                         # Tensor parallelism size\n"
+"    dp_size=1                          # Data parallelism size\n"
+")\n"
+"\n"
+"# Generate text\n"
+"prompts = [\n"
+"    \"Hello, my name is\",\n"
+"    \"The capital of France is\",\n"
+"    \"The future of AI is\"\n"
+"]\n"
+"\n"
+"sampling_params = {\"temperature\": 0, \"top_p\": 0.9}\n"
+"outputs = llm.generate(prompts, sampling_params)\n"
+"\n"
+"for prompt, output in zip(prompts, outputs):\n"
+"    print(f\"Prompt: {prompt}\")\n"
+"    print(f\"Generated: {output['text']}\")\n"
+"    print(\"---\")\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:68
+msgid "Start server"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:70
+msgid "Launch a server with MindSpore backend:"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:72
+msgid ""
+"# Basic server startup\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path /path/to/your/model \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --device npu \\\n"
+"    --model-impl mindspore \\\n"
+"    --attention-backend ascend \\\n"
+"    --tp-size 1 \\\n"
+"    --dp-size 1\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:84
+msgid "For distributed server with multiple nodes:"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:86
+msgid ""
+"# Multi-node distributed server\n"
+"python3 -m sglang.launch_server \\\n"
+"    --model-path /path/to/your/model \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --device npu \\\n"
+"    --model-impl mindspore \\\n"
+"    --attention-backend ascend \\\n"
+"    --dist-init-addr 127.0.0.1:29500 \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank 0 \\\n"
+"    --tp-size 4 \\\n"
+"    --dp-size 2\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:101
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:103
+msgid "Debug Mode"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:105
+msgid "Enable sglang debug logging by log-level argument."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:107
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path /path/to/your/model \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --device npu \\\n"
+"    --model-impl mindspore \\\n"
+"    --attention-backend ascend \\\n"
+"    --log-level DEBUG\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:117
+msgid "Enable mindspore info and debug logging by setting environments."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:119
+msgid ""
+"export GLOG_v=1  # INFO\n"
+"export GLOG_v=0  # DEBUG\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:124
+msgid "Explicitly select devices"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:126
+msgid ""
+"Use the following environment variable to explicitly select the devices to "
+"use."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:128
+msgid "export ASCEND_RT_VISIBLE_DEVICES=4,5,6,7  # to set device\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:132
+msgid "Some communication environment issues"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:134
+msgid ""
+"In case of some environment with special communication environment, users "
+"need set some environment variables."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:136
+msgid ""
+"export MS_ENABLE_LCCL=off # current not support LCCL communication mode in "
+"SGLang-MindSpore\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:140
+msgid "Some dependencies of protobuf"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:142
+msgid ""
+"In case of some environment with special protobuf version, users need set "
+"some environment variables to avoid binary version mismatch."
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:144
+msgid ""
+"export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python  # to avoid protobuf "
+"binary version mismatch\n"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:148
+msgid "Support"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:149
+msgid "For MindSpore-specific issues:"
+msgstr ""
+
+#: ../../../platforms/mindspore_backend.md:151
+msgid "Refer to the [MindSpore documentation](https://www.mindspore.cn/)"
+msgstr ""
