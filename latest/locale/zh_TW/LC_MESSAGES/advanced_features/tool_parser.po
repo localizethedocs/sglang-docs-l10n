@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,7 +223,7 @@ msgid ""
 "    \"python3 -m sglang.launch_server --model-path Qwen/Qwen2.5-7B-Instruct "
 "--tool-call-parser qwen25 --host 0.0.0.0 --log-level warning\"  # qwen25\n"
 ")\n"
-"wait_for_server(f\"http://localhost:{port}\")"
+"wait_for_server(f\"http://localhost:{port}\", process=server_process)"
 msgstr ""
 
 #: ../../../advanced_features/tool_parser.ipynb:107
@@ -661,7 +661,10 @@ msgid ""
 "    \"python3 -m sglang.launch_server --model-path Qwen/Qwen2.5-7B-Instruct "
 "--tool-call-parser qwen25 --host 0.0.0.0  --log-level warning\"\n"
 ")\n"
-"wait_for_server(f\"http://localhost:{port_tool_choice}\")\n"
+"wait_for_server(\n"
+"    f\"http://localhost:{port_tool_choice}\", "
+"process=server_process_tool_choice\n"
+")\n"
 "\n"
 "# Initialize client for tool choice examples\n"
 "client_tool_choice = OpenAI(\n"
@@ -718,7 +721,7 @@ msgid ""
 "print(\"Tool calls:\", response_required.choices[0].message.tool_calls)"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:722
+#: ../../../advanced_features/tool_parser.ipynb:724
 msgid "Example: Specific Function Choice"
 msgstr ""
 
@@ -757,59 +760,59 @@ msgstr ""
 msgid "terminate_process(server_process_tool_choice)"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:776
+#: ../../../advanced_features/tool_parser.ipynb:778
 msgid "Pythonic Tool Call Format (Llama-3.2 / Llama-3.3 / Llama-4)"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:778
+#: ../../../advanced_features/tool_parser.ipynb:780
 msgid ""
 "Some Llama models (such as Llama-3.2-1B, Llama-3.2-3B, Llama-3.3-70B, and "
 "Llama-4) support a \"pythonic\" tool call format, where the model outputs "
 "function calls as Python code, e.g.:"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:780
+#: ../../../advanced_features/tool_parser.ipynb:782
 msgid ""
 "[get_current_weather(city=\"San Francisco\", state=\"CA\", unit=\"celsius\")]"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:784
+#: ../../../advanced_features/tool_parser.ipynb:786
 msgid ""
 "The output is a Python list of function calls, with arguments as Python "
 "literals (not JSON)."
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:785
+#: ../../../advanced_features/tool_parser.ipynb:787
 msgid "Multiple tool calls can be returned in the same list:"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:787
+#: ../../../advanced_features/tool_parser.ipynb:789
 msgid ""
 "[get_current_weather(city=\"San Francisco\", state=\"CA\", "
 "unit=\"celsius\"),\n"
 " get_current_weather(city=\"New York\", state=\"NY\", unit=\"fahrenheit\")]"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:792
+#: ../../../advanced_features/tool_parser.ipynb:794
 msgid ""
 "For more information, refer to Meta’s documentation on `Zero shot function "
 "calling <https://github.com/meta-llama/llama-models/blob/main/models/llama4/"
 "prompt_format.md#zero-shot-function-calling---system-message>`__."
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:794
+#: ../../../advanced_features/tool_parser.ipynb:796
 msgid "Note that this feature is still under development on Blackwell."
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:797
+#: ../../../advanced_features/tool_parser.ipynb:799
 msgid "How to enable"
 msgstr "如何啟用"
 
-#: ../../../advanced_features/tool_parser.ipynb:799
+#: ../../../advanced_features/tool_parser.ipynb:801
 msgid "Launch the server with ``--tool-call-parser pythonic``"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:800
+#: ../../../advanced_features/tool_parser.ipynb:802
 msgid ""
 "You may also specify --chat-template with the improved template for the "
 "model (e.g., ``--chat-template=examples/chat_template/"
@@ -822,11 +825,11 @@ msgid ""
 "inconsistent results."
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:804
+#: ../../../advanced_features/tool_parser.ipynb:806
 msgid "Forcing Pythonic Tool Call Output Without a Chat Template"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:806
+#: ../../../advanced_features/tool_parser.ipynb:808
 msgid ""
 "If you don't want to specify a chat template, you must give the model "
 "extremely explicit instructions in your messages to enforce pythonic output. "
@@ -842,7 +845,7 @@ msgid ""
 "Instruct --tool-call-parser pythonic --tp 1  --log-level warning\"  # "
 "llama-3.2-1b-instruct\n"
 ")\n"
-"wait_for_server(f\"http://localhost:{port}\")\n"
+"wait_for_server(f\"http://localhost:{port}\", process=server_process)\n"
 "\n"
 "tools = [\n"
 "    {\n"
@@ -963,28 +966,28 @@ msgid ""
 "terminate_process(server_process)"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:0
+#: ../../../advanced_features/tool_parser.ipynb:940
 msgid "**Note:**"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:0
+#: ../../../advanced_features/tool_parser.ipynb:941
 msgid ""
 "The model may still default to JSON if it was heavily finetuned on that "
 "format. Prompt engineering (including examples) is the only way to increase "
 "the chance of pythonic output if you are not using a chat template."
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:951
+#: ../../../advanced_features/tool_parser.ipynb:953
 msgid "How to support a new model?"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:953
+#: ../../../advanced_features/tool_parser.ipynb:955
 msgid ""
 "Update the TOOLS_TAG_LIST in sglang/srt/function_call_parser.py with the "
 "model’s tool tags. Currently supported tags include:"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:957
+#: ../../../advanced_features/tool_parser.ipynb:959
 msgid ""
 "TOOLS_TAG_LIST = [\n"
 "    “<|plugin|>“,\n"
@@ -995,18 +998,18 @@ msgid ""
 "]"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:965
+#: ../../../advanced_features/tool_parser.ipynb:967
 msgid ""
 "Create a new detector class in sglang/srt/function_call_parser.py that "
 "inherits from BaseFormatDetector. The detector should handle the model’s "
 "specific function call format. For example:"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:969
+#: ../../../advanced_features/tool_parser.ipynb:971
 msgid "class NewModelDetector(BaseFormatDetector):"
 msgstr ""
 
-#: ../../../advanced_features/tool_parser.ipynb:971
+#: ../../../advanced_features/tool_parser.ipynb:973
 msgid ""
 "Add the new detector to the MultiFormatParser class that manages all the "
 "format detectors."

@@ -1,0 +1,307 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/performance/profiling.md:1
+msgid "Profiling Multimodal Generation"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:3
+msgid ""
+"This guide covers profiling techniques for multimodal generation pipelines "
+"in SGLang."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:5
+msgid "PyTorch Profiler"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:7
+msgid ""
+"PyTorch Profiler provides detailed kernel execution time, call stack, and "
+"GPU utilization metrics."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:9
+msgid "Denoising Stage Profiling"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:11
+msgid ""
+"Profile the denoising stage with sampled timesteps (default: 5 steps after 1 "
+"warmup step):"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:13
+msgid ""
+"sglang generate \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --prompt \"A Logo With Bold Large Text: SGL Diffusion\" \\\n"
+"  --seed 0 \\\n"
+"  --profile\n"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:21
+#: ../../../diffusion/performance/profiling.md:40
+#: ../../../diffusion/performance/profiling.md:123
+msgid "**Parameters:**"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:22
+msgid "`--profile`: Enable profiling for the denoising stage"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:23
+msgid ""
+"`--num-profiled-timesteps N`: Number of timesteps to profile after warmup "
+"(default: 5)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:24
+msgid "Smaller values reduce trace file size"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:25
+msgid ""
+"Example: `--num-profiled-timesteps 10` profiles 10 steps after 1 warmup step"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:27
+msgid "Full Pipeline Profiling"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:29
+msgid ""
+"Profile all pipeline stages (text encoding, denoising, VAE decoding, etc.):"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:31
+msgid ""
+"sglang generate \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --prompt \"A Logo With Bold Large Text: SGL Diffusion\" \\\n"
+"  --seed 0 \\\n"
+"  --profile \\\n"
+"  --profile-all-stages\n"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:41
+msgid ""
+"`--profile-all-stages`: Used with `--profile`, profile all pipeline stages "
+"instead of just denoising"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:43
+msgid "Output Location"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:45
+msgid "By default, trace files are saved in the ./logs/ directory."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:47
+msgid ""
+"The exact output file path will be shown in the console output, for example:"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:49
+msgid ""
+"[mm-dd hh:mm:ss] Saved profiler traces to: /sgl-workspace/sglang/logs/"
+"mocked_fake_id_for_offline_generate-5_steps-global-rank0.trace.json.gz\n"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:53
+msgid "View Traces"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:55
+msgid "Load and visualize trace files at:"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:56
+msgid "https://ui.perfetto.dev/ (recommended)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:57
+msgid "chrome://tracing (Chrome only)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:59
+msgid ""
+"For large trace files, reduce `--num-profiled-timesteps` or avoid using `--"
+"profile-all-stages`."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:62
+msgid "`--perf-dump-path` (Stage/Step Timing Dump)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:64
+msgid ""
+"Besides profiler traces, you can also dump a lightweight JSON report that "
+"contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:65
+msgid "stage-level timing breakdown for the full pipeline"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:66
+msgid ""
+"step-level timing breakdown for the denoising stage (per diffusion step)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:68
+msgid ""
+"This is useful to quickly identify which stage dominates end-to-end latency, "
+"and whether denoising steps have uniform runtimes (and if not, which step "
+"has an abnormal spike)."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:70
+msgid ""
+"The dumped JSON contains a `denoise_steps_ms` field formatted as an array of "
+"objects, each with a `step` key (the step index) and a `duration_ms` key."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:72
+msgid "Example:"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:74
+msgid ""
+"sglang generate \\\n"
+"  --model-path <MODEL_PATH_OR_ID> \\\n"
+"  --prompt \"<PROMPT>\" \\\n"
+"  --perf-dump-path perf.json\n"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:81
+msgid "Nsight Systems"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:83
+msgid ""
+"Nsight Systems provides low-level CUDA profiling with kernel details, "
+"register usage, and memory access patterns."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:85
+msgid "Installation"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:87
+msgid ""
+"See the [SGLang profiling guide](https://github.com/sgl-project/sglang/blob/"
+"main/docs/developer_guide/benchmark_and_profiling.md#profile-with-nsight) "
+"for installation instructions."
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:89
+msgid "Basic Profiling"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:91
+msgid "Profile the entire pipeline execution:"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:93
+msgid ""
+"nsys profile \\\n"
+"  --trace-fork-before-exec=true \\\n"
+"  --cuda-graph-trace=node \\\n"
+"  --force-overwrite=true \\\n"
+"  -o QwenImage \\\n"
+"  sglang generate \\\n"
+"    --model-path Qwen/Qwen-Image \\\n"
+"    --prompt \"A Logo With Bold Large Text: SGL Diffusion\" \\\n"
+"    --seed 0\n"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:105
+msgid "Targeted Stage Profiling"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:107
+msgid ""
+"Use `--delay` and `--duration` to capture specific stages and reduce file "
+"size:"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:109
+msgid ""
+"nsys profile \\\n"
+"  --trace-fork-before-exec=true \\\n"
+"  --cuda-graph-trace=node \\\n"
+"  --force-overwrite=true \\\n"
+"  --delay 10 \\\n"
+"  --duration 30 \\\n"
+"  -o QwenImage_denoising \\\n"
+"  sglang generate \\\n"
+"    --model-path Qwen/Qwen-Image \\\n"
+"    --prompt \"A Logo With Bold Large Text: SGL Diffusion\" \\\n"
+"    --seed 0\n"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:124
+msgid ""
+"`--delay N`: Wait N seconds before starting capture (skip initialization "
+"overhead)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:125
+msgid "`--duration N`: Capture for N seconds (focus on specific stages)"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:126
+msgid "`--force-overwrite`: Overwrite existing output files"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:128
+msgid "Notes"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:130
+msgid ""
+"**Reduce trace size**: Use `--num-profiled-timesteps` with smaller values or "
+"`--delay`/`--duration` with Nsight Systems"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:131
+msgid ""
+"**Stage-specific analysis**: Use `--profile` alone for denoising stage, add "
+"`--profile-all-stages` for full pipeline"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:132
+msgid ""
+"**Multiple runs**: Profile with different prompts and resolutions to "
+"identify bottlenecks across workloads"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:134
+msgid "FAQ"
+msgstr ""
+
+#: ../../../diffusion/performance/profiling.md:136
+msgid ""
+"If you are profiling `sglang generate` with Nsight Systems and find that the "
+"generated profiler file did not capture any CUDA kernels, you can resolve "
+"this issue by increasing the model's inference steps to extend the execution "
+"time."
+msgstr ""

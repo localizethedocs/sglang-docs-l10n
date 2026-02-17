@@ -1,0 +1,159 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:1
+msgid "Qwen3.5"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:3
+msgid "Environment Preparation"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:5
+msgid "Installation"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:7
+msgid ""
+"The dependencies required for the NPU runtime environment have been "
+"integrated into a Docker image and uploaded to the quay.io platform. You can "
+"directly pull it."
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:9
+msgid ""
+"#Atlas 800 A3\n"
+"docker pull swr.cn-southwest-2.myhuaweicloud.com/base_image/dockerhub/"
+"lmsysorg/sglang:cann8.5.0-a3-qwen3.5\n"
+"#Atlas 800 A2\n"
+"docker pull swr.cn-southwest-2.myhuaweicloud.com/base_image/dockerhub/"
+"lmsysorg/sglang:cann8.5.0-910b-qwen3.5\n"
+"\n"
+"#start container\n"
+"docker run -itd --shm-size=16g --privileged=true --name ${NAME} \\\n"
+"--privileged=true --net=host \\\n"
+"-v /var/queue_schedule:/var/queue_schedule \\\n"
+"-v /etc/ascend_install.info:/etc/ascend_install.info \\\n"
+"-v /usr/local/sbin:/usr/local/sbin \\\n"
+"-v /usr/local/Ascend/driver:/usr/local/Ascend/driver \\\n"
+"-v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \\\n"
+"--device=/dev/davinci0:/dev/davinci0  \\\n"
+"--device=/dev/davinci1:/dev/davinci1  \\\n"
+"--device=/dev/davinci2:/dev/davinci2  \\\n"
+"--device=/dev/davinci3:/dev/davinci3  \\\n"
+"--device=/dev/davinci4:/dev/davinci4  \\\n"
+"--device=/dev/davinci5:/dev/davinci5  \\\n"
+"--device=/dev/davinci6:/dev/davinci6  \\\n"
+"--device=/dev/davinci7:/dev/davinci7  \\\n"
+"--device=/dev/davinci8:/dev/davinci8  \\\n"
+"--device=/dev/davinci9:/dev/davinci9  \\\n"
+"--device=/dev/davinci10:/dev/davinci10  \\\n"
+"--device=/dev/davinci11:/dev/davinci11  \\\n"
+"--device=/dev/davinci12:/dev/davinci12  \\\n"
+"--device=/dev/davinci13:/dev/davinci13  \\\n"
+"--device=/dev/davinci14:/dev/davinci14  \\\n"
+"--device=/dev/davinci15:/dev/davinci15  \\\n"
+"--device=/dev/davinci_manager:/dev/davinci_manager \\\n"
+"--device=/dev/hisi_hdc:/dev/hisi_hdc \\\n"
+"--entrypoint=bash \\\n"
+"swr.cn-southwest-2.myhuaweicloud.com/base_image/dockerhub/lmsysorg/sglang:"
+"${TAG}"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:45
+msgid "Deployment"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:47
+msgid "Single-node Deployment"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:49
+msgid ""
+"Quantized model `qwen35_w8a8` can be deployed on 1 Atlas 800 A3 (64G × 16) ."
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:51
+msgid "Run the following script to execute online inference."
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:53
+msgid ""
+"# high performance cpu\n"
+"echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/"
+"scaling_governor\n"
+"sysctl -w vm.swappiness=0\n"
+"sysctl -w kernel.numa_balancing=0\n"
+"sysctl -w kernel.sched_migration_cost_ns=50000\n"
+"# bind cpu\n"
+"export SGLANG_SET_CPU_AFFINITY=1\n"
+"\n"
+"unset https_proxy\n"
+"unset http_proxy\n"
+"unset HTTPS_PROXY\n"
+"unset HTTP_PROXY\n"
+"unset ASCEND_LAUNCH_BLOCKING\n"
+"# cann\n"
+"source /usr/local/Ascend/ascend-toolkit/set_env.sh\n"
+"source /usr/local/Ascend/nnal/atb/set_env.sh\n"
+"\n"
+"export STREAMS_PER_DEVICE=32\n"
+"export SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT=600\n"
+"export SGLANG_ENABLE_SPEC_V2=1\n"
+"export SGLANG_ENABLE_OVERLAP_PLAN_STREAM=1\n"
+"export SGLANG_NPU_USE_MULTI_STREAM=1\n"
+"export HCCL_BUFFSIZE=1000\n"
+"export HCCL_OP_EXPANSION_MODE=AIV\n"
+"export HCCL_SOCKET_IFNAME=lo\n"
+"export GLOO_SOCKET_IFNAME=lo\n"
+"\n"
+"python3 -m sglang.launch_server \\\n"
+"        --model-path $MODEL_PATH \\\n"
+"        --attention-backend ascend \\\n"
+"        --device npu \\\n"
+"        --tp-size 16 --nnodes 1 --node-rank 0 \\\n"
+"        --chunked-prefill-size 16384 --max-prefill-tokens 280000 \\\n"
+"        --trust-remote-code \\\n"
+"        --host 127.0.0.1 \\\n"
+"        --mem-fraction-static 0.7 \\\n"
+"        --port 8000 \\\n"
+"        --cuda-graph-bs 16 \\\n"
+"        --quantization modelslim \\\n"
+"        --enable-multimodal \\\n"
+"        --mm-attention-backend ascend_attn \\\n"
+"        --dtype bfloat16\n"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:98
+msgid "Prefill-Decode Disaggregation"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:100
+msgid "Not test yet."
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:102
+msgid "Using Benchmark"
+msgstr ""
+
+#: ../../../platforms/ascend_npu_qwen3_5_examples.md:104
+msgid ""
+"Refer to [Benchmark and Profiling](../developer_guide/"
+"benchmark_and_profiling.md) for details."
+msgstr ""

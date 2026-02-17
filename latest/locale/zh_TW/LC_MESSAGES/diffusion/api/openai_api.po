@@ -1,0 +1,748 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/api/openai_api.md:1
+msgid "SGLang Diffusion OpenAI API"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:3
+msgid ""
+"The SGLang diffusion HTTP server implements an OpenAI-compatible API for "
+"image and video generation, as well as LoRA adapter management."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:5
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:7
+msgid "Python 3.11+ if you plan to use the OpenAI Python SDK."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:9
+msgid "Serve"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:11
+msgid "Launch the server using the `sglang serve` command."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:13
+msgid "Start the server"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:15
+msgid ""
+"SERVER_ARGS=(\n"
+"  --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers\n"
+"  --text-encoder-cpu-offload\n"
+"  --pin-cpu-memory\n"
+"  --num-gpus 4\n"
+"  --ulysses-degree=2\n"
+"  --ring-degree=2\n"
+"  --port 30010\n"
+")\n"
+"\n"
+"sglang serve \"${SERVER_ARGS[@]}\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:29
+msgid "**--model-path**: Path to the model or model ID."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:30
+msgid "**--port**: HTTP port to listen on (default: `30000`)."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:32
+msgid "**Get Model Information**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:34
+msgid "**Endpoint:** `GET /models`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:36
+msgid ""
+"Returns information about the model served by this server, including model "
+"path, task type, pipeline configuration, and precision settings."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:38
+#: ../../../diffusion/api/openai_api.md:90
+#: ../../../diffusion/api/openai_api.md:143
+#: ../../../diffusion/api/openai_api.md:173
+#: ../../../diffusion/api/openai_api.md:197
+#: ../../../diffusion/api/openai_api.md:227
+#: ../../../diffusion/api/openai_api.md:321
+#: ../../../diffusion/api/openai_api.md:336
+#: ../../../diffusion/api/openai_api.md:349
+msgid "**Curl Example:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:40
+msgid "curl -sS -X GET \"http://localhost:30010/models\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:44
+#: ../../../diffusion/api/openai_api.md:355
+msgid "**Response Example:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:46
+msgid ""
+"{\n"
+"  \"model_path\": \"Wan-AI/Wan2.1-T2V-1.3B-Diffusers\",\n"
+"  \"task_type\": \"T2V\",\n"
+"  \"pipeline_name\": \"wan_pipeline\",\n"
+"  \"pipeline_class\": \"WanPipeline\",\n"
+"  \"num_gpus\": 4,\n"
+"  \"dit_precision\": \"bf16\",\n"
+"  \"vae_precision\": \"fp16\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:60
+msgid "Endpoints"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:62
+msgid "Image Generation"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:64
+msgid ""
+"The server implements an OpenAI-compatible Images API under the `/v1/images` "
+"namespace."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:66
+msgid "**Create an image**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:68
+msgid "**Endpoint:** `POST /v1/images/generations`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:70
+msgid "**Python Example (b64_json response):**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:72
+msgid ""
+"import base64\n"
+"from openai import OpenAI\n"
+"\n"
+"client = OpenAI(api_key=\"sk-proj-1234567890\", base_url=\"http://"
+"localhost:30010/v1\")\n"
+"\n"
+"img = client.images.generate(\n"
+"    prompt=\"A calico cat playing a piano on stage\",\n"
+"    size=\"1024x1024\",\n"
+"    n=1,\n"
+"    response_format=\"b64_json\",\n"
+")\n"
+"\n"
+"image_bytes = base64.b64decode(img.data[0].b64_json)\n"
+"with open(\"output.png\", \"wb\") as f:\n"
+"    f.write(image_bytes)\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:92
+msgid ""
+"curl -sS -X POST \"http://localhost:30010/v1/images/generations\" \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\" \\\n"
+"  -d '{\n"
+"        \"prompt\": \"A calico cat playing a piano on stage\",\n"
+"        \"size\": \"1024x1024\",\n"
+"        \"n\": 1,\n"
+"        \"response_format\": \"b64_json\"\n"
+"      }'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:104
+msgid ""
+"**Note** The `response_format=url` option is not supported for `POST /v1/"
+"images/generations` and will return a `400` error."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:107
+msgid "**Edit an image**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:109
+msgid "**Endpoint:** `POST /v1/images/edits`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:111
+msgid ""
+"This endpoint accepts a multipart form upload with input images and a text "
+"prompt. The server can return either a base64-encoded image or a URL to "
+"download the image."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:113
+msgid "**Curl Example (b64_json response):**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:115
+msgid ""
+"curl -sS -X POST \"http://localhost:30010/v1/images/edits\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\" \\\n"
+"  -F \"image=@local_input_image.png\" \\\n"
+"  -F \"url=image_url.jpg\" \\\n"
+"  -F \"prompt=A calico cat playing a piano on stage\" \\\n"
+"  -F \"size=1024x1024\" \\\n"
+"  -F \"response_format=b64_json\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:125
+msgid "**Curl Example (URL response):**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:127
+msgid ""
+"curl -sS -X POST \"http://localhost:30010/v1/images/edits\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\" \\\n"
+"  -F \"image=@local_input_image.png\" \\\n"
+"  -F \"url=image_url.jpg\" \\\n"
+"  -F \"prompt=A calico cat playing a piano on stage\" \\\n"
+"  -F \"size=1024x1024\" \\\n"
+"  -F \"response_format=url\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:137
+msgid "**Download image content**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:139
+msgid ""
+"When `response_format=url` is used with `POST /v1/images/edits`, the API "
+"returns a relative URL like `/v1/images/<IMAGE_ID>/content`."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:141
+msgid "**Endpoint:** `GET /v1/images/{image_id}/content`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:145
+msgid ""
+"curl -sS -L \"http://localhost:30010/v1/images/<IMAGE_ID>/content\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\" \\\n"
+"  -o output.png\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:151
+msgid "Video Generation"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:153
+msgid ""
+"The server implements a subset of the OpenAI Videos API under the `/v1/"
+"videos` namespace."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:155
+msgid "**Create a video**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:157
+msgid "**Endpoint:** `POST /v1/videos`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:159
+#: ../../../diffusion/api/openai_api.md:189
+#: ../../../diffusion/api/openai_api.md:208
+msgid "**Python Example:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:161
+msgid ""
+"from openai import OpenAI\n"
+"\n"
+"client = OpenAI(api_key=\"sk-proj-1234567890\", base_url=\"http://"
+"localhost:30010/v1\")\n"
+"\n"
+"video = client.videos.create(\n"
+"    prompt=\"A calico cat playing a piano on stage\",\n"
+"    size=\"1280x720\"\n"
+")\n"
+"print(f\"Video ID: {video.id}, Status: {video.status}\")\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:175
+msgid ""
+"curl -sS -X POST \"http://localhost:30010/v1/videos\" \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\" \\\n"
+"  -d '{\n"
+"        \"prompt\": \"A calico cat playing a piano on stage\",\n"
+"        \"size\": \"1280x720\"\n"
+"      }'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:185
+msgid "**List videos**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:187
+msgid "**Endpoint:** `GET /v1/videos`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:191
+msgid ""
+"videos = client.videos.list()\n"
+"for item in videos.data:\n"
+"    print(item.id, item.status)\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:199
+msgid ""
+"curl -sS -X GET \"http://localhost:30010/v1/videos\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:204
+msgid "**Download video content**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:206
+msgid "**Endpoint:** `GET /v1/videos/{video_id}/content`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:210
+msgid ""
+"import time\n"
+"\n"
+"# Poll for completion\n"
+"while True:\n"
+"    page = client.videos.list()\n"
+"    item = next((v for v in page.data if v.id == video_id), None)\n"
+"    if item and item.status == \"completed\":\n"
+"        break\n"
+"    time.sleep(5)\n"
+"\n"
+"# Download content\n"
+"resp = client.videos.download_content(video_id=video_id)\n"
+"with open(\"output.mp4\", \"wb\") as f:\n"
+"    f.write(resp.read())\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:229
+msgid ""
+"curl -sS -L \"http://localhost:30010/v1/videos/<VIDEO_ID>/content\" \\\n"
+"  -H \"Authorization: Bearer sk-proj-1234567890\" \\\n"
+"  -o output.mp4\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:237
+msgid "LoRA Management"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:239
+msgid ""
+"The server supports dynamic loading, merging, and unmerging of LoRA adapters."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:241
+msgid "**Important Notes:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:242
+msgid "Mutual Exclusion: Only one LoRA can be *merged* (active) at a time"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:243
+msgid ""
+"Switching: To switch LoRAs, you must first `unmerge` the current one, then "
+"`set` the new one"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:244
+msgid ""
+"Caching: The server caches loaded LoRA weights in memory. Switching back to "
+"a previously loaded LoRA (same path) has little cost"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:246
+msgid "**Set LoRA Adapter**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:248
+msgid ""
+"Loads one or more LoRA adapters and merges their weights into the model. "
+"Supports both single LoRA (backward compatible) and multiple LoRA adapters."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:250
+msgid "**Endpoint:** `POST /v1/set_lora`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:252
+#: ../../../diffusion/api/openai_api.md:317
+msgid "**Parameters:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:253
+msgid ""
+"`lora_nickname` (string or list of strings, required): A unique identifier "
+"for the LoRA adapter(s). Can be a single string or a list of strings for "
+"multiple LoRAs"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:254
+msgid ""
+"`lora_path` (string or list of strings/None, optional): Path to the `."
+"safetensors` file(s) or Hugging Face repo ID(s). Required for the first "
+"load; optional if re-activating a cached nickname. If a list, must match the "
+"length of `lora_nickname`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:255
+msgid ""
+"`target` (string or list of strings, optional): Which transformer(s) to "
+"apply the LoRA to. If a list, must match the length of `lora_nickname`. "
+"Valid values:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:256
+msgid "`\"all\"` (default): Apply to all transformers"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:257
+msgid ""
+"`\"transformer\"`: Apply only to the primary transformer (high noise for "
+"Wan2.2)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:258
+msgid "`\"transformer_2\"`: Apply only to transformer_2 (low noise for Wan2.2)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:259
+msgid "`\"critic\"`: Apply only to the critic model"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:260
+msgid ""
+"`strength` (float or list of floats, optional): LoRA strength for merge, "
+"default 1.0. If a list, must match the length of `lora_nickname`. Values < "
+"1.0 reduce the effect, values > 1.0 amplify the effect"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:262
+msgid "**Single LoRA Example:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:264
+msgid ""
+"curl -X POST http://localhost:30010/v1/set_lora \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"        \"lora_nickname\": \"lora_name\",\n"
+"        \"lora_path\": \"/path/to/lora.safetensors\",\n"
+"        \"target\": \"all\",\n"
+"        \"strength\": 0.8\n"
+"      }'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:275
+msgid "**Multiple LoRA Example:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:277
+msgid ""
+"curl -X POST http://localhost:30010/v1/set_lora \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"        \"lora_nickname\": [\"lora_1\", \"lora_2\"],\n"
+"        \"lora_path\": [\"/path/to/lora1.safetensors\", \"/path/to/lora2."
+"safetensors\"],\n"
+"        \"target\": [\"transformer\", \"transformer_2\"],\n"
+"        \"strength\": [0.8, 1.0]\n"
+"      }'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:288
+msgid "**Multiple LoRA with Same Target:**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:290
+msgid ""
+"curl -X POST http://localhost:30010/v1/set_lora \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"        \"lora_nickname\": [\"style_lora\", \"character_lora\"],\n"
+"        \"lora_path\": [\"/path/to/style.safetensors\", \"/path/to/character."
+"safetensors\"],\n"
+"        \"target\": \"all\",\n"
+"        \"strength\": [0.7, 0.9]\n"
+"      }'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:301
+msgid "[!NOTE] When using multiple LoRAs:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:303
+msgid ""
+"All list parameters (`lora_nickname`, `lora_path`, `target`, `strength`) "
+"must have the same length"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:304
+msgid ""
+"If `target` or `strength` is a single value, it will be applied to all LoRAs"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:305
+msgid "Multiple LoRAs applied to the same target will be merged in order"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:308
+msgid "**Merge LoRA Weights**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:310
+msgid "Manually merges the currently set LoRA weights into the base model."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:312
+msgid ""
+"[!NOTE] `set_lora` automatically performs a merge, so this is typically only "
+"needed if you have manually unmerged but want to re-apply the same LoRA "
+"without calling `set_lora` again.*"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:315
+msgid "**Endpoint:** `POST /v1/merge_lora_weights`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:318
+msgid ""
+"`target` (string, optional): Which transformer(s) to merge. One of "
+"\"all\" (default), \"transformer\", \"transformer_2\", \"critic\""
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:319
+msgid ""
+"`strength` (float, optional): LoRA strength for merge, default 1.0. Values < "
+"1.0 reduce the effect, values > 1.0 amplify the effect"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:323
+msgid ""
+"curl -X POST http://localhost:30010/v1/merge_lora_weights \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\"strength\": 0.8}'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:330
+msgid "**Unmerge LoRA Weights**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:332
+msgid ""
+"Unmerges the currently active LoRA weights from the base model, restoring it "
+"to its original state. This **must** be called before setting a different "
+"LoRA."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:334
+msgid "**Endpoint:** `POST /v1/unmerge_lora_weights`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:338
+msgid ""
+"curl -X POST http://localhost:30010/v1/unmerge_lora_weights \\\n"
+"  -H \"Content-Type: application/json\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:343
+msgid "**List LoRA Adapters**"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:345
+msgid "Returns loaded LoRA adapters and current application status per module."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:347
+msgid "**Endpoint:** `GET /v1/list_loras`"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:351
+msgid "curl -sS -X GET \"http://localhost:30010/v1/list_loras\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:357
+msgid ""
+"{\n"
+"  \"loaded_adapters\": [\n"
+"    { \"nickname\": \"lora_a\", \"path\": \"/weights/lora_a."
+"safetensors\" },\n"
+"    { \"nickname\": \"lora_b\", \"path\": \"/weights/lora_b.safetensors\" }\n"
+"  ],\n"
+"  \"active\": {\n"
+"    \"transformer\": [\n"
+"      {\n"
+"        \"nickname\": \"lora2\",\n"
+"        \"path\": \"tarn59/pixel_art_style_lora_z_image_turbo\",\n"
+"        \"merged\": true,\n"
+"        \"strength\": 1.0\n"
+"      }\n"
+"    ]\n"
+"  }\n"
+"}\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:376
+msgid "Notes:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:377
+msgid ""
+"If LoRA is not enabled for the current pipeline, the server will return an "
+"error."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:378
+msgid ""
+"`num_lora_layers_with_weights` counts only layers that have LoRA weights "
+"applied for the active adapter."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:380
+msgid "Example: Switching LoRAs"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:382
+msgid "Set LoRA A:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:383
+msgid ""
+"curl -X POST http://localhost:30010/v1/set_lora -d '{\"lora_nickname\": "
+"\"lora_a\", \"lora_path\": \"path/to/A\"}'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:386
+msgid "Generate with LoRA A..."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:387
+msgid "Unmerge LoRA A:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:388
+msgid "curl -X POST http://localhost:30010/v1/unmerge_lora_weights\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:391
+msgid "Set LoRA B:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:392
+msgid ""
+"curl -X POST http://localhost:30010/v1/set_lora -d '{\"lora_nickname\": "
+"\"lora_b\", \"lora_path\": \"path/to/B\"}'\n"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:395
+msgid "Generate with LoRA B..."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:397
+msgid "Adjust Output Quality"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:399
+msgid ""
+"The server supports adjusting output quality and compression levels for both "
+"image and video generation through the `output-quality` and `output-"
+"compression` parameters."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:401
+msgid "Parameters"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:403
+msgid ""
+"**`output-quality`** (string, optional): Preset quality level that "
+"automatically sets compression. **Default is `\"default\"`**. Valid values:"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:404
+msgid "`\"maximum\"`: Highest quality (100)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:405
+msgid "`\"high\"`: High quality (90)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:406
+msgid "`\"medium\"`: Medium quality (55)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:407
+msgid "`\"low\"`: Lower quality (35)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:408
+msgid ""
+"`\"default\"`: Auto-adjust based on media type (50 for video, 75 for image)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:410
+msgid ""
+"**`output-compression`** (integer, optional): Direct compression level "
+"override (0-100). **Default is `None`**. When provided (not `None`), takes "
+"precedence over `output-quality`."
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:411
+msgid "`0`: Lowest quality, smallest file size"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:412
+msgid "`100`: Highest quality, largest file size"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:414
+msgid "Notes"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:416
+msgid ""
+"**Precedence**: When both `output-quality` and `output-compression` are "
+"provided, `output-compression` takes precedence"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:417
+msgid ""
+"**Format Support**: Quality settings apply to JPEG, and video formats. PNG "
+"uses lossless compression and ignores these settings"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:418
+msgid ""
+"**File Size vs Quality**: Lower compression values (or \"low\" quality "
+"preset) produce smaller files but may show visible artifacts"
+msgstr ""

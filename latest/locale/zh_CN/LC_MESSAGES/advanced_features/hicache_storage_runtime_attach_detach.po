@@ -1,0 +1,342 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:1
+msgid "Runtime Attach/Detach HiCache Storage Backend (No Restart)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:3
+msgid ""
+"This document explains how to **dynamically attach/detach the HiCache L3 "
+"storage backend at runtime** (e.g., `mooncake` / `hf3fs` / `nixl` / `file` / "
+"`aibrix` / `eic`) while **SGLang is already running and serving traffic**, "
+"without restarting the process."
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:5
+msgid ""
+"For safety and consistency, the current implementation **strictly requires** "
+"these operations to happen only when the service is **idle**:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:7
+msgid "**No running requests**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:8
+msgid "**No waiting/queued requests**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:10
+msgid ""
+"If the idle condition is not met, the API will fail fast (HTTP 400) and "
+"**will not modify** the current service state."
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:14
+msgid "1. Background and implementation overview"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:16
+msgid "1.1 Architecture / control path"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:18
+msgid "The control path is:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:20
+msgid "**HTTP Server** (`python/sglang/srt/entrypoints/http_server.py`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:21
+msgid ""
+"Exposes `PUT /hicache/storage-backend`, `DELETE /hicache/storage-backend`, "
+"`GET /hicache/storage-backend`"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:22
+msgid ""
+"**TokenizerManager** (`python/sglang/srt/managers/"
+"tokenizer_communicator_mixin.py`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:23
+msgid "Sends the request to the Scheduler via `_Communicator`"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:24
+msgid "**Scheduler** (`python/sglang/srt/managers/scheduler.py`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:25
+msgid "Performs a **strict idle check**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:26
+msgid ""
+"Calls `tree_cache.attach_storage_backend(...)` / "
+"`detach_storage_backend(...)`"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:27
+msgid "**HiRadixCache** (`python/sglang/srt/mem_cache/hiradix_cache.py`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:28
+msgid ""
+"Parses `hicache_storage_backend_extra_config_json` (supports both backend "
+"config and prefetch knobs)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:29
+msgid ""
+"Calls `cache_controller.attach_storage_backend(...)` / "
+"`detach_storage_backend(...)`"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:30
+msgid ""
+"**HiCacheController** (`python/sglang/srt/managers/cache_controller.py`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:31
+msgid ""
+"Creates/destroys the storage backend instance (via `StorageBackendFactory`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:32
+msgid "Starts/stops backend background threads at runtime (prefetch/backup)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:36
+msgid "2. Idle-state requirement (strict)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:38
+msgid "The Scheduler uses a stricter `_is_idle_for_hicache_storage_op()`:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:40
+msgid ""
+"`_is_no_request()` is true (covers running/overlap/pp/disagg and other "
+"active states)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:41
+msgid "`waiting_queue` is empty"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:42
+msgid "`grammar_queue` is empty (if the grammar backend is enabled)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:44
+msgid "If the condition is not met, attach/detach returns an error like:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:46
+msgid "`Reject attach: scheduler is not idle. #queue-req=... #running-req=...`"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:48
+msgid ""
+"Tip: before switching, drain upstream traffic and wait for the server to "
+"become idle, then call attach/detach."
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:50
+msgid "2.1 DP (data parallel) semantics"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:52
+msgid ""
+"When `dp_size > 1`, the tokenizer dispatches the request to **all DP "
+"scheduler instances** and aggregates their responses:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:54
+msgid "The final `success` is **true only if all DP ranks return success**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:55
+msgid "The final `message` concatenates messages from all DP ranks"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:57
+msgid ""
+"This is intended to prevent “silent partial success”, but it also means you "
+"may see:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:59
+msgid "Overall **failure** even though **some ranks already succeeded**"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:61
+msgid ""
+"Currently there is **no automatic partial rollback** across DP ranks (see "
+"TODO in code). Operationally:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:63
+msgid "Prefer to keep backend config identical across ranks"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:64
+msgid ""
+"If attach fails, immediately call detach (best-effort/idempotent), fix "
+"config, then retry attach"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:68
+msgid "3. How to use (HTTP Admin API)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:70
+msgid ""
+"The examples below assume your SGLang HTTP server is at "
+"`http://127.0.0.1:30000`."
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:72
+msgid "3.1 Query current storage backend status"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:74
+msgid "curl -s http://127.0.0.1:30000/hicache/storage-backend\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:78
+msgid "Example response:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:80
+msgid ""
+"{\n"
+"  \"hicache_storage_backend\": \"mooncake\",\n"
+"  \"hicache_storage_backend_extra_config\": \"{\\\"master_server_address\\\":"
+"\\\"127.0.0.1:50051\\\", ...}\"\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:87
+msgid "3.2 Attach (enable) a storage backend"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:88
+msgid ""
+"curl -s -X PUT http://127.0.0.1:30000/hicache/storage-backend \\\n"
+"  -H 'Content-Type: application/json' \\\n"
+"  -d '{\n"
+"    \"hicache_storage_backend\": \"mooncake\"\n"
+"  }'\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:96
+msgid ""
+"curl -s -X PUT http://127.0.0.1:30000/hicache/storage-backend \\\n"
+"  -H 'Content-Type: application/json' \\\n"
+"  -d '{\n"
+"    \"hicache_storage_backend\": \"mooncake\",\n"
+"    \"hicache_storage_backend_extra_config_json\": \"{\\"
+"\"master_server_address\\\":\\\"127.0.0.1:50051\\\",\\\"protocol\\\":\\"
+"\"tcp\\\",\\\"global_segment_size\\\":\\\"4gb\\\",\\\"prefetch_threshold\\"
+"\":256}\",\n"
+"    \"hicache_storage_prefetch_policy\": \"timeout\"\n"
+"  }'\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:106
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:118
+msgid "Notes:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:108
+msgid "`hicache_storage_backend_extra_config_json` can include both:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:109
+msgid ""
+"**Backend configuration** (e.g., Mooncake master/metadata/protocol, etc.)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:110
+msgid ""
+"**Prefetch configuration** (`prefetch_threshold`, `prefetch_timeout_base`, "
+"`prefetch_timeout_per_ki_token`, `hicache_storage_pass_prefix_keys`)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:112
+msgid "3.3 Detach (disable) the storage backend"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:114
+msgid "curl -s -X DELETE http://127.0.0.1:30000/hicache/storage-backend\n"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:120
+msgid ""
+"Detach only makes SGLang **stop using** the L3 storage backend and stops "
+"prefetch/backup threads"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:121
+msgid ""
+"It **does not automatically delete** data stored in Mooncake/HF3FS (or other "
+"remote backends)"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:125
+msgid "4. Behavior and caveats"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:127
+msgid "**No restart required**: attach/detach switches in-process at runtime"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:128
+msgid ""
+"**Must be idle**: otherwise the request is rejected to avoid consistency "
+"issues"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:129
+msgid ""
+"**Host KV layout constraints still apply**: for example, Mooncake still "
+"requires layouts like `page_first/page_first_direct/page_head`; if the "
+"server's HiCache host-memory layout does not satisfy the backend "
+"requirements, attach will fail with an error"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:130
+msgid "**Observability**:"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:131
+msgid ""
+"After attach, `server_args.hicache_storage_backend*` is updated on both the "
+"tokenizer and scheduler sides"
+msgstr ""
+
+#: ../../../advanced_features/hicache_storage_runtime_attach_detach.md:132
+msgid ""
+"If metrics are enabled, attach will create a storage metrics collector in "
+"`HiRadixCache` on demand"
+msgstr ""

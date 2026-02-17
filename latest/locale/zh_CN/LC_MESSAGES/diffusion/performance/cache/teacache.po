@@ -1,0 +1,266 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/performance/cache/teacache.md:1
+msgid "TeaCache Acceleration"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:3
+msgid ""
+"**Note**: This is one of two caching strategies available in SGLang. For an "
+"overview of all caching options, see [caching](../index.md)."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:6
+msgid ""
+"TeaCache (Temporal similarity-based caching) accelerates diffusion inference "
+"by detecting when consecutive denoising steps are similar enough to skip "
+"computation entirely."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:8
+msgid "Overview"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:10
+msgid "TeaCache works by:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:11
+msgid ""
+"Tracking the L1 distance between modulated inputs across consecutive "
+"timesteps"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:12
+msgid "Accumulating the rescaled L1 distance over steps"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:13
+msgid ""
+"When accumulated distance is below a threshold, reusing the cached residual"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:14
+msgid ""
+"Supporting CFG (Classifier-Free Guidance) with separate positive/negative "
+"caches"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:16
+msgid "How It Works"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:18
+msgid "L1 Distance Tracking"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:20
+msgid ""
+"At each denoising step, TeaCache computes the relative L1 distance between "
+"the current and previous modulated inputs:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:22
+msgid "rel_l1 = |current - previous|.mean() / |previous|.mean()\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:26
+msgid ""
+"This distance is then rescaled using polynomial coefficients and accumulated:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:28
+msgid "accumulated += poly(coefficients)(rel_l1)\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:32
+msgid "Cache Decision"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:34
+msgid "If `accumulated >= threshold`: Force computation, reset accumulator"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:35
+msgid "If `accumulated < threshold`: Skip computation, use cached residual"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:37
+msgid "CFG Support"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:39
+msgid ""
+"For models that support CFG cache separation (Wan, Hunyuan, Z-Image), "
+"TeaCache maintains separate caches for positive and negative branches:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:40
+msgid "`previous_modulated_input` / `previous_residual` for positive branch"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:41
+msgid ""
+"`previous_modulated_input_negative` / `previous_residual_negative` for "
+"negative branch"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:43
+msgid ""
+"For models that don't support CFG separation (Flux, Qwen), TeaCache is "
+"automatically disabled when CFG is enabled."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:45
+msgid "Configuration"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:47
+msgid "TeaCache is configured via `TeaCacheParams` in the sampling parameters:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:49
+msgid ""
+"from sglang.multimodal_gen.configs.sample.teacache import TeaCacheParams\n"
+"\n"
+"params = TeaCacheParams(\n"
+"    teacache_thresh=0.1,           # Threshold for accumulated L1 distance\n"
+"    coefficients=[1.0, 0.0, 0.0],  # Polynomial coefficients for L1 "
+"rescaling\n"
+")\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:58
+msgid "Parameters"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Parameter"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Type"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "`teacache_thresh`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "float"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid ""
+"Threshold for accumulated L1 distance. Lower = more caching, faster but "
+"potentially lower quality"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "`coefficients`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "list[float]"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Polynomial coefficients for L1 rescaling. Model-specific tuning"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:65
+msgid "Model-Specific Configurations"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:67
+msgid ""
+"Different models may have different optimal configurations. The coefficients "
+"are typically tuned per-model to balance speed and quality."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:69
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:71
+msgid "TeaCache is built into the following model families:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Model Family"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "CFG Cache Separation"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Notes"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Wan (wan2.1, wan2.2)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Yes"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Full support"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Hunyuan (HunyuanVideo)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "To be supported"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Z-Image"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Flux"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "No"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:0
+msgid "Qwen"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:82
+msgid "References"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/teacache.md:84
+msgid ""
+"[TeaCache: Accelerating Diffusion Models with Temporal Similarity](https://"
+"arxiv.org/abs/2411.14324)"
+msgstr ""

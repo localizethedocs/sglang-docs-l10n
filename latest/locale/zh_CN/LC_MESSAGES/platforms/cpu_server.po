@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -254,26 +254,30 @@ msgid ""
 "url = \"https://download.pytorch.org/whl/cpu\"\n"
 "\n"
 "[[index]]\n"
+"name = \"torchaudio\"\n"
+"url = \"https://download.pytorch.org/whl/cpu\"\n"
+"\n"
+"[[index]]\n"
 "name = \"triton\"\n"
 "url = \"https://download.pytorch.org/whl/cpu\"\n"
 "\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:101
+#: ../../../platforms/cpu_server.md:105
 msgid ""
 "Save the file (in `vim`, press 'esc' to exit insert mode, then ':x+Enter'), "
 "and set it as the default `uv` config."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:104
+#: ../../../platforms/cpu_server.md:108
 msgid "export UV_CONFIG_FILE=/opt/.venv/uv.toml\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:108
+#: ../../../platforms/cpu_server.md:112
 msgid "Clone the `sglang` source code and build the packages"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:110
+#: ../../../platforms/cpu_server.md:114
 msgid ""
 "# Clone the SGLang code\n"
 "git clone https://github.com/sgl-project/sglang.git\n"
@@ -286,8 +290,6 @@ msgid ""
 "# Install SGLang dependent libs, and build SGLang main package\n"
 "uv pip install --upgrade pip setuptools\n"
 "uv pip install .\n"
-"uv pip install torch==2.9.0 torchvision==0.24.0 triton==3.5.0 --force-"
-"reinstall\n"
 "\n"
 "# Build the CPU backend kernels\n"
 "cd ../sgl-kernel\n"
@@ -295,11 +297,11 @@ msgid ""
 "uv pip install .\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:130
+#: ../../../platforms/cpu_server.md:133
 msgid "Set the required environment variables"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:132
+#: ../../../platforms/cpu_server.md:135
 msgid ""
 "export SGLANG_USE_CPU_ENGINE=1\n"
 "\n"
@@ -310,17 +312,17 @@ msgid ""
 "${LD_LIBRARY_PATH}/libtcmalloc.so.4:${LD_LIBRARY_PATH}/libtbbmalloc.so.2\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:140 ../../../platforms/cpu_server.md:179
+#: ../../../platforms/cpu_server.md:143 ../../../platforms/cpu_server.md:182
 msgid "Notes:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:142
+#: ../../../platforms/cpu_server.md:145
 msgid ""
 "Note that the environment variable `SGLANG_USE_CPU_ENGINE=1`   is required "
 "to enable the SGLang service with the CPU engine."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:145
+#: ../../../platforms/cpu_server.md:148
 msgid ""
 "If you encounter code compilation issues during the `sgl-kernel` building "
 "process,   please check your `gcc` and `g++` versions and upgrade them if "
@@ -328,7 +330,7 @@ msgid ""
 "have been verified   in the official Docker container."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:150
+#: ../../../platforms/cpu_server.md:153
 msgid ""
 "The system library path is typically located in one of the following "
 "directories:   `~/.local/lib/`, `/usr/local/lib/`, `/usr/local/lib64/`, `/"
@@ -337,13 +339,13 @@ msgid ""
 "path according to your server configuration."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:155
+#: ../../../platforms/cpu_server.md:158
 msgid ""
 "It is recommended to add the following to your `~/.bashrc` file to   avoid "
 "setting these variables every time you open a new terminal:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:158
+#: ../../../platforms/cpu_server.md:161
 msgid ""
 "source .venv/bin/activate\n"
 "export SGLANG_USE_CPU_ENGINE=1\n"
@@ -351,15 +353,15 @@ msgid ""
 "export LD_PRELOAD=<YOUR-LIBS-PATHS>\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:165
+#: ../../../platforms/cpu_server.md:168
 msgid "Launch of the Serving Engine"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:167
+#: ../../../platforms/cpu_server.md:170
 msgid "Example command to launch SGLang serving:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:169
+#: ../../../platforms/cpu_server.md:172
 msgid ""
 "python -m sglang.launch_server   \\\n"
 "    --model <MODEL_ID_OR_PATH>   \\\n"
@@ -370,30 +372,29 @@ msgid ""
 "    --tp 6\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:181
+#: ../../../platforms/cpu_server.md:184
 msgid ""
 "For running W8A8 quantized models, please add the flag `--quantization "
 "w8a8_int8`."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:183
+#: ../../../platforms/cpu_server.md:186
 msgid ""
 "The flag `--tp 6` specifies that tensor parallelism will be applied using 6 "
 "ranks (TP6).  The number of TP specified is how many TP ranks will be used "
 "during the execution.  On a CPU platform, a TP rank means a sub-NUMA cluster "
 "(SNC).  Usually we can get the SNC information (How many available) from the "
-"Operating System.  Users can specify TP to be no more than the total "
-"available SNCs in current system."
+"Operating System with e.g. `lscpu` command."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:189
+#: ../../../platforms/cpu_server.md:191
 msgid ""
 "If the specified TP rank number differs from the total SNC count,  the "
 "system will automatically utilize the first `n` SNCs.  Note that `n` cannot "
 "exceed the total SNC number, doing so will result in an error."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:193
+#: ../../../platforms/cpu_server.md:195
 msgid ""
 "To specify the cores to be used, we need to explicitly set the environment "
 "variable `SGLANG_CPU_OMP_THREADS_BIND`.  For example, if we want to run the "
@@ -401,20 +402,20 @@ msgid ""
 "server,  which has 43-43-42 cores on the 3 SNCs of a socket, we should set:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:197
+#: ../../../platforms/cpu_server.md:199
 msgid ""
 "export SGLANG_CPU_OMP_THREADS_BIND=\"0-39|43-82|86-125|128-167|171-210|"
 "214-253\"\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:201
+#: ../../../platforms/cpu_server.md:203
 msgid ""
 "Please beware that with SGLANG_CPU_OMP_THREADS_BIND set,  the available "
 "memory amounts of the ranks may not be determined in prior.  You may need to "
 "set proper `--max-total-tokens` to avoid the out-of-memory error."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:205
+#: ../../../platforms/cpu_server.md:207
 msgid ""
 "For optimizing decoding with torch.compile, please add the flag `--enable-"
 "torch-compile`.  To specify the maximum batch size when using `torch."
@@ -424,24 +425,24 @@ msgid ""
 "size  for optimizing with `torch.compile` is 16."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:211
+#: ../../../platforms/cpu_server.md:213
 msgid ""
 "A warmup step is automatically triggered when the service is started.  The "
 "server is ready when you see the log `The server is fired up and ready to "
 "roll!`."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:214
+#: ../../../platforms/cpu_server.md:216
 msgid "Benchmarking with Requests"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:216
+#: ../../../platforms/cpu_server.md:218
 msgid ""
 "You can benchmark the performance via the `bench_serving` script. Run the "
 "command in another terminal. An example command would be:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:219
+#: ../../../platforms/cpu_server.md:221
 msgid ""
 "python -m sglang.bench_serving   \\\n"
 "    --dataset-name random        \\\n"
@@ -452,26 +453,26 @@ msgid ""
 "    --random-range-ratio 1.0\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:229
+#: ../../../platforms/cpu_server.md:231
 msgid "Detailed parameter descriptions are available via the command:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:231
+#: ../../../platforms/cpu_server.md:233
 msgid "python -m sglang.bench_serving -h\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:235
+#: ../../../platforms/cpu_server.md:237
 msgid ""
 "Additionally, requests can be formatted using [the OpenAI Completions API]"
 "(https://docs.sglang.io/basic_usage/openai_api_completions.html) and sent "
 "via the command line (e.g., using `curl`) or through your own scripts."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:239
+#: ../../../platforms/cpu_server.md:241
 msgid "Example Usage Commands"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:241
+#: ../../../platforms/cpu_server.md:243
 msgid ""
 "Large Language Models can range from fewer than 1 billion to several hundred "
 "billion parameters. Dense models larger than 20B are expected to run on "
@@ -482,17 +483,17 @@ msgid ""
 "utilize a single socket of the flagship 6th Gen Intel® Xeon® processors."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:247
+#: ../../../platforms/cpu_server.md:249
 msgid "Example: Running DeepSeek-V3.1-Terminus"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:249
+#: ../../../platforms/cpu_server.md:251
 msgid ""
 "An example command to launch service of W8A8_INT8 DeepSeek-V3.1-Terminus on "
 "a Xeon® 6980P server:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:251
+#: ../../../platforms/cpu_server.md:253
 msgid ""
 "python -m sglang.launch_server                                 \\\n"
 "    --model IntervitensInc/DeepSeek-V3.1-Terminus-Channel-int8 \\\n"
@@ -506,13 +507,13 @@ msgid ""
 "    --tp 6\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:264
+#: ../../../platforms/cpu_server.md:266
 msgid ""
 "Similarly, an example command to launch service of FP8 DeepSeek-V3.1-"
 "Terminus would be:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:266
+#: ../../../platforms/cpu_server.md:268
 msgid ""
 "python -m sglang.launch_server                     \\\n"
 "    --model deepseek-ai/DeepSeek-V3.1-Terminus     \\\n"
@@ -525,23 +526,23 @@ msgid ""
 "    --tp 6\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:278
+#: ../../../platforms/cpu_server.md:280
 msgid ""
 "Note: Please set `--torch-compile-max-bs` to the maximum desired batch size "
 "for your deployment, which can be up to 16. The value `4` in the examples is "
 "illustrative."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:281
+#: ../../../platforms/cpu_server.md:283
 msgid "Example: Running Llama-3.2-3B"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:283
+#: ../../../platforms/cpu_server.md:285
 msgid ""
 "An example command to launch service of Llama-3.2-3B with BF16 precision:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:285
+#: ../../../platforms/cpu_server.md:287
 msgid ""
 "python -m sglang.launch_server                     \\\n"
 "    --model meta-llama/Llama-3.2-3B-Instruct       \\\n"
@@ -554,12 +555,12 @@ msgid ""
 "    --tp 2\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:297
+#: ../../../platforms/cpu_server.md:299
 msgid ""
 "The example command to launch service of W8A8_INT8 version of Llama-3.2-3B:"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:299
+#: ../../../platforms/cpu_server.md:301
 msgid ""
 "python -m sglang.launch_server                     \\\n"
 "    --model RedHatAI/Llama-3.2-3B-quantized.w8a8   \\\n"
@@ -573,14 +574,14 @@ msgid ""
 "    --tp 2\n"
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:312
+#: ../../../platforms/cpu_server.md:314
 msgid ""
 "Note: The `--torch-compile-max-bs` and `--tp` settings are examples that "
 "should be adjusted for your setup. For instance, use `--tp 3` to utilize 1 "
 "socket with 3 sub-NUMA clusters on an Intel® Xeon® 6980P server."
 msgstr ""
 
-#: ../../../platforms/cpu_server.md:315
+#: ../../../platforms/cpu_server.md:317
 msgid ""
 "Once the server have been launched, you can test it using the "
 "`bench_serving` command or create your own commands or scripts following "

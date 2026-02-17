@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/installation.md:1
+msgid "Install SGLang-Diffusion"
+msgstr ""
+
+#: ../../../diffusion/installation.md:3
+msgid "You can install SGLang-Diffusion using one of the methods below."
+msgstr ""
+
+#: ../../../diffusion/installation.md:5
+msgid "Standard Installation (NVIDIA GPUs)"
+msgstr ""
+
+#: ../../../diffusion/installation.md:7
+msgid "Method 1: With pip or uv"
+msgstr ""
+
+#: ../../../diffusion/installation.md:9
+msgid "It is recommended to use uv for a faster installation:"
+msgstr ""
+
+#: ../../../diffusion/installation.md:11
+msgid ""
+"pip install --upgrade pip\n"
+"pip install uv\n"
+"uv pip install \"sglang[diffusion]\" --prerelease=allow\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:17
+msgid "Method 2: From source"
+msgstr ""
+
+#: ../../../diffusion/installation.md:19
+msgid ""
+"# Use the latest release branch\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"# Install the Python packages\n"
+"pip install --upgrade pip\n"
+"pip install -e \"python[diffusion]\"\n"
+"\n"
+"# With uv\n"
+"uv pip install -e \"python[diffusion]\" --prerelease=allow\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:32
+msgid "Method 3: Using Docker"
+msgstr ""
+
+#: ../../../diffusion/installation.md:34
+msgid ""
+"The Docker images are available on Docker Hub at [lmsysorg/sglang](https://"
+"hub.docker.com/r/lmsysorg/sglang), built from the [Dockerfile](https://"
+"github.com/sgl-project/sglang/blob/main/docker/Dockerfile). Replace "
+"`<secret>` below with your HuggingFace Hub [token](https://huggingface.co/"
+"docs/hub/en/security-tokens)."
+msgstr ""
+
+#: ../../../diffusion/installation.md:37
+msgid ""
+"docker run --gpus all \\\n"
+"    --shm-size 32g \\\n"
+"    -p 30000:30000 \\\n"
+"    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"    --env \"HF_TOKEN=<secret>\" \\\n"
+"    --ipc=host \\\n"
+"    lmsysorg/sglang:dev \\\n"
+"    zsh -c '\\\n"
+"        echo \"Installing diffusion dependencies...\" && \\\n"
+"        pip install -e \"python[diffusion]\" && \\\n"
+"        echo \"Starting SGLang-Diffusion...\" && \\\n"
+"        sglang generate \\\n"
+"            --model-path black-forest-labs/FLUX.1-dev \\\n"
+"            --prompt \"A logo With Bold Large text: SGL Diffusion\" \\\n"
+"            --save-output \\\n"
+"    '\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:56
+msgid "Platform-Specific: ROCm (AMD GPUs)"
+msgstr ""
+
+#: ../../../diffusion/installation.md:58
+msgid ""
+"For AMD Instinct GPUs (e.g., MI300X), you can use the ROCm-enabled Docker "
+"image:"
+msgstr ""
+
+#: ../../../diffusion/installation.md:60
+msgid ""
+"docker run --device=/dev/kfd --device=/dev/dri --ipc=host \\\n"
+"  -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
+"  --env HF_TOKEN=<secret> \\\n"
+"  lmsysorg/sglang:v0.5.5.post2-rocm700-mi30x \\\n"
+"  sglang generate --model-path black-forest-labs/FLUX.1-dev --prompt \"A "
+"logo With Bold Large text: SGL Diffusion\" --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:68
+msgid ""
+"For detailed ROCm system configuration and installation from source, see "
+"[AMD GPUs](../../platforms/amd_gpu.md)."
+msgstr ""
+
+#: ../../../diffusion/installation.md:70
+msgid "Platform-Specific: MUSA (Moore Threads GPUs)"
+msgstr ""
+
+#: ../../../diffusion/installation.md:72
+msgid "For Moore Threads GPUs (MTGPU) with the MUSA software stack:"
+msgstr ""
+
+#: ../../../diffusion/installation.md:74
+msgid ""
+"# Clone the repository\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"# Install the Python packages\n"
+"pip install --upgrade pip\n"
+"rm -f python/pyproject.toml && mv python/pyproject_other.toml python/"
+"pyproject.toml\n"
+"pip install -e \"python[all_musa]\"\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:85
+msgid "Quick test:"
+msgstr ""
+
+#: ../../../diffusion/installation.md:87
+msgid ""
+"sglang generate --model-path black-forest-labs/FLUX.1-dev \\\n"
+"    --prompt \"A logo With Bold Large text: SGL Diffusion\" \\\n"
+"    --save-output\n"
+msgstr ""

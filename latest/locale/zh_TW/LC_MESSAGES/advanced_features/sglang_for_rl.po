@@ -1,0 +1,844 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/sglang_for_rl.md:1
+msgid "SGLang for RL Systems"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:3
+msgid ""
+"This document is a practical guide for infrastructure teams integrating "
+"SGLang into RL and post-training systems. It focuses on the operational pain "
+"points in the loop (rollout, evaluation, training, weight sync) and maps "
+"them to concrete SGLang APIs, flags, and integration patterns. The focus is "
+"on maximizing rollout efficiency, accuracy and stability while keeping "
+"rollout-serving behavior aligned in production environments."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:5
+msgid "Why SGLang for RL Lifecycle?"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:7
+msgid "Let's embrace a guiding principle from early DeepMind's RL engineering:"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:9
+msgid "**Be a library, not a framework.**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:11
+msgid ""
+"This philosophy empowers innovation by providing SGLang as flexible tools, "
+"not rigid structures. Here are five reasons to use SGLang for your RL "
+"lifecycle:"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:13
+msgid ""
+"**Fine-Grained Engine Sleep and Wake Up**: facilitate maximum-powered "
+"rollout and training"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:14
+msgid ""
+"**Open-To-Use Refit Functionality**: diverse methods for co-location or "
+"disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:15
+msgid ""
+"**Easy To Postpone Generation**: enable partial rollout and dedicated "
+"rollout control"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:16
+msgid ""
+"**Deterministic Inference**: achieve deterministic inference to enable zero "
+"training-inference mismatch"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:17
+msgid ""
+"**Load Balancing Router**: cache-aware load-balancing for high-throughput "
+"rollout"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:19
+msgid "The following sections cover these aspects in detail."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:21
+msgid "Fine-Grained Engine Sleep and Wake Up"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:23
+msgid ""
+"Rollout and training are both memory-intensive, and co-locating them on the "
+"same GPUs often leads to memory pressure and slow handoffs. SGLang provides "
+"a memory-aware sleep/wake mechanism that releases KV cache and weights while "
+"keeping the server process alive, then resumes them for rollout without a "
+"full restart. This avoids repeated disk I/O and CUDA graph recapture during "
+"each RL step."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:25
+msgid ""
+"Under the hood, the RL team uses CUDA-graph-aware weight offload via "
+"[torch_memory_saver](https://github.com/fzyzcjy/torch_memory_saver) to "
+"preserve virtual memory addresses for graph replay. For details, see: "
+"[Efficient RL Training - Optimizing Memory Usage in verl](https://hebiao064."
+"github.io/rl-memory-management)."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:27
+msgid "Server flag"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:29
+msgid "Enable memory saver support when launching the server:"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:31
+msgid "--enable-memory-saver\n"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:35
+msgid "Release Memory"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:37
+msgid "**Endpoint:** `POST /release_memory_occupation`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:39
+#: ../../../advanced_features/sglang_for_rl.md:54
+#: ../../../advanced_features/sglang_for_rl.md:84
+#: ../../../advanced_features/sglang_for_rl.md:122
+#: ../../../advanced_features/sglang_for_rl.md:151
+#: ../../../advanced_features/sglang_for_rl.md:166
+#: ../../../advanced_features/sglang_for_rl.md:183
+#: ../../../advanced_features/sglang_for_rl.md:207
+msgid "**Request body:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Field"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Defaults"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Options"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`tags`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Which memory regions to release. If omitted, all are released."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`None`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: list[str], values: `kv_cache`, `weights`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:44
+msgid ""
+"<!-- python/sglang/srt/managers/io_struct.py#L1381 currently only supports "
+"`kv_cache`, `weights` -->\n"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:45
+msgid "**Behavior notes:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:47
+msgid ""
+"This call asserts there are no ongoing requests. Ensure the engine is idle "
+"before calling it."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:48
+msgid ""
+"If `kv_cache` is released, SGLang flushes cache; subsequent requests will "
+"rebuild KV cache as needed."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:50
+msgid "Resume Memory"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:52
+msgid "**Endpoint:** `POST /resume_memory_occupation`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Which memory regions to resume. If omitted, all are resumed."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:59
+msgid ""
+"<!-- python/sglang/srt/managers/io_struct.py#L1393 currently only supports "
+"`kv_cache`, `weights` -->\n"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:61
+msgid "Open-To-Use Refit Functionality"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:63
+msgid ""
+"After training completes each step, rollout engines must be refit with new "
+"weights. SGLang supports three refit strategies so you can match your "
+"infrastructure style (co-located vs disaggregated) and scaling needs. Each "
+"strategy maps to a concrete API with clear request schemas. For a deeper "
+"dive into SGLang's weight update utilities, see [RL System Deep Thinking: "
+"Weight Update Mechanisms](https://github.com/zhaochenyang20/Awesome-ML-SYS-"
+"Tutorial/blob/main/rlhf/sys-design/readme-1-EN.md)."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:65
+msgid "**How to choose:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:67
+msgid ""
+"**From disk** is simplest and best for elastic rollout scaling and "
+"checkpointing."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:68
+msgid ""
+"**From tensor** is best for co-located training/rollout when you can pass in-"
+"memory tensors."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:69
+msgid ""
+"**From distributed** is best for disaggregated training/rollout with "
+"dedicated communication groups (NCCL/IB)."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:71
+msgid "Update Weights from Disk"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:73
+#: ../../../advanced_features/sglang_for_rl.md:111
+#: ../../../advanced_features/sglang_for_rl.md:138
+msgid "**When to use:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:75
+msgid "Save checkpoint to disk and update weights from disk"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:76
+msgid ""
+"Dynamic scaling (new rollout instances can load from the same checkpoint)"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:78
+msgid "**Why it works well:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:80
+msgid ""
+"This path trades some I/O overhead for simplicity and flexibility. It "
+"integrates naturally with checkpointing and makes it trivial to add new "
+"rollout engines: point them at the same checkpoint and call the API. It is "
+"also the safest option for high availability because the checkpoint itself "
+"is the source of truth."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:82
+msgid "**Endpoint:** `POST /update_weights_from_disk`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`model_path`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "The model path with the new weights."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Required"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: str"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`load_format`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "The format to load the weights."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`abort_all_requests`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Abort all running requests before update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`False`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: bool"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`weight_version`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Optional weight version label tracked by the server."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`is_async`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Perform weight load asynchronously."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`torch_empty_cache`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Empty torch cache."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`keep_pause`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Keep scheduler paused after update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`recapture_cuda_graph`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Recapture CUDA graphs after update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`token_step`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Trainer step id for rollout bookkeeping."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`0`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: int"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`flush_cache`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Flush KV cache after update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`True`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:99
+msgid "**Response body:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`success`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Whether the update succeeded."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "-"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`message`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Status / error message."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`num_paused_requests`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Number of paused requests during update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:107
+msgid ""
+"**Python Engine API:** `engine.update_weights_from_disk(model_path, "
+"load_format=None)`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:109
+msgid "Update Weights from Tensor"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:113
+msgid ""
+"Co-located training and rollout, where training can provide tensors directly"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:114
+msgid "Fast in-memory updates"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:116
+msgid "**Important constraints:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:118
+msgid ""
+"This strategy requires the training process and rollout engine to share "
+"access to the tensors. Co-located setups must keep the model on GPU; moving "
+"tensors to CPU will break the update path. For high-performance MoE or "
+"specialized attention kernels, co-location may limit some optimizations "
+"compared to disaggregated rollouts."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:120
+msgid "**Endpoint:** `POST /update_weights_from_tensor`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`serialized_named_tensors`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Per-TP serialized tensor payloads."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: list[str"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Optional load format selector."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`None`, `direct`, `flattened_bucket`, or a custom loader path string"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Optional version label tracked by the server."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:132
+msgid ""
+"**Note:** The serialized tensor payloads must be created with "
+"`MultiprocessingSerializer.serialize(...)` and should be base64-safe strings."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:134
+msgid ""
+"**Python Engine API:** `engine.update_weights_from_tensor(named_tensors, "
+"load_format=None, flush_cache=True)`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:136
+msgid "Update Weights from Distributed Group"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:140
+msgid "Disaggregated training and rollout"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:141
+msgid ""
+"NCCL or IB-backed weight broadcast from training workers to rollout workers"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:143
+msgid "**How it works:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:145
+msgid ""
+"Training workers gather weights (typically on TP rank 0), broadcast them to "
+"the rollout group, and each rollout TP shard loads the parameters it needs. "
+"This avoids disk I/O and keeps training and rollout decoupled, at the cost "
+"of managing a dedicated communication group."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:147
+msgid "**Initialize weight update group**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:149
+msgid "**Endpoint:** `POST /init_weights_update_group`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`master_address`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Group master address."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`master_port`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Group master port."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`rank_offset`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Offset for local rank mapping."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`world_size`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Total world size."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`group_name`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Group name."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`weight_update_group`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`backend`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Communication backend."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`nccl`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:162
+msgid "**Update weight**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:164
+msgid "**Endpoint:** `POST /update_weights_from_distributed`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`names`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Parameter names to update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: list[str]"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`dtypes`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Dtype strings for each parameter."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`shapes`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Tensor shapes."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: list[list[int]]"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Optional version label."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Optional format selector."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`None` or `flattened_bucket`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:179
+msgid "**Destroy weights update group**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:181
+msgid "**Endpoint:** `POST /destroy_weights_update_group`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:189
+msgid "**Python Engine APIs:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:191
+msgid "`engine.init_weights_update_group(...)`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:192
+msgid "`engine.update_weights_from_distributed(names, dtypes, shapes, ...)`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:193
+msgid "`engine.destroy_weights_update_group(group_name)`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:195
+msgid "Easy To Postpone Generation"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:197
+msgid ""
+"Multi-turn RL rollouts often suffer from long-tail requests that block the "
+"entire batch. A small number of slow interactions can stall all GPUs, and "
+"the long-tail behavior makes profiling and monitoring difficult."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:199
+msgid ""
+"SGLang exposes explicit pause/resume APIs so you can pause slow requests and "
+"continue them later. This pattern matches systems like [APRIL](https://arxiv."
+"org/abs/2509.18521), terminate once enough responses are collected, and "
+"recycle incomplete responses in the next step. The result is higher GPU "
+"utilization without discarding partial work."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:201
+msgid ""
+"`pause_generation` ---  update weights --- `continue_generation` is the "
+"correct execution flow when updating weights from training. An update can "
+"only happen when SGLang is not actively processing inference tasks."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:203
+msgid "Pause Generation"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:205
+msgid "**Endpoint:** `POST /pause_generation`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`mode`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Pause mode."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`abort`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`abort`, `retract`, `in_place`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:213
+msgid "**Modes:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:215
+msgid ""
+"`abort`: Default behavior, identical to `abort` endpoint with `abort_all` "
+"set. Pending requests from `waiting_queue` and `running_queue` will be "
+"returned immediately to the caller."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:216
+msgid ""
+"`retract`: Put engine in \"paused\" state.  Move running requests back to "
+"waiting queue. KV cache can be flushed and recomputed later."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:217
+msgid ""
+"`in_place`: Put engine in \"paused\" state without changing states of the "
+"requests. Running requests rely on availability of KV caches to continue, so "
+"any subsequent `flush_cache` call will be unsuccessful."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:219
+msgid "Continue Generation"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:221
+msgid "**Endpoint:** `POST /continue_generation`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:223
+msgid "Deterministic Inference"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:225
+msgid ""
+"In many RL stacks, rollout and training are implemented with different "
+"kernels or batching behavior. Even when weights are identical, token "
+"probabilities can drift, silently breaking the on-policy assumption. This is "
+"the training–inference mismatch problem."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:227
+msgid ""
+"SGLang supports a deterministic inference mode that reduces non-determinism "
+"across batch shapes. This mitigates variance introduced by runtime batching "
+"and kernel selection. To further achieve true on-policy training, you need "
+"to modify the training engine to use the same deterministic kernels. For "
+"implementation details, see these miles examples: [True On-Policy](https://"
+"github.com/radixark/miles/tree/main/examples/true_on_policy) and [True On-"
+"Policy for VLM](https://github.com/radixark/miles/tree/main/examples/"
+"true_on_policy_vlm). For additional context, see the blog post [Let Speed Be "
+"With Stability: All-In-One Solution to Training-Inference Mismatch with "
+"Miles](https://github.com/zhaochenyang20/Awesome-ML-SYS-Tutorial/blob/main/"
+"rlhf/slime/mismatch/blog-en.md)."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:229
+msgid "**Server flag:**"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:231
+msgid "--enable-deterministic-inference\n"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:235
+msgid ""
+"For more details, see [Deterministic Inference](deterministic_inference.md)"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:237
+msgid "Load Balancing Router"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:239
+msgid ""
+"SGLang Model Gateway is the recommended control plane for large‑scale RL "
+"rollouts. It provides async, non‑blocking request handling, cache‑aware load "
+"balancing, and fault‑tolerant routing across rollout and reward servers. "
+"This lets you keep GPUs saturated while avoiding long‑tail stalls and "
+"brittle, engine‑local concurrency logic. It has been deployed in the "
+"training of GLM 4.5+ models and proven to be highly efficient in production-"
+"level large-scale RL workloads."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:241
+msgid "Key benefits for RL infrastructure:"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:243
+msgid ""
+"**Async non-blocking efficiency**: SGLang’s native async server/router "
+"architecture (HTTPS/gRPC) manages concurrency automatically. This guarantees "
+"maximum GPU saturation and effective continuous batching without requiring "
+"complex, manual implementation by engineers."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:244
+msgid ""
+"**Elasticity and fault tolerance**: By encapsulating the reward model and "
+"rollout as independent servers, SGLang decouples them logically and "
+"physically. This architecture provides robust disaster recovery for large-"
+"scale distributed training; if a server fails, the router automatically "
+"redirects traffic to healthy nodes, ensuring the training process continues "
+"without interruption."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:245
+msgid ""
+"**Training–Inference alignment**: Using the SGLang Model Gateway for both "
+"training and inference ensures \"What You See Is What You Get.\" This "
+"eliminates score discrepancies and the painful backend alignment issues "
+"often caused by using different engines for training versus deployment."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:246
+msgid ""
+"**Dynamic load balancing and long-tail mitigation**: Unlike static "
+"partitioning, the SGLang Model Gateway enables request-level dynamic "
+"dispatching for multi-turn RL. It can distribute different turns of a "
+"conversation across different servers to balance workloads and eliminate "
+"long-tail latency caused by varying sequence lengths."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:248
+msgid ""
+"For deployment and configuration, see: [SGLang Model Gateway]"
+"(sgl_model_gateway.md)"
+msgstr ""

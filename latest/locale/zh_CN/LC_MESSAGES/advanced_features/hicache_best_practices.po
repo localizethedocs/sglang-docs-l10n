@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 08:30+0000\n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,14 +59,26 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/hicache_best_practices.md:22
-msgid "Key Configurations with Storage Backends Enabled"
+msgid "Notes:"
 msgstr ""
 
 #: ../../../advanced_features/hicache_best_practices.md:24
-msgid "Memory Layout Optimization"
+msgid ""
+"Besides configuring `--hicache-storage-backend` at startup, SGLang also "
+"supports **runtime attach/detach** of the HiCache storage backend (no "
+"restart required) via HTTP admin endpoints. See [Runtime Attach/Detach "
+"HiCache Storage Backend](hicache_storage_runtime_attach_detach.md)."
 msgstr ""
 
 #: ../../../advanced_features/hicache_best_practices.md:26
+msgid "Key Configurations with Storage Backends Enabled"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:28
+msgid "Memory Layout Optimization"
+msgstr ""
+
+#: ../../../advanced_features/hicache_best_practices.md:30
 msgid ""
 "# Page-first: Optimized for I/O efficiency with zero-copy (recommended with "
 "kernel backend)\n"
@@ -78,27 +90,27 @@ msgid ""
 "--hicache-mem-layout layer_first\n"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:34
+#: ../../../advanced_features/hicache_best_practices.md:38
 msgid "**Layout Compatibility:**"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:35
+#: ../../../advanced_features/hicache_best_practices.md:39
 msgid ""
 "`page_first`: Only compatible with `kernel` I/O backend, automatically "
 "switches to `layer_first` with `direct` backend"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:36
+#: ../../../advanced_features/hicache_best_practices.md:40
 msgid ""
 "`page_first_direct`: Specifically designed for `direct` I/O backend with "
 "optimized memory organization"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:38
+#: ../../../advanced_features/hicache_best_practices.md:42
 msgid "Prefetch Policies"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:40
+#: ../../../advanced_features/hicache_best_practices.md:44
 msgid ""
 "# Best-effort: Terminate prefetch when needed\n"
 "--hicache-storage-prefetch-policy best_effort\n"
@@ -108,30 +120,30 @@ msgid ""
 "--hicache-storage-prefetch-policy timeout\n"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:49
+#: ../../../advanced_features/hicache_best_practices.md:53
 msgid "Integration with PD Disaggregation"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:51
+#: ../../../advanced_features/hicache_best_practices.md:55
 msgid ""
 "HiCache works seamlessly with PD Disaggregation. You can choose between two "
 "configurations:"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:53
+#: ../../../advanced_features/hicache_best_practices.md:57
 msgid ""
 "**Prefill-only HiCache**: Enable HiCache only on Prefill nodes, allowing KV "
 "cache sharing among Prefill instances"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:54
+#: ../../../advanced_features/hicache_best_practices.md:58
 msgid ""
 "**Full HiCache with async offloading**: Enable HiCache on Prefill nodes and "
 "async KV cache offloading on Decode nodes, allowing Prefill nodes to reuse "
 "KV caches from Decode nodes in multi-turn dialogue scenarios"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:56
+#: ../../../advanced_features/hicache_best_practices.md:60
 msgid ""
 "# Prefill node with HiCache enabled for cross-prefill sharing (ideal for "
 "SystemPrompt scenarios)\n"
@@ -180,18 +192,18 @@ msgid ""
 "  --disaggregation-transfer-backend mooncake\n"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:102
+#: ../../../advanced_features/hicache_best_practices.md:106
 msgid "Deployment with HF3FS"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:104
+#: ../../../advanced_features/hicache_best_practices.md:108
 msgid ""
 "Here is an example of deploying DeepSeek-R1 with HiCache-HF3FS. For more "
 "details, see the [HF3FS Documentation](../../python/sglang/srt/mem_cache/"
 "storage/hf3fs/docs/README.md)."
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:106
+#: ../../../advanced_features/hicache_best_practices.md:110
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path /xxx/DeepSeek-R1/ \\\n"
@@ -213,18 +225,18 @@ msgid ""
 "  --hicache-storage-prefetch-policy wait_complete \\\n"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:127
+#: ../../../advanced_features/hicache_best_practices.md:131
 msgid "Deployment with Mooncake"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:129
+#: ../../../advanced_features/hicache_best_practices.md:133
 msgid ""
 "Here is an example of deploying Qwen3-235B-A22B-Instruct-2507 with Mooncake. "
 "For more details, see the [Mooncake Documentation](../../python/sglang/srt/"
 "mem_cache/storage/mooncake_store/README.md)."
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:131
+#: ../../../advanced_features/hicache_best_practices.md:135
 msgid ""
 "# Set Mooncake environment variables\n"
 "export MOONCAKE_TE_META_DATA_SERVER=\"http://127.0.0.1:8080/metadata\"\n"
@@ -247,54 +259,54 @@ msgid ""
 "  --hicache-storage-prefetch-policy timeout\n"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:154
+#: ../../../advanced_features/hicache_best_practices.md:158
 msgid "Custom Storage Backend Integration"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:156
+#: ../../../advanced_features/hicache_best_practices.md:160
 msgid "To integrate a new storage backend:"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:158
+#: ../../../advanced_features/hicache_best_practices.md:162
 msgid "**Implement three core methods:**"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:159
+#: ../../../advanced_features/hicache_best_practices.md:163
 msgid "`get(key)`: Retrieve value by key"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:160
+#: ../../../advanced_features/hicache_best_practices.md:164
 msgid "`exists(key)`: Check key existence"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:161
+#: ../../../advanced_features/hicache_best_practices.md:165
 msgid "`set(key, value)`: Store key-value pair"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:163
+#: ../../../advanced_features/hicache_best_practices.md:167
 msgid ""
 "**Register your backend:** Add your storage backend to the HiCache "
 "[BackendFactory](../../python/sglang/srt/mem_cache/storage/backend_factory."
 "py#L188)"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:165
+#: ../../../advanced_features/hicache_best_practices.md:169
 msgid ""
 "The HiCache controller handles all scheduling and synchronization "
 "automatically."
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:167
+#: ../../../advanced_features/hicache_best_practices.md:171
 msgid "Dynamic Backend Loading"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:169
+#: ../../../advanced_features/hicache_best_practices.md:173
 msgid ""
 "Alternatively, you can use dynamic loading to avoid hard-coding your backend "
 "in the repository:"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:171
+#: ../../../advanced_features/hicache_best_practices.md:175
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path your-model \\\n"
@@ -305,53 +317,53 @@ msgid ""
 "\"class_name\": \"YourHiCacheClassName\"}'\n"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:179
+#: ../../../advanced_features/hicache_best_practices.md:183
 msgid "**Configuration Parameters:**"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:180
+#: ../../../advanced_features/hicache_best_practices.md:184
 msgid "`--hicache-storage-backend`: Set to `dynamic`"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:181
+#: ../../../advanced_features/hicache_best_practices.md:185
 msgid "`--hicache-storage-backend-extra-config`: JSON configuration with:"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:182
+#: ../../../advanced_features/hicache_best_practices.md:186
 msgid "`backend_name`: Custom backend identifier"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:183
+#: ../../../advanced_features/hicache_best_practices.md:187
 msgid "`module_path`: Python module path to your implementation"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:184
+#: ../../../advanced_features/hicache_best_practices.md:188
 msgid "`class_name`: Your HiCache implementation class name"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:185
+#: ../../../advanced_features/hicache_best_practices.md:189
 msgid ""
 "`interface_v1`: 0 (disable) or 1 (enable) to control usage of batch_get_v1 "
 "and batch_set_v1 methods"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:188
+#: ../../../advanced_features/hicache_best_practices.md:192
 msgid "Community and Support"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:190
+#: ../../../advanced_features/hicache_best_practices.md:194
 msgid "**GitHub Issues**: Report bugs and feature requests"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:191
+#: ../../../advanced_features/hicache_best_practices.md:195
 msgid "**Slack Channel**: Join community discussions in #sgl-kv-cache-store"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:192
+#: ../../../advanced_features/hicache_best_practices.md:196
 msgid "**Documentation**: Refer to storage backend-specific guides"
 msgstr ""
 
-#: ../../../advanced_features/hicache_best_practices.md:196
+#: ../../../advanced_features/hicache_best_practices.md:200
 msgid ""
 "*This document will be continuously updated based on community feedback and "
 "new features. Contributions and suggestions are welcome!*"

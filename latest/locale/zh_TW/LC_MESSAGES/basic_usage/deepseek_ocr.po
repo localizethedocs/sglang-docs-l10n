@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/deepseek_ocr.md:1
+msgid "DeepSeek OCR (OCR-1 / OCR-2)"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:3
+msgid ""
+"DeepSeek OCR models are multimodal (image + text) models for OCR and "
+"document understanding."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:5
+msgid "Launch server"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:7
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-OCR-2 \\\n"
+"  --trust-remote-code \\\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:15
+msgid ""
+"You can replace `deepseek-ai/DeepSeek-OCR-2` with `deepseek-ai/DeepSeek-OCR`."
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:17
+msgid "Prompt examples"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:19
+msgid "Recommended prompts from the model card:"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:21
+msgid ""
+"<image>\n"
+"<|grounding|>Convert the document to markdown.\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:26
+msgid ""
+"<image>\n"
+"Free OCR.\n"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:31
+msgid "OpenAI-compatible request example"
+msgstr ""
+
+#: ../../../basic_usage/deepseek_ocr.md:33
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://localhost:30000/v1/chat/completions\"\n"
+"\n"
+"data = {\n"
+"    \"model\": \"deepseek-ai/DeepSeek-OCR-2\",\n"
+"    \"messages\": [\n"
+"        {\n"
+"            \"role\": \"user\",\n"
+"            \"content\": [\n"
+"                {\"type\": \"text\", \"text\": \"<image>\\n<|grounding|"
+">Convert the document to markdown.\"},\n"
+"                {\"type\": \"image_url\", \"image_url\": {\"url\": \"https://"
+"example.com/your_image.jpg\"}},\n"
+"            ],\n"
+"        }\n"
+"    ],\n"
+"    \"max_tokens\": 512,\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=data)\n"
+"print(response.text)\n"
+msgstr ""

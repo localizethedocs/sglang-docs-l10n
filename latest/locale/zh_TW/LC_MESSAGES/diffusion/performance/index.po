@@ -1,0 +1,244 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/performance/index.md:1
+msgid "Performance Optimization"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:3
+msgid ""
+"SGLang-Diffusion provides multiple performance optimization strategies to "
+"accelerate inference. This section covers all available performance tuning "
+"options."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:5
+msgid "Overview"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Optimization"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Type"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "**Cache-DiT**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Caching"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Block-level caching with DBCache, TaylorSeer, and SCM"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "**TeaCache**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Timestep-level caching using L1 similarity"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "**Attention Backends**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Kernel"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid ""
+"Optimized attention implementations (FlashAttention, SageAttention, etc.)"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "**Profiling**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "Diagnostics"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:0
+msgid "PyTorch Profiler and Nsight Systems guidance"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:14
+msgid "Caching Strategies"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:16
+msgid "SGLang supports two complementary caching approaches:"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:18
+msgid "Cache-DiT"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:20
+msgid ""
+"[Cache-DiT](https://github.com/vipshop/cache-dit) provides block-level "
+"caching with advanced strategies. It can achieve up to **1.69x speedup**."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:22
+msgid "**Quick Start:**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:23
+msgid ""
+"SGLANG_CACHE_DIT_ENABLED=true \\\n"
+"sglang generate --model-path Qwen/Qwen-Image \\\n"
+"    --prompt \"A beautiful sunset over the mountains\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:29
+msgid "**Key Features:**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:30
+msgid "**DBCache**: Dynamic block-level caching based on residual differences"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:31
+msgid ""
+"**TaylorSeer**: Taylor expansion-based calibration for optimized caching"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:32
+msgid "**SCM**: Step-level computation masking for additional speedup"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:34
+msgid ""
+"See [Cache-DiT Documentation](cache/cache_dit.md) for detailed configuration."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:36
+msgid "TeaCache"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:38
+msgid ""
+"TeaCache (Temporal similarity-based caching) accelerates diffusion inference "
+"by detecting when consecutive denoising steps are similar enough to skip "
+"computation entirely."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:40
+msgid "**Quick Overview:**"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:41
+msgid "Tracks L1 distance between modulated inputs across timesteps"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:42
+msgid "When accumulated distance is below threshold, reuses cached residual"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:43
+msgid "Supports CFG with separate positive/negative caches"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:45
+msgid ""
+"**Supported Models:** Wan (wan2.1, wan2.2), Hunyuan (HunyuanVideo), Z-Image"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:47
+msgid ""
+"See [TeaCache Documentation](cache/teacache.md) for detailed configuration."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:49
+msgid "Attention Backends"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:51
+msgid ""
+"Different attention backends offer varying performance characteristics "
+"depending on your hardware and model:"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:53
+msgid "**FlashAttention**: Fastest on NVIDIA GPUs with fp16/bf16"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:54
+msgid "**SageAttention**: Alternative optimized implementation"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:55
+msgid "**xformers**: Memory-efficient attention"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:56
+msgid "**SDPA**: PyTorch native scaled dot-product attention"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:58
+msgid ""
+"See [Attention Backends](attention_backends.md) for platform support and "
+"configuration options."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:60
+msgid "Profiling"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:62
+msgid ""
+"To diagnose performance bottlenecks, SGLang-Diffusion supports profiling "
+"tools:"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:64
+msgid "**PyTorch Profiler**: Built-in Python profiling"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:65
+msgid "**Nsight Systems**: GPU kernel-level analysis"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:67
+msgid "See [Profiling Guide](profiling.md) for detailed instructions."
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:69
+msgid "References"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:71
+msgid "[Cache-DiT Repository](https://github.com/vipshop/cache-dit)"
+msgstr ""
+
+#: ../../../diffusion/performance/index.md:72
+msgid "[TeaCache Paper](https://arxiv.org/abs/2411.14324)"
+msgstr ""

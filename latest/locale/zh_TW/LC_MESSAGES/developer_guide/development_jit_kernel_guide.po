@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:1
+msgid "Development Guide for JIT Kernels"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:3
+msgid "Environment Setup"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:5
+msgid ""
+"We strongly recommend using `clangd` as the language server for JIT kernel "
+"development. For Ubuntu/Debian, you can download clangd from [apt.llvm.org]"
+"(https://apt.llvm.org/). If you are using VS Code, we recommend installing "
+"the `clangd` extension for better IDE integration."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:9
+msgid ""
+"All JIT-related files are located in `python/sglang/jit_kernel`. Unlike `sgl-"
+"kernel`, which compiles CUDA/C++ binaries ahead of time (AOT), just-in-time "
+"(JIT) kernels are compiled at runtime. Consequently, a static "
+"`compile_commands.json` cannot be generated. To enable code completion with "
+"`clangd`, run `python -m sglang.jit_kernel` to generate a `.clangd` "
+"configuration file in your current directory. After generating the file, "
+"restart the clangd language server. It should now recognize all JIT kernel "
+"files."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:15
+msgid "Code Structure"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:17
+msgid "C++ Implementation"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:19
+msgid ""
+"C++ source code is located in `python/sglang/jit_kernel/csrc`. Reusable "
+"functions should be placed in `python/sglang/jit_kernel/include`."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:22
+msgid ""
+"We use [tvm-ffi](https://github.com/apache/tvm-ffi) for efficient foreign "
+"language bindings. Refer to the [documentation](https://tvm.apache.org/ffi/) "
+"for advanced usage, such as exporting C++ objects. Typically, `tvm::ffi::"
+"TensorView` is sufficient for passing PyTorch Tensors from Python."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:26
+msgid "Python Interface"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:28
+msgid ""
+"Python interfaces are defined in `python/sglang/jit_kernel`. The `load_jit` "
+"utility function in `python/sglang/jit_kernel/utils.py` loads and returns "
+"the compiled module. To export a C++ function (e.g., `cpp_func`), pass "
+"`cuda_wrappers=[(\"func\", \"cpp_func\")]` to `load_jit`. The function can "
+"then be called in Python as `module.func`."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:33
+msgid ""
+"For caching compiled modules, prefer `sglang.jit_kernel.utils.cache_once` "
+"over `functools.lru_cache`. `functools.lru_cache` is not compatible with "
+"`torch.compile`."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:36
+msgid "C++ Utilities"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:38
+msgid "The following C++ utilities are available:"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:40
+msgid "Integer Range"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:42
+msgid ""
+"Similar to PyTorch, we provide an `irange` function to represent an integer "
+"range."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:44
+msgid ""
+"#include <sgl_kernel/utils.h>\n"
+"\n"
+"void test() {\n"
+"  for (auto i : host::irange(100)) { // [0, 100)\n"
+"    // do something\n"
+"  }\n"
+"  for (auto i : host::irange(0, 100)) { // [0, 100)\n"
+"    // do something\n"
+"  }\n"
+"}\n"
+"\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:58
+msgid "Runtime Checking"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:60
+msgid ""
+"`RuntimeCheck` validates conditions at runtime. It accepts optional "
+"arguments for error reporting. If the check fails, these arguments are "
+"output to aid debugging. `RuntimeDeviceCheck` verifies the status of the "
+"last kernel launch."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:64
+msgid ""
+"#include <sgl_kernel/utils.h>\n"
+"#include <sgl_kernel/utils.cuh>\n"
+"\n"
+"void test() {\n"
+"  host::RuntimeCheck(1 + 1 == 2, 1 + 1, \" != \", 2);\n"
+"  host::RuntimeDeviceCheck();\n"
+"  // check the provided `cudaError_t`\n"
+"  host::RuntimeDeviceCheck(cudaGetLastError());\n"
+"}\n"
+"\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:77
+msgid "Tensor Checking"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:79
+msgid ""
+"`TensorMatcher` provides a readable way to validate and extract tensor shape "
+"information."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:81
+msgid ""
+"#include <sgl_kernel/tensor.h>\n"
+"\n"
+"void test(const tvm::ffi::TensorView k_cache, const tvm::ffi::TensorView "
+"v_cache) {\n"
+"  using namespace host;\n"
+"\n"
+"  auto D = SymbolicSize{\"D\"};  // cache dimension\n"
+"  auto N = SymbolicSize{\"N\"};  // kvcache stride\n"
+"  auto dtype = SymbolicDType{};\n"
+"  auto device = SymbolicDevice{};\n"
+"\n"
+"  TensorMatcher({-1, D})  //\n"
+"      .with_strides({N, 1})\n"
+"      .with_dtype<int32_t, int64_t>(dtype)\n"
+"      .with_device<kDLCUDA, kDLCPU>(device)\n"
+"      .verify(k_cache)\n"
+"      .verify(v_cache);\n"
+"}\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:101
+msgid ""
+"Configure the `TensorMatcher` with expected stride, dtype, and device "
+"properties before verification."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:102
+msgid "If `with_strides` is omitted, the tensor is expected to be contiguous."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:103
+msgid "Template arguments in `with_dtype` restrict the allowed data types."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:104
+msgid "Template arguments in `with_device` restrict the allowed devices."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:105
+msgid "Values passed to `with_xxx` methods enforce equality checks."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:106
+msgid "Passing `-1` for size or stride allows matching any value."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:108
+msgid ""
+"A `Symbolic` variable must resolve to the same value across all "
+"verifications. Use `.unwrap()` to retrieve the matched value after "
+"verification."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:111
+msgid ""
+"Note: `TensorMatcher` is a temporary expression and should not be stored in "
+"a variable."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:113
+msgid ""
+"Tip: Add `//` at the end of the `TensorMatcher` chain to enforce proper "
+"indentation."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:115
+msgid "Kernel Launching"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:117
+msgid ""
+"`LaunchKernel::resolve_device` retrieves the current `cudaStream` from "
+"PyTorch. Kernels can also be launched directly using `LaunchKernel`."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:120
+msgid ""
+"#include <sgl_kernel/utils.cuh>\n"
+"\n"
+"#include <dlpack/dlpack.h>\n"
+"\n"
+"__global__ void kernel() {}\n"
+"\n"
+"void test() {\n"
+"  const auto num_blocks = 1;\n"
+"  const auto num_threads = 32;\n"
+"  const auto dynamic_smem = 0;\n"
+"\n"
+"  DLDevice dev;  // suppose this is initialized properly\n"
+"  host::LaunchKernel(num_blocks, num_threads, dev)(kernel);\n"
+"\n"
+"  cudaStream_t stream = host::LaunchKernel::resolve_device(dev);\n"
+"  host::LaunchKernel(num_blocks, num_threads, stream, dynamic_smem)"
+"(kernel);\n"
+"}\n"
+"\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:141
+msgid "Add new kernels"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:143
+msgid ""
+"This section walks through a complete, end-to-end example of adding a new "
+"JIT kernel to the system. We use a simple add_constant kernel as a running "
+"example, which adds a constant integer value to every element of an input "
+"tensor."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:146
+msgid "Conceptually, the Python interface looks like this:"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:148
+msgid ""
+"def add_constant(src: torch.Tensor, c: int):\n"
+"    return src + c\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:153
+msgid "STEP 1: Write the C++ kernel"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:155
+msgid ""
+"Write your CUDA kernel in [jit_kernel/csrc/add_constant.cuh](../../python/"
+"sglang/jit_kernel/csrc/add_constant.cuh). For demonstration purposes, we "
+"pass the constant value as a template parameter."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:157
+msgid ""
+"#include <sgl_kernel/tensor.h>   // For TensorMatcher, SymbolicSize, "
+"SymbolicDevice\n"
+"#include <sgl_kernel/utils.cuh>  // For LaunchKernel\n"
+"#include <sgl_kernel/utils.h>    // For div_ceil, RuntimeCheck\n"
+"\n"
+"#include <dlpack/dlpack.h>\n"
+"#include <tvm/ffi/container/tensor.h>\n"
+"\n"
+"#include <cstddef>\n"
+"#include <cstdint>\n"
+"\n"
+"namespace {\n"
+"\n"
+"template <int32_t kConstant>\n"
+"__global__ void add_constant_kernel(int32_t* dst, const int32_t* src, size_t "
+"length) {\n"
+"  size_t idx = blockIdx.x * blockDim.x + threadIdx.x;\n"
+"  if (idx < length) {\n"
+"    dst[idx] = src[idx] + kConstant;\n"
+"  }\n"
+"}\n"
+"\n"
+"constexpr size_t kBlockSize = 256;\n"
+"\n"
+"// You can also use struct with static method as an alternative\n"
+"template <int32_t kConstant>\n"
+"void add_constant(tvm::ffi::TensorView dst, tvm::ffi::TensorView src) {\n"
+"  using namespace host;\n"
+"\n"
+"  // 1. Validate input tensors\n"
+"  SymbolicSize N = {\"num_elements\"};\n"
+"  SymbolicDevice device_;\n"
+"  TensorMatcher({N})                  // 1D tensor, must be contiguous\n"
+"      .with_dtype<int32_t>()          // must be int32\n"
+"      .with_device<kDLCUDA>(device_)  // must be on CUDA device\n"
+"      .verify(dst)                    // check tensor dst\n"
+"      .verify(src);                   // check tensor src\n"
+"\n"
+"  // 2. Extract required parameters, prepare for kernel launch\n"
+"  const size_t num_elements = N.unwrap();\n"
+"  const size_t grid_size = div_ceil(num_elements, kBlockSize);\n"
+"  const DLDevice device = device_.unwrap();\n"
+"  // some extra runtime checks using host::RuntimeCheck\n"
+"  RuntimeCheck(num_elements > 0, \"We only support non-empty tensors, got "
+"num_elements = \", num_elements);\n"
+"\n"
+"  // 3. Launch the kernel. Error code will be automatically checked.\n"
+"  LaunchKernel(grid_size, kBlockSize, device /*, dynamic_smem*/)(\n"
+"      // kernel function\n"
+"      add_constant_kernel<kConstant>,\n"
+"      // kernel arguments\n"
+"      static_cast<int32_t*>(dst.data_ptr()),\n"
+"      static_cast<int32_t*>(src.data_ptr()),\n"
+"      num_elements);\n"
+"}\n"
+"\n"
+"}  // namespace\n"
+"\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:215
+msgid "STEP 2: Create Python Interfaces"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:217
+msgid ""
+"Next, expose the kernel through a Python wrapper. Create a new file at "
+"[jit_kernel/add_constant.py](../../python/sglang/jit_kernel/add_constant.py) "
+"and expose the needed interfaces."
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:220
+msgid ""
+"from __future__ import annotations\n"
+"from typing import TYPE_CHECKING\n"
+"\n"
+"import torch\n"
+"\n"
+"from sglang.jit_kernel.utils import cache_once, load_jit, make_cpp_args\n"
+"\n"
+"if TYPE_CHECKING:\n"
+"    from tvm_ffi.module import Module\n"
+"\n"
+"\n"
+"@cache_once\n"
+"def _jit_add_constant_module(constant: int) -> Module:\n"
+"    args = make_cpp_args(constant)  # pass all the template argument\n"
+"    return load_jit(\n"
+"        \"add_constant\",\n"
+"        *args,\n"
+"        cuda_files=[\"add_constant.cuh\"],\n"
+"        cuda_wrappers=[(\"add_constant\", f\"add_constant<{args}>\")],\n"
+"    )\n"
+"\n"
+"\n"
+"def add_constant(src: torch.Tensor, constant: int) -> torch.Tensor:\n"
+"    dst = torch.empty_like(src)\n"
+"    module = _jit_add_constant_module(constant)\n"
+"    module.add_constant(dst, src)\n"
+"    return dst\n"
+"\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:251
+msgid "STEP 3: Use your kernel"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:253
+msgid "Finally, import and use the kernel like a regular Python function:"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:255
+msgid "from sglang.jit_kernel.add_constant import add_constant\n"
+msgstr ""
+
+#: ../../../developer_guide/development_jit_kernel_guide.md:259
+msgid ""
+"For a complete, runnable example, refer to [test_add_constant.py](../../"
+"python/sglang/jit_kernel/tests/test_add_constant.py)."
+msgstr ""

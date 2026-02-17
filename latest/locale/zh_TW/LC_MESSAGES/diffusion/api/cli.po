@@ -1,0 +1,604 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/api/cli.md:1
+msgid "SGLang diffusion CLI Inference"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:3
+msgid ""
+"The SGLang-diffusion CLI provides a quick way to access the inference "
+"pipeline for image and video generation."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:5
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:7
+msgid ""
+"A working SGLang diffusion installation and the `sglang` CLI available in "
+"`$PATH`."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:10
+msgid "Supported Arguments"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:12
+msgid "Server Arguments"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:14
+msgid "`--model-path {MODEL_PATH}`: Path to the model or model ID"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:15
+msgid ""
+"`--vae-path {VAE_PATH}`: Path to a custom VAE model or HuggingFace model ID "
+"(e.g., `fal/FLUX.2-Tiny-AutoEncoder`). If not specified, the VAE will be "
+"loaded from the main model path."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:16
+msgid ""
+"`--lora-path {LORA_PATH}`: Path to a LoRA adapter (local path or HuggingFace "
+"model ID). If not specified, LoRA will not be applied."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:17
+msgid ""
+"`--lora-nickname {NAME}`: Nickname for the LoRA adapter. (default: "
+"`default`)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:18
+msgid "`--num-gpus {NUM_GPUS}`: Number of GPUs to use"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:19
+msgid ""
+"`--tp-size {TP_SIZE}`: Tensor parallelism size (only for the encoder; should "
+"not be larger than 1 if text encoder offload is enabled, as layer-wise "
+"offload plus prefetch is faster)"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:20
+msgid ""
+"`--sp-degree {SP_SIZE}`: Sequence parallelism size (typically should match "
+"the number of GPUs)"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:21
+msgid ""
+"`--ulysses-degree {ULYSSES_DEGREE}`: The degree of DeepSpeed-Ulysses-style "
+"SP in USP"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:22
+msgid ""
+"`--ring-degree {RING_DEGREE}`: The degree of ring attention-style SP in USP"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:23
+msgid ""
+"`--attention-backend {BACKEND}`: Attention backend to use. For SGLang-native "
+"pipelines use `fa`, `torch_sdpa`, `sage_attn`, etc. For diffusers pipelines "
+"use diffusers backend names like `flash`, `_flash_3_hub`, `sage`, `xformers`."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:24
+msgid ""
+"`--attention-backend-config {CONFIG}`: Configuration for the attention "
+"backend. Can be a JSON string (e.g., '{\"k\": \"v\"}'), a path to a JSON/"
+"YAML file, or key=value pairs (e.g., \"k=v,k2=v2\")."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:25
+msgid ""
+"`--cache-dit-config {PATH}`: Path to a Cache-DiT YAML/JSON config (diffusers "
+"backend only)"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:26
+msgid ""
+"`--dit-precision {DTYPE}`: Precision for the DiT model (currently supports "
+"fp32, fp16, and bf16)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:29
+msgid "Sampling Parameters"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:31
+msgid ""
+"`--prompt {PROMPT}`: Text description for the video you want to generate"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:32
+msgid "`--num-inference-steps {STEPS}`: Number of denoising steps"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:33
+msgid ""
+"`--negative-prompt {PROMPT}`: Negative prompt to guide generation away from "
+"certain concepts"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:34
+msgid "`--seed {SEED}`: Random seed for reproducible generation"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:37
+msgid "**Image/Video Configuration**"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:39
+msgid "`--height {HEIGHT}`: Height of the generated output"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:40
+msgid "`--width {WIDTH}`: Width of the generated output"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:41
+msgid "`--num-frames {NUM_FRAMES}`: Number of frames to generate"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:42
+msgid ""
+"`--fps {FPS}`: Frames per second for the saved output, if this is a video-"
+"generation task"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:45
+msgid "**Output Options**"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:47
+msgid "`--output-path {PATH}`: Directory to save the generated video"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:48
+msgid "`--save-output`: Whether to save the image/video to disk"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:49
+msgid "`--return-frames`: Whether to return the raw frames"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:51
+msgid "Using Configuration Files"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:53
+msgid ""
+"Instead of specifying all parameters on the command line, you can use a "
+"configuration file:"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:55
+msgid "sglang generate --config {CONFIG_FILE_PATH}\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:59
+msgid ""
+"The configuration file should be in JSON or YAML format with the same "
+"parameter names as the CLI options. Command-line arguments take precedence "
+"over settings in the configuration file, allowing you to override specific "
+"values while keeping the rest from the configuration file."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:61
+msgid "Example configuration file (config.json):"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:63
+msgid ""
+"{\n"
+"    \"model_path\": \"FastVideo/FastHunyuan-diffusers\",\n"
+"    \"prompt\": \"A beautiful woman in a red dress walking down a street\",\n"
+"    \"output_path\": \"outputs/\",\n"
+"    \"num_gpus\": 2,\n"
+"    \"sp_size\": 2,\n"
+"    \"tp_size\": 1,\n"
+"    \"num_frames\": 45,\n"
+"    \"height\": 720,\n"
+"    \"width\": 1280,\n"
+"    \"num_inference_steps\": 6,\n"
+"    \"seed\": 1024,\n"
+"    \"fps\": 24,\n"
+"    \"precision\": \"bf16\",\n"
+"    \"vae_precision\": \"fp16\",\n"
+"    \"vae_tiling\": true,\n"
+"    \"vae_sp\": true,\n"
+"    \"vae_config\": {\n"
+"        \"load_encoder\": false,\n"
+"        \"load_decoder\": true,\n"
+"        \"tile_sample_min_height\": 256,\n"
+"        \"tile_sample_min_width\": 256\n"
+"    },\n"
+"    \"text_encoder_precisions\": [\n"
+"        \"fp16\",\n"
+"        \"fp16\"\n"
+"    ],\n"
+"    \"mask_strategy_file_path\": null,\n"
+"    \"enable_torch_compile\": false\n"
+"}\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:96
+msgid "Or using YAML format (config.yaml):"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:98
+msgid ""
+"model_path: \"FastVideo/FastHunyuan-diffusers\"\n"
+"prompt: \"A beautiful woman in a red dress walking down a street\"\n"
+"output_path: \"outputs/\"\n"
+"num_gpus: 2\n"
+"sp_size: 2\n"
+"tp_size: 1\n"
+"num_frames: 45\n"
+"height: 720\n"
+"width: 1280\n"
+"num_inference_steps: 6\n"
+"seed: 1024\n"
+"fps: 24\n"
+"precision: \"bf16\"\n"
+"vae_precision: \"fp16\"\n"
+"vae_tiling: true\n"
+"vae_sp: true\n"
+"vae_config:\n"
+"  load_encoder: false\n"
+"  load_decoder: true\n"
+"  tile_sample_min_height: 256\n"
+"  tile_sample_min_width: 256\n"
+"text_encoder_precisions:\n"
+"  - \"fp16\"\n"
+"  - \"fp16\"\n"
+"mask_strategy_file_path: null\n"
+"enable_torch_compile: false\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:128
+msgid "To see all the options, you can use the `--help` flag:"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:130
+msgid "sglang generate --help\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:134
+msgid "Serve"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:136
+msgid ""
+"Launch the SGLang diffusion HTTP server and interact with it using the "
+"OpenAI SDK and curl."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:138
+msgid "Start the server"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:140
+msgid "Use the following command to launch the server:"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:142
+msgid ""
+"SERVER_ARGS=(\n"
+"  --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers\n"
+"  --text-encoder-cpu-offload\n"
+"  --pin-cpu-memory\n"
+"  --num-gpus 4\n"
+"  --ulysses-degree=2\n"
+"  --ring-degree=2\n"
+")\n"
+"\n"
+"sglang serve \"${SERVER_ARGS[@]}\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:155
+msgid ""
+"**--model-path**: Which model to load. The example uses `Wan-AI/Wan2.1-"
+"T2V-1.3B-Diffusers`."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:156
+msgid "**--port**: HTTP port to listen on (the default here is `30010`)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:158
+msgid ""
+"For detailed API usage, including Image, Video Generation and LoRA "
+"management, please refer to the [OpenAI API Documentation](openai_api.md)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:160
+msgid "Cloud Storage Support"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:162
+msgid ""
+"SGLang diffusion supports automatically uploading generated images and "
+"videos to S3-compatible cloud storage (e.g., AWS S3, MinIO, Alibaba Cloud "
+"OSS, Tencent Cloud COS)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:164
+msgid ""
+"When enabled, the server follows a **Generate -> Upload -> Delete** workflow:"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:165
+msgid "The artifact is generated to a temporary local file."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:166
+msgid ""
+"The file is immediately uploaded to the configured S3 bucket in a background "
+"thread."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:167
+msgid "Upon successful upload, the local file is deleted."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:168
+msgid "The API response returns the public URL of the uploaded object."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:170
+msgid "**Configuration**"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:172
+msgid ""
+"Cloud storage is enabled via environment variables. Note that `boto3` must "
+"be installed separately (`pip install boto3`) to use this feature."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:174
+msgid ""
+"# Enable S3 storage\n"
+"export SGLANG_CLOUD_STORAGE_TYPE=s3\n"
+"export SGLANG_S3_BUCKET_NAME=my-bucket\n"
+"export SGLANG_S3_ACCESS_KEY_ID=your-access-key\n"
+"export SGLANG_S3_SECRET_ACCESS_KEY=your-secret-key\n"
+"\n"
+"# Optional: Custom endpoint for MinIO/OSS/COS\n"
+"export SGLANG_S3_ENDPOINT_URL=https://minio.example.com\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:185
+msgid ""
+"See [Environment Variables Documentation](../environment_variables.md) for "
+"more details."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:187
+msgid "Generate"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:189
+msgid "Run a one-off generation task without launching a persistent server."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:191
+msgid ""
+"To use it, pass both server arguments and sampling parameters in one "
+"command, after the `generate` subcommand, for example:"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:193
+msgid ""
+"SERVER_ARGS=(\n"
+"  --model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers\n"
+"  --text-encoder-cpu-offload\n"
+"  --pin-cpu-memory\n"
+"  --num-gpus 4\n"
+"  --ulysses-degree=2\n"
+"  --ring-degree=2\n"
+")\n"
+"\n"
+"SAMPLING_ARGS=(\n"
+"  --prompt \"A curious raccoon\"\n"
+"  --save-output\n"
+"  --output-path outputs\n"
+"  --output-file-name \"A curious raccoon.mp4\"\n"
+")\n"
+"\n"
+"sglang generate \"${SERVER_ARGS[@]}\" \"${SAMPLING_ARGS[@]}\"\n"
+"\n"
+"# Or, users can set `SGLANG_CACHE_DIT_ENABLED` env as `true` to enable cache "
+"acceleration\n"
+"SGLANG_CACHE_DIT_ENABLED=true sglang generate \"${SERVER_ARGS[@]}\" "
+"\"${SAMPLING_ARGS[@]}\"\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:216
+msgid ""
+"Once the generation task has finished, the server will shut down "
+"automatically."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:218
+msgid ""
+"[!NOTE] The HTTP server-related arguments are ignored in this subcommand."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:221
+msgid "Diffusers Backend"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:223
+msgid ""
+"SGLang diffusion supports a **diffusers backend** that allows you to run any "
+"diffusers-compatible model through SGLang's infrastructure using vanilla "
+"diffusers pipelines. This is useful for running models without native SGLang "
+"implementations or models with custom pipeline classes."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:225
+msgid "Arguments"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Argument"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Values"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--backend`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`auto` (default), `sglang`, `diffusers`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid ""
+"`auto`: prefer native SGLang, fallback to diffusers. `sglang`: force native "
+"(fails if unavailable). `diffusers`: force vanilla diffusers pipeline."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--diffusers-attention-backend`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`flash`, `_flash_3_hub`, `sage`, `xformers`, `native`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid ""
+"Attention backend for diffusers pipelines. See [diffusers attention backends]"
+"(https://huggingface.co/docs/diffusers/main/en/optimization/"
+"attention_backends)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--trust-remote-code`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "flag"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Required for models with custom pipeline classes (e.g., Ovis)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--vae-tiling`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Enable VAE tiling for large image support (decodes tile-by-tile)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--vae-slicing`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Enable VAE slicing for lower memory usage (decodes slice-by-slice)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--dit-precision`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`fp16`, `bf16`, `fp32`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Precision for the diffusion transformer."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "`--vae-precision`"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:0
+msgid "Precision for the VAE."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:237
+msgid "Example: Running Ovis-Image-7B"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:239
+msgid ""
+"[Ovis-Image-7B](https://huggingface.co/AIDC-AI/Ovis-Image-7B) is a 7B text-"
+"to-image model optimized for high-quality text rendering."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:241
+msgid ""
+"sglang generate \\\n"
+"  --model-path AIDC-AI/Ovis-Image-7B \\\n"
+"  --backend diffusers \\\n"
+"  --trust-remote-code \\\n"
+"  --diffusers-attention-backend flash \\\n"
+"  --prompt \"A serene Japanese garden with cherry blossoms\" \\\n"
+"  --height 1024 \\\n"
+"  --width 1024 \\\n"
+"  --num-inference-steps 30 \\\n"
+"  --save-output \\\n"
+"  --output-path outputs \\\n"
+"  --output-file-name ovis_garden.png\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:256
+msgid "Extra Diffusers Arguments"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:258
+msgid ""
+"For pipeline-specific parameters not exposed via CLI, use `diffusers_kwargs` "
+"in a config file:"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:260
+msgid ""
+"{\n"
+"    \"model_path\": \"AIDC-AI/Ovis-Image-7B\",\n"
+"    \"backend\": \"diffusers\",\n"
+"    \"prompt\": \"A beautiful landscape\",\n"
+"    \"diffusers_kwargs\": {\n"
+"        \"cross_attention_kwargs\": {\"scale\": 0.5}\n"
+"    }\n"
+"}\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:271
+msgid "sglang generate --config config.json\n"
+msgstr ""
