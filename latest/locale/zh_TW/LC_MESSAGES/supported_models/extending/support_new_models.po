@@ -109,7 +109,7 @@ msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:47
 msgid "Testing and Debugging"
-msgstr ""
+msgstr "測試與除錯"
 
 #: ../../../supported_models/extending/support_new_models.md:49
 msgid ""
@@ -143,7 +143,7 @@ msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:61
 msgid "python3 -m sglang.bench_one_batch --correct --model [new model]\n"
-msgstr ""
+msgstr "python3 -m sglang.bench_one_batch --correct --model [新模型]\n"
 
 #: ../../../supported_models/extending/support_new_models.md:65
 msgid "Add the Model to the Test Suite"
@@ -174,6 +174,8 @@ msgid ""
 "ONLY_RUN=Qwen/Qwen2-1.5B python3 -m unittest test_generation_models."
 "TestGenerationModels.test_others\n"
 msgstr ""
+"ONLY_RUN=Qwen/Qwen2-1.5B python3 -m unittest test_generation_models."
+"TestGenerationModels.test_others\n"
 
 #: ../../../supported_models/extending/support_new_models.md:79
 msgid "Benchmark"
@@ -256,7 +258,7 @@ msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:100
 msgid "**Remove `Sample`.**"
-msgstr ""
+msgstr "**移除 `Sample`。**"
 
 #: ../../../supported_models/extending/support_new_models.md:101
 msgid ""
@@ -292,7 +294,7 @@ msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:112
 msgid "For example:"
-msgstr ""
+msgstr "例如："
 
 #: ../../../supported_models/extending/support_new_models.md:114
 msgid ""
@@ -390,6 +392,15 @@ msgid ""
 "        super().__init__(config=config, quant_config=quant_config, "
 "prefix=prefix)\n"
 msgstr ""
+"class LlamaWrapper(LlamaForCausalLM):\n"
+"    def __init__(\n"
+"        self,\n"
+"        config: LlamaConfig,\n"
+"        quant_config: Optional[QuantizationConfig] = None,\n"
+"        prefix: str = \"\",\n"
+"    ) -> None:\n"
+"        super().__init__(config=config, quant_config=quant_config, "
+"prefix=prefix)\n"
 
 #: ../../../supported_models/extending/support_new_models.md:176
 msgid ""
@@ -420,6 +431,16 @@ msgid ""
 "        get_embedding: bool = False,\n"
 "    ) -> LogitsProcessorOutput:\n"
 msgstr ""
+"    @torch.no_grad()\n"
+"    def forward(\n"
+"        self,\n"
+"        input_ids: torch.Tensor,\n"
+"        positions: torch.Tensor,\n"
+"        forward_batch: ForwardBatch,\n"
+"        pp_proxy_tensors: Optional[PPProxyTensors] = None,\n"
+"        input_embeds: Optional[torch.Tensor] = None,\n"
+"        get_embedding: bool = False,\n"
+"    ) -> LogitsProcessorOutput:\n"
 
 #: ../../../supported_models/extending/support_new_models.md:193
 msgid ""
@@ -526,6 +547,13 @@ msgid ""
 "  ...\n"
 "}\n"
 msgstr ""
+"{\n"
+"  \"architectures\": [\n"
+"   #  \"LlamaForCausalLM\"\n"
+"    \"LlamaWrapper\"\n"
+"  ],\n"
+"  ...\n"
+"}\n"
 
 #: ../../../supported_models/extending/support_new_models.md:267
 msgid ""
@@ -594,7 +622,7 @@ msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:313
 msgid "Documentation"
-msgstr ""
+msgstr "文件"
 
 #: ../../../supported_models/extending/support_new_models.md:315
 msgid ""
