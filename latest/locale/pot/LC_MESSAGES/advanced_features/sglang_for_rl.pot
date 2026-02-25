@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"POT-Creation-Date: 2026-02-23 08:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -129,11 +130,12 @@ msgstr ""
 #: ../../../advanced_features/sglang_for_rl.md:39
 #: ../../../advanced_features/sglang_for_rl.md:54
 #: ../../../advanced_features/sglang_for_rl.md:84
-#: ../../../advanced_features/sglang_for_rl.md:122
-#: ../../../advanced_features/sglang_for_rl.md:151
-#: ../../../advanced_features/sglang_for_rl.md:166
-#: ../../../advanced_features/sglang_for_rl.md:183
-#: ../../../advanced_features/sglang_for_rl.md:207
+#: ../../../advanced_features/sglang_for_rl.md:115
+#: ../../../advanced_features/sglang_for_rl.md:145
+#: ../../../advanced_features/sglang_for_rl.md:174
+#: ../../../advanced_features/sglang_for_rl.md:189
+#: ../../../advanced_features/sglang_for_rl.md:206
+#: ../../../advanced_features/sglang_for_rl.md:230
 msgid "**Request body:**"
 msgstr ""
 
@@ -251,8 +253,8 @@ msgid "Update Weights from Disk"
 msgstr ""
 
 #: ../../../advanced_features/sglang_for_rl.md:73
-#: ../../../advanced_features/sglang_for_rl.md:111
-#: ../../../advanced_features/sglang_for_rl.md:138
+#: ../../../advanced_features/sglang_for_rl.md:134
+#: ../../../advanced_features/sglang_for_rl.md:161
 msgid "**When to use:**"
 msgstr ""
 
@@ -391,6 +393,7 @@ msgid "`True`"
 msgstr ""
 
 #: ../../../advanced_features/sglang_for_rl.md:99
+#: ../../../advanced_features/sglang_for_rl.md:123
 msgid "**Response body:**"
 msgstr ""
 
@@ -429,23 +432,86 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/sglang_for_rl.md:109
-msgid "Update Weights from Tensor"
+msgid ""
+"**Diffusion engine (SGLang-Diffusion):** The diffusion engine exposes the "
+"same `POST /update_weights_from_disk` endpoint with the following behavior:"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:111
+msgid ""
+"**All-or-nothing with rollback:** if any module fails to load, all "
+"previously updated modules are rolled back to the original weights by "
+"reloading from the original model path. No partial updates are left behind. "
+"If rollback itself fails, the exception propagates so the caller knows the "
+"model is in an inconsistent state."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:112
+msgid ""
+"**Offload-aware:** when layerwise offload (`--dit-layerwise-offload`) is "
+"enabled, the diffusion offload manager replaces GPU parameters with small "
+"`torch.empty((1,))` placeholders while real weights live in consolidated "
+"pinned CPU buffers. A naive `param.data.copy_()` would fail with a shape "
+"mismatch. Instead, the updater dynamically detects active offload managers "
+"and writes new weights directly into their CPU buffers, bypassing the "
+"placeholders entirely. For any layer that happens to be prefetched on GPU at "
+"update time, the live GPU tensor is also updated so the change takes effect "
+"immediately. This requires no extra GPU memory and does not disturb the "
+"offload state."
 msgstr ""
 
 #: ../../../advanced_features/sglang_for_rl.md:113
 msgid ""
+"**DTensor-aware:** parameters distributed via `torch.distributed.tensor` "
+"(tensor parallelism) are updated through `distribute_tensor` so that each "
+"shard is correctly placed on the right device mesh."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Flush TeaCache state after update."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "`target_modules`"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid ""
+"List of module names to update (e.g. `[\"transformer\"]`). If omitted, all "
+"`nn.Module` components are updated."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:0
+msgid "Type: list[str]"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:130
+msgid ""
+"**Note:** The diffusion engine (SGLang-Diffusion) does not currently support "
+"hot refit (updating weights while inference is in progress). The diffusion "
+"scheduler processes one request at a time and completes the entire inference "
+"before handling the next request, so weight updates and inference never run "
+"concurrently."
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:132
+msgid "Update Weights from Tensor"
+msgstr ""
+
+#: ../../../advanced_features/sglang_for_rl.md:136
+msgid ""
 "Co-located training and rollout, where training can provide tensors directly"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:114
+#: ../../../advanced_features/sglang_for_rl.md:137
 msgid "Fast in-memory updates"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:116
+#: ../../../advanced_features/sglang_for_rl.md:139
 msgid "**Important constraints:**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:118
+#: ../../../advanced_features/sglang_for_rl.md:141
 msgid ""
 "This strategy requires the training process and rollout engine to share "
 "access to the tensors. Co-located setups must keep the model on GPU; moving "
@@ -454,7 +520,7 @@ msgid ""
 "compared to disaggregated rollouts."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:120
+#: ../../../advanced_features/sglang_for_rl.md:143
 msgid "**Endpoint:** `POST /update_weights_from_tensor`"
 msgstr ""
 
@@ -482,36 +548,36 @@ msgstr ""
 msgid "Optional version label tracked by the server."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:132
+#: ../../../advanced_features/sglang_for_rl.md:155
 msgid ""
 "**Note:** The serialized tensor payloads must be created with "
 "`MultiprocessingSerializer.serialize(...)` and should be base64-safe strings."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:134
+#: ../../../advanced_features/sglang_for_rl.md:157
 msgid ""
 "**Python Engine API:** `engine.update_weights_from_tensor(named_tensors, "
 "load_format=None, flush_cache=True)`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:136
+#: ../../../advanced_features/sglang_for_rl.md:159
 msgid "Update Weights from Distributed Group"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:140
+#: ../../../advanced_features/sglang_for_rl.md:163
 msgid "Disaggregated training and rollout"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:141
+#: ../../../advanced_features/sglang_for_rl.md:164
 msgid ""
 "NCCL or IB-backed weight broadcast from training workers to rollout workers"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:143
+#: ../../../advanced_features/sglang_for_rl.md:166
 msgid "**How it works:**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:145
+#: ../../../advanced_features/sglang_for_rl.md:168
 msgid ""
 "Training workers gather weights (typically on TP rank 0), broadcast them to "
 "the rollout group, and each rollout TP shard loads the parameters it needs. "
@@ -519,11 +585,11 @@ msgid ""
 "of managing a dedicated communication group."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:147
+#: ../../../advanced_features/sglang_for_rl.md:170
 msgid "**Initialize weight update group**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:149
+#: ../../../advanced_features/sglang_for_rl.md:172
 msgid "**Endpoint:** `POST /init_weights_update_group`"
 msgstr ""
 
@@ -583,11 +649,11 @@ msgstr ""
 msgid "`nccl`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:162
+#: ../../../advanced_features/sglang_for_rl.md:185
 msgid "**Update weight**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:164
+#: ../../../advanced_features/sglang_for_rl.md:187
 msgid "**Endpoint:** `POST /update_weights_from_distributed`"
 msgstr ""
 
@@ -597,10 +663,6 @@ msgstr ""
 
 #: ../../../advanced_features/sglang_for_rl.md:0
 msgid "Parameter names to update."
-msgstr ""
-
-#: ../../../advanced_features/sglang_for_rl.md:0
-msgid "Type: list[str]"
 msgstr ""
 
 #: ../../../advanced_features/sglang_for_rl.md:0
@@ -635,42 +697,42 @@ msgstr ""
 msgid "`None` or `flattened_bucket`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:179
+#: ../../../advanced_features/sglang_for_rl.md:202
 msgid "**Destroy weights update group**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:181
+#: ../../../advanced_features/sglang_for_rl.md:204
 msgid "**Endpoint:** `POST /destroy_weights_update_group`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:189
+#: ../../../advanced_features/sglang_for_rl.md:212
 msgid "**Python Engine APIs:**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:191
+#: ../../../advanced_features/sglang_for_rl.md:214
 msgid "`engine.init_weights_update_group(...)`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:192
+#: ../../../advanced_features/sglang_for_rl.md:215
 msgid "`engine.update_weights_from_distributed(names, dtypes, shapes, ...)`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:193
+#: ../../../advanced_features/sglang_for_rl.md:216
 msgid "`engine.destroy_weights_update_group(group_name)`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:195
+#: ../../../advanced_features/sglang_for_rl.md:218
 msgid "Easy To Postpone Generation"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:197
+#: ../../../advanced_features/sglang_for_rl.md:220
 msgid ""
 "Multi-turn RL rollouts often suffer from long-tail requests that block the "
 "entire batch. A small number of slow interactions can stall all GPUs, and "
 "the long-tail behavior makes profiling and monitoring difficult."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:199
+#: ../../../advanced_features/sglang_for_rl.md:222
 msgid ""
 "SGLang exposes explicit pause/resume APIs so you can pause slow requests and "
 "continue them later. This pattern matches systems like [APRIL](https://arxiv."
@@ -679,18 +741,18 @@ msgid ""
 "utilization without discarding partial work."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:201
+#: ../../../advanced_features/sglang_for_rl.md:224
 msgid ""
 "`pause_generation` ---  update weights --- `continue_generation` is the "
 "correct execution flow when updating weights from training. An update can "
 "only happen when SGLang is not actively processing inference tasks."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:203
+#: ../../../advanced_features/sglang_for_rl.md:226
 msgid "Pause Generation"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:205
+#: ../../../advanced_features/sglang_for_rl.md:228
 msgid "**Endpoint:** `POST /pause_generation`"
 msgstr ""
 
@@ -710,43 +772,43 @@ msgstr ""
 msgid "`abort`, `retract`, `in_place`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:213
+#: ../../../advanced_features/sglang_for_rl.md:236
 msgid "**Modes:**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:215
+#: ../../../advanced_features/sglang_for_rl.md:238
 msgid ""
 "`abort`: Default behavior, identical to `abort` endpoint with `abort_all` "
 "set. Pending requests from `waiting_queue` and `running_queue` will be "
 "returned immediately to the caller."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:216
+#: ../../../advanced_features/sglang_for_rl.md:239
 msgid ""
 "`retract`: Put engine in \"paused\" state.  Move running requests back to "
 "waiting queue. KV cache can be flushed and recomputed later."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:217
+#: ../../../advanced_features/sglang_for_rl.md:240
 msgid ""
 "`in_place`: Put engine in \"paused\" state without changing states of the "
 "requests. Running requests rely on availability of KV caches to continue, so "
 "any subsequent `flush_cache` call will be unsuccessful."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:219
+#: ../../../advanced_features/sglang_for_rl.md:242
 msgid "Continue Generation"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:221
+#: ../../../advanced_features/sglang_for_rl.md:244
 msgid "**Endpoint:** `POST /continue_generation`"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:223
+#: ../../../advanced_features/sglang_for_rl.md:246
 msgid "Deterministic Inference"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:225
+#: ../../../advanced_features/sglang_for_rl.md:248
 msgid ""
 "In many RL stacks, rollout and training are implemented with different "
 "kernels or batching behavior. Even when weights are identical, token "
@@ -754,7 +816,7 @@ msgid ""
 "the training–inference mismatch problem."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:227
+#: ../../../advanced_features/sglang_for_rl.md:250
 msgid ""
 "SGLang supports a deterministic inference mode that reduces non-determinism "
 "across batch shapes. This mitigates variance introduced by runtime batching "
@@ -769,24 +831,24 @@ msgid ""
 "rlhf/slime/mismatch/blog-en.md)."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:229
+#: ../../../advanced_features/sglang_for_rl.md:252
 msgid "**Server flag:**"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:231
+#: ../../../advanced_features/sglang_for_rl.md:254
 msgid "--enable-deterministic-inference\n"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:235
+#: ../../../advanced_features/sglang_for_rl.md:258
 msgid ""
 "For more details, see [Deterministic Inference](deterministic_inference.md)"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:237
+#: ../../../advanced_features/sglang_for_rl.md:260
 msgid "Load Balancing Router"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:239
+#: ../../../advanced_features/sglang_for_rl.md:262
 msgid ""
 "SGLang Model Gateway is the recommended control plane for large‑scale RL "
 "rollouts. It provides async, non‑blocking request handling, cache‑aware load "
@@ -797,11 +859,11 @@ msgid ""
 "level large-scale RL workloads."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:241
+#: ../../../advanced_features/sglang_for_rl.md:264
 msgid "Key benefits for RL infrastructure:"
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:243
+#: ../../../advanced_features/sglang_for_rl.md:266
 msgid ""
 "**Async non-blocking efficiency**: SGLang’s native async server/router "
 "architecture (HTTPS/gRPC) manages concurrency automatically. This guarantees "
@@ -809,7 +871,7 @@ msgid ""
 "complex, manual implementation by engineers."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:244
+#: ../../../advanced_features/sglang_for_rl.md:267
 msgid ""
 "**Elasticity and fault tolerance**: By encapsulating the reward model and "
 "rollout as independent servers, SGLang decouples them logically and "
@@ -819,7 +881,7 @@ msgid ""
 "without interruption."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:245
+#: ../../../advanced_features/sglang_for_rl.md:268
 msgid ""
 "**Training–Inference alignment**: Using the SGLang Model Gateway for both "
 "training and inference ensures \"What You See Is What You Get.\" This "
@@ -827,7 +889,7 @@ msgid ""
 "often caused by using different engines for training versus deployment."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:246
+#: ../../../advanced_features/sglang_for_rl.md:269
 msgid ""
 "**Dynamic load balancing and long-tail mitigation**: Unlike static "
 "partitioning, the SGLang Model Gateway enables request-level dynamic "
@@ -836,7 +898,7 @@ msgid ""
 "long-tail latency caused by varying sequence lengths."
 msgstr ""
 
-#: ../../../advanced_features/sglang_for_rl.md:248
+#: ../../../advanced_features/sglang_for_rl.md:271
 msgid ""
 "For deployment and configuration, see: [SGLang Model Gateway]"
 "(sgl_model_gateway.md)"

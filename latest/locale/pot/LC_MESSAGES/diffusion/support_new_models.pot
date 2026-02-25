@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"POT-Creation-Date: 2026-02-23 08:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -219,16 +220,6 @@ msgid ""
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
-msgid "`ConditioningStage`"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:0
-msgid ""
-"Prepares the conditioning tensors (e.g., from text or image embeddings) for "
-"the denoising loop."
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:0
 msgid "`TimestepPreparationStage`"
 msgstr ""
 
@@ -280,55 +271,55 @@ msgstr ""
 msgid "A specialized causal denoising stage for specific video models."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:56
+#: ../../../diffusion/support_new_models.md:55
 msgid "Example: Implementing `Qwen-Image-Edit`"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:58
+#: ../../../diffusion/support_new_models.md:57
 msgid ""
 "To illustrate the process, let's look at how `Qwen-Image-Edit` is "
 "implemented. The typical implementation order is:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:60
+#: ../../../diffusion/support_new_models.md:59
 msgid "**Analyze Required Modules**:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:61
+#: ../../../diffusion/support_new_models.md:60
 msgid ""
 "Study the target model's components by examining its `model_index.json` or "
 "Diffusers implementation to identify required modules:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:62
+#: ../../../diffusion/support_new_models.md:61
 msgid "`processor`: Image preprocessing and feature extraction"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:63
+#: ../../../diffusion/support_new_models.md:62
 msgid "`scheduler`: Diffusion timestep scheduling"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:64
+#: ../../../diffusion/support_new_models.md:63
 msgid "`text_encoder`: Text-to-embedding conversion"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:65
+#: ../../../diffusion/support_new_models.md:64
 msgid "`tokenizer`: Text tokenization for the encoder"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:66
+#: ../../../diffusion/support_new_models.md:65
 msgid "`transformer`: Core DiT denoising network"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:67
+#: ../../../diffusion/support_new_models.md:66
 msgid "`vae`: Variational autoencoder for latent encoding/decoding"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:69
+#: ../../../diffusion/support_new_models.md:68
 msgid "**Create Configs**:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:70
+#: ../../../diffusion/support_new_models.md:69
 msgid ""
 "**PipelineConfig**: [`QwenImageEditPipelineConfig`](https://github.com/sgl-"
 "project/sglang/blob/main/python/sglang/multimodal_gen/configs/pipelines/"
@@ -336,7 +327,7 @@ msgid ""
 "preprocessing functions, and latent shape calculations."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:71
+#: ../../../diffusion/support_new_models.md:70
 msgid ""
 "**SamplingParams**: [`QwenImageSamplingParams`](https://github.com/sgl-"
 "project/sglang/blob/main/python/sglang/multimodal_gen/configs/sample/"
@@ -344,16 +335,16 @@ msgid ""
 "`guidance_scale=4.0`, `num_inference_steps=50`."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:73
+#: ../../../diffusion/support_new_models.md:72
 msgid "**Implement Model Components**:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:74
+#: ../../../diffusion/support_new_models.md:73
 msgid ""
 "Adapt or implement specific model components in the appropriate directories:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:75
+#: ../../../diffusion/support_new_models.md:74
 msgid ""
 "**DiT/Transformer**: Implement in [`runtime/models/dits/`](https://github."
 "com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
@@ -362,7 +353,7 @@ msgid ""
 "Qwen's DiT architecture"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:76
+#: ../../../diffusion/support_new_models.md:75
 msgid ""
 "**Encoders**: Implement in [`runtime/models/encoders/`](https://github.com/"
 "sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
@@ -371,7 +362,7 @@ msgid ""
 "encoders/qwen2_5vl.py)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:77
+#: ../../../diffusion/support_new_models.md:76
 msgid ""
 "**VAEs**: Implement in [`runtime/models/vaes/`](https://github.com/sgl-"
 "project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/vaes/) "
@@ -380,24 +371,24 @@ msgid ""
 "autoencoder_kl_qwenimage.py)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:78
+#: ../../../diffusion/support_new_models.md:77
 msgid ""
 "**Schedulers**: Implement in [`runtime/models/schedulers/`](https://github."
 "com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
 "schedulers/) if needed"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:79
+#: ../../../diffusion/support_new_models.md:78
 msgid ""
 "These components handle the core model logic, attention mechanisms, and data "
 "transformations specific to the target diffusion model."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:81
+#: ../../../diffusion/support_new_models.md:80
 msgid "**Define Pipeline Class**:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:82
+#: ../../../diffusion/support_new_models.md:81
 msgid ""
 "The [`QwenImageEditPipeline`](https://github.com/sgl-project/sglang/blob/"
 "main/python/sglang/multimodal_gen/runtime/architectures/basic/qwen_image/"
@@ -405,13 +396,13 @@ msgid ""
 "stages sequentially."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:83
+#: ../../../diffusion/support_new_models.md:82
 msgid ""
 "Declare required modules via `_required_config_modules` and implement the "
 "pipeline stages:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:85
+#: ../../../diffusion/support_new_models.md:84
 msgid ""
 "class QwenImageEditPipeline(ComposedPipelineBase):\n"
 "    pipeline_name = \"QwenImageEditPipeline\"  # Matches Diffusers "
@@ -420,26 +411,16 @@ msgid ""
 "\"text_encoder\", \"tokenizer\", \"transformer\", \"vae\"]\n"
 "\n"
 "    def create_pipeline_stages(self, server_args: ServerArgs):\n"
-"        \"\"\"Set up pipeline stages sequentially.\"\"\"\n"
-"        self.add_stage(stage_name=\"input_validation_stage\", "
-"stage=InputValidationStage())\n"
-"        self.add_stage(stage_name=\"prompt_encoding_stage_primary\", "
-"stage=ImageEncodingStage(...))\n"
-"        self.add_stage(stage_name=\"image_encoding_stage_primary\", "
-"stage=ImageVAEEncodingStage(...))\n"
-"        self.add_stage(stage_name=\"timestep_preparation_stage\", "
-"stage=TimestepPreparationStage(...))\n"
-"        self.add_stage(stage_name=\"latent_preparation_stage\", "
-"stage=LatentPreparationStage(...))\n"
-"        self.add_stage(stage_name=\"conditioning_stage\", "
-"stage=ConditioningStage())\n"
-"        self.add_stage(stage_name=\"denoising_stage\", "
-"stage=DenoisingStage(...))\n"
-"        self.add_stage(stage_name=\"decoding_stage\", "
-"stage=DecodingStage(...))\n"
+"        self.add_stage(InputValidationStage())\n"
+"        self.add_stage(ImageEncodingStage(...))\n"
+"        self.add_stage(ImageVAEEncodingStage(...))\n"
+"        self.add_stage(TimestepPreparationStage(...))\n"
+"        self.add_stage(LatentPreparationStage(...))\n"
+"        self.add_stage(DenoisingStage(...))\n"
+"        self.add_stage(DecodingStage(...))\n"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:101
+#: ../../../diffusion/support_new_models.md:98
 msgid ""
 "The pipeline is constructed by adding stages in order. `Qwen-Image-Edit` "
 "uses `ImageEncodingStage` (for prompt and image processing) and "
@@ -447,11 +428,11 @@ msgid ""
 "and decoding."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:103
+#: ../../../diffusion/support_new_models.md:100
 msgid "**Register Configs**:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:104
+#: ../../../diffusion/support_new_models.md:101
 msgid ""
 "Register the configs in the central registry ([`registry.py`](https://github."
 "com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/registry.py)) "
@@ -460,7 +441,7 @@ msgid ""
 "and repository structure."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:106
+#: ../../../diffusion/support_new_models.md:103
 msgid ""
 "By following this pattern of defining configurations and composing "
 "pipelines, you can integrate new diffusion models into SGLang with ease."
