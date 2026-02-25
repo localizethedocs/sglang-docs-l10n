@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-10 09:00+0000\n"
+"POT-Creation-Date: 2026-02-24 08:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,64 +22,70 @@ msgid "Install SGLang"
 msgstr "安裝 SGLang"
 
 #: ../../../get_started/install.md:3
-msgid "You can install SGLang using one of the methods below."
-msgstr ""
-
-#: ../../../get_started/install.md:5
 msgid ""
-"This page primarily applies to common NVIDIA GPU platforms. For other or "
-"newer platforms, please refer to the dedicated pages for [AMD GPUs](../"
-"platforms/amd_gpu.md), [Intel Xeon CPUs](../platforms/cpu_server.md), [TPU]"
-"(../platforms/tpu.md), [NVIDIA DGX Spark](https://lmsys.org/blog/2025-11-03-"
-"gpt-oss-on-nvidia-dgx-spark/), [NVIDIA Jetson](../platforms/nvidia_jetson."
-"md), [Ascend NPUs](../platforms/ascend_npu.md), and [Intel XPU](../platforms/"
-"xpu.md)."
+"You can install SGLang using one of the methods below. This page primarily "
+"applies to common NVIDIA GPU platforms. For other or newer platforms, please "
+"refer to the dedicated pages for [AMD GPUs](../platforms/amd_gpu.md), [Intel "
+"Xeon CPUs](../platforms/cpu_server.md), [TPU](../platforms/tpu.md), [NVIDIA "
+"DGX Spark](https://lmsys.org/blog/2025-11-03-gpt-oss-on-nvidia-dgx-spark/), "
+"[NVIDIA Jetson](../platforms/nvidia_jetson.md), [Ascend NPUs](../platforms/"
+"ascend_npu.md), and [Intel XPU](../platforms/xpu.md)."
 msgstr ""
 
-#: ../../../get_started/install.md:8
+#: ../../../get_started/install.md:7
 msgid "Method 1: With pip or uv"
 msgstr ""
 
-#: ../../../get_started/install.md:10
+#: ../../../get_started/install.md:9
 msgid "It is recommended to use uv for faster installation:"
 msgstr ""
 
-#: ../../../get_started/install.md:12
+#: ../../../get_started/install.md:11
 msgid ""
 "pip install --upgrade pip\n"
 "pip install uv\n"
-"uv pip install \"sglang\"\n"
+"uv pip install sglang\n"
 msgstr ""
 
-#: ../../../get_started/install.md:18 ../../../get_started/install.md:47
-msgid "**Quick fixes to common problems**"
+#: ../../../get_started/install.md:17
+msgid "For CUDA 13"
 msgstr ""
 
 #: ../../../get_started/install.md:19
 msgid ""
-"In some cases (e.g., GB200), the above command might install a wrong torch "
-"version (e.g., the CPU version) due to dependency resolution. To fix this, "
-"you can first run the above command and then force-reinstall the correct "
-"[PyTorch](https://pytorch.org/get-started/locally/) with the following:"
+"Docker is recommended (see Method 3 note on B300/GB300/CUDA 13). If you do "
+"not have Docker access, follow these steps:"
 msgstr ""
 
-#: ../../../get_started/install.md:20
+#: ../../../get_started/install.md:21
+msgid "Install PyTorch with CUDA 13 support first:"
+msgstr ""
+
+#: ../../../get_started/install.md:22
 msgid ""
-"uv pip install \"torch\" --extra-index-url https://download.pytorch.org/whl/"
-"cu129 --force-reinstall\n"
+"# Replace X.Y.Z with the version by your SGLang install\n"
+"uv pip install torch==X.Y.Z torchvision torchaudio --index-url https://"
+"download.pytorch.org/whl/cu130\n"
 msgstr ""
 
-#: ../../../get_started/install.md:23
+#: ../../../get_started/install.md:27
+msgid "Install sglang:"
+msgstr ""
+
+#: ../../../get_started/install.md:28
+msgid "uv pip install sglang\n"
+msgstr ""
+
+#: ../../../get_started/install.md:32
 msgid ""
-"For CUDA 13, Docker is recommended (see the Method 3 note on B300/GB300/CUDA "
-"13). If you do not have Docker access, installing the matching `sgl_kernel` "
-"wheel from [the sgl-project whl releases](https://github.com/sgl-project/whl/"
-"releases) after installing SGLang also works. Replace `X.Y.Z` with the "
-"`sgl_kernel` version required by your SGLang (you can find this by running "
-"`uv pip show sgl_kernel`). Examples:"
+"Install the `sgl_kernel` wheel for CUDA 13 from [the sgl-project whl "
+"releases](https://github.com/sgl-project/whl/blob/gh-pages/cu130/sgl-kernel/"
+"index.html). Replace `X.Y.Z` with the `sgl_kernel` version required by your "
+"SGLang install (you can find this by running `uv pip show sgl_kernel`). "
+"Examples:"
 msgstr ""
 
-#: ../../../get_started/install.md:24
+#: ../../../get_started/install.md:33
 msgid ""
 "# x86_64\n"
 "uv pip install \"https://github.com/sgl-project/whl/releases/download/vX.Y.Z/"
@@ -90,30 +96,35 @@ msgid ""
 "sgl_kernel-X.Y.Z+cu130-cp310-abi3-manylinux2014_aarch64.whl\"\n"
 msgstr ""
 
-#: ../../../get_started/install.md:31
-msgid ""
-"If you encounter `OSError: CUDA_HOME environment variable is not set`, set "
-"it to your CUDA install root with either of the following solutions:"
+#: ../../../get_started/install.md:41 ../../../get_started/install.md:58
+msgid "**Quick fixes to common problems**"
 msgstr ""
 
-#: ../../../get_started/install.md:32
+#: ../../../get_started/install.md:42
+msgid ""
+"If you encounter `OSError: CUDA_HOME environment variable is not set`. "
+"Please set it to your CUDA install root with either of the following "
+"solutions:"
+msgstr ""
+
+#: ../../../get_started/install.md:43
 msgid ""
 "Use `export CUDA_HOME=/usr/local/cuda-<your-cuda-version>` to set the "
 "`CUDA_HOME` environment variable."
 msgstr ""
 
-#: ../../../get_started/install.md:33
+#: ../../../get_started/install.md:44
 msgid ""
 "Install FlashInfer first following [FlashInfer installation doc](https://"
 "docs.flashinfer.ai/installation.html), then install SGLang as described "
 "above."
 msgstr ""
 
-#: ../../../get_started/install.md:35
+#: ../../../get_started/install.md:46
 msgid "Method 2: From source"
 msgstr ""
 
-#: ../../../get_started/install.md:37
+#: ../../../get_started/install.md:48
 msgid ""
 "# Use the last release branch\n"
 "git clone -b v0.5.6.post2 https://github.com/sgl-project/sglang.git\n"
@@ -131,7 +142,7 @@ msgstr ""
 "pip install --upgrade pip\n"
 "pip install -e \"python\"\n"
 
-#: ../../../get_started/install.md:49
+#: ../../../get_started/install.md:60
 msgid ""
 "If you want to develop SGLang, you can try the dev docker image. Please "
 "refer to [setup docker container](../developer_guide/"
@@ -139,11 +150,11 @@ msgid ""
 "is `lmsysorg/sglang:dev`."
 msgstr ""
 
-#: ../../../get_started/install.md:51
+#: ../../../get_started/install.md:62
 msgid "Method 3: Using docker"
 msgstr "方法三：使用 docker"
 
-#: ../../../get_started/install.md:53
+#: ../../../get_started/install.md:64
 msgid ""
 "The docker images are available on Docker Hub at [lmsysorg/sglang](https://"
 "hub.docker.com/r/lmsysorg/sglang/tags), built from [Dockerfile](https://"
@@ -152,7 +163,7 @@ msgid ""
 "security-tokens)."
 msgstr ""
 
-#: ../../../get_started/install.md:56
+#: ../../../get_started/install.md:67
 msgid ""
 "docker run --gpus all \\\n"
 "    --shm-size 32g \\\n"
@@ -165,14 +176,14 @@ msgid ""
 "Instruct --host 0.0.0.0 --port 30000\n"
 msgstr ""
 
-#: ../../../get_started/install.md:67
+#: ../../../get_started/install.md:78
 msgid ""
 "For production deployments, use the `runtime` variant which is significantly "
 "smaller (~40% reduction) by excluding build tools and development "
 "dependencies:"
 msgstr ""
 
-#: ../../../get_started/install.md:69
+#: ../../../get_started/install.md:80
 msgid ""
 "docker run --gpus all \\\n"
 "    --shm-size 32g \\\n"
@@ -185,17 +196,17 @@ msgid ""
 "Instruct --host 0.0.0.0 --port 30000\n"
 msgstr ""
 
-#: ../../../get_started/install.md:80
+#: ../../../get_started/install.md:91
 msgid ""
 "You can also find the nightly docker images [here](https://hub.docker.com/r/"
 "lmsysorg/sglang/tags?name=nightly)."
 msgstr ""
 
-#: ../../../get_started/install.md:82
+#: ../../../get_started/install.md:93
 msgid "Notes:"
 msgstr ""
 
-#: ../../../get_started/install.md:83
+#: ../../../get_started/install.md:94
 msgid ""
 "On B300/GB300 (SM103) or CUDA 13 environment, we recommend using the nightly "
 "image at `lmsysorg/sglang:dev-cu13` or stable image at `lmsysorg/sglang:"
@@ -204,105 +215,105 @@ msgid ""
 "specified by the cu13 docker image."
 msgstr ""
 
-#: ../../../get_started/install.md:85
+#: ../../../get_started/install.md:96
 msgid "Method 4: Using Kubernetes"
 msgstr "方法 4：使用 Kubernetes"
 
-#: ../../../get_started/install.md:87
+#: ../../../get_started/install.md:98
 msgid ""
 "Please check out [OME](https://github.com/sgl-project/ome), a Kubernetes "
 "operator for enterprise-grade management and serving of large language "
 "models (LLMs)."
 msgstr ""
 
-#: ../../../get_started/install.md:89 ../../../get_started/install.md:104
-#: ../../../get_started/install.md:116 ../../../get_started/install.md:160
+#: ../../../get_started/install.md:100 ../../../get_started/install.md:115
+#: ../../../get_started/install.md:127 ../../../get_started/install.md:171
 msgid ""
 "<details>\n"
 "<summary>More</summary>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:92
+#: ../../../get_started/install.md:103
 msgid ""
 "Option 1: For single node serving (typically when the model size fits into "
 "GPUs on one node)"
 msgstr ""
 
-#: ../../../get_started/install.md:94
+#: ../../../get_started/install.md:105
 msgid ""
 "Execute command `kubectl apply -f docker/k8s-sglang-service.yaml`, to create "
 "k8s deployment and service, with llama-31-8b as example."
 msgstr ""
 
-#: ../../../get_started/install.md:96
+#: ../../../get_started/install.md:107
 msgid ""
 "Option 2: For multi-node serving (usually when a large model requires more "
 "than one GPU node, such as `DeepSeek-R1`)"
 msgstr ""
 
-#: ../../../get_started/install.md:98
+#: ../../../get_started/install.md:109
 msgid ""
 "Modify the LLM model path and arguments as necessary, then execute command "
 "`kubectl apply -f docker/k8s-sglang-distributed-sts.yaml`, to create two "
 "nodes k8s statefulset and serving service."
 msgstr ""
 
-#: ../../../get_started/install.md:100 ../../../get_started/install.md:112
-#: ../../../get_started/install.md:144 ../../../get_started/install.md:156
-#: ../../../get_started/install.md:201 ../../../get_started/install.md:209
+#: ../../../get_started/install.md:111 ../../../get_started/install.md:123
+#: ../../../get_started/install.md:155 ../../../get_started/install.md:167
+#: ../../../get_started/install.md:212 ../../../get_started/install.md:220
 msgid "</details>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:102
+#: ../../../get_started/install.md:113
 msgid "Method 5: Using docker compose"
 msgstr "方法五：使用 docker compose"
 
-#: ../../../get_started/install.md:107
+#: ../../../get_started/install.md:118
 msgid ""
 "This method is recommended if you plan to serve it as a service. A better "
 "approach is to use the [k8s-sglang-service.yaml](https://github.com/sgl-"
 "project/sglang/blob/main/docker/k8s-sglang-service.yaml)."
 msgstr ""
 
-#: ../../../get_started/install.md:110
+#: ../../../get_started/install.md:121
 msgid ""
 "Copy the [compose.yml](https://github.com/sgl-project/sglang/blob/main/"
 "docker/compose.yaml) to your local machine"
 msgstr ""
 
-#: ../../../get_started/install.md:111
+#: ../../../get_started/install.md:122
 msgid "Execute the command `docker compose up -d` in your terminal."
 msgstr ""
 
-#: ../../../get_started/install.md:114
+#: ../../../get_started/install.md:125
 msgid "Method 6: Run on Kubernetes or Clouds with SkyPilot"
 msgstr ""
 
-#: ../../../get_started/install.md:119
+#: ../../../get_started/install.md:130
 msgid ""
 "To deploy on Kubernetes or 12+ clouds, you can use [SkyPilot](https://github."
 "com/skypilot-org/skypilot)."
 msgstr ""
 
-#: ../../../get_started/install.md:121
+#: ../../../get_started/install.md:132
 msgid ""
 "Install SkyPilot and set up Kubernetes cluster or cloud access: see "
 "[SkyPilot's documentation](https://skypilot.readthedocs.io/en/latest/getting-"
 "started/installation.html)."
 msgstr ""
 
-#: ../../../get_started/install.md:122
+#: ../../../get_started/install.md:133
 msgid ""
 "Deploy on your own infra with a single command and get the HTTP API endpoint:"
 msgstr ""
 
-#: ../../../get_started/install.md:123
+#: ../../../get_started/install.md:134
 msgid ""
 "<details>\n"
 "<summary>SkyPilot YAML: <code>sglang.yaml</code></summary>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:126
+#: ../../../get_started/install.md:137
 msgid ""
 "# sglang.yaml\n"
 "envs:\n"
@@ -321,7 +332,7 @@ msgid ""
 "    --port 30000\n"
 msgstr ""
 
-#: ../../../get_started/install.md:146
+#: ../../../get_started/install.md:157
 msgid ""
 "# Deploy on any cloud or Kubernetes cluster. Use --cloud <cloud> to select a "
 "specific cloud provider.\n"
@@ -331,7 +342,7 @@ msgid ""
 "sky status --endpoint 30000 sglang\n"
 msgstr ""
 
-#: ../../../get_started/install.md:154
+#: ../../../get_started/install.md:165
 msgid ""
 "To further scale up your deployment with autoscaling and failure recovery, "
 "check out the [SkyServe + SGLang guide](https://github.com/skypilot-org/"
@@ -339,17 +350,17 @@ msgid ""
 "using-skyserve)."
 msgstr ""
 
-#: ../../../get_started/install.md:158
+#: ../../../get_started/install.md:169
 msgid "Method 7: Run on AWS SageMaker"
 msgstr ""
 
-#: ../../../get_started/install.md:163
+#: ../../../get_started/install.md:174
 msgid ""
 "To deploy on SGLang on AWS SageMaker, check out [AWS SageMaker Inference]"
 "(https://aws.amazon.com/sagemaker/ai/deploy)"
 msgstr ""
 
-#: ../../../get_started/install.md:165
+#: ../../../get_started/install.md:176
 msgid ""
 "Amazon Web Services provide supports for SGLang containers along with "
 "routine security patching. For available SGLang containers, check out [AWS "
@@ -357,28 +368,28 @@ msgid ""
 "available_images.md#sglang-containers)"
 msgstr ""
 
-#: ../../../get_started/install.md:167
+#: ../../../get_started/install.md:178
 msgid "To host a model with your own container, follow the following steps:"
 msgstr ""
 
-#: ../../../get_started/install.md:169
+#: ../../../get_started/install.md:180
 msgid ""
 "Build a docker container with [sagemaker.Dockerfile](https://github.com/sgl-"
 "project/sglang/blob/main/docker/sagemaker.Dockerfile) alongside the [serve]"
 "(https://github.com/sgl-project/sglang/blob/main/docker/serve) script."
 msgstr ""
 
-#: ../../../get_started/install.md:170
+#: ../../../get_started/install.md:181
 msgid "Push your container onto AWS ECR."
 msgstr ""
 
-#: ../../../get_started/install.md:172
+#: ../../../get_started/install.md:183
 msgid ""
 "<details>\n"
 "<summary>Dockerfile Build Script: <code>build-and-push.sh</code></summary>\n"
 msgstr ""
 
-#: ../../../get_started/install.md:175
+#: ../../../get_started/install.md:186
 msgid ""
 "#!/bin/bash\n"
 "AWS_ACCOUNT=\"<YOUR_AWS_ACCOUNT>\"\n"
@@ -406,7 +417,7 @@ msgid ""
 "echo \"Build and push completed successfully!\"\n"
 msgstr ""
 
-#: ../../../get_started/install.md:203
+#: ../../../get_started/install.md:214
 msgid ""
 "Deploy a model for serving on AWS Sagemaker, refer to "
 "[deploy_and_serve_endpoint.py](https://github.com/sgl-project/sglang/blob/"
@@ -415,7 +426,7 @@ msgid ""
 "sdk)."
 msgstr ""
 
-#: ../../../get_started/install.md:204
+#: ../../../get_started/install.md:215
 msgid ""
 "By default, the model server on SageMaker will run with the following "
 "command: `python3 -m sglang.launch_server --model-path opt/ml/model --host "
@@ -423,7 +434,7 @@ msgid ""
 "SageMaker."
 msgstr ""
 
-#: ../../../get_started/install.md:205
+#: ../../../get_started/install.md:216
 msgid ""
 "To modify your model serving parameters, the [serve](https://github.com/sgl-"
 "project/sglang/blob/main/docker/serve) script allows for all available "
@@ -431,14 +442,14 @@ msgid ""
 "environment variables with prefix `SM_SGLANG_`."
 msgstr ""
 
-#: ../../../get_started/install.md:206
+#: ../../../get_started/install.md:217
 msgid ""
 "The serve script will automatically convert all environment variables with "
 "prefix `SM_SGLANG_` from `SM_SGLANG_INPUT_ARGUMENT` into `--input-argument` "
 "to be parsed into `python3 -m sglang.launch_server` cli."
 msgstr ""
 
-#: ../../../get_started/install.md:207
+#: ../../../get_started/install.md:218
 msgid ""
 "For example, to run [Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/"
 "Qwen3-0.6B) with reasoning parser, simply add additional environment "
@@ -446,11 +457,11 @@ msgid ""
 "`SM_SGLANG_REASONING_PARSER=qwen3`."
 msgstr ""
 
-#: ../../../get_started/install.md:211
+#: ../../../get_started/install.md:222
 msgid "Common Notes"
 msgstr ""
 
-#: ../../../get_started/install.md:213
+#: ../../../get_started/install.md:224
 msgid ""
 "[FlashInfer](https://github.com/flashinfer-ai/flashinfer) is the default "
 "attention kernel backend. It only supports sm75 and above. If you encounter "
@@ -459,14 +470,14 @@ msgid ""
 "triton --sampling-backend pytorch` and open an issue on GitHub."
 msgstr ""
 
-#: ../../../get_started/install.md:214
+#: ../../../get_started/install.md:225
 msgid ""
 "To reinstall flashinfer locally, use the following command: `pip3 install --"
 "upgrade flashinfer-python --force-reinstall --no-deps` and then delete the "
 "cache with `rm -rf ~/.cache/flashinfer`."
 msgstr ""
 
-#: ../../../get_started/install.md:215
+#: ../../../get_started/install.md:226
 msgid ""
 "When encountering `ptxas fatal   : Value 'sm_103a' is not defined for option "
 "'gpu-name'` on B300/GB300, fix it with `export TRITON_PTXAS_PATH=/usr/local/"
