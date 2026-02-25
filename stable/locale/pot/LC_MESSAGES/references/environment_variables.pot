@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-10 09:00+0000\n"
+"POT-Creation-Date: 2026-02-24 08:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,6 +109,16 @@ msgid "Disable request logging"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_LOG_REQUEST_HEADERS`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Comma-separated list of additional HTTP headers to log when `--log-requests` "
+"is enabled. Appends to the default `x-smg-routing-key`."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_HEALTH_CHECK_TIMEOUT`"
 msgstr ""
 
@@ -147,18 +157,27 @@ msgid "`false` (drop unknown tools)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_QUEUED_TIMEOUT_MS`"
+msgid "`SGLANG_REQ_WAITING_TIMEOUT`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "Timeout (in ms) for requests in the waiting queue"
+msgid ""
+"Timeout (in seconds) for requests waiting in the queue before being scheduled"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "`-1`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:21
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_REQ_RUNNING_TIMEOUT`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Timeout (in seconds) for requests running in the decode batch"
+msgstr ""
+
+#: ../../../references/environment_variables.md:23
 msgid "Performance Tuning"
 msgstr ""
 
@@ -355,7 +374,36 @@ msgid ""
 "scheduler (without this flag gloo is used for gathering)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:46
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_SYMM_MEM_PREALLOC_GB_SIZE`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Size of preallocated GPU buffer (in GB) for NCCL symmetric memory pool to "
+"limit memory fragmentation. Only have an effect when server arg `--enable-"
+"symm-mem` is set."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`4`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_CUSTOM_ALLREDUCE_ALGO`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"The algorithm of custom all-reduce. Set to `oneshot` or `1stage` to force "
+"use one-shot. Set to `twoshot` or `2stage` to force use two-shot."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "``"
+msgstr ""
+
+#: ../../../references/environment_variables.md:50
 msgid "DeepGEMM Configuration (Advanced Optimization)"
 msgstr ""
 
@@ -391,10 +439,6 @@ msgid "Number of workers for parallel DeepGEMM kernel compilation"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`4`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_IN_DEEPGEMM_PRECOMPILE_STAGE`"
 msgstr ""
 
@@ -419,7 +463,7 @@ msgid "`~/.cache/deep_gemm`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_DG_USE_NVRTC`"
+msgid "`SGLANG_DG_USE_NVRTC`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -431,14 +475,24 @@ msgid "`\"0\"`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGL_USE_DEEPGEMM_BMM`"
+msgid "`SGLANG_USE_DEEPGEMM_BMM`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Use DeepGEMM for Batched Matrix Multiplication (BMM) operations"
 msgstr ""
 
-#: ../../../references/environment_variables.md:58
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_JIT_DEEPGEMM_FAST_WARMUP`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Precompile less kernels during warmup, which reduces the warmup time from "
+"30min to less than 3min. Might cause performance degradation during runtime."
+msgstr ""
+
+#: ../../../references/environment_variables.md:63
 msgid "DeepEP Configuration"
 msgstr ""
 
@@ -460,6 +514,20 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "`\"128\"`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_FLASHINFER_NUM_MAX_DISPATCH_TOKENS_PER_RANK`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"The maximum number of dispatched tokens on each GPU for --moe-a2a-"
+"backend=flashinfer"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`\"1024\"`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -486,11 +554,76 @@ msgid ""
 "will be overlapped with DeepEP combine together."
 msgstr ""
 
-#: ../../../references/environment_variables.md:67
+#: ../../../references/environment_variables.md:73
+msgid "MORI Configuration"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_FP8_DISP`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Use FP8 for dispatch"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_NUM_MAX_DISPATCH_TOKENS_PER_RANK`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Maximum number of dispatch tokens per rank for MORI-EP buffer allocation"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`4096`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_DISPATCH_INTER_KERNEL_SWITCH_THRESHOLD`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Threshold for switching between `InterNodeV1` and `InterNodeV1LL` kernel "
+"types. `InterNodeV1LL` is used if "
+"`SGLANG_MORI_NUM_MAX_DISPATCH_TOKENS_PER_RANK` is less than or equal to this "
+"threshold; otherwise, `InterNodeV1` is used."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`256`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_QP_PER_TRANSFER`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Number of RDMA Queue Pairs (QPs) used per transfer operation"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_POST_BATCH_SIZE`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Number of RDMA work requests posted in a single batch to each QP"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_NUM_WORKERS`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Number of worker threads in the RDMA executor thread pool"
+msgstr ""
+
+#: ../../../references/environment_variables.md:84
 msgid "NSA Backend Configuration (For DeepSeek V3.2)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:69
+#: ../../../references/environment_variables.md:86
 msgid ""
 "<!-- # Environment variable to control mtp precomputing of metadata for "
 "multi-step speculative decoding -->\n"
@@ -516,7 +649,7 @@ msgid ""
 "is enabled"
 msgstr ""
 
-#: ../../../references/environment_variables.md:77
+#: ../../../references/environment_variables.md:94
 msgid "Memory Management"
 msgstr ""
 
@@ -534,10 +667,6 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Clip max new tokens estimation for memory planning"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`4096`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -560,7 +689,21 @@ msgstr ""
 msgid "Enable checks for memory imbalance across Tensor Parallel ranks"
 msgstr ""
 
-#: ../../../references/environment_variables.md:86
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MOONCAKE_CUSTOM_MEM_POOL`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Configure the custom memory pool type for Mooncake. Supports `NVLINK`, "
+"`BAREX`, `INTRA_NODE_NVLINK`. If set to `true`, it defaults to `NVLINK`."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`None`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:104
 msgid "Model-Specific Options"
 msgstr ""
 
@@ -592,7 +735,7 @@ msgid ""
 "backend=cutlass)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:94
+#: ../../../references/environment_variables.md:112
 msgid "Quantization"
 msgstr ""
 
@@ -630,10 +773,6 @@ msgstr ""
 msgid ""
 "Select backend for `mm_fp4` on Blackwell GPUs. **DEPRECATED**: Please use `--"
 "fp4-gemm-backend` instead."
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "``"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -685,7 +824,7 @@ msgid ""
 "GPUs. **DEPRECATED**: Please use `--fp8-gemm-backend=cutlass` instead."
 msgstr ""
 
-#: ../../../references/environment_variables.md:109
+#: ../../../references/environment_variables.md:127
 msgid "Distributed Computing"
 msgstr ""
 
@@ -721,11 +860,11 @@ msgstr ""
 msgid "Set one visible device per process for distributed computing"
 msgstr ""
 
-#: ../../../references/environment_variables.md:118
+#: ../../../references/environment_variables.md:136
 msgid "Testing & Debugging (Internal/CI)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:120
+#: ../../../references/environment_variables.md:138
 msgid ""
 "*These variables are primarily used for internal testing, continuous "
 "integration, or debugging.*"
@@ -785,7 +924,7 @@ msgstr ""
 msgid "Test request time statistics"
 msgstr ""
 
-#: ../../../references/environment_variables.md:131
+#: ../../../references/environment_variables.md:149
 msgid "Profiling & Benchmarking"
 msgstr ""
 
@@ -842,7 +981,7 @@ msgstr ""
 msgid "`64`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:141
+#: ../../../references/environment_variables.md:159
 msgid "Storage & Caching"
 msgstr ""
 
@@ -876,7 +1015,7 @@ msgid ""
 "(automatically enabled on CUDA)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:149
+#: ../../../references/environment_variables.md:167
 msgid "Function Calling / Tool Use"
 msgstr ""
 
@@ -894,6 +1033,6 @@ msgid ""
 "`strict=True` set"
 msgstr ""
 
-#: ../../../references/environment_variables.md:153
+#: ../../../references/environment_variables.md:171
 msgid "<br>"
 msgstr ""
