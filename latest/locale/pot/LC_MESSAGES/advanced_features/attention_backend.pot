@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"POT-Creation-Date: 2026-03-02 08:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,7 +224,9 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/attention_backend.md:52
-msgid "FlashAttention 4 is prefill-only for now."
+msgid ""
+"FlashAttention 4 supports both prefill and decode on SM90 (Hopper) and SM100 "
+"(Blackwell). On SM90, `page_size` must be 128."
 msgstr ""
 
 #: ../../../advanced_features/attention_backend.md:53
@@ -235,12 +237,21 @@ msgstr ""
 
 #: ../../../advanced_features/attention_backend.md:57
 msgid ""
+"**FA4 on Hopper (SM90):** FA4 decode speed decreases as sequence length "
+"grows due to lack of SplitKV support. At batch=1 compared to FA3 on H100: "
+"~-10% at 2K tokens, ~-18% at 4K, ~-31% at 8K, ~-49% at 16K. Larger batch "
+"sizes reduce the gap (e.g., batch=8: ~-2% at 2K, ~-8% at 4K). Blackwell "
+"(SM100) is not affected."
+msgstr ""
+
+#: ../../../advanced_features/attention_backend.md:61
+msgid ""
 "For the KV4 FA4 scenario, FA4 requires using a different --decode-attention-"
 "backend to run. Except for trtllm_mha being incompatible with FA4, all other "
 "decode backends behave as shown in the table."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:61
+#: ../../../advanced_features/attention_backend.md:65
 msgid ""
 "Speculative decoding topk: `topk` is the number of draft tokens sampled per "
 "step from the draft model. `topk = 1` follows classic EAGLE; `topk > 1` "
@@ -248,7 +259,7 @@ msgid ""
 "verification paths."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:65
+#: ../../../advanced_features/attention_backend.md:69
 msgid ""
 "Page size controls how many tokens are grouped into a KV cache block. For "
 "the prefix cache to take effect, the number of tokens must fill at least one "
@@ -260,7 +271,7 @@ msgid ""
 "level matching)."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:68
+#: ../../../advanced_features/attention_backend.md:72
 msgid ""
 "Many backends that do not natively operate on pages can emulate `page_size > "
 "1` at the wrapper layer by expanding page tables to per-token indices. The "
@@ -270,36 +281,36 @@ msgid ""
 "Cutlass MLA (128), Ascend (128)."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:70
+#: ../../../advanced_features/attention_backend.md:74
 msgid "MLA page-size constraints:"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:71
+#: ../../../advanced_features/attention_backend.md:75
 msgid "FlashInfer MLA: page_size = 1."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:72
+#: ../../../advanced_features/attention_backend.md:76
 msgid "FlashMLA: page_size = 64."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:73
+#: ../../../advanced_features/attention_backend.md:77
 msgid "Cutlass MLA: page_size = 128."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:74
+#: ../../../advanced_features/attention_backend.md:78
 msgid "TRTLLM MLA: page_size ∈ {32, 64}."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:76
+#: ../../../advanced_features/attention_backend.md:80
 msgid ""
 "Hybrid attention (different backends for prefill vs decode) (Experimental)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:79
+#: ../../../advanced_features/attention_backend.md:83
 msgid "Hybrid attention is an experimental feature."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:82
+#: ../../../advanced_features/attention_backend.md:86
 msgid ""
 "You can mix-and-match attention backends for prefill and decode. This is "
 "useful when one backend excels at prefill and another excels at decode. For "
@@ -307,7 +318,7 @@ msgid ""
 "hybrid_attn_backend.py`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:84
+#: ../../../advanced_features/attention_backend.md:88
 msgid ""
 "# Example: Prefill with FA4, Decode with TRTLLM MLA (Blackwell)\n"
 "python3 -m sglang.launch_server \\\n"
@@ -319,52 +330,52 @@ msgid ""
 "  --prefill-attention-backend fa4\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:95
+#: ../../../advanced_features/attention_backend.md:99
 msgid "Speculative decoding with hybrid attention"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:97
+#: ../../../advanced_features/attention_backend.md:101
 msgid ""
 "Hybrid attention also works with speculative decoding. The backend used for "
 "draft decoding and target verification depends on `--speculative-attention-"
 "mode`:"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:99
+#: ../../../advanced_features/attention_backend.md:103
 msgid ""
 "`--speculative-attention-mode decode` (recommended): draft/verify use the "
 "decode backend."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:100
+#: ../../../advanced_features/attention_backend.md:104
 msgid ""
 "`--speculative-attention-mode prefill` (default): draft/verify use the "
 "prefill backend."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:102
+#: ../../../advanced_features/attention_backend.md:106
 msgid "Constraints when combining hybrid attention with speculative decoding:"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:104
+#: ../../../advanced_features/attention_backend.md:108
 msgid ""
 "If any attention backend is `trtllm_mha`, speculative decoding supports only "
 "`--speculative-eagle-topk 1`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:105
+#: ../../../advanced_features/attention_backend.md:109
 msgid ""
 "For paged MHA backends with `--page-size > 1` and `--speculative-eagle-topk "
 "> 1`, only `flashinfer` is supported."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:106
+#: ../../../advanced_features/attention_backend.md:110
 msgid ""
 "CUDA Graph: the decode backend is always captured; the prefill backend is "
 "captured only when `--speculative-attention-mode prefill`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:110
+#: ../../../advanced_features/attention_backend.md:114
 msgid ""
 "If you set only one of `--prefill-attention-backend` or `--decode-attention-"
 "backend`, the unspecified phase inherits `--attention-backend`. If both are "
@@ -372,71 +383,71 @@ msgid ""
 "dispatch to the chosen backend per phase."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:114
+#: ../../../advanced_features/attention_backend.md:118
 msgid "Attention Backend Selection Guide (CUDA)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:116
+#: ../../../advanced_features/attention_backend.md:120
 msgid ""
 "If the `--attention-backend` argument is not specified, SGLang automatically "
 "selects the best backend based on the hardware (CUDA) and model architecture."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:118
+#: ../../../advanced_features/attention_backend.md:122
 msgid "Automatic Selection Logic"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:120
+#: ../../../advanced_features/attention_backend.md:124
 msgid "**1. MHA Models (e.g., Llama, Qwen)**"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:121
+#: ../../../advanced_features/attention_backend.md:125
 msgid ""
 "**Hopper (e.g., H100, H200)**: Defaults to `fa3` if using CUDA 12.3+ and the "
 "model configuration is supported."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:122
+#: ../../../advanced_features/attention_backend.md:126
 msgid ""
 "**Blackwell (e.g., B200)**: Defaults to `trtllm_mha`, unless using "
 "speculative decoding with `topk > 1`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:123
+#: ../../../advanced_features/attention_backend.md:127
 msgid ""
 "**Other Architectures (Ampere, Ada, etc.)**: Defaults to `flashinfer` if "
 "available; otherwise falls back to `triton`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:125
+#: ../../../advanced_features/attention_backend.md:129
 msgid "**2. MLA Models (e.g., DeepSeek V3)**"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:126
+#: ../../../advanced_features/attention_backend.md:130
 msgid "**Hopper**: Defaults to `fa3` (requires CUDA 12.3+)."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:127
+#: ../../../advanced_features/attention_backend.md:131
 msgid "**Blackwell**: Defaults to `trtllm_mla`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:128
+#: ../../../advanced_features/attention_backend.md:132
 msgid "**Other Architectures**: Defaults to `triton`."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:131
+#: ../../../advanced_features/attention_backend.md:135
 msgid "User Guide"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:133
+#: ../../../advanced_features/attention_backend.md:137
 msgid "Launch Command for Different Attention Backends"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:135
+#: ../../../advanced_features/attention_backend.md:139
 msgid "FlashInfer (Default for Non-Hopper Machines, e.g., A100, A40)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:136
+#: ../../../advanced_features/attention_backend.md:140
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -448,11 +459,11 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:147
+#: ../../../advanced_features/attention_backend.md:151
 msgid "FlashAttention 3 (Default for Hopper Machines, e.g., H100, H200, H20)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:148
+#: ../../../advanced_features/attention_backend.md:152
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -464,11 +475,11 @@ msgid ""
 "  --attention-backend fa3\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:159
+#: ../../../advanced_features/attention_backend.md:163
 msgid "Triton"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:160
+#: ../../../advanced_features/attention_backend.md:164
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -480,11 +491,11 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:171
+#: ../../../advanced_features/attention_backend.md:175
 msgid "FlashMLA"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:172
+#: ../../../advanced_features/attention_backend.md:176
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --tp 8 \\\n"
@@ -499,11 +510,11 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:186
+#: ../../../advanced_features/attention_backend.md:190
 msgid "TRTLLM MLA (Optimized for Blackwell Architecture, e.g., B200)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:187
+#: ../../../advanced_features/attention_backend.md:191
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --tp 8 \\\n"
@@ -512,12 +523,12 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:195
+#: ../../../advanced_features/attention_backend.md:199
 msgid ""
 "TRTLLM MLA with FP8 KV Cache (Higher concurrency, lower memory footprint)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:196
+#: ../../../advanced_features/attention_backend.md:200
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --tp 8 \\\n"
@@ -527,12 +538,19 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:205
+#: ../../../advanced_features/attention_backend.md:209
 msgid "FlashAttention 4 (MHA & MLA)"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:206
+#: ../../../advanced_features/attention_backend.md:210
 msgid ""
+"# FA4 for both prefill and decode on SM90/SM100\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-30B-A3B-Instruct-2507-FP8 \\\n"
+"  --attention-backend fa4 \\\n"
+"  --page-size 128 \\\n"
+"  --trust-remote-code\n"
+"\n"
 "python3 -m sglang.launch_server \\\n"
 "  --tp 8 \\\n"
 "  --model deepseek-ai/DeepSeek-R1 \\\n"
@@ -540,11 +558,11 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:214
+#: ../../../advanced_features/attention_backend.md:225
 msgid "Cutlass MLA"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:215
+#: ../../../advanced_features/attention_backend.md:226
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --tp 8 \\\n"
@@ -553,165 +571,165 @@ msgid ""
 "  --trust-remote-code\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:223
+#: ../../../advanced_features/attention_backend.md:234
 msgid "Ascend"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:224
+#: ../../../advanced_features/attention_backend.md:235
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
 "  --attention-backend ascend\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:230
+#: ../../../advanced_features/attention_backend.md:241
 msgid "Intel XPU"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:231
+#: ../../../advanced_features/attention_backend.md:242
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
 "  --attention-backend intel_xpu\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:237
+#: ../../../advanced_features/attention_backend.md:248
 msgid "Wave"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:238
+#: ../../../advanced_features/attention_backend.md:249
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
 "  --attention-backend wave\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:244
+#: ../../../advanced_features/attention_backend.md:255
 msgid "FlexAttention"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:245
+#: ../../../advanced_features/attention_backend.md:256
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
 "  --attention-backend flex_attention\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:251
+#: ../../../advanced_features/attention_backend.md:262
 msgid "Dual Chunk FlashAttention"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:252
+#: ../../../advanced_features/attention_backend.md:263
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model Qwen/Qwen2.5-14B-Instruct-1M \\\n"
 "  --attention-backend dual_chunk_flash_attn\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:258
+#: ../../../advanced_features/attention_backend.md:269
 msgid "Torch Native"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:259
+#: ../../../advanced_features/attention_backend.md:270
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
 "  --attention-backend torch_native\n"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:265
+#: ../../../advanced_features/attention_backend.md:276
 msgid "Steps to add a new attention backend"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:266
+#: ../../../advanced_features/attention_backend.md:277
 msgid ""
 "To add a new attention backend, you can learn from the existing backends "
 "(`python/sglang/srt/layers/attention/triton_backend.py`, `python/sglang/srt/"
 "layers/attention/flashattention_backend.py`) and follow the steps below."
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:270
+#: ../../../advanced_features/attention_backend.md:281
 msgid "Run without cuda graph. Support the two forward functions"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:271
+#: ../../../advanced_features/attention_backend.md:282
 msgid "forward_extend"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:272
+#: ../../../advanced_features/attention_backend.md:283
 msgid ""
 "Will be used for prefill, prefill with KV cache, and target verification"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:273
-#: ../../../advanced_features/attention_backend.md:276
+#: ../../../advanced_features/attention_backend.md:284
+#: ../../../advanced_features/attention_backend.md:287
 msgid "It will be called once per layer"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:274
+#: ../../../advanced_features/attention_backend.md:285
 msgid "forward_decode"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:275
+#: ../../../advanced_features/attention_backend.md:286
 msgid "Will be used for normal decode, and draft decode"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:277
+#: ../../../advanced_features/attention_backend.md:288
 msgid "init_forward_metadata"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:278
+#: ../../../advanced_features/attention_backend.md:289
 msgid "Initialize the class and common metadata shared by all layers"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:279
+#: ../../../advanced_features/attention_backend.md:290
 msgid "Call the plan function for optimizations like split_kv"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:280
+#: ../../../advanced_features/attention_backend.md:291
 msgid "It will be called once per forward"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:281
+#: ../../../advanced_features/attention_backend.md:292
 msgid ""
 "Run with cuda graph. It has two phases (capture and replay) and you need to "
 "implement three functions"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:282
+#: ../../../advanced_features/attention_backend.md:293
 msgid "init_cuda_graph_state"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:283
+#: ../../../advanced_features/attention_backend.md:294
 msgid "It will be called once during life time"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:284
+#: ../../../advanced_features/attention_backend.md:295
 msgid "Create all common shared buffers"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:285
+#: ../../../advanced_features/attention_backend.md:296
 msgid "init_forward_metadata_capture_cuda_graph"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:286
+#: ../../../advanced_features/attention_backend.md:297
 msgid "It will be called before capturing a cuda graph"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:287
+#: ../../../advanced_features/attention_backend.md:298
 msgid ""
 "It is similar to init_forward_metadata but write the medatada to some pre-"
 "defined buffers"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:288
+#: ../../../advanced_features/attention_backend.md:299
 msgid "init_forward_metadata_replay_cuda_graph"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:289
+#: ../../../advanced_features/attention_backend.md:300
 msgid "It will be called before replaying a cuda graph"
 msgstr ""
 
-#: ../../../advanced_features/attention_backend.md:290
+#: ../../../advanced_features/attention_backend.md:301
 msgid "This function is in the critical path and needs to be fast"
 msgstr ""

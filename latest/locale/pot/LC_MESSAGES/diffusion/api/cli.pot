@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 08:54+0000\n"
+"POT-Creation-Date: 2026-03-02 08:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,36 +161,94 @@ msgid ""
 msgstr ""
 
 #: ../../../diffusion/api/cli.md:44
-msgid "**Output Options**"
+msgid "**Frame Interpolation** (video only)"
 msgstr ""
 
 #: ../../../diffusion/api/cli.md:46
+msgid ""
+"Frame interpolation is a post-processing step that synthesizes new frames "
+"between each pair of consecutive generated frames, producing smoother motion "
+"without re-running the diffusion model. The `--frame-interpolation-exp` flag "
+"controls how many rounds of interpolation to apply: each round inserts one "
+"new frame into every gap between adjacent frames, so the output frame count "
+"follows the formula **(N − 1) × 2^exp + 1** (e.g. 5 original frames with "
+"`exp=1` → 4 gaps × 1 new frame + 5 originals = **9** frames; with `exp=2` → "
+"**17** frames)."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:55
+msgid ""
+"`--enable-frame-interpolation`: Enable frame interpolation. Model weights "
+"are downloaded automatically on first use."
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:56
+msgid ""
+"`--frame-interpolation-exp {EXP}`: Interpolation exponent — `1` = 2× "
+"temporal resolution, `2` = 4×, etc. (default: `1`)"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:57
+msgid ""
+"`--frame-interpolation-scale {SCALE}`: RIFE inference scale; use `0.5` for "
+"high-resolution inputs to save memory (default: `1.0`)"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:58
+msgid ""
+"`--frame-interpolation-model-path {PATH}`: Local directory or HuggingFace "
+"repo ID containing RIFE `flownet.pkl` weights (default: `elfgum/RIFE-4.22."
+"lite`, downloaded automatically)"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:60
+msgid ""
+"Example — generate a 5-frame video and interpolate to 9 frames ((5 − 1) × 2¹ "
+"+ 1 = 9):"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:62
+msgid ""
+"sglang generate \\\n"
+"  --model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers \\\n"
+"  --prompt \"A dog running through a park\" \\\n"
+"  --num-frames 5 \\\n"
+"  --enable-frame-interpolation \\\n"
+"  --frame-interpolation-exp 1 \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:72
+msgid "**Output Options**"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:74
 msgid "`--output-path {PATH}`: Directory to save the generated video"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:47
+#: ../../../diffusion/api/cli.md:75
 msgid "`--save-output`: Whether to save the image/video to disk"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:48
+#: ../../../diffusion/api/cli.md:76
 msgid "`--return-frames`: Whether to return the raw frames"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:50
+#: ../../../diffusion/api/cli.md:78
 msgid "Using Configuration Files"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:52
+#: ../../../diffusion/api/cli.md:80
 msgid ""
 "Instead of specifying all parameters on the command line, you can use a "
 "configuration file:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:54
+#: ../../../diffusion/api/cli.md:82
 msgid "sglang generate --config {CONFIG_FILE_PATH}\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:58
+#: ../../../diffusion/api/cli.md:86
 msgid ""
 "The configuration file should be in JSON or YAML format with the same "
 "parameter names as the CLI options. Command-line arguments take precedence "
@@ -198,11 +256,11 @@ msgid ""
 "values while keeping the rest from the configuration file."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:60
+#: ../../../diffusion/api/cli.md:88
 msgid "Example configuration file (config.json):"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:62
+#: ../../../diffusion/api/cli.md:90
 msgid ""
 "{\n"
 "    \"model_path\": \"FastVideo/FastHunyuan-diffusers\",\n"
@@ -236,11 +294,11 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:95
+#: ../../../diffusion/api/cli.md:123
 msgid "Or using YAML format (config.yaml):"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:97
+#: ../../../diffusion/api/cli.md:125
 msgid ""
 "model_path: \"FastVideo/FastHunyuan-diffusers\"\n"
 "prompt: \"A beautiful woman in a red dress walking down a street\"\n"
@@ -270,33 +328,33 @@ msgid ""
 "enable_torch_compile: false\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:127
+#: ../../../diffusion/api/cli.md:155
 msgid "To see all the options, you can use the `--help` flag:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:129
+#: ../../../diffusion/api/cli.md:157
 msgid "sglang generate --help\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:133
+#: ../../../diffusion/api/cli.md:161
 msgid "Serve"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:135
+#: ../../../diffusion/api/cli.md:163
 msgid ""
 "Launch the SGLang diffusion HTTP server and interact with it using the "
 "OpenAI SDK and curl."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:137
+#: ../../../diffusion/api/cli.md:165
 msgid "Start the server"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:139
+#: ../../../diffusion/api/cli.md:167
 msgid "Use the following command to launch the server:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:141
+#: ../../../diffusion/api/cli.md:169
 msgid ""
 "SERVER_ARGS=(\n"
 "  --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers\n"
@@ -310,67 +368,67 @@ msgid ""
 "sglang serve \"${SERVER_ARGS[@]}\"\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:154
+#: ../../../diffusion/api/cli.md:182
 msgid ""
 "**--model-path**: Which model to load. The example uses `Wan-AI/Wan2.1-"
 "T2V-1.3B-Diffusers`."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:155
+#: ../../../diffusion/api/cli.md:183
 msgid "**--port**: HTTP port to listen on (the default here is `30010`)."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:157
+#: ../../../diffusion/api/cli.md:185
 msgid ""
 "For detailed API usage, including Image, Video Generation and LoRA "
 "management, please refer to the [OpenAI API Documentation](openai_api.md)."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:159
+#: ../../../diffusion/api/cli.md:187
 msgid "Cloud Storage Support"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:161
+#: ../../../diffusion/api/cli.md:189
 msgid ""
 "SGLang diffusion supports automatically uploading generated images and "
 "videos to S3-compatible cloud storage (e.g., AWS S3, MinIO, Alibaba Cloud "
 "OSS, Tencent Cloud COS)."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:163
+#: ../../../diffusion/api/cli.md:191
 msgid ""
 "When enabled, the server follows a **Generate -> Upload -> Delete** workflow:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:164
+#: ../../../diffusion/api/cli.md:192
 msgid "The artifact is generated to a temporary local file."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:165
+#: ../../../diffusion/api/cli.md:193
 msgid ""
 "The file is immediately uploaded to the configured S3 bucket in a background "
 "thread."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:166
+#: ../../../diffusion/api/cli.md:194
 msgid "Upon successful upload, the local file is deleted."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:167
+#: ../../../diffusion/api/cli.md:195
 msgid "The API response returns the public URL of the uploaded object."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:169
+#: ../../../diffusion/api/cli.md:197
 msgid "**Configuration**"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:171
+#: ../../../diffusion/api/cli.md:199
 msgid ""
 "Cloud storage is enabled via environment variables. Note that `boto3` must "
 "be installed separately (`pip install boto3`) to use this feature."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:173
+#: ../../../diffusion/api/cli.md:201
 msgid ""
 "# Enable S3 storage\n"
 "export SGLANG_CLOUD_STORAGE_TYPE=s3\n"
@@ -382,27 +440,27 @@ msgid ""
 "export SGLANG_S3_ENDPOINT_URL=https://minio.example.com\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:184
+#: ../../../diffusion/api/cli.md:212
 msgid ""
 "See [Environment Variables Documentation](../environment_variables.md) for "
 "more details."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:186
+#: ../../../diffusion/api/cli.md:214
 msgid "Generate"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:188
+#: ../../../diffusion/api/cli.md:216
 msgid "Run a one-off generation task without launching a persistent server."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:190
+#: ../../../diffusion/api/cli.md:218
 msgid ""
 "To use it, pass both server arguments and sampling parameters in one "
 "command, after the `generate` subcommand, for example:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:192
+#: ../../../diffusion/api/cli.md:220
 msgid ""
 "SERVER_ARGS=(\n"
 "  --model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers\n"
@@ -428,45 +486,45 @@ msgid ""
 "\"${SAMPLING_ARGS[@]}\"\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:215
+#: ../../../diffusion/api/cli.md:243
 msgid ""
 "Once the generation task has finished, the server will shut down "
 "automatically."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:217
+#: ../../../diffusion/api/cli.md:245
 msgid ""
 "[!NOTE] The HTTP server-related arguments are ignored in this subcommand."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:220
+#: ../../../diffusion/api/cli.md:248
 msgid "Component Path Overrides"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:222
+#: ../../../diffusion/api/cli.md:250
 msgid ""
 "SGLang diffusion allows you to override any pipeline component (e.g., `vae`, "
 "`transformer`, `text_encoder`) by specifying a custom checkpoint path. This "
 "is useful for:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:224
+#: ../../../diffusion/api/cli.md:252
 msgid "Example: FLUX.2-dev with Tiny AutoEncoder"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:226
+#: ../../../diffusion/api/cli.md:254
 msgid ""
 "You can override **any** component by using `--<component>-path`, where "
 "`<component>` matches the key in the model's `model_index.json`:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:228
+#: ../../../diffusion/api/cli.md:256
 msgid ""
 "For example, replace the default VAE with a distilled tiny autoencoder for "
 "~3x faster decoding:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:230
+#: ../../../diffusion/api/cli.md:258
 msgid ""
 "sglang serve \\\n"
 "  --model-path=black-forest-labs/FLUX.2-dev \\\n"
@@ -477,35 +535,35 @@ msgid ""
 "snapshots/.../vae\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:239
+#: ../../../diffusion/api/cli.md:267
 msgid "**Important:**"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:240
+#: ../../../diffusion/api/cli.md:268
 msgid ""
 "The component key must match the one in your model's `model_index.json` (e."
 "g., `vae`)."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:241
+#: ../../../diffusion/api/cli.md:269
 msgid "The path must:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:242
+#: ../../../diffusion/api/cli.md:270
 msgid "either be a Huggingface Repo ID (e.g., fal/FLUX.2-Tiny-AutoEncoder)"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:243
+#: ../../../diffusion/api/cli.md:271
 msgid ""
 "or point to a **complete component folder**, containing `config.json` and "
 "safetensors files"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:246
+#: ../../../diffusion/api/cli.md:274
 msgid "Diffusers Backend"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:248
+#: ../../../diffusion/api/cli.md:276
 msgid ""
 "SGLang diffusion supports a **diffusers backend** that allows you to run any "
 "diffusers-compatible model through SGLang's infrastructure using vanilla "
@@ -513,7 +571,7 @@ msgid ""
 "implementations or models with custom pipeline classes."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:250
+#: ../../../diffusion/api/cli.md:278
 msgid "Arguments"
 msgstr ""
 
@@ -606,17 +664,17 @@ msgstr ""
 msgid "Precision for the VAE."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:262
+#: ../../../diffusion/api/cli.md:290
 msgid "Example: Running Ovis-Image-7B"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:264
+#: ../../../diffusion/api/cli.md:292
 msgid ""
 "[Ovis-Image-7B](https://huggingface.co/AIDC-AI/Ovis-Image-7B) is a 7B text-"
 "to-image model optimized for high-quality text rendering."
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:266
+#: ../../../diffusion/api/cli.md:294
 msgid ""
 "sglang generate \\\n"
 "  --model-path AIDC-AI/Ovis-Image-7B \\\n"
@@ -632,17 +690,17 @@ msgid ""
 "  --output-file-name ovis_garden.png\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:281
+#: ../../../diffusion/api/cli.md:309
 msgid "Extra Diffusers Arguments"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:283
+#: ../../../diffusion/api/cli.md:311
 msgid ""
 "For pipeline-specific parameters not exposed via CLI, use `diffusers_kwargs` "
 "in a config file:"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:285
+#: ../../../diffusion/api/cli.md:313
 msgid ""
 "{\n"
 "    \"model_path\": \"AIDC-AI/Ovis-Image-7B\",\n"
@@ -654,6 +712,18 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: ../../../diffusion/api/cli.md:296
+#: ../../../diffusion/api/cli.md:324
 msgid "sglang generate --config config.json\n"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:328
+msgid "Cache-DiT Acceleration"
+msgstr ""
+
+#: ../../../diffusion/api/cli.md:330
+msgid ""
+"Users who use the diffusers backend can also leverage Cache-DiT acceleration "
+"and load custom cache configs from a YAML file to boost performance of "
+"diffusers pipelines. See the [Cache-DiT Acceleration](https://docs.sglang.io/"
+"diffusion/performance/cache/cache_dit.html) documentation for details."
 msgstr ""
