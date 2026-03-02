@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-05 08:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../supported_models/diffusion_language_models.md:1
+msgid "Diffusion Language Models"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:3
+msgid ""
+"Diffusion language models have shown promise for non-autoregressive text "
+"generation with parallel decoding capabilities. Unlike auto-regressive "
+"language models, different diffusion language models require different "
+"decoding strategies."
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:5
+msgid "Example Launch Command"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:7
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path inclusionAI/LLaDA2.0-mini \\ # example HF/local path\n"
+"  --dllm-algorithm LowConfidence \\\n"
+"  --dllm-algorithm-config ./config.yaml \\ # Optional. Uses the algorithm's "
+"default if not set.\n"
+"  --host 0.0.0.0 \\\n"
+"  --port 30000\n"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:16
+msgid "Example Configuration File"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:18
+msgid ""
+"# Confidence threshold for accepting predicted tokens\n"
+"# - Higher values: More conservative, better quality but slower\n"
+"# - Lower values: More aggressive, faster but potentially lower quality\n"
+"# Range: 0.0 - 1.0\n"
+"threshold: 0.95\n"
+"\n"
+"# Default: 32, for LLaDA2MoeModelLM\n"
+"block_size: 32\n"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:28
+msgid "Example Client Code Snippet"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:30
+msgid ""
+"Just like other supported models, diffusion language models can be used via "
+"the REST API or Python client."
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:32
+msgid ""
+"Python client example for making a generation request to the launched server:"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:34
+msgid ""
+"import sglang as sgl\n"
+"\n"
+"def main():\n"
+"    llm = sgl.Engine(model_path=\"inclusionAI/LLaDA2.0-mini\",\n"
+"                     dllm_algorithm=\"LowConfidence\",\n"
+"                     max_running_requests=1,\n"
+"                     trust_remote_code=True)\n"
+"\n"
+"    prompts = [\n"
+"        \"<role>SYSTEM</role>detailed thinking off<|role_end|><role>HUMAN</"
+"role> Write a brief introduction of the great wall <|role_end|"
+"><role>ASSISTANT</role>\"\n"
+"    ]\n"
+"\n"
+"    sampling_params = {\n"
+"        \"temperature\": 0,\n"
+"        \"max_new_tokens\": 1024,\n"
+"    }\n"
+"\n"
+"    outputs = llm.generate(prompts, sampling_params)\n"
+"    print(outputs)\n"
+"\n"
+"if __name__ == '__main__':\n"
+"    main()\n"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:59
+msgid "Curl example for making a generation request to the launched server:"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:61
+msgid ""
+"curl -X POST \"http://127.0.0.1:30000/generate\" \\\n"
+"     -H \"Content-Type: application/json\" \\\n"
+"     -d '{\n"
+"        \"text\": [\n"
+"            \"<role>SYSTEM</role>detailed thinking off<|role_end|"
+"><role>HUMAN</role> Write the number from 1 to 128 <|role_end|"
+"><role>ASSISTANT</role>\",\n"
+"            \"<role>SYSTEM</role>detailed thinking off<|role_end|"
+"><role>HUMAN</role> Write a brief introduction of the great wall <|role_end|"
+"><role>ASSISTANT</role>\"\n"
+"        ],\n"
+"        \"stream\": true,\n"
+"        \"sampling_params\": {\n"
+"            \"temperature\": 0,\n"
+"            \"max_new_tokens\": 1024\n"
+"        }\n"
+"    }'\n"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:77
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:79
+msgid "Below the supported models are summarized in a table."
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:0
+msgid "Model Family"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:0
+msgid "Example Model"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:0
+msgid "Description"
+msgstr "描述"
+
+#: ../../../supported_models/diffusion_language_models.md:0
+msgid "**LLaDA2.0 (mini, flash)**"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:0
+msgid "`inclusionAI/LLaDA2.0-flash`"
+msgstr ""
+
+#: ../../../supported_models/diffusion_language_models.md:0
+msgid ""
+"LLaDA2.0-flash is a diffusion language model featuring a 100B Mixture-of-"
+"Experts (MoE) architecture."
+msgstr ""
