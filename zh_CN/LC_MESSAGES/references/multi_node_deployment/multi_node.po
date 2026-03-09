@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../references/multi_node_deployment/multi_node.md:1
+msgid "Multi-Node Deployment"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:3
+msgid "Llama 3.1 405B"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:5
+msgid "**Run 405B (fp16) on Two Nodes**"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:7
+msgid ""
+"# replace 172.16.4.52:20000 with your own node ip address and port of the "
+"first node\n"
+"\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Meta-Llama-3.1-405B-Instruct \\\n"
+"  --tp 16 \\\n"
+"  --dist-init-addr 172.16.4.52:20000 \\\n"
+"  --nnodes 2 \\\n"
+"  --node-rank 0\n"
+"\n"
+"python3 -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Meta-Llama-3.1-405B-Instruct \\\n"
+"  --tp 16 \\\n"
+"  --dist-init-addr 172.16.4.52:20000 \\\n"
+"  --nnodes 2 \\\n"
+"  --node-rank 1\n"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:25
+msgid "Note that LLama 405B (fp8) can also be launched on a single node."
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:27
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-405B-"
+"Instruct-FP8 --tp 8\n"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:31
+msgid "DeepSeek V3/R1"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:33
+msgid ""
+"Please refer to [DeepSeek documents for reference](https://docs.sglang.io/"
+"basic_usage/deepseek.html#running-examples-on-multi-node)."
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:35
+msgid "Multi-Node Inference on SLURM"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:37
+msgid ""
+"This example showcases how to serve SGLang server across multiple nodes by "
+"SLURM. Submit the following job to the SLURM cluster."
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:39
+msgid ""
+"#!/bin/bash -l\n"
+"\n"
+"#SBATCH -o SLURM_Logs/%x_%j_master.out\n"
+"#SBATCH -e SLURM_Logs/%x_%j_master.err\n"
+"#SBATCH -D ./\n"
+"#SBATCH -J Llama-405B-Online-Inference-TP16-SGL\n"
+"\n"
+"#SBATCH --nodes=2\n"
+"#SBATCH --ntasks=2\n"
+"#SBATCH --ntasks-per-node=1  # Ensure 1 task per node\n"
+"#SBATCH --cpus-per-task=18\n"
+"#SBATCH --mem=224GB\n"
+"#SBATCH --partition=\"lmsys.org\"\n"
+"#SBATCH --gres=gpu:8\n"
+"#SBATCH --time=12:00:00\n"
+"\n"
+"echo \"[INFO] Activating environment on node $SLURM_PROCID\"\n"
+"if ! source ENV_FOLDER/bin/activate; then\n"
+"    echo \"[ERROR] Failed to activate environment\" >&2\n"
+"    exit 1\n"
+"fi\n"
+"\n"
+"# Define parameters\n"
+"model=MODEL_PATH\n"
+"tp_size=16\n"
+"\n"
+"echo \"[INFO] Running inference\"\n"
+"echo \"[INFO] Model: $model\"\n"
+"echo \"[INFO] TP Size: $tp_size\"\n"
+"\n"
+"# Set NCCL initialization address using the hostname of the head node\n"
+"HEAD_NODE=$(scontrol show hostname \"$SLURM_NODELIST\" | head -n 1)\n"
+"NCCL_INIT_ADDR=\"${HEAD_NODE}:8000\"\n"
+"echo \"[INFO] NCCL_INIT_ADDR: $NCCL_INIT_ADDR\"\n"
+"\n"
+"# Launch the model server on each node using SLURM\n"
+"srun --ntasks=2 --nodes=2 --output=\"SLURM_Logs/%x_%j_node$SLURM_NODEID."
+"out\" \\\n"
+"    --error=\"SLURM_Logs/%x_%j_node$SLURM_NODEID.err\" \\\n"
+"    python3 -m sglang.launch_server \\\n"
+"    --model-path \"$model\" \\\n"
+"    --grammar-backend \"xgrammar\" \\\n"
+"    --tp \"$tp_size\" \\\n"
+"    --dist-init-addr \"$NCCL_INIT_ADDR\" \\\n"
+"    --nnodes 2 \\\n"
+"    --node-rank \"$SLURM_NODEID\" &\n"
+"\n"
+"# Wait for the NCCL server to be ready on port 30000\n"
+"while ! nc -z \"$HEAD_NODE\" 30000; do\n"
+"    sleep 1\n"
+"    echo \"[INFO] Waiting for $HEAD_NODE:30000 to accept connections\"\n"
+"done\n"
+"\n"
+"echo \"[INFO] $HEAD_NODE:30000 is ready to accept connections\"\n"
+"\n"
+"# Keep the script running until the SLURM job times out\n"
+"wait\n"
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:98
+msgid ""
+"Then, you can test the server by sending requests following other [documents]"
+"(https://docs.sglang.io/basic_usage/openai_api_completions.html)."
+msgstr ""
+
+#: ../../../references/multi_node_deployment/multi_node.md:100
+msgid ""
+"Thanks for [aflah02](https://github.com/aflah02) for providing the example, "
+"based on his [blog post](https://aflah02.substack.com/p/multi-node-llm-"
+"inference-with-sglang)."
+msgstr ""
