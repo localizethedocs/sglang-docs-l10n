@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"POT-Creation-Date: 2026-03-09 08:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../../../basic_usage/minimax_m2.md:1
-msgid "MiniMax M2.1/M2 Usage"
+msgid "MiniMax M2.5/M2.1/M2 Usage"
 msgstr ""
 
 #: ../../../basic_usage/minimax_m2.md:3
 msgid ""
-"[MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1) and [MiniMax-"
-"M2](https://huggingface.co/MiniMaxAI/MiniMax-M2) are advanced large language "
-"models created by [MiniMax](https://www.minimax.io/)."
+"[MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5), [MiniMax-M2.1]"
+"(https://huggingface.co/MiniMaxAI/MiniMax-M2.1), and [MiniMax-M2](https://"
+"huggingface.co/MiniMaxAI/MiniMax-M2) are advanced large language models "
+"created by [MiniMax](https://www.minimax.io/)."
 msgstr ""
 
 #: ../../../basic_usage/minimax_m2.md:5
 msgid ""
-"MiniMax-M2 series redefines efficiency for agents. It's a compact, fast, and "
-"cost-effective MoE model (230 billion total parameters with 10 billion "
-"active parameters) built for elite performance in coding and agentic tasks, "
-"all while maintaining powerful general intelligence. With just 10 billion "
-"activated parameters, MiniMax-M2 provides the sophisticated, end-to-end tool "
-"use performance expected from today's leading models, but in a streamlined "
-"form factor that makes deployment and scaling easier than ever."
+"The MiniMax-M2 series redefines efficiency for agents. These compact, fast, "
+"and cost-effective MoE models (230 billion total parameters with 10 billion "
+"active parameters) are built for elite performance in coding and agentic "
+"tasks, all while maintaining powerful general intelligence. With just 10 "
+"billion activated parameters, the MiniMax-M2 series provides sophisticated, "
+"end-to-end tool use performance expected from today's leading models, but in "
+"a streamlined form factor that makes deployment and scaling easier than ever."
 msgstr ""
 
 #: ../../../basic_usage/minimax_m2.md:7
@@ -50,40 +51,44 @@ msgid ""
 msgstr ""
 
 #: ../../../basic_usage/minimax_m2.md:11
-msgid "[MiniMaxAI/MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1)"
+msgid "[MiniMaxAI/MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5)"
 msgstr ""
 
 #: ../../../basic_usage/minimax_m2.md:12
+msgid "[MiniMaxAI/MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1)"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:13
 msgid "[MiniMaxAI/MiniMax-M2](https://huggingface.co/MiniMaxAI/MiniMax-M2)"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:14
+#: ../../../basic_usage/minimax_m2.md:15
 msgid "System Requirements"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:16
+#: ../../../basic_usage/minimax_m2.md:17
 msgid ""
 "The following are recommended configurations; actual requirements should be "
 "adjusted based on your use case:"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:18
+#: ../../../basic_usage/minimax_m2.md:19
 msgid "4x 96GB GPUs: Supported context length of up to 400K tokens."
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:19
+#: ../../../basic_usage/minimax_m2.md:20
 msgid "8x 144GB GPUs: Supported context length of up to 3M tokens."
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:21
+#: ../../../basic_usage/minimax_m2.md:22
 msgid "Deployment with Python"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:23
+#: ../../../basic_usage/minimax_m2.md:24
 msgid "4-GPU deployment command:"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:25
+#: ../../../basic_usage/minimax_m2.md:26
 msgid ""
 "python -m sglang.launch_server \\\n"
 "    --model-path MiniMaxAI/MiniMax-M2 \\\n"
@@ -96,11 +101,11 @@ msgid ""
 "    --mem-fraction-static 0.85\n"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:37
+#: ../../../basic_usage/minimax_m2.md:38 ../../../basic_usage/minimax_m2.md:55
 msgid "8-GPU deployment command:"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:39
+#: ../../../basic_usage/minimax_m2.md:40
 msgid ""
 "python -m sglang.launch_server \\\n"
 "    --model-path MiniMaxAI/MiniMax-M2 \\\n"
@@ -114,17 +119,36 @@ msgid ""
 "    --mem-fraction-static 0.85\n"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:52
+#: ../../../basic_usage/minimax_m2.md:53
+msgid "AMD GPUs (MI300X/MI325X/MI355X)"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:57
+msgid ""
+"SGLANG_USE_AITER=1 python -m sglang.launch_server \\\n"
+"    --model-path MiniMaxAI/MiniMax-M2.5 \\\n"
+"    --tp-size 8 \\\n"
+"    --ep-size 8 \\\n"
+"    --attention-backend aiter \\\n"
+"    --tool-call-parser minimax-m2 \\\n"
+"    --reasoning-parser minimax-append-think \\\n"
+"    --host 0.0.0.0 \\\n"
+"    --trust-remote-code \\\n"
+"    --port 8000 \\\n"
+"    --mem-fraction-static 0.85\n"
+msgstr ""
+
+#: ../../../basic_usage/minimax_m2.md:71
 msgid "Testing Deployment"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:54
+#: ../../../basic_usage/minimax_m2.md:73
 msgid ""
 "After startup, you can test the SGLang OpenAI-compatible API with the "
 "following command:"
 msgstr ""
 
-#: ../../../basic_usage/minimax_m2.md:56
+#: ../../../basic_usage/minimax_m2.md:75
 msgid ""
 "curl http://localhost:8000/v1/chat/completions \\\n"
 "    -H \"Content-Type: application/json\" \\\n"
