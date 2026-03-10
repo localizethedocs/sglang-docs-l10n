@@ -1,0 +1,984 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cache-DiT Acceleration &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diffusion/performance/cache/cache_dit';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/diffusion/performance/cache/cache_dit.html" />
+    <link rel="icon" href="../../../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="TeaCache Acceleration" href="teacache.html" />
+    <link rel="prev" title="Caching Acceleration for Diffusion Models" href="index.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="2026 年 03 月 09 日"/>
+<script type="text/javascript" src="../../../ltd-provenance.js"></script>
+<script type="text/javascript" src="../../../ltd-current.js"></script>
+<script type="text/javascript" src="../../../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/cli.html">SGLang diffusion CLI Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Performance Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../profiling.html">Profiling Multimodal Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Caching Acceleration for Diffusion Models</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cache-DiT Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="teacache.html">TeaCache Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../support_new_models.html">How to Support New Diffusion Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ci_perf.html">Perf Baseline Generation Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environment_variables.html">Caching Acceleration</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/diffusion/performance/cache/cache_dit.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/diffusion/performance/cache/cache_dit.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdiffusion/performance/cache/cache_dit.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/diffusion/performance/cache/cache_dit.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cache-DiT Acceleration</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusers-backend-configuration">Diffusers Backend Configuration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-gpu-inference">Single GPU inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-inference">Distributed inference</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-configuration">Advanced Configuration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dbcache-parameters">DBCache Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taylorseer-configuration">TaylorSeer Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-configuration-example">Combined Configuration Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scm-step-computation-masking">SCM (Step Computation Masking)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-models">Supported Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tips">Performance Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-environment-warning">Distributed environment warning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scm-disabled-for-low-step-count">SCM disabled for low step count</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cache-dit-acceleration">
+<h1>Cache-DiT Acceleration<a class="headerlink" href="#cache-dit-acceleration" title="链接到此标题。">#</a></h1>
+<p>SGLang integrates <a class="reference external" href="https://github.com/vipshop/cache-dit">Cache-DiT</a>, a caching acceleration engine for Diffusion Transformers (DiT), to achieve up to <strong>1.69x inference speedup</strong> with minimal quality loss.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="链接到此标题。">#</a></h2>
+<p><strong>Cache-DiT</strong> uses intelligent caching strategies to skip redundant computation in the denoising loop:</p>
+<ul class="simple">
+<li><p><strong>DBCache (Dual Block Cache)</strong>: Dynamically decides when to cache transformer blocks based on residual differences</p></li>
+<li><p><strong>TaylorSeer</strong>: Uses Taylor expansion for calibration to optimize caching decisions</p></li>
+<li><p><strong>SCM (Step Computation Masking)</strong>: Step-level caching control for additional speedup</p></li>
+</ul>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="链接到此标题。">#</a></h2>
+<p>Enable Cache-DiT by exporting the environment variable and using <code class="docutils literal notranslate"><span class="pre">sglang</span> <span class="pre">generate</span></code> or <code class="docutils literal notranslate"><span class="pre">sglang</span> <span class="pre">serve</span></code> :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SGLANG_CACHE_DIT_ENABLED</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+sglang<span class="w"> </span>generate<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--prompt<span class="w"> </span><span class="s2">&quot;A beautiful sunset over the mountains&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="diffusers-backend-configuration">
+<h2>Diffusers Backend Configuration<a class="headerlink" href="#diffusers-backend-configuration" title="链接到此标题。">#</a></h2>
+<p>Cache-DiT supports loading acceleration configs from a custom YAML file. For
+diffusers pipelines, pass the YAML/JSON path via <code class="docutils literal notranslate"><span class="pre">--cache-dit-config</span></code>. This
+flow requires cache-dit &gt;= 1.2.0 (<code class="docutils literal notranslate"><span class="pre">cache_dit.load_configs</span></code>).</p>
+<section id="single-gpu-inference">
+<h3>Single GPU inference<a class="headerlink" href="#single-gpu-inference" title="链接到此标题。">#</a></h3>
+<p>Define a <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file that contains:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cache_config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">max_warmup_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">  </span><span class="nt">warmup_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">max_cached_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">  </span><span class="nt">max_continuous_cached_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">Fn_compute_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">Bn_compute_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">residual_diff_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12</span>
+<span class="w">  </span><span class="nt">enable_taylorseer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">taylorseer_order</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</pre></div>
+</div>
+<p>Then apply the config with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span>--backend<span class="w"> </span>diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cache-dit-config<span class="w"> </span>config.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">&quot;A beautiful sunset over the mountains&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="distributed-inference">
+<h3>Distributed inference<a class="headerlink" href="#distributed-inference" title="链接到此标题。">#</a></h3>
+<p>Define a <code class="docutils literal notranslate"><span class="pre">parallel_config.yaml</span></code> file that contains:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cache_config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">max_warmup_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">  </span><span class="nt">warmup_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">max_cached_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="w">  </span><span class="nt">max_continuous_cached_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">Fn_compute_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">Bn_compute_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">residual_diff_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12</span>
+<span class="w">  </span><span class="nt">enable_taylorseer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">taylorseer_order</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">parallelism_config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ulysses_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="w">  </span><span class="nt">parallel_kwargs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">attention_backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">native</span>
+<span class="w">    </span><span class="nt">extra_parallel_modules</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;text_encoder&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;vae&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ulysses_size:</span> <span class="pre">auto</span></code> means cache-dit will auto-detect the world_size. Otherwise,
+set it to a specific integer (e.g., <code class="docutils literal notranslate"><span class="pre">4</span></code>).</p>
+<p>Then apply the distributed config with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span>--backend<span class="w"> </span>diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cache-dit-config<span class="w"> </span>parallel_config.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">&quot;A futuristic cityscape at sunset&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-configuration">
+<h2>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="链接到此标题。">#</a></h2>
+<section id="dbcache-parameters">
+<h3>DBCache Parameters<a class="headerlink" href="#dbcache-parameters" title="链接到此标题。">#</a></h3>
+<p>DBCache controls block-level caching behavior:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Env Variable</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fn</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_FN</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Number of first blocks to always compute</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bn</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_BN</span></code></p></td>
+<td><p>0</p></td>
+<td><p>Number of last blocks to always compute</p></td>
+</tr>
+<tr class="row-even"><td><p>W</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_WARMUP</span></code></p></td>
+<td><p>4</p></td>
+<td><p>Warmup steps before caching starts</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_RDT</span></code></p></td>
+<td><p>0.24</p></td>
+<td><p>Residual difference threshold</p></td>
+</tr>
+<tr class="row-even"><td><p>MC</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_MC</span></code></p></td>
+<td><p>3</p></td>
+<td><p>Maximum continuous cached steps</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="taylorseer-configuration">
+<h3>TaylorSeer Configuration<a class="headerlink" href="#taylorseer-configuration" title="链接到此标题。">#</a></h3>
+<p>TaylorSeer improves caching accuracy using Taylor expansion:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Env Variable</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Enable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_TAYLORSEER</span></code></p></td>
+<td><p>false</p></td>
+<td><p>Enable TaylorSeer calibrator</p></td>
+</tr>
+<tr class="row-odd"><td><p>Order</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_TS_ORDER</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Taylor expansion order (1 or 2)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="combined-configuration-example">
+<h3>Combined Configuration Example<a class="headerlink" href="#combined-configuration-example" title="链接到此标题。">#</a></h3>
+<p>DBCache and TaylorSeer are complementary strategies that work together, you can configure both sets of parameters
+simultaneously:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SGLANG_CACHE_DIT_ENABLED</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_FN</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_BN</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_WARMUP</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_RDT</span><span class="o">=</span><span class="m">0</span>.4<span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_MC</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_TAYLORSEER</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_TS_ORDER</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+sglang<span class="w"> </span>generate<span class="w"> </span>--model-path<span class="w"> </span>black-forest-labs/FLUX.1-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--prompt<span class="w"> </span><span class="s2">&quot;A curious raccoon in a forest&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="scm-step-computation-masking">
+<h3>SCM (Step Computation Masking)<a class="headerlink" href="#scm-step-computation-masking" title="链接到此标题。">#</a></h3>
+<p>SCM provides step-level caching control for additional speedup. It decides which denoising steps to compute fully and
+which to use cached results.</p>
+<p><strong>SCM Presets</strong></p>
+<p>SCM is configured with presets:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Preset</p></th>
+<th class="head"><p>Compute Ratio</p></th>
+<th class="head"><p>Speed</p></th>
+<th class="head"><p>Quality</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+<td><p>100%</p></td>
+<td><p>Baseline</p></td>
+<td><p>Best</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">slow</span></code></p></td>
+<td><p>~75%</p></td>
+<td><p>~1.3x</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">medium</span></code></p></td>
+<td><p>~50%</p></td>
+<td><p>~2x</p></td>
+<td><p>Good</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fast</span></code></p></td>
+<td><p>~35%</p></td>
+<td><p>~3x</p></td>
+<td><p>Acceptable</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ultra</span></code></p></td>
+<td><p>~25%</p></td>
+<td><p>~4x</p></td>
+<td><p>Lower</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SGLANG_CACHE_DIT_ENABLED</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_SCM_PRESET</span><span class="o">=</span>medium<span class="w"> </span><span class="se">\</span>
+sglang<span class="w"> </span>generate<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--prompt<span class="w"> </span><span class="s2">&quot;A futuristic cityscape at sunset&quot;</span>
+</pre></div>
+</div>
+<p><strong>Custom SCM Bins</strong></p>
+<p>For fine-grained control over which steps to compute vs cache:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SGLANG_CACHE_DIT_ENABLED</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_SCM_COMPUTE_BINS</span><span class="o">=</span><span class="s2">&quot;8,3,3,2,2&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">SGLANG_CACHE_DIT_SCM_CACHE_BINS</span><span class="o">=</span><span class="s2">&quot;1,2,2,2,3&quot;</span><span class="w"> </span><span class="se">\</span>
+sglang<span class="w"> </span>generate<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--prompt<span class="w"> </span><span class="s2">&quot;A futuristic cityscape at sunset&quot;</span>
+</pre></div>
+</div>
+<p><strong>SCM Policy</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Policy</p></th>
+<th class="head"><p>Env Variable</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dynamic</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_SCM_POLICY=dynamic</span></code></p></td>
+<td><p>Adaptive caching based on content (default)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">static</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIT_SCM_POLICY=static</span></code></p></td>
+<td><p>Fixed caching pattern</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="environment-variables">
+<h2>Environment Variables<a class="headerlink" href="#environment-variables" title="链接到此标题。">#</a></h2>
+<p>All Cache-DiT parameters can be configured via environment variables.
+See <a class="reference internal" href="../../environment_variables.html"><span class="std std-doc">Environment Variables</span></a> for the complete list.</p>
+</section>
+<section id="supported-models">
+<h2>Supported Models<a class="headerlink" href="#supported-models" title="链接到此标题。">#</a></h2>
+<p>SGLang Diffusion x Cache-DiT supports almost all models originally supported in SGLang Diffusion:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Family</p></th>
+<th class="head"><p>Example Models</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Wan</p></td>
+<td><p>Wan2.1, Wan2.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flux</p></td>
+<td><p>FLUX.1-dev, FLUX.2-dev</p></td>
+</tr>
+<tr class="row-even"><td><p>Z-Image</p></td>
+<td><p>Z-Image-Turbo</p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen</p></td>
+<td><p>Qwen-Image, Qwen-Image-Edit</p></td>
+</tr>
+<tr class="row-even"><td><p>Hunyuan</p></td>
+<td><p>HunyuanVideo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="performance-tips">
+<h2>Performance Tips<a class="headerlink" href="#performance-tips" title="链接到此标题。">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Start with defaults</strong>: The default parameters work well for most models</p></li>
+<li><p><strong>Use TaylorSeer</strong>: It typically improves both speed and quality</p></li>
+<li><p><strong>Tune R threshold</strong>: Lower values = better quality, higher values = faster</p></li>
+<li><p><strong>SCM for extra speed</strong>: Use <code class="docutils literal notranslate"><span class="pre">medium</span></code> preset for good speed/quality balance</p></li>
+<li><p><strong>Warmup matters</strong>: Higher warmup = more stable caching decisions</p></li>
+</ol>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="链接到此标题。">#</a></h2>
+<ul class="simple">
+<li><p><strong>SGLang-native pipelines</strong>: Distributed support (TP/SP) is not yet validated; Cache-DiT will be automatically
+disabled when <code class="docutils literal notranslate"><span class="pre">world_size</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>.</p></li>
+<li><p><strong>SCM minimum steps</strong>: SCM requires &gt;= 8 inference steps to be effective</p></li>
+<li><p><strong>Model support</strong>: Only models registered in Cache-DiT's BlockAdapterRegister are supported</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="链接到此标题。">#</a></h2>
+<section id="distributed-environment-warning">
+<h3>Distributed environment warning<a class="headerlink" href="#distributed-environment-warning" title="链接到此标题。">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WARNING</span><span class="p">:</span> <span class="n">cache</span><span class="o">-</span><span class="n">dit</span> <span class="ow">is</span> <span class="n">disabled</span> <span class="ow">in</span> <span class="n">distributed</span> <span class="n">environment</span> <span class="p">(</span><span class="n">world_size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is expected behavior. Cache-DiT currently only supports single-GPU inference.</p>
+</section>
+<section id="scm-disabled-for-low-step-count">
+<h3>SCM disabled for low step count<a class="headerlink" href="#scm-disabled-for-low-step-count" title="链接到此标题。">#</a></h3>
+<p>For models with &lt; 8 inference steps (e.g., DMD distilled models), SCM will be automatically disabled. DBCache
+acceleration still works.</p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="链接到此标题。">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/vipshop/cache-dit">Cache-Dit</a></p></li>
+<li><p><a class="reference internal" href="../index.html"><span class="std std-doc">SGLang Diffusion</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Caching Acceleration for Diffusion Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="teacache.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">TeaCache Acceleration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusers-backend-configuration">Diffusers Backend Configuration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-gpu-inference">Single GPU inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-inference">Distributed inference</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-configuration">Advanced Configuration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dbcache-parameters">DBCache Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taylorseer-configuration">TaylorSeer Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-configuration-example">Combined Configuration Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scm-step-computation-masking">SCM (Step Computation Masking)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-models">Supported Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tips">Performance Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-environment-warning">Distributed environment warning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scm-disabled-for-low-step-count">SCM disabled for low step count</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 03 月 09 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

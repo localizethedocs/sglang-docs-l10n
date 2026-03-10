@@ -1,0 +1,974 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SGLang diffusion CLI Inference &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diffusion/api/cli';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/diffusion/api/cli.html" />
+    <link rel="icon" href="../../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜尋" href="../../search.html" />
+    <link rel="next" title="SGLang Diffusion OpenAI API" href="openai_api.html" />
+    <link rel="prev" title="Compatibility Matrix" href="../compatibility_matrix.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+    <meta name="docbuild:last-update" content="2026 年 03 月 09 日"/>
+<script type="text/javascript" src="../../ltd-provenance.js"></script>
+<script type="text/javascript" src="../../ltd-current.js"></script>
+<script type="text/javascript" src="../../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜尋</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/openai_api.html">OpenAI 相容的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/ollama_api.html">Ollama 相容的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/native_api.html">SGLang 原生的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/quantization.html">量化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SGLang diffusion CLI Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance/index.html">Performance Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance/profiling.html">Profiling Multimodal Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance/cache/index.html">Caching Acceleration for Diffusion Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance/cache/cache_dit.html">Cache-DiT Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance/cache/teacache.html">TeaCache Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support_new_models.html">How to Support New Diffusion Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing to SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ci_perf.html">Perf Baseline Generation Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environment_variables.html">Caching Acceleration</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references/learn_more.html">深入了解並加入社群</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/diffusion/api/cli.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/diffusion/api/cli.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdiffusion/api/cli.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/diffusion/api/cli.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SGLang diffusion CLI Inference</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-arguments">Supported Arguments</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-arguments">Server Arguments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-parameters">Sampling Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-configuration-files">Using Configuration Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#serve">Serve</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-server">Start the server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-storage-support">Cloud Storage Support</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate">Generate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-path-overrides">Component Path Overrides</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-flux-2-dev-with-tiny-autoencoder">Example: FLUX.2-dev with Tiny AutoEncoder</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusers-backend">Diffusers Backend</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arguments">引數</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-ovis-image-7b">Example: Running Ovis-Image-7B</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-diffusers-arguments">Extra Diffusers Arguments</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sglang-diffusion-cli-inference">
+<h1>SGLang diffusion CLI Inference<a class="headerlink" href="#sglang-diffusion-cli-inference" title="連結到這個標頭">#</a></h1>
+<p>The SGLang-diffusion CLI provides a quick way to access the inference pipeline for image and video generation.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p>A working SGLang diffusion installation and the <code class="docutils literal notranslate"><span class="pre">sglang</span></code> CLI available in <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>.</p></li>
+</ul>
+</section>
+<section id="supported-arguments">
+<h2>Supported Arguments<a class="headerlink" href="#supported-arguments" title="連結到這個標頭">#</a></h2>
+<section id="server-arguments">
+<h3>Server Arguments<a class="headerlink" href="#server-arguments" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--model-path</span> <span class="pre">{MODEL_PATH}</span></code>: Path to the model or model ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--lora-path</span> <span class="pre">{LORA_PATH}</span></code>: Path to a LoRA adapter (local path or HuggingFace model ID). If not specified, LoRA will not be applied.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--lora-nickname</span> <span class="pre">{NAME}</span></code>: Nickname for the LoRA adapter. (default: <code class="docutils literal notranslate"><span class="pre">default</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--num-gpus</span> <span class="pre">{NUM_GPUS}</span></code>: Number of GPUs to use</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tp-size</span> <span class="pre">{TP_SIZE}</span></code>: Tensor parallelism size (only for the encoder; should not be larger than 1 if text encoder offload is enabled, as layer-wise offload plus prefetch is faster)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--sp-degree</span> <span class="pre">{SP_SIZE}</span></code>: Sequence parallelism size (typically should match the number of GPUs)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ulysses-degree</span> <span class="pre">{ULYSSES_DEGREE}</span></code>: The degree of DeepSpeed-Ulysses-style SP in USP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ring-degree</span> <span class="pre">{RING_DEGREE}</span></code>: The degree of ring attention-style SP in USP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--attention-backend</span> <span class="pre">{BACKEND}</span></code>: Attention backend to use. For SGLang-native pipelines use <code class="docutils literal notranslate"><span class="pre">fa</span></code>, <code class="docutils literal notranslate"><span class="pre">torch_sdpa</span></code>, <code class="docutils literal notranslate"><span class="pre">sage_attn</span></code>, etc. For diffusers pipelines use diffusers backend names like <code class="docutils literal notranslate"><span class="pre">flash</span></code>, <code class="docutils literal notranslate"><span class="pre">_flash_3_hub</span></code>, <code class="docutils literal notranslate"><span class="pre">sage</span></code>, <code class="docutils literal notranslate"><span class="pre">xformers</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--attention-backend-config</span> <span class="pre">{CONFIG}</span></code>: Configuration for the attention backend. Can be a JSON string (e.g., '{&quot;k&quot;: &quot;v&quot;}'), a path to a JSON/YAML file, or key=value pairs (e.g., &quot;k=v,k2=v2&quot;).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--cache-dit-config</span> <span class="pre">{PATH}</span></code>: Path to a Cache-DiT YAML/JSON config (diffusers backend only)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dit-precision</span> <span class="pre">{DTYPE}</span></code>: Precision for the DiT model (currently supports fp32, fp16, and bf16).</p></li>
+</ul>
+</section>
+<section id="sampling-parameters">
+<h3>Sampling Parameters<a class="headerlink" href="#sampling-parameters" title="連結到這個標頭">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--prompt</span> <span class="pre">{PROMPT}</span></code>: Text description for the video you want to generate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--num-inference-steps</span> <span class="pre">{STEPS}</span></code>: Number of denoising steps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--negative-prompt</span> <span class="pre">{PROMPT}</span></code>: Negative prompt to guide generation away from certain concepts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--seed</span> <span class="pre">{SEED}</span></code>: Random seed for reproducible generation</p></li>
+</ul>
+<p><strong>Image/Video Configuration</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--height</span> <span class="pre">{HEIGHT}</span></code>: Height of the generated output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--width</span> <span class="pre">{WIDTH}</span></code>: Width of the generated output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--num-frames</span> <span class="pre">{NUM_FRAMES}</span></code>: Number of frames to generate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fps</span> <span class="pre">{FPS}</span></code>: Frames per second for the saved output, if this is a video-generation task</p></li>
+</ul>
+<p><strong>Output Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-path</span> <span class="pre">{PATH}</span></code>: Directory to save the generated video</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--save-output</span></code>: Whether to save the image/video to disk</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--return-frames</span></code>: Whether to return the raw frames</p></li>
+</ul>
+</section>
+<section id="using-configuration-files">
+<h3>Using Configuration Files<a class="headerlink" href="#using-configuration-files" title="連結到這個標頭">#</a></h3>
+<p>Instead of specifying all parameters on the command line, you can use a configuration file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span>--config<span class="w"> </span><span class="o">{</span>CONFIG_FILE_PATH<span class="o">}</span>
+</pre></div>
+</div>
+<p>The configuration file should be in JSON or YAML format with the same parameter names as the CLI options. Command-line arguments take precedence over settings in the configuration file, allowing you to override specific values while keeping the rest from the configuration file.</p>
+<p>Example configuration file (config.json):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FastVideo/FastHunyuan-diffusers&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A beautiful woman in a red dress walking down a street&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;output_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;outputs/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_gpus&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sp_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tp_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_frames&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">720</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_inference_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;precision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bf16&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vae_precision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fp16&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vae_tiling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vae_sp&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vae_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;load_encoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;load_decoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;tile_sample_min_height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;tile_sample_min_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;text_encoder_precisions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;fp16&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;fp16&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;mask_strategy_file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;enable_torch_compile&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Or using YAML format (config.yaml):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">model_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;FastVideo/FastHunyuan-diffusers&quot;</span>
+<span class="nt">prompt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">beautiful</span><span class="nv"> </span><span class="s">woman</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">red</span><span class="nv"> </span><span class="s">dress</span><span class="nv"> </span><span class="s">walking</span><span class="nv"> </span><span class="s">down</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">street&quot;</span>
+<span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;outputs/&quot;</span>
+<span class="nt">num_gpus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">sp_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">tp_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">num_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">45</span>
+<span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">720</span>
+<span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1280</span>
+<span class="nt">num_inference_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="nt">seed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="nt">fps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24</span>
+<span class="nt">precision</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bf16&quot;</span>
+<span class="nt">vae_precision</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fp16&quot;</span>
+<span class="nt">vae_tiling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">vae_sp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">vae_config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">load_encoder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">load_decoder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">tile_sample_min_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">256</span>
+<span class="w">  </span><span class="nt">tile_sample_min_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">256</span>
+<span class="nt">text_encoder_precisions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;fp16&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;fp16&quot;</span>
+<span class="nt">mask_strategy_file_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">enable_torch_compile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>To see all the options, you can use the <code class="docutils literal notranslate"><span class="pre">--help</span></code> flag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span>--help
+</pre></div>
+</div>
+</section>
+</section>
+<section id="serve">
+<h2>Serve<a class="headerlink" href="#serve" title="連結到這個標頭">#</a></h2>
+<p>Launch the SGLang diffusion HTTP server and interact with it using the OpenAI SDK and curl.</p>
+<section id="start-the-server">
+<h3>Start the server<a class="headerlink" href="#start-the-server" title="連結到這個標頭">#</a></h3>
+<p>Use the following command to launch the server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SERVER_ARGS</span><span class="o">=(</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-1.3B-Diffusers
+<span class="w">  </span>--text-encoder-cpu-offload
+<span class="w">  </span>--pin-cpu-memory
+<span class="w">  </span>--num-gpus<span class="w"> </span><span class="m">4</span>
+<span class="w">  </span>--ulysses-degree<span class="o">=</span><span class="m">2</span>
+<span class="w">  </span>--ring-degree<span class="o">=</span><span class="m">2</span>
+<span class="o">)</span>
+
+sglang<span class="w"> </span>serve<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SERVER_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>--model-path</strong>: Which model to load. The example uses <code class="docutils literal notranslate"><span class="pre">Wan-AI/Wan2.1-T2V-1.3B-Diffusers</span></code>.</p></li>
+<li><p><strong>--port</strong>: HTTP port to listen on (the default here is <code class="docutils literal notranslate"><span class="pre">30010</span></code>).</p></li>
+</ul>
+<p>For detailed API usage, including Image, Video Generation and LoRA management, please refer to the <a class="reference internal" href="openai_api.html"><span class="std std-doc">OpenAI API Documentation</span></a>.</p>
+</section>
+<section id="cloud-storage-support">
+<h3>Cloud Storage Support<a class="headerlink" href="#cloud-storage-support" title="連結到這個標頭">#</a></h3>
+<p>SGLang diffusion supports automatically uploading generated images and videos to S3-compatible cloud storage (e.g., AWS S3, MinIO, Alibaba Cloud OSS, Tencent Cloud COS).</p>
+<p>When enabled, the server follows a <strong>Generate -&gt; Upload -&gt; Delete</strong> workflow:</p>
+<ol class="arabic simple">
+<li><p>The artifact is generated to a temporary local file.</p></li>
+<li><p>The file is immediately uploaded to the configured S3 bucket in a background thread.</p></li>
+<li><p>Upon successful upload, the local file is deleted.</p></li>
+<li><p>The API response returns the public URL of the uploaded object.</p></li>
+</ol>
+<p><strong>Configuration</strong></p>
+<p>Cloud storage is enabled via environment variables. Note that <code class="docutils literal notranslate"><span class="pre">boto3</span></code> must be installed separately (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">boto3</span></code>) to use this feature.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enable S3 storage</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_CLOUD_STORAGE_TYPE</span><span class="o">=</span>s3
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_S3_BUCKET_NAME</span><span class="o">=</span>my-bucket
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_S3_ACCESS_KEY_ID</span><span class="o">=</span>your-access-key
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_S3_SECRET_ACCESS_KEY</span><span class="o">=</span>your-secret-key
+
+<span class="c1"># Optional: Custom endpoint for MinIO/OSS/COS</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_S3_ENDPOINT_URL</span><span class="o">=</span>https://minio.example.com
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../environment_variables.html"><span class="std std-doc">Environment Variables Documentation</span></a> for more details.</p>
+</section>
+</section>
+<section id="generate">
+<h2>Generate<a class="headerlink" href="#generate" title="連結到這個標頭">#</a></h2>
+<p>Run a one-off generation task without launching a persistent server.</p>
+<p>To use it, pass both server arguments and sampling parameters in one command, after the <code class="docutils literal notranslate"><span class="pre">generate</span></code> subcommand, for example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SERVER_ARGS</span><span class="o">=(</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Wan-AI/Wan2.2-T2V-A14B-Diffusers
+<span class="w">  </span>--text-encoder-cpu-offload
+<span class="w">  </span>--pin-cpu-memory
+<span class="w">  </span>--num-gpus<span class="w"> </span><span class="m">4</span>
+<span class="w">  </span>--ulysses-degree<span class="o">=</span><span class="m">2</span>
+<span class="w">  </span>--ring-degree<span class="o">=</span><span class="m">2</span>
+<span class="o">)</span>
+
+<span class="nv">SAMPLING_ARGS</span><span class="o">=(</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">&quot;A curious raccoon&quot;</span>
+<span class="w">  </span>--save-output
+<span class="w">  </span>--output-path<span class="w"> </span>outputs
+<span class="w">  </span>--output-file-name<span class="w"> </span><span class="s2">&quot;A curious raccoon.mp4&quot;</span>
+<span class="o">)</span>
+
+sglang<span class="w"> </span>generate<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SERVER_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SAMPLING_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c1"># Or, users can set `SGLANG_CACHE_DIT_ENABLED` env as `true` to enable cache acceleration</span>
+<span class="nv">SGLANG_CACHE_DIT_ENABLED</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SERVER_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SAMPLING_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Once the generation task has finished, the server will shut down automatically.</p>
+<blockquote>
+<div><p>[!NOTE]
+The HTTP server-related arguments are ignored in this subcommand.</p>
+</div></blockquote>
+</section>
+<section id="component-path-overrides">
+<h2>Component Path Overrides<a class="headerlink" href="#component-path-overrides" title="連結到這個標頭">#</a></h2>
+<p>SGLang diffusion allows you to override any pipeline component (e.g., <code class="docutils literal notranslate"><span class="pre">vae</span></code>, <code class="docutils literal notranslate"><span class="pre">transformer</span></code>, <code class="docutils literal notranslate"><span class="pre">text_encoder</span></code>) by specifying a custom checkpoint path. This is useful for:</p>
+<section id="example-flux-2-dev-with-tiny-autoencoder">
+<h3>Example: FLUX.2-dev with Tiny AutoEncoder<a class="headerlink" href="#example-flux-2-dev-with-tiny-autoencoder" title="連結到這個標頭">#</a></h3>
+<p>You can override <strong>any</strong> component by using <code class="docutils literal notranslate"><span class="pre">--&lt;component&gt;-path</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> matches the key in the model's <code class="docutils literal notranslate"><span class="pre">model_index.json</span></code>:</p>
+<p>For example, replace the default VAE with a distilled tiny autoencoder for ~3x faster decoding:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="o">=</span>black-forest-labs/FLUX.2-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="c1"># with a Huggingface Repo ID</span>
+<span class="w">  </span>--vae-path<span class="o">=</span>fal/FLUX.2-Tiny-AutoEncoder
+<span class="w">  </span><span class="c1"># or use a local path</span>
+<span class="w">  </span>--vae-path<span class="o">=</span>~/.cache/huggingface/hub/models--fal--FLUX.2-Tiny-AutoEncoder/snapshots/.../vae
+</pre></div>
+</div>
+<p><strong>Important:</strong></p>
+<ul class="simple">
+<li><p>The component key must match the one in your model's <code class="docutils literal notranslate"><span class="pre">model_index.json</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">vae</span></code>).</p></li>
+<li><p>The path must:</p>
+<ul>
+<li><p>either be a Huggingface Repo ID (e.g., fal/FLUX.2-Tiny-AutoEncoder)</p></li>
+<li><p>or point to a <strong>complete component folder</strong>, containing <code class="docutils literal notranslate"><span class="pre">config.json</span></code> and safetensors files</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="diffusers-backend">
+<h2>Diffusers Backend<a class="headerlink" href="#diffusers-backend" title="連結到這個標頭">#</a></h2>
+<p>SGLang diffusion supports a <strong>diffusers backend</strong> that allows you to run any diffusers-compatible model through SGLang's infrastructure using vanilla diffusers pipelines. This is useful for running models without native SGLang implementations or models with custom pipeline classes.</p>
+<section id="arguments">
+<h3>引數<a class="headerlink" href="#arguments" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Values</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--backend</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> (default), <code class="docutils literal notranslate"><span class="pre">sglang</span></code>, <code class="docutils literal notranslate"><span class="pre">diffusers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>: prefer native SGLang, fallback to diffusers. <code class="docutils literal notranslate"><span class="pre">sglang</span></code>: force native (fails if unavailable). <code class="docutils literal notranslate"><span class="pre">diffusers</span></code>: force vanilla diffusers pipeline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--diffusers-attention-backend</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">flash</span></code>, <code class="docutils literal notranslate"><span class="pre">_flash_3_hub</span></code>, <code class="docutils literal notranslate"><span class="pre">sage</span></code>, <code class="docutils literal notranslate"><span class="pre">xformers</span></code>, <code class="docutils literal notranslate"><span class="pre">native</span></code></p></td>
+<td><p>Attention backend for diffusers pipelines. See <a class="reference external" href="https://huggingface.co/docs/diffusers/main/en/optimization/attention_backends">diffusers attention backends</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--trust-remote-code</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>Required for models with custom pipeline classes (e.g., Ovis).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--vae-tiling</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>Enable VAE tiling for large image support (decodes tile-by-tile).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--vae-slicing</span></code></p></td>
+<td><p>flag</p></td>
+<td><p>Enable VAE slicing for lower memory usage (decodes slice-by-slice).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--dit-precision</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fp16</span></code>, <code class="docutils literal notranslate"><span class="pre">bf16</span></code>, <code class="docutils literal notranslate"><span class="pre">fp32</span></code></p></td>
+<td><p>Precision for the diffusion transformer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--vae-precision</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fp16</span></code>, <code class="docutils literal notranslate"><span class="pre">bf16</span></code>, <code class="docutils literal notranslate"><span class="pre">fp32</span></code></p></td>
+<td><p>Precision for the VAE.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="example-running-ovis-image-7b">
+<h3>Example: Running Ovis-Image-7B<a class="headerlink" href="#example-running-ovis-image-7b" title="連結到這個標頭">#</a></h3>
+<p><a class="reference external" href="https://huggingface.co/AIDC-AI/Ovis-Image-7B">Ovis-Image-7B</a> is a 7B text-to-image model optimized for high-quality text rendering.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>AIDC-AI/Ovis-Image-7B<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--backend<span class="w"> </span>diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust-remote-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--diffusers-attention-backend<span class="w"> </span>flash<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">&quot;A serene Japanese garden with cherry blossoms&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--height<span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--width<span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-inference-steps<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-path<span class="w"> </span>outputs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-file-name<span class="w"> </span>ovis_garden.png
+</pre></div>
+</div>
+</section>
+<section id="extra-diffusers-arguments">
+<h3>Extra Diffusers Arguments<a class="headerlink" href="#extra-diffusers-arguments" title="連結到這個標頭">#</a></h3>
+<p>For pipeline-specific parameters not exposed via CLI, use <code class="docutils literal notranslate"><span class="pre">diffusers_kwargs</span></code> in a config file:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AIDC-AI/Ovis-Image-7B&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;backend&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diffusers&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A beautiful landscape&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;diffusers_kwargs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;cross_attention_kwargs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;scale&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span>--config<span class="w"> </span>config.json
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../compatibility_matrix.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Compatibility Matrix</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="openai_api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">SGLang Diffusion OpenAI API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-arguments">Supported Arguments</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-arguments">Server Arguments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-parameters">Sampling Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-configuration-files">Using Configuration Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#serve">Serve</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-server">Start the server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-storage-support">Cloud Storage Support</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate">Generate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-path-overrides">Component Path Overrides</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-flux-2-dev-with-tiny-autoencoder">Example: FLUX.2-dev with Tiny AutoEncoder</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusers-backend">Diffusers Backend</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arguments">引數</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-running-ovis-image-7b">Example: Running Ovis-Image-7B</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-diffusers-arguments">Extra Diffusers Arguments</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 03 月 09 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
