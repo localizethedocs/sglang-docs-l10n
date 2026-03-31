@@ -1,0 +1,341 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/api/post_processing.md:1
+msgid "Post-Processing"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:3
+msgid ""
+"SGLang diffusion supports optional post-processing steps that run after "
+"generation to improve temporal smoothness (frame interpolation) or spatial "
+"resolution (upscaling). These steps are independent of the diffusion model "
+"and can be combined in a single run."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:8
+msgid ""
+"When both are enabled, **frame interpolation runs first** (increasing the "
+"frame count), then **upscaling runs on every frame** (increasing the spatial "
+"resolution)."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:14
+msgid "Frame Interpolation (video only)"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:16
+msgid ""
+"Frame interpolation synthesizes new frames between each pair of consecutive "
+"generated frames, producing smoother motion without re-running the diffusion "
+"model."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:20
+msgid ""
+"The `--frame-interpolation-exp` flag controls how many rounds of "
+"interpolation to apply: each round inserts one new frame into every gap "
+"between adjacent frames, so the output frame count follows the formula:"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:24
+msgid "**(N − 1) × 2^exp + 1**"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:26
+msgid ""
+"e.g. 5 original frames with `exp=1` → 4 gaps × 1 new frame + 5 originals = "
+"**9** frames; with `exp=2` → **17** frames."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:29
+#: ../../../diffusion/api/post_processing.md:76
+msgid "CLI Arguments"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Argument"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--enable-frame-interpolation`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"Enable frame interpolation. Model weights are downloaded automatically on "
+"first use."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--frame-interpolation-exp {EXP}`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"Interpolation exponent — `1` = 2× temporal resolution, `2` = 4×, etc. "
+"(default: `1`)"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--frame-interpolation-scale {SCALE}`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"RIFE inference scale; use `0.5` for high-resolution inputs to save memory "
+"(default: `1.0`)"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--frame-interpolation-model-path {PATH}`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"Local directory or HuggingFace repo ID containing RIFE `flownet.pkl` weights "
+"(default: `elfgum/RIFE-4.22.lite`, downloaded automatically)"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:38
+#: ../../../diffusion/api/post_processing.md:84
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:40
+msgid ""
+"Frame interpolation uses the [RIFE](https://github.com/hzwer/Practical-RIFE) "
+"(Real-Time Intermediate Flow Estimation) architecture. Only **RIFE 4.22."
+"lite** (`IFNet` with 4-scale `IFBlock` backbone) is supported. The network "
+"topology is hard-coded, so custom weights provided via `--frame-"
+"interpolation-model-path` must be a `flownet.pkl` checkpoint that is "
+"compatible with this architecture."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:46
+msgid ""
+"Other RIFE versions (e.g., older `v4.x` variants with different block "
+"counts) or entirely different frame interpolation methods (FILM, AMT, etc.) "
+"are **not supported**."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Weight"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "HuggingFace Repo"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "RIFE 4.22.lite *(default)*"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "[`elfgum/RIFE-4.22.lite`](https://huggingface.co/elfgum/RIFE-4.22.lite)"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Lightweight model, downloaded automatically on first use"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:54
+msgid "Example"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:56
+msgid ""
+"Generate a 5-frame video and interpolate to 9 frames ((5 − 1) × 2¹ + 1 = 9):"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:58
+msgid ""
+"sglang generate \\\n"
+"  --model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers \\\n"
+"  --prompt \"A dog running through a park\" \\\n"
+"  --num-frames 5 \\\n"
+"  --enable-frame-interpolation \\\n"
+"  --frame-interpolation-exp 1 \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:70
+msgid "Upscaling (image and video)"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:72
+msgid ""
+"Upscaling increases the spatial resolution of generated images or video "
+"frames using [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN). The "
+"model weights are downloaded automatically on first use and cached for "
+"subsequent runs."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--enable-upscaling`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Enable post-generation upscaling using Real-ESRGAN."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--upscaling-scale {SCALE}`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"Desired upscaling factor (default: `4`). The 4× model is used internally; if "
+"a different scale is requested, a bicubic resize is applied after the "
+"network output."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`--upscaling-model-path {PATH}`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"Local `.pth` file, HuggingFace repo ID, or `repo_id:filename` for Real-"
+"ESRGAN weights (default: `ai-forever/Real-ESRGAN` with `RealESRGAN_x4.pth`, "
+"downloaded automatically). Use the `repo_id:filename` format to specify a "
+"custom weight file from a HuggingFace repo (e.g. `my-org/my-esrgan:weights."
+"pth`)."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:86
+msgid ""
+"Upscaling supports two Real-ESRGAN network architectures. The correct "
+"architecture is **auto-detected** from the checkpoint keys, so you only need "
+"to point `--upscaling-model-path` at a valid `.pth` file:"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Architecture"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Example Weights"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "**RRDBNet**"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "`RealESRGAN_x4plus.pth`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Heavier model with higher quality; best for photos"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "**SRVGGNetCompact**"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid ""
+"`RealESRGAN_x4.pth` *(default)*, `realesr-animevideov3.pth`, `realesr-"
+"general-x4v3.pth`"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:0
+msgid "Lightweight model; faster inference, good for video"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:95
+msgid ""
+"The default weight file is [`ai-forever/Real-ESRGAN`](https://huggingface.co/"
+"ai-forever/Real-ESRGAN) with `RealESRGAN_x4.pth` (SRVGGNetCompact, 4× native "
+"scale)."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:99
+msgid ""
+"Other super-resolution models (e.g., SwinIR, HAT, BSRGAN) are **not "
+"supported** — only Real-ESRGAN checkpoints using the two architectures above "
+"are compatible."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:103
+msgid "Examples"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:105
+msgid "Generate a 1024×1024 image and upscale to 4096×4096:"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:107
+msgid ""
+"sglang generate \\\n"
+"  --model-path black-forest-labs/FLUX.2-dev \\\n"
+"  --prompt \"A cat sitting on a windowsill\" \\\n"
+"  --output-size 1024x1024 \\\n"
+"  --enable-upscaling \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:116
+msgid "Generate a video and upscale each frame by 4×:"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:118
+msgid ""
+"sglang generate \\\n"
+"  --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers \\\n"
+"  --prompt \"A curious raccoon\" \\\n"
+"  --enable-upscaling \\\n"
+"  --upscaling-scale 4 \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:129
+msgid "Combining Frame Interpolation and Upscaling"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:131
+msgid ""
+"Frame interpolation and upscaling can be combined in a single run. "
+"Interpolation is applied first (increasing the frame count), then upscaling "
+"is applied to every frame (increasing the spatial resolution)."
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:135
+msgid ""
+"Example — generate 5 frames, interpolate to 9 frames, and upscale each frame "
+"by 4×:"
+msgstr ""
+
+#: ../../../diffusion/api/post_processing.md:138
+msgid ""
+"sglang generate \\\n"
+"  --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers \\\n"
+"  --prompt \"A curious raccoon\" \\\n"
+"  --num-frames 5 \\\n"
+"  --enable-frame-interpolation \\\n"
+"  --frame-interpolation-exp 1 \\\n"
+"  --enable-upscaling \\\n"
+"  --upscaling-scale 4 \\\n"
+"  --save-output\n"
+msgstr ""

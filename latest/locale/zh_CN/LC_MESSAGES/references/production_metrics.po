@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-10 08:34+0000\n"
+"POT-Creation-Date: 2026-03-30 09:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -286,10 +286,11 @@ msgid ""
 "python -m sglang.launch_server \\\n"
 "  --model-path <your_model_path> \\\n"
 "  --port 30000 \\\n"
-"  --enable-metrics\n"
+"  --enable-metrics \\\n"
+"  --enable-mfu-metrics\n"
 msgstr ""
 
-#: ../../../references/production_metrics.md:147
+#: ../../../references/production_metrics.md:148
 msgid ""
 "Replace `<your_model_path>` with the actual path to your model (e.g., `meta-"
 "llama/Meta-Llama-3.1-8B-Instruct`). Ensure the server is accessible from the "
@@ -298,68 +299,68 @@ msgid ""
 "<sglang_server_host>:30000/metrics`."
 msgstr ""
 
-#: ../../../references/production_metrics.md:149
+#: ../../../references/production_metrics.md:150
 msgid "**Navigate to the monitoring example directory:**"
 msgstr ""
 
-#: ../../../references/production_metrics.md:150
+#: ../../../references/production_metrics.md:151
 msgid "cd examples/monitoring\n"
 msgstr ""
 
-#: ../../../references/production_metrics.md:154
+#: ../../../references/production_metrics.md:155
 msgid "**Start the monitoring stack:**"
 msgstr ""
 
-#: ../../../references/production_metrics.md:155
+#: ../../../references/production_metrics.md:156
 msgid "docker compose up -d\n"
 msgstr ""
 
-#: ../../../references/production_metrics.md:158
+#: ../../../references/production_metrics.md:159
 msgid "This command will start Prometheus and Grafana in the background."
 msgstr ""
 
-#: ../../../references/production_metrics.md:160
+#: ../../../references/production_metrics.md:161
 msgid "**Access the monitoring interfaces:**"
 msgstr ""
 
-#: ../../../references/production_metrics.md:161
+#: ../../../references/production_metrics.md:162
 msgid ""
 "**Grafana:** Open your web browser and go to [http://localhost:3000](http://"
 "localhost:3000)."
 msgstr ""
 
-#: ../../../references/production_metrics.md:162
+#: ../../../references/production_metrics.md:163
 msgid ""
 "**Prometheus:** Open your web browser and go to [http://localhost:9090]"
 "(http://localhost:9090)."
 msgstr ""
 
-#: ../../../references/production_metrics.md:164
+#: ../../../references/production_metrics.md:165
 msgid "**Log in to Grafana:**"
 msgstr ""
 
-#: ../../../references/production_metrics.md:165
+#: ../../../references/production_metrics.md:166
 msgid "Default Username: `admin`"
 msgstr ""
 
-#: ../../../references/production_metrics.md:166
+#: ../../../references/production_metrics.md:167
 msgid ""
 "Default Password: `admin` You will be prompted to change the password upon "
 "your first login."
 msgstr ""
 
-#: ../../../references/production_metrics.md:169
+#: ../../../references/production_metrics.md:170
 msgid ""
 "**View the Dashboard:** The SGLang dashboard is pre-configured and should be "
 "available automatically. Navigate to `Dashboards` -> `Browse` -> `SGLang "
 "Monitoring` folder -> `SGLang Dashboard`."
 msgstr ""
 
-#: ../../../references/production_metrics.md:172
+#: ../../../references/production_metrics.md:173
 msgid "Troubleshooting"
 msgstr ""
 
-#: ../../../references/production_metrics.md:174
+#: ../../../references/production_metrics.md:175
 msgid ""
 "**Port Conflicts:** If you encounter errors like \"port is already allocated,"
 "\" check if other services (including previous instances of Prometheus/"
@@ -370,14 +371,14 @@ msgid ""
 "with other essential services on your system."
 msgstr ""
 
-#: ../../../references/production_metrics.md:176
+#: ../../../references/production_metrics.md:177
 msgid ""
 "To modify Grafana's port to the other one(like 3090) in your Docker Compose "
 "file, you need to explicitly specify the port mapping under the grafana "
 "service."
 msgstr ""
 
-#: ../../../references/production_metrics.md:178
+#: ../../../references/production_metrics.md:179
 msgid ""
 "Option 1: Add GF_SERVER_HTTP_PORT to the environment section:\n"
 "```\n"
@@ -395,16 +396,16 @@ msgid ""
 "```\n"
 msgstr ""
 
-#: ../../../references/production_metrics.md:192
+#: ../../../references/production_metrics.md:193
 msgid "**Connection Issues:**"
 msgstr ""
 
-#: ../../../references/production_metrics.md:193
+#: ../../../references/production_metrics.md:194
 msgid ""
 "Ensure both Prometheus and Grafana containers are running (`docker ps`)."
 msgstr ""
 
-#: ../../../references/production_metrics.md:194
+#: ../../../references/production_metrics.md:195
 msgid ""
 "Verify the Prometheus data source configuration in Grafana (usually auto-"
 "configured via `grafana/datasources/datasource.yaml`). Go to `Connections` -"
@@ -412,7 +413,7 @@ msgid ""
 "service (e.g., `http://prometheus:9090`)."
 msgstr ""
 
-#: ../../../references/production_metrics.md:195
+#: ../../../references/production_metrics.md:196
 msgid ""
 "Confirm that your SGLang server is running and the metrics endpoint (`http://"
 "<sglang_server_host>:30000/metrics`) is accessible *from the Prometheus "
@@ -422,29 +423,29 @@ msgid ""
 "configuration."
 msgstr ""
 
-#: ../../../references/production_metrics.md:196
+#: ../../../references/production_metrics.md:197
 msgid "**No Data on Dashboard:**"
 msgstr ""
 
-#: ../../../references/production_metrics.md:197
+#: ../../../references/production_metrics.md:198
 msgid ""
 "Generate some traffic to your SGLang server to produce metrics. For example, "
 "run a benchmark:"
 msgstr ""
 
-#: ../../../references/production_metrics.md:198
+#: ../../../references/production_metrics.md:199
 msgid ""
 "python3 -m sglang.bench_serving --backend sglang --dataset-name random --num-"
 "prompts 100 --random-input 128 --random-output 128\n"
 msgstr ""
 
-#: ../../../references/production_metrics.md:201
+#: ../../../references/production_metrics.md:202
 msgid ""
 "Check the Prometheus UI (`http://localhost:9090`) under `Status` -> "
 "`Targets` to see if the SGLang endpoint is being scraped successfully."
 msgstr ""
 
-#: ../../../references/production_metrics.md:202
+#: ../../../references/production_metrics.md:203
 msgid ""
 "Verify the `model_name` and `instance` labels in your Prometheus metrics "
 "match the variables used in the Grafana dashboard. You might need to adjust "
@@ -452,58 +453,58 @@ msgid ""
 "configuration."
 msgstr ""
 
-#: ../../../references/production_metrics.md:204
+#: ../../../references/production_metrics.md:205
 msgid "Configuration Files"
 msgstr ""
 
-#: ../../../references/production_metrics.md:206
+#: ../../../references/production_metrics.md:207
 msgid ""
 "The monitoring setup is defined by the following files within the `examples/"
 "monitoring` directory:"
 msgstr ""
 
-#: ../../../references/production_metrics.md:208
+#: ../../../references/production_metrics.md:209
 msgid "`docker-compose.yaml`: Defines the Prometheus and Grafana services."
 msgstr ""
 
-#: ../../../references/production_metrics.md:209
+#: ../../../references/production_metrics.md:210
 msgid "`prometheus.yaml`: Prometheus configuration, including scrape targets."
 msgstr ""
 
-#: ../../../references/production_metrics.md:210
+#: ../../../references/production_metrics.md:211
 msgid ""
 "`grafana/datasources/datasource.yaml`: Configures the Prometheus data source "
 "for Grafana."
 msgstr ""
 
-#: ../../../references/production_metrics.md:211
+#: ../../../references/production_metrics.md:212
 msgid ""
 "`grafana/dashboards/config/dashboard.yaml`: Tells Grafana to load dashboards "
 "from the specified path."
 msgstr ""
 
-#: ../../../references/production_metrics.md:212
+#: ../../../references/production_metrics.md:213
 msgid ""
 "`grafana/dashboards/json/sglang-dashboard.json`: The actual Grafana "
 "dashboard definition in JSON format."
 msgstr ""
 
-#: ../../../references/production_metrics.md:214
+#: ../../../references/production_metrics.md:215
 msgid ""
 "You can customize the setup by modifying these files. For instance, you "
 "might need to update the `static_configs` target in `prometheus.yaml` if "
 "your SGLang server runs on a different host or port."
 msgstr ""
 
-#: ../../../references/production_metrics.md:216
+#: ../../../references/production_metrics.md:217
 msgid "Check if the metrics are being collected"
 msgstr ""
 
-#: ../../../references/production_metrics.md:218
+#: ../../../references/production_metrics.md:219
 msgid "Run:"
 msgstr ""
 
-#: ../../../references/production_metrics.md:219
+#: ../../../references/production_metrics.md:220
 msgid ""
 "python3 -m sglang.bench_serving \\\n"
 "  --backend sglang \\\n"
@@ -514,10 +515,86 @@ msgid ""
 "  --random-range-ratio 0.5\n"
 msgstr ""
 
-#: ../../../references/production_metrics.md:229
+#: ../../../references/production_metrics.md:230
 msgid "to generate some requests."
 msgstr ""
 
-#: ../../../references/production_metrics.md:231
+#: ../../../references/production_metrics.md:232
 msgid "Then you should be able to see the metrics in the Grafana dashboard."
+msgstr ""
+
+#: ../../../references/production_metrics.md:234
+msgid "Estimated Performance Metrics (MFU-related)"
+msgstr ""
+
+#: ../../../references/production_metrics.md:236
+msgid ""
+"SGLang exports the following estimated per-GPU counters that can be used to "
+"derive Model FLOPs Utilization (MFU)-related signals:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:239
+msgid ""
+"`sglang:estimated_flops_per_gpu_total`: Estimated floating-point operations."
+msgstr ""
+
+#: ../../../references/production_metrics.md:240
+msgid ""
+"`sglang:estimated_read_bytes_per_gpu_total`: Estimated bytes read from "
+"memory."
+msgstr ""
+
+#: ../../../references/production_metrics.md:241
+msgid ""
+"`sglang:estimated_write_bytes_per_gpu_total`: Estimated bytes written to "
+"memory."
+msgstr ""
+
+#: ../../../references/production_metrics.md:243
+msgid ""
+"These metrics are available when both `--enable-metrics` and `--enable-mfu-"
+"metrics` are enabled."
+msgstr ""
+
+#: ../../../references/production_metrics.md:246
+msgid ""
+"These are cumulative counters. Use Prometheus `rate(...)` to get per-second "
+"values."
+msgstr ""
+
+#: ../../../references/production_metrics.md:248
+msgid "PromQL examples"
+msgstr ""
+
+#: ../../../references/production_metrics.md:250
+msgid "Average TFLOPS per GPU:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:252
+msgid "rate(sglang:estimated_flops_per_gpu_total[1m]) / 1e12\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:256
+msgid "Average estimated memory bandwidth in GB/s:"
+msgstr ""
+
+#: ../../../references/production_metrics.md:258
+msgid ""
+"(rate(sglang:estimated_read_bytes_per_gpu_total[1m]) +\n"
+" rate(sglang:estimated_write_bytes_per_gpu_total[1m])) / 1e9\n"
+msgstr ""
+
+#: ../../../references/production_metrics.md:263
+msgid "Notes"
+msgstr ""
+
+#: ../../../references/production_metrics.md:265
+msgid ""
+"These metrics are estimates intended for observability and trend analysis."
+msgstr ""
+
+#: ../../../references/production_metrics.md:266
+msgid ""
+"Estimated memory bytes reflect modeled traffic and are not a direct hardware "
+"counter from GPU profilers."
 msgstr ""
