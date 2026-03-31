@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 08:54+0000\n"
+"POT-Creation-Date: 2026-03-30 09:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: ../../../diffusion/support_new_models.md:3
 msgid ""
 "This document explains how to add support for new diffusion models in SGLang "
-"diffusion."
+"Diffusion."
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:5
@@ -33,10 +33,10 @@ msgstr ""
 
 #: ../../../diffusion/support_new_models.md:7
 msgid ""
-"SGLang diffusion is engineered for both performance and flexibility, built "
-"upon a modular pipeline architecture. This design allows developers to "
-"easily construct complex, customized pipelines for various diffusion models "
-"by combining and reusing different components."
+"SGLang Diffusion is engineered for both performance and flexibility, built "
+"upon a pipeline architecture. This design allows developers to construct "
+"pipelines for various diffusion models while keeping the core generation "
+"loop standardized for optimization."
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:11
@@ -57,121 +57,285 @@ msgstr ""
 #: ../../../diffusion/support_new_models.md:14
 msgid ""
 "**`PipelineStage`**: Each stage is a modular component that encapsulates a "
-"common function within the diffusion process. Examples include prompt "
-"encoding, the denoising loop, or VAE decoding. These stages are designed to "
-"be self-contained and reusable across different pipelines."
+"function within the diffusion process. Examples include prompt encoding, the "
+"denoising loop, or VAE decoding."
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:16
-msgid "Key Components for Implementation"
+msgid "Two Pipeline Styles"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:18
 msgid ""
-"To add support for a new diffusion model, you will primarily need to define "
-"or configure the following components:"
+"SGLang Diffusion supports two pipeline composition styles. Both are valid; "
+"choose the one that best fits your model."
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:20
-msgid ""
-"**`PipelineConfig`**: This is a dataclass that holds all the static "
-"configurations for your model pipeline. It includes paths to model "
-"components (like UNet, VAE, text encoders), precision settings (e.g., "
-"`fp16`, `bf16`), and other model-specific architectural parameters. Each "
-"model typically has its own subclass of `PipelineConfig`."
+msgid "Style A: Hybrid Monolithic Pipeline (Recommended Default)"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:22
 msgid ""
-"**`SamplingParams`**: This dataclass defines the parameters that control the "
-"generation process at runtime. These are the user-provided inputs for a "
-"generation request, such as the `prompt`, `negative_prompt`, "
-"`guidance_scale`, `num_inference_steps`, `seed`, output dimensions "
-"(`height`, `width`), etc."
+"The recommended default for most new models. Uses a three-stage structure:"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:24
 msgid ""
-"**`ComposedPipeline` (not a config)**: This is the central class where you "
-"define the structure of your model's generation pipeline. You will create a "
-"new class that inherits from `ComposedPipelineBase` and, within it, "
-"instantiate and chain together the necessary `PipelineStage`s in the correct "
-"order. See `ComposedPipelineBase` and `PipelineStage` base definitions:"
+"BeforeDenoisingStage (model-specific)  →  DenoisingStage (standard)  →  "
+"DecodingStage (standard)\n"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:25
+#: ../../../diffusion/support_new_models.md:0
+msgid "Stage"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Ownership"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Responsibility"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`{Model}BeforeDenoisingStage`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Model-specific"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid ""
+"All pre-processing: input validation, text/image encoding, latent "
+"preparation, timestep computation"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`DenoisingStage`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Framework-standard"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "The denoising loop (DiT/UNet forward passes), shared across all models"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`DecodingStage`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "VAE decoding from latent space to pixel space, shared across all models"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:34
+msgid ""
+"**Why recommended?** Modern diffusion models often have highly heterogeneous "
+"pre-processing requirements — different text encoders, different latent "
+"formats, different conditioning mechanisms. The Hybrid approach keeps pre-"
+"processing isolated per model, avoids fragile shared stages with excessive "
+"conditional logic, and lets developers port Diffusers reference code quickly."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:36
+msgid "Style B: Modular Composition Style"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:38
+msgid ""
+"Uses the framework's fine-grained standard stages (`TextEncodingStage`, "
+"`LatentPreparationStage`, `TimestepPreparationStage`, etc.) to build the "
+"pipeline by composition. Convenience methods like "
+"`add_standard_t2i_stages()` and `add_standard_ti2i_stages()` make this very "
+"concise."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:40
+msgid "This style is appropriate when:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:41
+msgid ""
+"**The new model's pre-processing can largely reuse existing stages** — e.g., "
+"a model that uses standard CLIP/T5 text encoding + standard latent "
+"preparation with minimal customization."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:42
+msgid ""
+"**A model-specific optimization needs to be extracted as a standalone "
+"stage** — e.g., a specialized encoding or conditioning step that benefits "
+"from being a separate stage for profiling, parallelism control, or reuse "
+"across multiple pipeline variants."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:44
+msgid "How to Choose"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Situation"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Recommended Style"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid ""
+"Model has unique/complex pre-processing (VLM captioning, AR token "
+"generation, custom latent packing, etc.)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "**Hybrid** — consolidate into a BeforeDenoisingStage"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid ""
+"Model fits neatly into standard text-to-image or text+image-to-image pattern"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid ""
+"**Modular** — use `add_standard_t2i_stages()` / `add_standard_ti2i_stages()`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Porting a Diffusers pipeline with many custom steps"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "**Hybrid** — copy the `__call__` logic into a single stage"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Adding a variant of an existing model that shares most logic"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid ""
+"**Modular** — reuse existing stages, customize via PipelineConfig callbacks"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid ""
+"A specific pre-processing step needs special parallelism or profiling "
+"isolation"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "**Modular** — extract that step as a dedicated stage"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:54
+msgid "Key Components for Implementation"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:56
+msgid ""
+"To add support for a new diffusion model, you will need to define or "
+"configure the following components:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:58
+msgid ""
+"**`PipelineConfig`**: A dataclass holding static configurations for your "
+"model pipeline — precision settings, model architecture parameters, and "
+"callback methods used by the standard `DenoisingStage` and `DecodingStage`. "
+"Each model has its own subclass."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:60
+msgid ""
+"**`SamplingParams`**: A dataclass defining runtime generation parameters — "
+"`prompt`, `negative_prompt`, `guidance_scale`, `num_inference_steps`, "
+"`seed`, `height`, `width`, etc."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:62
+msgid ""
+"**Pre-processing stage(s)**: Either a single model-specific `{Model}"
+"BeforeDenoisingStage` (Hybrid style) or a combination of standard stages "
+"(Modular style). See [Two Pipeline Styles](#two-pipeline-styles) above."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:64
+msgid ""
+"**`ComposedPipeline`**: A class that wires together your pre-processing "
+"stage(s) with the standard `DenoisingStage` and `DecodingStage`. See base "
+"definitions:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:65
 msgid ""
 "[`ComposedPipelineBase`](https://github.com/sgl-project/sglang/blob/main/"
-"python/sglang/multimodal_gen/runtime/pipelines/composed_pipeline_base.py)"
+"python/sglang/multimodal_gen/runtime/pipelines_core/composed_pipeline_base."
+"py)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:26
+#: ../../../diffusion/support_new_models.md:66
 msgid ""
 "[`PipelineStage`](https://github.com/sgl-project/sglang/blob/main/python/"
-"sglang/multimodal_gen/runtime/pipelines/stages/base.py)"
+"sglang/multimodal_gen/runtime/pipelines_core/stages/base.py)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:27
+#: ../../../diffusion/support_new_models.md:67
 msgid ""
-"[Central registry (models/config mapping)](https://github.com/sgl-project/"
-"sglang/blob/main/python/sglang/multimodal_gen/registry.py)"
+"[Central registry](https://github.com/sgl-project/sglang/blob/main/python/"
+"sglang/multimodal_gen/registry.py)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:29
+#: ../../../diffusion/support_new_models.md:69
 msgid ""
-"**Modules (components referenced by the pipeline)**: Each pipeline "
-"references a set of modules that are loaded from the model repository (e.g., "
-"Diffusers `model_index.json`) and assembled via the registry/loader. Common "
-"modules include:"
+"**Modules (model components)**: Each pipeline references modules loaded from "
+"the model repository (e.g., Diffusers `model_index.json`):"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:30
-msgid "`text_encoder`: Encodes text prompts into embeddings"
+#: ../../../diffusion/support_new_models.md:70
+msgid "`text_encoder`: Encodes text prompts into embeddings."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:31
+#: ../../../diffusion/support_new_models.md:71
 msgid "`tokenizer`: Tokenizes raw text input for the text encoder(s)."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:32
+#: ../../../diffusion/support_new_models.md:72
 msgid ""
 "`processor`: Preprocesses images and extracts features; often used in image-"
 "to-image tasks."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:33
-msgid ""
-"`image_encoder`: Specialized image feature extractor (may be distinct from "
-"or combined with `processor`)."
+#: ../../../diffusion/support_new_models.md:73
+msgid "`image_encoder`: Specialized image feature extractor."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:34
+#: ../../../diffusion/support_new_models.md:74
 msgid ""
 "`dit/transformer`: The core denoising network (DiT/UNet architecture) "
 "operating in latent space."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:35
-msgid ""
-"`scheduler`: Controls the timestep schedule and denoising dynamics "
-"throughout inference."
+#: ../../../diffusion/support_new_models.md:75
+msgid "`scheduler`: Controls the timestep schedule and denoising dynamics."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:36
+#: ../../../diffusion/support_new_models.md:76
 msgid ""
 "`vae`: Variational Autoencoder for encoding/decoding between pixel space and "
 "latent space."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:38
-msgid "Available Pipeline Stages"
+#: ../../../diffusion/support_new_models.md:78
+msgid "Pipeline Stages Reference"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:40
-msgid ""
-"You can build your custom `ComposedPipeline` by combining the following "
-"available stages as needed. Each stage is responsible for a specific part of "
-"the generation process."
+#: ../../../diffusion/support_new_models.md:80
+msgid "Core Stages (used by all pipelines)"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
@@ -183,13 +347,50 @@ msgid "Description"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
+msgid ""
+"Executes the main denoising loop, iteratively applying the model (DiT/UNet) "
+"to refine the latents."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Decodes the final latent tensor back into pixel space using the VAE."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`DmdDenoisingStage`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "A specialized denoising stage for DMD model architectures."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`CausalDMDDenoisingStage`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "A specialized causal denoising stage for specific video models."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:89
+msgid "Pre-processing Stages (for Modular Composition Style)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:91
+msgid ""
+"The following fine-grained stages can be composed to build the pre-"
+"processing portion of a pipeline. They are best suited for models whose pre-"
+"processing largely fits the standard patterns. If your model requires "
+"significant customization, consider the Hybrid style with a single "
+"`BeforeDenoisingStage` instead."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
 msgid "`InputValidationStage`"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
-msgid ""
-"Validates the user-provided `SamplingParams` to ensure they are correct "
-"before starting the pipeline."
+msgid "Validates user-provided `SamplingParams`."
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
@@ -214,9 +415,7 @@ msgid "`ImageVAEEncodingStage`"
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
-msgid ""
-"Specifically encodes an input image into the latent space using a "
-"Variational Autoencoder (VAE)."
+msgid "Encodes an input image into latent space using the VAE."
 msgstr ""
 
 #: ../../../diffusion/support_new_models.md:0
@@ -235,214 +434,737 @@ msgstr ""
 msgid "Creates the initial noisy latent tensor that will be denoised."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:0
-msgid "`DenoisingStage`"
+#: ../../../diffusion/support_new_models.md:102
+msgid "Implementation Guide"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:0
+#: ../../../diffusion/support_new_models.md:104
+msgid "Step 1: Obtain and Study the Reference Implementation"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:106
 msgid ""
-"Executes the main denoising loop, iteratively applying the model (e.g., "
-"UNet) to refine the latents."
+"Before writing any code, obtain the model's original implementation or "
+"Diffusers pipeline code:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:0
-msgid "`DecodingStage`"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:0
+#: ../../../diffusion/support_new_models.md:107
 msgid ""
-"Decodes the final latent tensor from the denoising loop back into pixel "
-"space (e.g., an image) using the VAE."
+"The model's Diffusers pipeline source (e.g., the `pipeline_*.py` file from "
+"the `diffusers` library or HuggingFace repo)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:0
-msgid "`DmdDenoisingStage`"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:0
-msgid "A specialized denoising stage for certain model architectures."
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:0
-msgid "`CausalDMDDenoisingStage`"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:0
-msgid "A specialized causal denoising stage for specific video models."
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:55
-msgid "Example: Implementing `Qwen-Image-Edit`"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:57
+#: ../../../diffusion/support_new_models.md:108
 msgid ""
-"To illustrate the process, let's look at how `Qwen-Image-Edit` is "
-"implemented. The typical implementation order is:"
+"Or the model's official reference implementation (e.g., from the model "
+"author's GitHub repo)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:59
-msgid "**Analyze Required Modules**:"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:60
+#: ../../../diffusion/support_new_models.md:109
 msgid ""
-"Study the target model's components by examining its `model_index.json` or "
-"Diffusers implementation to identify required modules:"
+"Or the HuggingFace model ID to look up `model_index.json` and the associated "
+"pipeline class"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:61
-msgid "`processor`: Image preprocessing and feature extraction"
+#: ../../../diffusion/support_new_models.md:111
+msgid "Once you have the reference code, study it thoroughly:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:62
-msgid "`scheduler`: Diffusion timestep scheduling"
+#: ../../../diffusion/support_new_models.md:113
+msgid "Find the model's `model_index.json` to identify required modules."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:63
-msgid "`text_encoder`: Text-to-embedding conversion"
+#: ../../../diffusion/support_new_models.md:114
+msgid "Read the Diffusers pipeline's `__call__` method to understand:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:64
-msgid "`tokenizer`: Text tokenization for the encoder"
+#: ../../../diffusion/support_new_models.md:115
+msgid "How text prompts are encoded"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:65
-msgid "`transformer`: Core DiT denoising network"
+#: ../../../diffusion/support_new_models.md:116
+msgid "How latents are prepared (shape, dtype, scaling)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:66
-msgid "`vae`: Variational autoencoder for latent encoding/decoding"
+#: ../../../diffusion/support_new_models.md:117
+msgid "How timesteps/sigmas are computed"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:68
-msgid "**Create Configs**:"
+#: ../../../diffusion/support_new_models.md:118
+msgid "What conditioning kwargs the DiT expects"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:69
+#: ../../../diffusion/support_new_models.md:119
+msgid "How the denoising loop works"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:120
+msgid "How VAE decoding is done"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:122
+msgid "Step 2: Evaluate Reuse of Existing Pipelines and Stages"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:124
 msgid ""
-"**PipelineConfig**: [`QwenImageEditPipelineConfig`](https://github.com/sgl-"
-"project/sglang/blob/main/python/sglang/multimodal_gen/configs/pipelines/"
-"qwen_image.py) defines model-specific parameters, precision settings, "
-"preprocessing functions, and latent shape calculations."
+"Before creating any new files, check whether an existing pipeline or stage "
+"can be reused or extended. Only create new pipelines/stages when the "
+"existing ones would need substantial structural changes or when no "
+"architecturally similar implementation exists."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:70
+#: ../../../diffusion/support_new_models.md:126
 msgid ""
-"**SamplingParams**: [`QwenImageSamplingParams`](https://github.com/sgl-"
-"project/sglang/blob/main/python/sglang/multimodal_gen/configs/sample/"
-"qwenimage.py) sets runtime defaults like `num_frames=1`, "
-"`guidance_scale=4.0`, `num_inference_steps=50`."
+"**Compare against existing pipelines** (Flux, Wan, Qwen-Image, GLM-Image, "
+"HunyuanVideo, LTX, etc.). If the new model shares most of its structure with "
+"an existing one, prefer adding a new config variant or reusing existing "
+"stages."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:72
-msgid "**Implement Model Components**:"
-msgstr ""
-
-#: ../../../diffusion/support_new_models.md:73
+#: ../../../diffusion/support_new_models.md:127
 msgid ""
-"Adapt or implement specific model components in the appropriate directories:"
+"**Check existing stages** in `runtime/pipelines_core/stages/` and `stages/"
+"model_specific_stages/`."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:74
+#: ../../../diffusion/support_new_models.md:128
+msgid ""
+"**Check existing model components** — many models share VAEs (e.g., "
+"`AutoencoderKL`), text encoders (CLIP, T5), and schedulers. Reuse these "
+"directly."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:130
+msgid "Step 3: Implement Model Components"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:132
+msgid "Adapt the model's core components:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:134
 msgid ""
 "**DiT/Transformer**: Implement in [`runtime/models/dits/`](https://github."
 "com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
-"dits/) - e.g., [`qwen_image.py`](https://github.com/sgl-project/sglang/blob/"
-"main/python/sglang/multimodal_gen/runtime/models/dits/qwen_image.py) for "
-"Qwen's DiT architecture"
+"dits/)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:75
+#: ../../../diffusion/support_new_models.md:135
 msgid ""
 "**Encoders**: Implement in [`runtime/models/encoders/`](https://github.com/"
 "sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
-"encoders/) - e.g., text encoders like [`qwen2_5vl.py`](https://github.com/"
-"sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
-"encoders/qwen2_5vl.py)"
+"encoders/)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:76
+#: ../../../diffusion/support_new_models.md:136
 msgid ""
 "**VAEs**: Implement in [`runtime/models/vaes/`](https://github.com/sgl-"
-"project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/vaes/) "
-"- e.g., [`autoencoder_kl_qwenimage.py`](https://github.com/sgl-project/"
-"sglang/blob/main/python/sglang/multimodal_gen/runtime/models/vaes/"
-"autoencoder_kl_qwenimage.py)"
+"project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/vaes/)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:77
+#: ../../../diffusion/support_new_models.md:137
 msgid ""
 "**Schedulers**: Implement in [`runtime/models/schedulers/`](https://github."
 "com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/"
 "schedulers/) if needed"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:78
+#: ../../../diffusion/support_new_models.md:139
 msgid ""
-"These components handle the core model logic, attention mechanisms, and data "
-"transformations specific to the target diffusion model."
+"Use SGLang's fused kernels where possible (see `LayerNormScaleShift`, "
+"`RMSNormScaleShift`, `apply_qk_norm`, etc.)."
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:80
-msgid "**Define Pipeline Class**:"
+#: ../../../diffusion/support_new_models.md:141
+msgid ""
+"**Tensor Parallel (TP) and Sequence Parallel (SP)**: For multi-GPU "
+"deployment, it is recommended to add TP/SP support to the DiT model. This "
+"can be done incrementally after the single-GPU implementation is verified. "
+"Reference implementations:"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:81
+#: ../../../diffusion/support_new_models.md:142
 msgid ""
-"The [`QwenImageEditPipeline`](https://github.com/sgl-project/sglang/blob/"
-"main/python/sglang/multimodal_gen/runtime/architectures/basic/qwen_image/"
-"qwen_image.py) class inherits from `ComposedPipelineBase` and orchestrates "
-"stages sequentially."
+"**Wan model** (`runtime/models/dits/wanvideo.py`) — Full TP + SP: "
+"`ColumnParallelLinear`/`RowParallelLinear` for attention, sequence dimension "
+"sharding via `get_sp_world_size()`"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:82
+#: ../../../diffusion/support_new_models.md:143
 msgid ""
-"Declare required modules via `_required_config_modules` and implement the "
-"pipeline stages:"
+"**Qwen-Image model** (`runtime/models/dits/qwen_image.py`) — SP via "
+"`USPAttention` (Ulysses + Ring Attention)"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:84
+#: ../../../diffusion/support_new_models.md:145
+msgid "Step 4: Create Configs"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:147
+msgid "**DiT Config**: `configs/models/dits/{model_name}.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:148
+msgid "**VAE Config**: `configs/models/vaes/{model_name}.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:149
+msgid "**SamplingParams**: `configs/sample/{model_name}.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:151
+msgid "Step 5: Create PipelineConfig"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:153
 msgid ""
-"class QwenImageEditPipeline(ComposedPipelineBase):\n"
-"    pipeline_name = \"QwenImageEditPipeline\"  # Matches Diffusers "
-"model_index.json\n"
-"    _required_config_modules = [\"processor\", \"scheduler\", "
-"\"text_encoder\", \"tokenizer\", \"transformer\", \"vae\"]\n"
+"The `PipelineConfig` provides callbacks that the standard `DenoisingStage` "
+"and `DecodingStage` use:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:155
+msgid ""
+"# python/sglang/multimodal_gen/configs/pipeline_configs/my_model.py\n"
+"\n"
+"@dataclass\n"
+"class MyModelPipelineConfig(ImagePipelineConfig):\n"
+"    task_type: ModelTaskType = ModelTaskType.T2I\n"
+"    vae_precision: str = \"bf16\"\n"
+"    should_use_guidance: bool = True\n"
+"    dit_config: DiTConfig = field(default_factory=MyModelDitConfig)\n"
+"    vae_config: VAEConfig = field(default_factory=MyModelVAEConfig)\n"
+"\n"
+"    def get_freqs_cis(self, batch, device, rotary_emb, dtype):\n"
+"        \"\"\"Prepare rotary position embeddings for the DiT.\"\"\"\n"
+"        ...\n"
+"\n"
+"    def prepare_pos_cond_kwargs(self, batch, latent_model_input, t, "
+"**kwargs):\n"
+"        \"\"\"Build positive conditioning kwargs for each denoising step."
+"\"\"\"\n"
+"        return {\n"
+"            \"hidden_states\": latent_model_input,\n"
+"            \"encoder_hidden_states\": batch.prompt_embeds[0],\n"
+"            \"timestep\": t,\n"
+"        }\n"
+"\n"
+"    def prepare_neg_cond_kwargs(self, batch, latent_model_input, t, "
+"**kwargs):\n"
+"        \"\"\"Build negative conditioning kwargs for CFG.\"\"\"\n"
+"        return {\n"
+"            \"hidden_states\": latent_model_input,\n"
+"            \"encoder_hidden_states\": batch.negative_prompt_embeds[0],\n"
+"            \"timestep\": t,\n"
+"        }\n"
+"\n"
+"    def get_decode_scale_and_shift(self):\n"
+"        \"\"\"Return (scale, shift) for latent denormalization before VAE "
+"decode.\"\"\"\n"
+"        ...\n"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:191
+msgid "Step 6: Implement Pre-processing"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:193
+msgid ""
+"Choose based on your model's needs (see [How to Choose](#how-to-choose)):"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:195
+msgid "Option A: BeforeDenoisingStage (Hybrid Style)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:197
+msgid ""
+"Create a single stage that handles all pre-processing. Best when the model "
+"has custom/complex pre-processing logic."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:199
+msgid ""
+"# python/sglang/multimodal_gen/runtime/pipelines_core/stages/"
+"model_specific_stages/my_model.py\n"
+"\n"
+"class MyModelBeforeDenoisingStage(PipelineStage):\n"
+"    \"\"\"Monolithic pre-processing stage for MyModel.\n"
+"\n"
+"    Consolidates: input validation, text/image encoding, latent\n"
+"    preparation, and timestep computation.\n"
+"    \"\"\"\n"
+"\n"
+"    def __init__(self, vae, text_encoder, tokenizer, transformer, "
+"scheduler):\n"
+"        super().__init__()\n"
+"        self.vae = vae\n"
+"        self.text_encoder = text_encoder\n"
+"        self.tokenizer = tokenizer\n"
+"        self.transformer = transformer\n"
+"        self.scheduler = scheduler\n"
+"\n"
+"    @torch.no_grad()\n"
+"    def forward(self, batch: Req, server_args: ServerArgs) -> Req:\n"
+"        device = get_local_torch_device()\n"
+"\n"
+"        # 1. Encode prompt (model-specific logic)\n"
+"        prompt_embeds, negative_prompt_embeds = self._encode_prompt(...)\n"
+"\n"
+"        # 2. Prepare latents\n"
+"        latents = self._prepare_latents(...)\n"
+"\n"
+"        # 3. Prepare timesteps\n"
+"        timesteps, sigmas = self._prepare_timesteps(...)\n"
+"\n"
+"        # 4. Populate batch for DenoisingStage\n"
+"        batch.prompt_embeds = [prompt_embeds]\n"
+"        batch.negative_prompt_embeds = [negative_prompt_embeds]\n"
+"        batch.latents = latents\n"
+"        batch.timesteps = timesteps\n"
+"        batch.num_inference_steps = len(timesteps)\n"
+"        batch.sigmas = sigmas.tolist()\n"
+"        batch.generator = generator\n"
+"        batch.raw_latent_shape = latents.shape\n"
+"        return batch\n"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:242
+msgid "Option B: Standard Stages (Modular Style)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:244
+msgid ""
+"Skip creating a custom stage entirely — configure via `PipelineConfig` "
+"callbacks and use framework helpers. Best when the model fits standard "
+"patterns."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:246
+msgid ""
+"(This option has no separate stage file; the pipeline class in Step 7 calls "
+"`add_standard_t2i_stages()` directly.)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:248
+msgid ""
+"**Key batch fields that `DenoisingStage` expects** (regardless of which "
+"option you choose):"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Field"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Type"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.latents`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`torch.Tensor`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Initial noisy latent tensor"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.timesteps`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Timestep schedule"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.num_inference_steps`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`int`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Number of denoising steps"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.sigmas`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`list[float]`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Sigma schedule (must be a Python list, not numpy)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.prompt_embeds`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`list[torch.Tensor]`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Positive prompt embeddings (wrapped in a list)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.negative_prompt_embeds`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Negative prompt embeddings (wrapped in a list)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.generator`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`torch.Generator`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "RNG generator for reproducibility"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`batch.raw_latent_shape`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`tuple`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Original latent shape before any packing"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:261
+msgid "Step 7: Define the Pipeline Class"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:263
+#: ../../../diffusion/support_new_models.md:352
+msgid "Hybrid Style"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:265
+msgid ""
+"# python/sglang/multimodal_gen/runtime/pipelines/my_model.py\n"
+"\n"
+"class MyModelPipeline(LoRAPipeline, ComposedPipelineBase):\n"
+"    pipeline_name = \"MyModelPipeline\"  # Must match model_index.json "
+"_class_name\n"
+"\n"
+"    _required_config_modules = [\n"
+"        \"text_encoder\", \"tokenizer\", \"vae\", \"transformer\", "
+"\"scheduler\",\n"
+"    ]\n"
 "\n"
 "    def create_pipeline_stages(self, server_args: ServerArgs):\n"
-"        self.add_stage(InputValidationStage())\n"
-"        self.add_stage(ImageEncodingStage(...))\n"
-"        self.add_stage(ImageVAEEncodingStage(...))\n"
-"        self.add_stage(TimestepPreparationStage(...))\n"
-"        self.add_stage(LatentPreparationStage(...))\n"
-"        self.add_stage(DenoisingStage(...))\n"
-"        self.add_stage(DecodingStage(...))\n"
+"        # 1. Monolithic pre-processing (model-specific)\n"
+"        self.add_stage(\n"
+"            MyModelBeforeDenoisingStage(\n"
+"                vae=self.get_module(\"vae\"),\n"
+"                text_encoder=self.get_module(\"text_encoder\"),\n"
+"                tokenizer=self.get_module(\"tokenizer\"),\n"
+"                transformer=self.get_module(\"transformer\"),\n"
+"                scheduler=self.get_module(\"scheduler\"),\n"
+"            ),\n"
+"        )\n"
+"\n"
+"        # 2. Standard denoising loop (framework-provided)\n"
+"        self.add_stage(\n"
+"            DenoisingStage(\n"
+"                transformer=self.get_module(\"transformer\"),\n"
+"                scheduler=self.get_module(\"scheduler\"),\n"
+"            ),\n"
+"        )\n"
+"\n"
+"        # 3. Standard VAE decoding (framework-provided)\n"
+"        self.add_standard_decoding_stage()\n"
+"\n"
+"\n"
+"EntryClass = [MyModelPipeline]\n"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:98
+#: ../../../diffusion/support_new_models.md:302
+#: ../../../diffusion/support_new_models.md:359
+msgid "Modular Style"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:304
 msgid ""
-"The pipeline is constructed by adding stages in order. `Qwen-Image-Edit` "
-"uses `ImageEncodingStage` (for prompt and image processing) and "
-"`ImageVAEEncodingStage` (for latent extraction) before standard denoising "
-"and decoding."
+"# python/sglang/multimodal_gen/runtime/pipelines/my_model.py\n"
+"\n"
+"class MyModelPipeline(LoRAPipeline, ComposedPipelineBase):\n"
+"    pipeline_name = \"MyModelPipeline\"\n"
+"\n"
+"    _required_config_modules = [\n"
+"        \"text_encoder\", \"tokenizer\", \"vae\", \"transformer\", "
+"\"scheduler\",\n"
+"    ]\n"
+"\n"
+"    def create_pipeline_stages(self, server_args: ServerArgs):\n"
+"        # All pre-processing + denoising + decoding in one call\n"
+"        self.add_standard_t2i_stages(\n"
+"            prepare_extra_timestep_kwargs=[prepare_mu],  # model-specific "
+"hooks\n"
+"        )\n"
+"\n"
+"\n"
+"EntryClass = [MyModelPipeline]\n"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:100
-msgid "**Register Configs**:"
+#: ../../../diffusion/support_new_models.md:324
+msgid "Step 8: Register the Model"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:101
+#: ../../../diffusion/support_new_models.md:326
 msgid ""
-"Register the configs in the central registry ([`registry.py`](https://github."
-"com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/registry.py)) "
-"via `_register_configs` to enable automatic loading and instantiation for "
-"the model. Modules are automatically loaded and injected based on the config "
-"and repository structure."
+"Register your configs in [`registry.py`](https://github.com/sgl-project/"
+"sglang/blob/main/python/sglang/multimodal_gen/registry.py):"
 msgstr ""
 
-#: ../../../diffusion/support_new_models.md:103
+#: ../../../diffusion/support_new_models.md:328
 msgid ""
-"By following this pattern of defining configurations and composing "
-"pipelines, you can integrate new diffusion models into SGLang with ease."
+"register_configs(\n"
+"    model_family=\"my_model\",\n"
+"    sampling_param_cls=MyModelSamplingParams,\n"
+"    pipeline_config_cls=MyModelPipelineConfig,\n"
+"    hf_model_paths=[\"org/my-model-name\"],\n"
+")\n"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:337
+msgid ""
+"The `EntryClass` in your pipeline file is automatically discovered by the "
+"registry — no additional registration needed for the pipeline class itself."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:339
+msgid "Step 9: Verify Output Quality"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:341
+msgid ""
+"After implementation, verify that the generated output is not noise. A noisy "
+"or garbled output is the most common sign of an incorrect implementation. "
+"Common causes include:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:343
+msgid "Incorrect latent scale/shift factors"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:344
+msgid "Wrong timestep/sigma schedule (order, dtype, or value range)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:345
+msgid "Mismatched conditioning kwargs"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:346
+msgid "Rotary embedding style mismatch (`is_neox_style`)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:348
+msgid ""
+"Debug by comparing intermediate tensor values against the Diffusers "
+"reference pipeline with the same seed."
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:350
+msgid "Reference Implementations"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Model"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Pipeline"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "BeforeDenoisingStage"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "PipelineConfig"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "GLM-Image"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`runtime/pipelines/glm_image.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`stages/model_specific_stages/glm_image.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`configs/pipeline_configs/glm_image.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Qwen-Image-Layered"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`runtime/pipelines/qwen_image.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`stages/model_specific_stages/qwen_image_layered.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`configs/pipeline_configs/qwen_image.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Notes"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Qwen-Image (T2I)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Uses `add_standard_t2i_stages()`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Qwen-Image-Edit"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Uses `add_standard_ti2i_stages()`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Flux"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`runtime/pipelines/flux.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Uses `add_standard_t2i_stages()` with custom `prepare_mu`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Wan"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "`runtime/pipelines/wan_pipeline.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:0
+msgid "Uses `add_standard_ti2v_stages()`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:368
+msgid "Checklist"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:370
+msgid "Before submitting your implementation, verify:"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:372
+msgid "**Common (both styles):**"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:373
+msgid ""
+"[ ] **Pipeline file** at `runtime/pipelines/{model_name}.py` with "
+"`EntryClass`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:374
+msgid "[ ] **PipelineConfig** at `configs/pipeline_configs/{model_name}.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:375
+msgid "[ ] **SamplingParams** at `configs/sample/{model_name}.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:376
+msgid "[ ] **DiT model** at `runtime/models/dits/{model_name}.py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:377
+msgid ""
+"[ ] **Model configs** (DiT, VAE) at `configs/models/dits/` and `configs/"
+"models/vaes/`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:378
+msgid "[ ] **Registry entry** in `registry.py` via `register_configs()`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:379
+msgid "[ ] `pipeline_name` matches Diffusers `model_index.json` `_class_name`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:380
+msgid ""
+"[ ] `_required_config_modules` lists all modules from `model_index.json`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:381
+msgid ""
+"[ ] `PipelineConfig` callbacks (`prepare_pos_cond_kwargs`, etc.) match the "
+"DiT's `forward()` signature"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:382
+msgid ""
+"[ ] Uses framework-standard `DenoisingStage` and `DecodingStage` (not custom "
+"denoising loops)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:383
+msgid ""
+"[ ] **TP/SP support** considered for DiT model (recommended; reference "
+"`wanvideo.py` for TP+SP, `qwen_image.py` for USPAttention)"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:384
+msgid ""
+"[ ] **Output quality verified** — generated images/videos are not noise; "
+"compared against Diffusers reference output"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:386
+msgid "**Hybrid style only:**"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:387
+msgid ""
+"[ ] **BeforeDenoisingStage** at `stages/model_specific_stages/{model_name}."
+"py`"
+msgstr ""
+
+#: ../../../diffusion/support_new_models.md:388
+msgid ""
+"[ ] `BeforeDenoisingStage.forward()` populates all batch fields required by "
+"`DenoisingStage`"
 msgstr ""
