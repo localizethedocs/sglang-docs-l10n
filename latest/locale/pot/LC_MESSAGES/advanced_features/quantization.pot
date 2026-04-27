@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"POT-Creation-Date: 2026-04-27 10:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,7 +215,7 @@ msgid "`gguf`"
 msgstr ""
 
 #: ../../../advanced_features/quantization.md:0
-msgid "CUDA-only kernels in sgl-kernel"
+msgid "CUDA-only kernels in sgl-kernel; Pre-dequantized on Ascend"
 msgstr ""
 
 #: ../../../advanced_features/quantization.md:0
@@ -442,6 +442,10 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/quantization.md:53
+msgid "SGLang CUTLASS kernel"
+msgstr ""
+
+#: ../../../advanced_features/quantization.md:53
 msgid "FlashInfer CUTLASS backend"
 msgstr ""
 
@@ -461,17 +465,17 @@ msgstr ""
 msgid "FlashInfer TensorRT-LLM backend"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:81
+#: ../../../advanced_features/quantization.md:82
 msgid ""
-"When FlashInfer is unavailable for NVFP4, sgl-kernel CUTLASS is used as an "
-"automatic fallback."
+"When FlashInfer is unavailable for NVFP4, the SGLang CUTLASS kernel is used "
+"as an automatic fallback."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:83
+#: ../../../advanced_features/quantization.md:84
 msgid "Offline Quantization"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:85
+#: ../../../advanced_features/quantization.md:86
 msgid ""
 "To load already quantized models, simply load the model weights and config. "
 "**Again, if the model has been quantized offline, there's no need to add `--"
@@ -481,14 +485,14 @@ msgid ""
 "parameters.**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:89
+#: ../../../advanced_features/quantization.md:90
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 \\\n"
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:95
+#: ../../../advanced_features/quantization.md:96
 msgid ""
 "Take note, if your model is **per-channel quantized (INT8 or FP8) with per-"
 "token dynamic quantization activation**, you can opt to include `--"
@@ -501,7 +505,7 @@ msgid ""
 "for vLLM kernels."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:97
+#: ../../../advanced_features/quantization.md:98
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic \\\n"
@@ -509,38 +513,38 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:104
+#: ../../../advanced_features/quantization.md:105
 msgid "Examples of Offline Model Quantization"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:106
+#: ../../../advanced_features/quantization.md:107
 msgid ""
 "Using [Unsloth](https://docs.unsloth.ai/basics/inference-and-deployment/"
 "sglang-guide)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:108
+#: ../../../advanced_features/quantization.md:109
 msgid ""
 "We strongly suggest the use of Unsloth to quantize and load the model. "
 "Please refer to [SGLang Deployment & Inference Guide with Unsloth](https://"
 "docs.unsloth.ai/basics/inference-and-deployment/sglang-guide)."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:110
+#: ../../../advanced_features/quantization.md:111
 msgid "Using [auto-round](https://github.com/intel/auto-round)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:112
+#: ../../../advanced_features/quantization.md:113
 msgid ""
 "# Install\n"
 "pip install auto-round\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:117
+#: ../../../advanced_features/quantization.md:118
 msgid "LLM quantization"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:119
+#: ../../../advanced_features/quantization.md:120
 msgid ""
 "# for LLM\n"
 "from auto_round import AutoRound\n"
@@ -555,11 +559,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:132
+#: ../../../advanced_features/quantization.md:133
 msgid "VLM quantization"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:133
+#: ../../../advanced_features/quantization.md:134
 msgid ""
 "# for VLMs\n"
 "from auto_round import AutoRoundMLLM\n"
@@ -572,11 +576,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:145
+#: ../../../advanced_features/quantization.md:146
 msgid "Command Line Usage (Gaudi/CPU/Intel GPU/CUDA)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:147
+#: ../../../advanced_features/quantization.md:148
 msgid ""
 "auto-round \\\n"
 "    --model meta-llama/Llama-3.2-1B-Instruct \\\n"
@@ -586,11 +590,11 @@ msgid ""
 "    --output_dir ./tmp_autoround\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:156
+#: ../../../advanced_features/quantization.md:157
 msgid "known issues"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:158
+#: ../../../advanced_features/quantization.md:159
 msgid ""
 "Several limitations currently affect offline quantized model loading in "
 "sglang, These issues might be resolved in future updates of sglang. If you "
@@ -598,73 +602,73 @@ msgid ""
 "alternative."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:160
+#: ../../../advanced_features/quantization.md:161
 msgid "Mixed-bit Quantization Limitations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:162
+#: ../../../advanced_features/quantization.md:163
 msgid ""
 "Mixed-bit quantization is not fully supported. Due to vLLM's layer fusion (e."
 "g., QKV fusion), applying different bit-widths to components within the same "
 "fused layer can lead to compatibility issues."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:165
+#: ../../../advanced_features/quantization.md:166
 msgid "Limited Support for Quantized MoE Models"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:167
+#: ../../../advanced_features/quantization.md:168
 msgid ""
 "Quantized MoE models may encounter inference issues due to kernel "
 "limitations (e.g., lack of support for mlp.gate layer quantization). please "
 "try to skip quantizing these layers to avoid such errors."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:170
+#: ../../../advanced_features/quantization.md:171
 msgid "Limited Support for Quantized VLMs"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:171
+#: ../../../advanced_features/quantization.md:172
 msgid ""
 " <details>\n"
 "     <summary>VLM failure cases</summary>\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:174
+#: ../../../advanced_features/quantization.md:175
 msgid "Qwen2.5-VL-7B"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:176
+#: ../../../advanced_features/quantization.md:177
 msgid "auto_round:auto_gptq format:  Accuracy is close to zero."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:178
+#: ../../../advanced_features/quantization.md:179
 msgid "GPTQ format:  Fails with:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:179
+#: ../../../advanced_features/quantization.md:180
 msgid "The output size is not aligned with the quantized weight shape\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:182
+#: ../../../advanced_features/quantization.md:183
 msgid "auto_round:auto_awq and AWQ format:  These work as expected."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:183
+#: ../../../advanced_features/quantization.md:184
 msgid " </details>\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:185
+#: ../../../advanced_features/quantization.md:186
 msgid "Using [GPTQModel](https://github.com/ModelCloud/GPTQModel)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:187
+#: ../../../advanced_features/quantization.md:188
 msgid ""
 "# install\n"
 "pip install gptqmodel --no-build-isolation -v\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:192
+#: ../../../advanced_features/quantization.md:193
 msgid ""
 "from datasets import load_dataset\n"
 "from gptqmodel import GPTQModel, QuantizeConfig\n"
@@ -684,23 +688,23 @@ msgid ""
 "model.save(quant_path) # save model\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:211
+#: ../../../advanced_features/quantization.md:212
 msgid "Using [LLM Compressor](https://github.com/vllm-project/llm-compressor/)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:213
+#: ../../../advanced_features/quantization.md:214
 msgid ""
 "# install\n"
 "pip install llmcompressor\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:218
+#: ../../../advanced_features/quantization.md:219
 msgid ""
 "Here, we take quantize `meta-llama/Meta-Llama-3-8B-Instruct` to `FP8` as an "
 "example to elaborate on how to do offline quantization."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:220
+#: ../../../advanced_features/quantization.md:221
 msgid ""
 "from transformers import AutoTokenizer\n"
 "from llmcompressor.transformers import SparseAutoModelForCausalLM\n"
@@ -728,99 +732,99 @@ msgid ""
 "tokenizer.save_pretrained(SAVE_DIR)\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:247
+#: ../../../advanced_features/quantization.md:248
 msgid ""
 "Then, you can directly use the quantized model with `SGLang`, by using the "
 "following command:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:249
+#: ../../../advanced_features/quantization.md:250
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path $PWD/Meta-Llama-3-8B-Instruct-FP8-Dynamic \\\n"
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:255
+#: ../../../advanced_features/quantization.md:256
 msgid "Using [NVIDIA ModelOpt](https://github.com/NVIDIA/Model-Optimizer)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:257
+#: ../../../advanced_features/quantization.md:258
 msgid ""
 "NVIDIA Model Optimizer (ModelOpt) provides advanced quantization techniques "
 "optimized for NVIDIA hardware."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:259
+#: ../../../advanced_features/quantization.md:260
 msgid "**Offline vs. Online Quantization:**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:261
+#: ../../../advanced_features/quantization.md:262
 msgid "SGLang supports two modes for ModelOpt."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:263
+#: ../../../advanced_features/quantization.md:264
 msgid "**Offline Quantization (pre-quantized):**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:264
+#: ../../../advanced_features/quantization.md:265
 msgid ""
 "**Usage:** Download a pre-quantized model from Hugging Face or run `hf_ptq."
 "py` once to create a new quantized checkpoint. Then load this quantized "
 "checkpoint."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:265
+#: ../../../advanced_features/quantization.md:266
 msgid ""
 "**Pros:** Fast server startup, quantization can be validated before "
 "deployment, efficient resource usage."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:266
+#: ../../../advanced_features/quantization.md:267
 msgid "**Cons:** Requires an extra preparation step."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:268
+#: ../../../advanced_features/quantization.md:269
 msgid "**Online Quantization (quant and serve):**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:269
+#: ../../../advanced_features/quantization.md:270
 msgid ""
 "**Usage:** Load a standard BF16/FP16 model and add a flag. The engine "
 "applies quantization *on startup*."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:270
+#: ../../../advanced_features/quantization.md:271
 msgid "**Pros:** Convenient (no new checkpoint needed)."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:271
+#: ../../../advanced_features/quantization.md:272
 msgid ""
 "**Cons:** **High startup time**, increases VRAM usage during initialization "
 "(risk of OOM)."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:273
+#: ../../../advanced_features/quantization.md:274
 msgid ""
 "The following sections guide you through using the Offline path: loading pre-"
 "quantized models or creating your own checkpoints."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:275
+#: ../../../advanced_features/quantization.md:276
 msgid "Using Pre-Quantized Checkpoints"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:277
+#: ../../../advanced_features/quantization.md:278
 msgid ""
 "If a model is already quantized (e.g., from Hugging Face), you can load it "
 "directly."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:279
+#: ../../../advanced_features/quantization.md:280
 msgid "**FP8 Models:**   Use `--quantization modelopt_fp8`."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:281
+#: ../../../advanced_features/quantization.md:282
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path nvidia/Llama-3.1-8B-Instruct-FP8 \\\n"
@@ -828,11 +832,11 @@ msgid ""
 "    --port 30000\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:288
+#: ../../../advanced_features/quantization.md:289
 msgid "**FP4 Models:**   Use `--quantization modelopt_fp4`."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:290
+#: ../../../advanced_features/quantization.md:291
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path nvidia/Llama-3.3-70B-Instruct-NVFP4 \\\n"
@@ -840,103 +844,103 @@ msgid ""
 "    --port 30000\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:297
+#: ../../../advanced_features/quantization.md:298
 msgid "Creating Your Own Quantized Checkpoints"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:299
+#: ../../../advanced_features/quantization.md:300
 msgid ""
 "If a pre-quantized checkpoint is not available for your model, you can "
 "create one using NVIDIA Model Optimizer's `hf_ptq.py` script."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:301
+#: ../../../advanced_features/quantization.md:302
 msgid "**Why quantize?**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:302
+#: ../../../advanced_features/quantization.md:303
 msgid "Reduce VRAM usage"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:303
+#: ../../../advanced_features/quantization.md:304
 msgid "Higher throughput and lower latency"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:304
+#: ../../../advanced_features/quantization.md:305
 msgid "More flexible deployment (on smaller GPUs)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:306
+#: ../../../advanced_features/quantization.md:307
 msgid "**What can be quantized?**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:307
+#: ../../../advanced_features/quantization.md:308
 msgid "The entire model"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:308
+#: ../../../advanced_features/quantization.md:309
 msgid "MLP layers only"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:309
+#: ../../../advanced_features/quantization.md:310
 msgid "KV cache"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:311
+#: ../../../advanced_features/quantization.md:312
 msgid "**Key options in `hf_ptq.py`:**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:313
+#: ../../../advanced_features/quantization.md:314
 msgid "`--qformat`: Quantization formats `fp8`, `nvfp4`, `nvfp4_mlp_only`"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:315
+#: ../../../advanced_features/quantization.md:316
 msgid "`--kv_cache_qformat`: KV cache quantization format (default: `fp8`)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:317
+#: ../../../advanced_features/quantization.md:318
 msgid ""
 "**Note:** The default `kv_cache_qformat` may not be optimal for all use "
 "cases. Consider setting this explicitly."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:319
+#: ../../../advanced_features/quantization.md:320
 msgid ""
 "**Hardware requirements:** Hopper and higher are recommended. Insufficient "
 "GPU memory may cause weight offloading, resulting in extremely long "
 "quantization time."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:321
+#: ../../../advanced_features/quantization.md:322
 msgid ""
 "For detailed usage and supported model architectures, see [NVIDIA Model "
 "Optimizer LLM PTQ](https://github.com/NVIDIA/Model-Optimizer/tree/main/"
 "examples/llm_ptq)."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:323
+#: ../../../advanced_features/quantization.md:324
 msgid ""
 "SGLang includes a streamlined workflow for quantizing models with ModelOpt "
 "and automatically exporting them for deployment."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:325
+#: ../../../advanced_features/quantization.md:326
 msgid "Installation"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:327
+#: ../../../advanced_features/quantization.md:328
 msgid "First, install ModelOpt:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:329
+#: ../../../advanced_features/quantization.md:330
 msgid "pip install nvidia-modelopt\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:333
+#: ../../../advanced_features/quantization.md:334
 msgid "Quantization and Export Workflow"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:335
+#: ../../../advanced_features/quantization.md:336
 msgid ""
 "SGLang provides an example script that demonstrates the complete ModelOpt "
 "quantization and export workflow. Run from the SGLang repository root (see "
@@ -944,7 +948,7 @@ msgid ""
 "main/examples/usage/modelopt_quantize_and_export.py)):"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:337
+#: ../../../advanced_features/quantization.md:338
 msgid ""
 "# Quantize and export a model using ModelOpt FP8 quantization\n"
 "python examples/usage/modelopt_quantize_and_export.py quantize \\\n"
@@ -959,31 +963,31 @@ msgid ""
 "    --quantization-method modelopt_fp4\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:351
+#: ../../../advanced_features/quantization.md:352
 msgid "Available Quantization Methods"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:353
+#: ../../../advanced_features/quantization.md:354
 msgid ""
 "`modelopt_fp8`: FP8 quantization with optimal performance on NVIDIA Hopper "
 "and Blackwell GPUs"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:354
+#: ../../../advanced_features/quantization.md:355
 msgid ""
 "`modelopt_fp4`: FP4 quantization with optimal performance on Nvidia "
 "Blackwell GPUs"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:356
+#: ../../../advanced_features/quantization.md:357
 msgid "Python API Usage"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:358
+#: ../../../advanced_features/quantization.md:359
 msgid "You can also use ModelOpt quantization programmatically:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:360
+#: ../../../advanced_features/quantization.md:361
 msgid ""
 "import sglang as sgl\n"
 "from sglang.srt.configs.device_config import DeviceConfig\n"
@@ -1013,15 +1017,15 @@ msgid ""
 ")\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:388
+#: ../../../advanced_features/quantization.md:389
 msgid "Deploying Quantized Models"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:390
+#: ../../../advanced_features/quantization.md:391
 msgid "After quantization and export, you can deploy the model with SGLang:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:392
+#: ../../../advanced_features/quantization.md:393
 msgid ""
 "# Deploy the exported quantized model\n"
 "python -m sglang.launch_server \\\n"
@@ -1030,13 +1034,13 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:400
+#: ../../../advanced_features/quantization.md:401
 msgid ""
 "Or using the Python API (use the same path as `modelopt_export_path` from "
 "the quantize step):"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:402
+#: ../../../advanced_features/quantization.md:403
 msgid ""
 "import sglang as sgl\n"
 "\n"
@@ -1071,17 +1075,17 @@ msgid ""
 "\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:435
+#: ../../../advanced_features/quantization.md:436
 msgid "Advanced Features"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:437
+#: ../../../advanced_features/quantization.md:438
 msgid ""
 "**Checkpoint Management**: Save and restore fake quantized checkpoints for "
 "reuse:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:439
+#: ../../../advanced_features/quantization.md:440
 msgid ""
 "# Save the fake quantized checkpoint during quantization\n"
 "python examples/usage/modelopt_quantize_and_export.py quantize \\\n"
@@ -1094,7 +1098,7 @@ msgid ""
 "calibration\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:450
+#: ../../../advanced_features/quantization.md:451
 msgid ""
 "**Export-only Workflow**: If you have a pre-existing fake quantized ModelOpt "
 "checkpoint, you can export it directly. See [LoadConfig](https://github.com/"
@@ -1102,7 +1106,7 @@ msgid ""
 "the full API:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:452
+#: ../../../advanced_features/quantization.md:453
 msgid ""
 "from sglang.srt.configs.device_config import DeviceConfig\n"
 "from sglang.srt.configs.load_config import LoadConfig\n"
@@ -1126,53 +1130,53 @@ msgid ""
 "device_config=DeviceConfig())\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:474
+#: ../../../advanced_features/quantization.md:475
 msgid "Benefits of ModelOpt"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:476
+#: ../../../advanced_features/quantization.md:477
 msgid ""
 "**Hardware Optimization**: Specifically optimized for NVIDIA GPU "
 "architectures"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:477
+#: ../../../advanced_features/quantization.md:478
 msgid ""
 "**Advanced Quantization**: Supports cutting-edge FP8 and FP4 quantization "
 "techniques"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:478
+#: ../../../advanced_features/quantization.md:479
 msgid ""
 "**Seamless Integration**: Automatic export to HuggingFace format for easy "
 "deployment"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:479
+#: ../../../advanced_features/quantization.md:480
 msgid ""
 "**Calibration-based**: Uses calibration datasets for optimal quantization "
 "quality"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:480
+#: ../../../advanced_features/quantization.md:481
 msgid "**Production Ready**: Enterprise-grade quantization with NVIDIA support"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:482
+#: ../../../advanced_features/quantization.md:483
 msgid "Using [ModelSlim](https://gitcode.com/Ascend/msmodelslim)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:483
+#: ../../../advanced_features/quantization.md:484
 msgid ""
 "MindStudio-ModelSlim (msModelSlim) is a model offline quantization "
 "compression tool launched by MindStudio and optimized for Ascend hardware."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:485
+#: ../../../advanced_features/quantization.md:486
 msgid "**Installation**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:487
+#: ../../../advanced_features/quantization.md:488
 msgid ""
 "# Clone repo and install msmodelslim:\n"
 "git clone https://gitcode.com/Ascend/msmodelslim.git\n"
@@ -1180,11 +1184,11 @@ msgid ""
 "bash install.sh\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:494
+#: ../../../advanced_features/quantization.md:495
 msgid "**LLM quantization**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:496
+#: ../../../advanced_features/quantization.md:497
 msgid ""
 "Download the original floating-point weights of the large model. Taking "
 "Qwen3-32B as an example, you can go to [Qwen3-32B](https://huggingface.co/"
@@ -1192,20 +1196,20 @@ msgid ""
 "dependencies (related to the model, refer to the huggingface model card)."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:497
+#: ../../../advanced_features/quantization.md:498
 msgid ""
 "Note: You can find pre-quantized validated models on [modelscope/Eco-Tech]"
 "(https://modelscope.cn/models/Eco-Tech)."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:499
+#: ../../../advanced_features/quantization.md:500
 msgid ""
 "_Traditional quantification methods require the preparation of calibration "
 "data files (```.jsonl``` formats) for calibration in the quantification "
 "process._"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:500
+#: ../../../advanced_features/quantization.md:501
 msgid ""
 "Qwen3-32B/      # floating-point model downloaded from official HF (or "
 "modelscope) repo\n"
@@ -1226,11 +1230,11 @@ msgid ""
 "  |----- another files (such as config.json, tokenizer.json, etc.)\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:514
+#: ../../../advanced_features/quantization.md:515
 msgid "Run quantization using one-click quantization (recommended):"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:515
+#: ../../../advanced_features/quantization.md:516
 msgid ""
 "msmodelslim quant \\\n"
 "--model_path ${MODEL_PATH} \\\n"
@@ -1241,85 +1245,85 @@ msgid ""
 "--trust_remote_code True\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:525
+#: ../../../advanced_features/quantization.md:526
 msgid "**Usage Example**"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:526
+#: ../../../advanced_features/quantization.md:527
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "--model-path $PWD/Qwen3-32B-w8a8 \\\n"
 "--port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:532
+#: ../../../advanced_features/quantization.md:533
 msgid "**Available Quantization Methods**:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:533
+#: ../../../advanced_features/quantization.md:534
 msgid "[x]  ```W4A4_DYNAMIC``` linear with online quantization of activations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:534
+#: ../../../advanced_features/quantization.md:535
 msgid "[x]  ```W8A8``` linear with offline quantization of activations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:535
+#: ../../../advanced_features/quantization.md:536
 msgid "[x]  ```W8A8_DYNAMIC``` linear with online quantization of activations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:536
+#: ../../../advanced_features/quantization.md:537
 msgid "[x]  ```W4A4_DYNAMIC``` MOE with online quantization of activations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:537
+#: ../../../advanced_features/quantization.md:538
 msgid "[x]  ```W4A8_DYNAMIC``` MOE with online quantization of activations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:538
+#: ../../../advanced_features/quantization.md:539
 msgid "[x]  ```W8A8_DYNAMIC``` MOE with online quantization of activations"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:539
+#: ../../../advanced_features/quantization.md:540
 msgid "[ ]  ```W4A8``` linear TBD"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:540
+#: ../../../advanced_features/quantization.md:541
 msgid "[ ]  ```W4A16``` linear TBD"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:541
+#: ../../../advanced_features/quantization.md:542
 msgid "[ ]  ```W48A16``` linear TBD"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:542
+#: ../../../advanced_features/quantization.md:543
 msgid "[ ]  ```W4A16``` MoE in progress"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:543
+#: ../../../advanced_features/quantization.md:544
 msgid "[ ]  ```W8A16``` MoE in progress"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:544
+#: ../../../advanced_features/quantization.md:545
 msgid "[ ]  ```KV Cache``` in progress"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:545
+#: ../../../advanced_features/quantization.md:546
 msgid "[ ]  ```Attention``` in progress"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:548
+#: ../../../advanced_features/quantization.md:549
 msgid ""
 "For more detailed examples of quantization of models, as well as information "
 "about their support, see the [examples](https://gitcode.com/Ascend/"
 "msmodelslim/blob/master/example/README.md) section in ModelSLim repo."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:550
+#: ../../../advanced_features/quantization.md:551
 msgid "Online Quantization"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:552
+#: ../../../advanced_features/quantization.md:553
 msgid ""
 "To enable online quantization, you can simply specify `--quantization` in "
 "the command line. For example, you can launch the server with the following "
@@ -1327,7 +1331,7 @@ msgid ""
 "Instruct`:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:554
+#: ../../../advanced_features/quantization.md:555
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -1335,18 +1339,18 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:561
+#: ../../../advanced_features/quantization.md:562
 msgid ""
 "Our team is working on supporting more online quantization methods. SGLang "
 "will soon support methods including but not limited to `[\"awq\", \"gptq\", "
 "\"marlin\", \"gptq_marlin\", \"awq_marlin\", \"bitsandbytes\", \"gguf\"]`."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:563
+#: ../../../advanced_features/quantization.md:564
 msgid "torchao online quantization method"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:565
+#: ../../../advanced_features/quantization.md:566
 msgid ""
 "SGLang also supports quantization methods based on [torchao](https://github."
 "com/pytorch/ao). You can simply specify `--torchao-config` in the command "
@@ -1355,7 +1359,7 @@ msgid ""
 "launch the server with the following command:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:567
+#: ../../../advanced_features/quantization.md:568
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -1363,14 +1367,14 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:574
+#: ../../../advanced_features/quantization.md:575
 msgid ""
 "SGLang supports the following quantization methods based on torchao "
 "`[\"int8dq\", \"int8wo\", \"fp8wo\", \"fp8dq-per_tensor\", \"fp8dq-"
 "per_row\", \"int4wo-32\", \"int4wo-64\", \"int4wo-128\", \"int4wo-256\"]`."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:576
+#: ../../../advanced_features/quantization.md:577
 msgid ""
 "Note: According to [this issue](https://github.com/sgl-project/sglang/"
 "issues/2219#issuecomment-2561890230), `\"int8dq\"` method currently has some "
@@ -1379,7 +1383,7 @@ msgid ""
 "following command:"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:578
+#: ../../../advanced_features/quantization.md:579
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
@@ -1388,11 +1392,11 @@ msgid ""
 "    --port 30000 --host 0.0.0.0\n"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:586
+#: ../../../advanced_features/quantization.md:587
 msgid "`quark_int4fp8_moe` online quantization method"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:588
+#: ../../../advanced_features/quantization.md:589
 msgid ""
 "SGLang running on AMD GPUs (CDNA3 or CDNA4 architecture) supports the "
 "quantization method `--quantization quark_int4fp8_moe`, that will replace "
@@ -1403,37 +1407,37 @@ msgid ""
 "precision with activations dynamically quantized on the fly to float8."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:590
+#: ../../../advanced_features/quantization.md:591
 msgid ""
 "Other layers (e.g. projections in the attention layers) have their weights "
 "quantized online to float8 directly."
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:592
+#: ../../../advanced_features/quantization.md:593
 msgid "Reference"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:594
+#: ../../../advanced_features/quantization.md:595
 msgid "[GPTQModel](https://github.com/ModelCloud/GPTQModel)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:595
+#: ../../../advanced_features/quantization.md:596
 msgid "[LLM Compressor](https://github.com/vllm-project/llm-compressor/)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:596
+#: ../../../advanced_features/quantization.md:597
 msgid ""
 "[NVIDIA Model Optimizer (ModelOpt)](https://github.com/NVIDIA/Model-"
 "Optimizer)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:597
+#: ../../../advanced_features/quantization.md:598
 msgid ""
 "[NVIDIA Model Optimizer LLM PTQ](https://github.com/NVIDIA/Model-Optimizer/"
 "tree/main/examples/llm_ptq)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:598
+#: ../../../advanced_features/quantization.md:599
 msgid ""
 "[Petit: NVFP4 on ROCm](https://github.com/causalflow-ai/petit-kernel) — "
 "[LMSYS blog](https://lmsys.org/blog/2025-09-21-petit-amdgpu/), [AMD ROCm "
@@ -1441,19 +1445,19 @@ msgid ""
 "README.html)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:599
+#: ../../../advanced_features/quantization.md:600
 msgid ""
 "[Torchao: PyTorch Architecture Optimization](https://github.com/pytorch/ao)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:600
+#: ../../../advanced_features/quantization.md:601
 msgid "[vLLM Quantization](https://docs.vllm.ai/en/latest/quantization/)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:601
+#: ../../../advanced_features/quantization.md:602
 msgid "[auto-round](https://github.com/intel/auto-round)"
 msgstr ""
 
-#: ../../../advanced_features/quantization.md:602
+#: ../../../advanced_features/quantization.md:603
 msgid "[ModelSlim](https://gitcode.com/Ascend/msmodelslim)"
 msgstr ""

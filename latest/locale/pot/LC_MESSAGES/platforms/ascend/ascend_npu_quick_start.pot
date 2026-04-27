@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-27 10:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:1
+msgid "Ascend NPU Quickstart"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:3
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:5
+msgid "Supported Devices"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:7
+msgid "Atlas 800I A2 inference series (Atlas 800I A2)"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:8
+msgid "Atlas 800I A3 inference series (Atlas 800I A3)"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:10
+msgid "Setup environment using container"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:12
+msgid ""
+"__Notice:__ The following commands are based on Atlas 800I A3 machines. If "
+"you are using Atlas 800I A2, some changes are needed."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:14
+msgid ""
+"The image tag needs to be `main-cann8.5.0-a3` for Atlas 800I A3 and `main-"
+"cann8.5.0-910b` for Atlas 800I A2."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:15
+msgid ""
+"The device mapping in `docker run` command needs to be changed to "
+"`davinci[0-7]` for Atlas 800I A2."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:17
+msgid ""
+"# For Atlas 800I A3\n"
+"export IMAGE=quay.io/ascend/sglang:main-cann8.5.0-a3\n"
+"\n"
+"docker run -it --rm --privileged --network=host --ipc=host --shm-size=16g "
+"\\\n"
+"    --device=/dev/davinci0 --device=/dev/davinci1 --device=/dev/davinci2 --"
+"device=/dev/davinci3 \\\n"
+"    --device=/dev/davinci4 --device=/dev/davinci5 --device=/dev/davinci6 --"
+"device=/dev/davinci7 \\\n"
+"    --device=/dev/davinci8 --device=/dev/davinci9 --device=/dev/davinci10 --"
+"device=/dev/davinci11 \\\n"
+"    --device=/dev/davinci12 --device=/dev/davinci13 --device=/dev/davinci14 "
+"--device=/dev/davinci15 \\\n"
+"    --device=/dev/davinci_manager \\\n"
+"    --device=/dev/hisi_hdc \\\n"
+"    --volume /usr/local/sbin:/usr/local/sbin \\\n"
+"    --volume /usr/local/Ascend/driver:/usr/local/Ascend/driver \\\n"
+"    --volume /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \\\n"
+"    --volume /etc/ascend_install.info:/etc/ascend_install.info \\\n"
+"    --volume /var/queue_schedule:/var/queue_schedule \\\n"
+"    --volume ~/.cache/:/root/.cache/ \\\n"
+"    --entrypoint=bash \\\n"
+"    $IMAGE\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:38
+msgid "Usage"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:40
+msgid ""
+"The SGLang server is installed in the container by default. You can use `pip "
+"show sglang` to check the version."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:42
+msgid "Start SGLang server"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:44
+msgid "SGLang will automatically download the model from Hugging Face."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:46
+msgid ""
+"# Set HF_ENDPOINT to a mirror site if network is not available\n"
+"export HF_ENDPOINT=https://hf-mirror.com\n"
+"\n"
+"# Set your own HF_TOKEN to download restricted models\n"
+"export HF_TOKEN=<secret>\n"
+"\n"
+"# Start SGLang server\n"
+"# It may take several minutes to download the model on the first run\n"
+"sglang serve --model-path Qwen/Qwen2.5-7B-Instruct --attention-backend "
+"ascend &\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:58
+msgid "If you see output like the following, the server is running."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:60
+msgid ""
+"INFO:     Waiting for application startup.\n"
+"INFO:     Application startup complete.\n"
+"INFO:     Uvicorn running on http://127.0.0.1:30000 (Press CTRL+C to quit)\n"
+"The server is fired up and ready to roll!\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:67
+msgid "Send a test request"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:69
+msgid "You can do inference using the server:"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:71
+msgid ""
+"curl -X POST http://localhost:30000/generate \\\n"
+"    -H \"Content-Type: application/json\" \\\n"
+"    -d '{\n"
+"        \"text\": \"The capital of France is\",\n"
+"        \"sampling_params\": {\n"
+"            \"temperature\": 0,\n"
+"            \"max_new_tokens\": 16\n"
+"        }\n"
+"    }'\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:83
+msgid ""
+"If the \"text\" field in the response contains \"Paris\", the server is "
+"working as expected."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:85
+msgid "Stop server and exit container"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:87
+msgid ""
+"The SGLang server is running as a background process. You can send a "
+"`SIGINT` signal to stop it."
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:89
+msgid ""
+"SGLANG_PID=$(pgrep -f \"sglang serve\")\n"
+"kill -SIGINT $SGLANG_PID\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:94
+msgid "The output should be like the following:"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:96
+msgid ""
+"INFO:     Shutting down\n"
+"INFO:     Waiting for application shutdown.\n"
+"INFO:     Application shutdown complete.\n"
+"INFO:     Finished server process [25310]\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu_quick_start.md:103
+msgid ""
+"The server has now stopped. You can verify it with `ps -ef | grep sglang`, "
+"then exit the container by pressing `Ctrl+D`."
+msgstr ""
