@@ -1,0 +1,684 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-28 10:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/quantization.md:1
+msgid "Quantization"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:3
+msgid ""
+"SGLang-Diffusion supports quantized transformer checkpoints. In most cases, "
+"keep the base model and the quantized transformer override separate."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:6
+msgid "Quick Reference"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:8
+msgid "Use these paths:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:10
+msgid "`--model-path`: the base or original model"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:11
+msgid ""
+"`--transformer-path`: a quantized transformers-style transformer component "
+"directory that already contains its own `config.json`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:12
+msgid ""
+"`--transformer-weights-path`: quantized transformer weights provided as a "
+"single safetensors file, a sharded safetensors directory, a local path, or a "
+"Hugging Face repo ID"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:14
+msgid "Recommended example:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:16
+msgid ""
+"sglang generate \\\n"
+"  --model-path black-forest-labs/FLUX.2-dev \\\n"
+"  --transformer-weights-path black-forest-labs/FLUX.2-dev-NVFP4 \\\n"
+"  --prompt \"a curious pikachu\"\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:23
+msgid "For quantized transformers-style transformer component folders:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:25
+msgid ""
+"sglang generate \\\n"
+"  --model-path /path/to/base-model \\\n"
+"  --transformer-path /path/to/quantized-transformer \\\n"
+"  --prompt \"A Logo With Bold Large Text: SGL Diffusion\"\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:32
+msgid ""
+"NOTE: Some model-specific integrations also accept a quantized repo or local "
+"directory directly as `--model-path`, but that is a compatibility path. If a "
+"repo contains multiple candidate checkpoints, pass `--transformer-weights-"
+"path` explicitly."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:37
+msgid "Quant Families"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:39
+msgid ""
+"Here, `quant_family` means a checkpoint and loading family with shared CLI "
+"usage and loader behavior. It is not just the numeric precision or a kernel "
+"backend."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "quant_family"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "checkpoint form"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "canonical CLI"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "supported models"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "extra dependency"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "platform / notes"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`fp8`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid ""
+"Quantized transformer component folder, or safetensors with "
+"`quantization_config` metadata"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`--transformer-path` or `--transformer-weights-path`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "ALL"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "None"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Component-folder and single-file flows are both supported"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`nvfp4-modelopt`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid ""
+"NVFP4 safetensors file, sharded directory, or repo providing transformer "
+"weights"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`--transformer-weights-path`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "FLUX.2"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`comfy-kitchen` optional on Blackwell"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid ""
+"Blackwell can use a best-performance kit when available; otherwise SGLang "
+"falls back to the generic ModelOpt FP4 path"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`nunchaku-svdq`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid ""
+"Pre-quantized Nunchaku transformer weights, usually named `svdq-{int4|fp4}"
+"_r{rank}-...`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Model-specific support such as Qwen-Image, FLUX, and Z-Image"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`nunchaku`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid ""
+"SGLang can infer precision and rank from the filename and supports both "
+"`int4` and `nvfp4`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`msmodelslim`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Pre-quantized msmodelslim transformer weights"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`--model-path`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Wan2.2 family"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid ""
+"Currently only compatible with the Ascend NPU family and supports both "
+"`w8a8` and `w4a4`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:50
+msgid "NVFP4"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:52 ../../../diffusion/quantization.md:137
+msgid "Usage Examples"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:54
+msgid ""
+"Recommended usage keeps the base model and quantized transformer override "
+"separate:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:57
+msgid ""
+"sglang generate \\\n"
+"  --model-path black-forest-labs/FLUX.2-dev \\\n"
+"  --transformer-weights-path black-forest-labs/FLUX.2-dev-NVFP4 \\\n"
+"  --prompt \"A Logo With Bold Large Text: SGL Diffusion\" \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:65
+msgid ""
+"SGLang also supports passing the NVFP4 repo or local directory directly as "
+"`--model-path`:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:68
+msgid ""
+"sglang generate \\\n"
+"  --model-path black-forest-labs/FLUX.2-dev-NVFP4 \\\n"
+"  --prompt \"A Logo With Bold Large Text: SGL Diffusion\" \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:75 ../../../diffusion/quantization.md:162
+msgid "Notes"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:77
+msgid ""
+"`--transformer-weights-path` is still the canonical CLI for NVFP4 "
+"transformer checkpoints."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:79
+msgid ""
+"Direct `--model-path` loading is a compatibility path for FLUX.2 NVFP4-style "
+"repos or local directories."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:81
+msgid ""
+"If `--transformer-weights-path` is provided explicitly, it takes precedence "
+"over the compatibility `--model-path` flow."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:83
+msgid ""
+"For local directories, SGLang first looks for `*-mixed.safetensors`, then "
+"falls back to loading from the directory."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:85
+msgid ""
+"On Blackwell, `comfy-kitchen` can provide the best-performance path when "
+"available; otherwise SGLang falls back to the generic ModelOpt FP4 path."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:88
+msgid "Nunchaku (SVDQuant)"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:90
+msgid "Install"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:92
+msgid "Install the runtime dependency first:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:94
+msgid "pip install nunchaku\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:98
+msgid ""
+"For platform-specific installation methods and troubleshooting, see the "
+"[Nunchaku installation guide](https://nunchaku.tech/docs/nunchaku/"
+"installation/installation.html)."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:101
+msgid "File Naming and Auto-Detection"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:103
+msgid ""
+"For Nunchaku checkpoints, `--model-path` should still point to the original "
+"base model, while `--transformer-weights-path` points to the quantized "
+"transformer weights."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:107
+msgid ""
+"If the basename of `--transformer-weights-path` contains the pattern `svdq-"
+"(int4|fp4)_r{rank}`, SGLang will automatically:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:109
+msgid "enable SVDQuant"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:110
+msgid "infer `--quantization-precision`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:111
+msgid "infer `--quantization-rank`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:113
+msgid "Examples:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "checkpoint name fragment"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "inferred precision"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "inferred rank"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "notes"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-int4_r32`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`int4`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`32`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Standard INT4 checkpoint"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-int4_r128`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`128`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Higher-quality INT4 checkpoint"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-fp4_r32`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`nvfp4`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`fp4` in the filename maps to CLI value `nvfp4`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-fp4_r128`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Higher-quality NVFP4 checkpoint"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:122
+msgid "Common filenames:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "filename"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "precision"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "rank"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "typical use"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-int4_r32-qwen-image.safetensors`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Balanced default"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-int4_r128-qwen-image.safetensors`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Quality-focused"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-fp4_r32-qwen-image.safetensors`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "RTX 50-series / NVFP4 path"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-fp4_r128-qwen-image.safetensors`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Quality-focused NVFP4"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-int4_r32-qwen-image-lightningv1.0-4steps.safetensors`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Lightning 4-step"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "`svdq-int4_r128-qwen-image-lightningv1.1-8steps.safetensors`"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:0
+msgid "Lightning 8-step"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:133
+msgid ""
+"If your checkpoint name does not follow this convention, pass `--enable-"
+"svdquant`, `--quantization-precision`, and `--quantization-rank` explicitly."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:139
+msgid "Recommended auto-detected flow:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:141
+msgid ""
+"sglang generate \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --transformer-weights-path /path/to/svdq-int4_r32-qwen-image.safetensors "
+"\\\n"
+"  --prompt \"a beautiful sunset\" \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:149
+msgid "Manual override when the filename does not encode the quant settings:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:151
+msgid ""
+"sglang generate \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --transformer-weights-path /path/to/custom_nunchaku_checkpoint.safetensors "
+"\\\n"
+"  --enable-svdquant \\\n"
+"  --quantization-precision int4 \\\n"
+"  --quantization-rank 128 \\\n"
+"  --prompt \"a beautiful sunset\" \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:164
+msgid ""
+"`--transformer-weights-path` is the canonical flag for Nunchaku checkpoints. "
+"Older config names such as `quantized_model_path` are treated as "
+"compatibility aliases."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:167
+msgid ""
+"Auto-detection only happens when the checkpoint basename matches `svdq-(int4|"
+"fp4)_r{rank}`."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:169
+msgid ""
+"The CLI values are `int4` and `nvfp4`. In filenames, the NVFP4 variant is "
+"written as `fp4`."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:171
+msgid ""
+"Lightning checkpoints usually expect matching `--num-inference-steps`, such "
+"as `4` or `8`."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:173
+msgid ""
+"Current runtime validation only allows Nunchaku on NVIDIA CUDA Ampere (SM8x) "
+"or SM12x GPUs. Hopper (SM90) is currently rejected."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:176
+msgid "[ModelSlim](https://gitcode.com/Ascend/msmodelslim)"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:177
+msgid ""
+"MindStudio-ModelSlim (msModelSlim) is a model offline quantization "
+"compression tool launched by MindStudio and optimized for Ascend hardware."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:179
+msgid "**Installation**"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:181
+msgid ""
+"# Clone repo and install msmodelslim:\n"
+"git clone https://gitcode.com/Ascend/msmodelslim.git\n"
+"cd msmodelslim\n"
+"bash install.sh\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:188
+msgid "**Multimodal_sd quantization**"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:190
+msgid ""
+"Download the original floating-point weights of the large model. Taking "
+"Wan2.2-T2V-A14B as an example, you can go to [Wan2.2-T2V-A14B](https://"
+"modelscope.cn/models/Wan-AI/Wan2.2-T2V-A14B) to obtain the original model "
+"weights. Then install other dependencies (related to the model, refer to the "
+"modelscope model card)."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:191
+msgid ""
+"Note: You can find pre-quantized validated models on [modelscope/Eco-Tech]"
+"(https://modelscope.cn/models/Eco-Tech)."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:193
+msgid "Run quantization using one-click quantization (recommended):"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:195
+msgid ""
+"msmodelslim quant \\\n"
+"  --model_path /path/to/wan2_2_float_weights \\\n"
+"  --save_path /path/to/wan2_2_quantized_weights \\\n"
+"  --device npu \\\n"
+"  --model_type Wan2_2 \\\n"
+"  --quant_type w8a8 \\\n"
+"  --trust_remote_code True\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:205
+msgid ""
+"For more detailed examples of quantization of models, as well as information "
+"about their support, see the [examples](https://gitcode.com/Ascend/"
+"msmodelslim/blob/master/example/multimodal_sd/README.md) section in "
+"ModelSLim repo."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:207
+msgid ""
+"Note: SGLang does not support quantized embeddings, please disable this "
+"option when quantizing using msmodelslim."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:209
+msgid "**Auto-Detection and different formats**"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:211
+msgid ""
+"For msmodelslim checkpoints, it's enough to specify only ```--model-path```, "
+"the detection of quantization occurs automatically for each layer using "
+"parsing of      `quant_model_description.json` config."
+msgstr ""
+
+#: ../../../diffusion/quantization.md:213
+msgid ""
+"In the case of `Wan2.2` only `Diffusers` weights storage format are "
+"supported, whereas modelslim saves the quantized model in the original "
+"`Wan2.2` format,   for conversion in use `python/sglang/multimodal_gen/tools/"
+"wan_repack.py` script:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:216
+msgid ""
+"python wan_repack.py \\\n"
+"  --input-path {path_to_quantized_model} \\\n"
+"  --output-path {path_to_converted_model}\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:222
+msgid ""
+"After that, please copy all files from original `Diffusers` checkpoint "
+"(instead of `transformer`/`tranfsormer_2` folders)"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:224
+msgid "**Usage Example**"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:226
+msgid "With auto-detected flow:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:228
+msgid ""
+"sglang generate \\\n"
+"  --model-path Eco-Tech/Wan2.2-T2V-A14B-Diffusers-w8a8 \\\n"
+"  --prompt \"a beautiful sunset\" \\\n"
+"  --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:235
+msgid "**Available Quantization Methods**:"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:236
+msgid "[x]  ```W4A4_DYNAMIC``` linear with online quantization of activations"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:237
+msgid "[x]  ```W8A8``` linear with offline quantization of activations"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:238
+msgid "[x]  ```W8A8_DYNAMIC``` linear with online quantization of activations"
+msgstr ""
+
+#: ../../../diffusion/quantization.md:239
+msgid "[ ]  ```mxfp8``` linear in progress"
+msgstr ""

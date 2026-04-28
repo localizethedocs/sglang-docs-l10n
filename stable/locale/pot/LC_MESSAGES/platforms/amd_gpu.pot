@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:51+0000\n"
+"POT-Creation-Date: 2026-04-28 10:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -131,7 +131,7 @@ msgstr ""
 #: ../../../platforms/amd_gpu.md:45
 msgid ""
 "# Use the last release branch\n"
-"git clone -b v0.5.6.post2 https://github.com/sgl-project/sglang.git\n"
+"git clone -b v0.5.9 https://github.com/sgl-project/sglang.git\n"
 "cd sglang\n"
 "\n"
 "# Compile sgl-kernel\n"
@@ -248,20 +248,104 @@ msgid ""
 msgstr ""
 
 #: ../../../platforms/amd_gpu.md:117
-msgid "Examples"
+msgid "Quantization on AMD GPUs"
 msgstr ""
 
 #: ../../../platforms/amd_gpu.md:119
-msgid "Running DeepSeek-V3"
+msgid ""
+"The [Quantization documentation](../advanced_features/quantization."
+"md#platform-compatibility) has a full compatibility matrix. The short "
+"version: FP8, AWQ, MXFP4, W8A8, GPTQ, compressed-tensors, Quark, and "
+"**petit_nvfp4** (NVFP4 on ROCm via [Petit](https://github.com/causalflow-ai/"
+"petit-kernel)) all work on AMD. Methods that depend on Marlin or NVIDIA-"
+"specific kernels (`awq_marlin`, `gptq_marlin`, `gguf`, `modelopt_fp8`, "
+"`modelopt_fp4`) do not."
 msgstr ""
 
 #: ../../../platforms/amd_gpu.md:121
+msgid "A few things to keep in mind:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:123
+msgid ""
+"FP8 works via Aiter or Triton. Pre-quantized FP8 models like DeepSeek-V3/R1 "
+"work out of the box."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:124
+msgid ""
+"AWQ uses Triton dequantization kernels on AMD. The faster Marlin path is not "
+"available."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:125
+msgid "MXFP4 requires CDNA3/CDNA4 and `SGLANG_USE_AITER=1`."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:126
+msgid ""
+"`petit_nvfp4` enables NVFP4 models (e.g., [Llama 3.3 70B FP4](https://"
+"huggingface.co/nvidia/Llama-3.3-70B-Instruct-FP4)) on MI250/MI300X via "
+"[Petit](https://github.com/causalflow-ai/petit-kernel). Install with `pip "
+"install petit-kernel`; no `--quantization` flag needed when loading pre-"
+"quantized NVFP4 models."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:127
+msgid ""
+"`quark_int4fp8_moe` is an AMD-only online quantization method for MoE models "
+"on CDNA3/CDNA4."
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:129
+msgid ""
+"Several of these backends are accelerated by [Aiter](https://github.com/ROCm/"
+"aiter). Enable it with:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:131
+msgid "export SGLANG_USE_AITER=1\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:135
+msgid "Example -- serving an AWQ model:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:137
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path hugging-quants/Mixtral-8x7B-Instruct-v0.1-AWQ-INT4 \\\n"
+"    --trust-remote-code \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:144
+msgid "Example -- FP8 online quantization:"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:146
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --quantization fp8 \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:153
+msgid "Examples"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:155
+msgid "Running DeepSeek-V3"
+msgstr ""
+
+#: ../../../platforms/amd_gpu.md:157
 msgid ""
 "The only difference when running DeepSeek-V3 is in how you start the server. "
 "Here's an example command:"
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:123
+#: ../../../platforms/amd_gpu.md:159
 msgid ""
 "drun -p 30000:30000 \\\n"
 "    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
@@ -276,25 +360,25 @@ msgid ""
 "    --port 30000\n"
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:137
+#: ../../../platforms/amd_gpu.md:173
 msgid ""
 "[Running DeepSeek-R1 on a single NDv5 MI300X VM](https://techcommunity."
 "microsoft.com/blog/azurehighperformancecomputingblog/running-deepseek-r1-on-"
 "a-single-ndv5-mi300x-vm/4372726) could also be a good reference."
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:139
+#: ../../../platforms/amd_gpu.md:175
 msgid "Running Llama3.1"
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:141
+#: ../../../platforms/amd_gpu.md:177
 msgid ""
 "Running Llama3.1 is nearly identical to running DeepSeek-V3. The only "
 "difference is in the model specified when starting the server, shown by the "
 "following example command:"
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:143
+#: ../../../platforms/amd_gpu.md:179
 msgid ""
 "drun -p 30000:30000 \\\n"
 "    -v ~/.cache/huggingface:/root/.cache/huggingface \\\n"
@@ -309,11 +393,11 @@ msgid ""
 "    --port 30000\n"
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:157
+#: ../../../platforms/amd_gpu.md:193
 msgid "Warmup Step"
 msgstr ""
 
-#: ../../../platforms/amd_gpu.md:159
+#: ../../../platforms/amd_gpu.md:195
 msgid ""
 "When the server displays `The server is fired up and ready to roll!`, it "
 "means the startup is successful."
