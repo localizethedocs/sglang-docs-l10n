@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:55+0000\n"
+"POT-Creation-Date: 2026-04-28 10:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,8 +65,8 @@ msgstr ""
 msgid ""
 "**Register a new chat-template**: Only when your default chat-template is "
 "unable to accept images as input: Register a new chat template in "
-"[conversation.py](https://github.com/sgl-project/sglang/tree/main/python/"
-"sglang/srt/conversation.py) and the corresponding matching function."
+"[conversation.py](https://github.com/sgl-project/sglang/blob/main/python/"
+"sglang/srt/parser/conversation.py) and the corresponding matching function."
 msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:27
@@ -133,7 +134,7 @@ msgstr ""
 #: ../../../supported_models/extending/support_new_models.md:57
 msgid ""
 "python3 scripts/playground/reference_hf.py --model-path [new model] --model-"
-"type {text,mllm}\n"
+"type {text,vlm}\n"
 msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:60
@@ -152,15 +153,13 @@ msgstr ""
 msgid ""
 "To ensure the new model is well maintained, add it to the test suite by "
 "including it in the `ALL_OTHER_MODELS` list in the [test_generation_models."
-"py](https://github.com/sgl-project/sglang/blob/main/test/srt/models/"
+"py](https://github.com/sgl-project/sglang/blob/main/test/registered/models/"
 "test_generation_models.py) file, test the new model on your local machine "
 "and report the results on demonstrative benchmarks (GSM8K, MMLU, MMMU, MMMU-"
 "Pro, etc.) in your PR. \\ For VLMs, also include a test in "
 "`test_vision_openai_server_{x}.py` (e.g. [test_vision_openai_server_a.py]"
-"(https://github.com/sgl-project/sglang/blob/main/test/srt/"
-"test_vision_openai_server_a.py), [test_vision_openai_server_b.py](https://"
-"github.com/sgl-project/sglang/blob/main/test/srt/test_vision_openai_server_b."
-"py))."
+"(https://github.com/sgl-project/sglang/blob/main/test/registered/vlm/"
+"test_vision_openai_server_a.py))."
 msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:73
@@ -592,17 +591,326 @@ msgid ""
 msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:313
-msgid "Documentation"
+msgid "Serving External Models via the Standard CLI"
 msgstr ""
 
 #: ../../../supported_models/extending/support_new_models.md:315
+msgid ""
+"The previous sections show how to register a model programmatically via "
+"`ModelRegistry` and serve it through the Offline Engine. Similar to vLLM "
+"model plugin, there is an alternative that lets you keep using the standard "
+"`python -m sglang.launch_server` CLI without modifying any SGLang source "
+"code: you can register your model using the `SGLANG_EXTERNAL_MODEL_PACKAGE` "
+"environment variable."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:317
+msgid "The `EntryClass` Variable"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:319
+msgid ""
+"When SGLang scans a model package, it looks for the variable `EntryClass` at "
+"the module level of your Python file. The [model registry](https://github."
+"com/sgl-project/sglang/blob/main/python/sglang/srt/models/registry.py) "
+"imports your file, checks for `EntryClass`, and registers the class assigned "
+"to it. If you are using a model based on HuggingFace, the name of this class "
+"needs to match the `\"architectures\"` field in your model's `config.json`."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:321
+msgid ""
+"For example, if you are implementing a Llama wrapper, add this line at the "
+"end of your model file:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:323
+msgid ""
+"# This is what \"Add EntryClass at the end\" means\n"
+"EntryClass = LlamaWrapper\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:328
+msgid "Example: Text-Only Model"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:330
+msgid ""
+"Using the same Llama wrapper from the previous section, here is how to "
+"package and serve it via the CLI."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:332
+msgid "Create your project"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:334
+msgid ""
+"sglang_custom_project/\n"
+"|----setup.py\n"
+"|----custom_llm/\n"
+"     |----__init__.py\n"
+"     |----llama_wrapper.py\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:342
+msgid "Write the `setup.py`:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:344
+msgid ""
+"# sglang_custom_project/setup.py\n"
+"\n"
+"from setuptools import setup, find_packages\n"
+"setup(\n"
+"    name=\"sglang-custom-plugins\",\n"
+"    version=\"0.1\",\n"
+"    packages=find_packages(),\n"
+")\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:355
+msgid "Write your model code"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:357
+msgid "Inside `llama_wrapper.py`, write your model and include `EntryClass`:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:359
+msgid ""
+"# sglang_custom_project/custom_llm/llama_wrapper.py\n"
+"\n"
+"import torch\n"
+"from typing import Optional\n"
+"from sglang.srt.layers.logits_processor import LogitsProcessorOutput\n"
+"from sglang.srt.layers.quantization.base_config import QuantizationConfig\n"
+"from sglang.srt.model_executor.forward_batch_info import ForwardBatch, "
+"PPProxyTensors\n"
+"from sglang.srt.models.llama import LlamaForCausalLM\n"
+"\n"
+"class LlamaWrapper(LlamaForCausalLM):\n"
+"    def __init__(self, config, quant_config: Optional[QuantizationConfig] = "
+"None,\n"
+"                 prefix: str = \"\") -> None:\n"
+"        super().__init__(config=config, quant_config=quant_config, "
+"prefix=prefix)\n"
+"    @torch.no_grad()\n"
+"    def forward(self, input_ids, positions, forward_batch,\n"
+"                pp_proxy_tensors=None, input_embeds=None, "
+"get_embedding=False):\n"
+"        hidden_states = self.model(\n"
+"            input_ids, positions, forward_batch, input_embeds,\n"
+"            pp_proxy_tensors=pp_proxy_tensors,\n"
+"        )\n"
+"        res: LogitsProcessorOutput = self.logits_processor(\n"
+"            input_ids, hidden_states, self.lm_head, forward_batch,\n"
+"        )\n"
+"\n"
+"        orig = res.next_token_logits\n"
+"        res.next_token_logits = torch.where(orig > 0, orig.sqrt(), orig)\n"
+"        return res\n"
+"\n"
+"# Don't forget to add EntryClass\n"
+"EntryClass = LlamaWrapper\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:392
+msgid "Install your package"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:394
+msgid ""
+"Run this inside your `sglang_custom_project` directory to install your code "
+"into the active Python environment:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:396
+#: ../../../supported_models/extending/support_new_models.md:491
+msgid "pip install -e .\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:400
+msgid "Update your `config.json`"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:402
+msgid ""
+"Update the `config.json` under your HuggingFace model checkpoint directory "
+"so the `architectures` field matches your class name:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:404
+msgid ""
+"{\n"
+"  \"architectures\": [\"LlamaWrapper\"],\n"
+"  ...\n"
+"}\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:411
+msgid "Launch the server"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:413
+msgid "Set the environment variable before running the CLI:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:415
+msgid ""
+"export SGLANG_EXTERNAL_MODEL_PACKAGE=custom_llm\n"
+"python -m sglang.launch_server \\\n"
+"    --model-path /path/to/Llama-3.1-8B-Instruct \\\n"
+"    --port 8000\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:422
+msgid ""
+"The `SGLANG_EXTERNAL_MODEL_PACKAGE` should be the parent folder name "
+"containing your model-related code. In this example, it should be "
+"`custom_llm`."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:424
+msgid "Example: Multimodal Model"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:426
+msgid ""
+"If you are working with multimodal models, setting "
+"`SGLANG_EXTERNAL_MODEL_PACKAGE` alone is not enough. SGLang also needs to "
+"recognize your architecture as multimodal to enable the image/video "
+"processing pipelines, and it needs a custom processor."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:428
+msgid "You can handle this by setting two additional environment variables:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:430
+msgid ""
+"`SGLANG_EXTERNAL_MM_MODEL_ARCH`: Adds your architecture name to SGLang's "
+"internal list of multimodal models."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:431
+msgid ""
+"`SGLANG_EXTERNAL_MM_PROCESSOR_PACKAGE`: Tells SGLang where to find your "
+"custom processor class."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:433
+msgid ""
+"For example, let's build a custom model based on Qwen2-VL-Instruct that "
+"takes the square root of the logits."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:435
+msgid "Create the project:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:437
+msgid ""
+"sglang_custom_project_vl/\n"
+"|----setup.py\n"
+"|----custom_vlm/\n"
+"     |----__init__.py\n"
+"     |----qwenvl_wrapper.py\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:445
+msgid "Write `setup.py`:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:447
+msgid ""
+"# sglang_custom_project_vl/setup.py\n"
+"\n"
+"from setuptools import setup, find_packages\n"
+"setup(\n"
+"    name=\"sglang-custom-plugins-vl\",\n"
+"    version=\"0.1\",\n"
+"    packages=find_packages(),\n"
+")\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:458
+msgid "Write the model in `qwenvl_wrapper.py`:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:460
+msgid ""
+"# sglang_custom_project_vl/custom_vlm/qwenvl_wrapper.py\n"
+"import torch\n"
+"from sglang.srt.models.qwen2_vl import Qwen2VLForConditionalGeneration\n"
+"from sglang.srt.multimodal.processors.qwen_vl import QwenVLImageProcessor\n"
+"\n"
+"class CustomQwen2VL(Qwen2VLForConditionalGeneration):\n"
+"    def forward(self, input_ids, positions, forward_batch,\n"
+"                input_embeds=None, get_embedding=False):\n"
+"        res = super().forward(\n"
+"            input_ids, positions, forward_batch,\n"
+"            input_embeds=input_embeds, get_embedding=get_embedding\n"
+"        )\n"
+"        if not get_embedding:\n"
+"            orig = res.next_token_logits\n"
+"            res.next_token_logits = torch.where(orig > 0, orig.sqrt(), "
+"orig)\n"
+"        return res\n"
+"\n"
+"class CustomQwen2VLProcessor(QwenVLImageProcessor):\n"
+"    models = [CustomQwen2VL]\n"
+"\n"
+"    def __init__(self, hf_config, server_args, _processor, *args, "
+"**kwargs):\n"
+"        super().__init__(hf_config, server_args, _processor, *args, "
+"**kwargs)\n"
+"\n"
+"EntryClass = CustomQwen2VL\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:487
+msgid ""
+"**Note:** you don't need a separate `EntryClass` for the custom processor as "
+"long as you associate the processor with the specific model class."
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:489
+msgid "Install the package, update `config.json`, and launch:"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:495
+msgid ""
+"{\n"
+"  \"architectures\": [\"CustomQwen2VL\"],\n"
+"  ...\n"
+"}\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:502
+msgid ""
+"export SGLANG_EXTERNAL_MODEL_PACKAGE=custom_vlm\n"
+"export SGLANG_EXTERNAL_MM_MODEL_ARCH=CustomQwen2VL\n"
+"export SGLANG_EXTERNAL_MM_PROCESSOR_PACKAGE=custom_vlm\n"
+"\n"
+"python -m sglang.launch_server \\\n"
+"    --model-path /path/to/Qwen2-VL-2B-Instruct \\\n"
+"    --port 8000 \\\n"
+"    --enable-multimodal\n"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:513
+msgid "Documentation"
+msgstr ""
+
+#: ../../../supported_models/extending/support_new_models.md:515
 msgid ""
 "Add to table of supported models in [generative_models.md](../"
 "text_generation/generative_models.md) or [multimodal_language_models.md](../"
 "text_generation/multimodal_language_models.md)"
 msgstr ""
 
-#: ../../../supported_models/extending/support_new_models.md:319
+#: ../../../supported_models/extending/support_new_models.md:519
 msgid ""
 "By following these guidelines, you can add support for new language models "
 "and multimodal large language models in SGLang and ensure they are "
