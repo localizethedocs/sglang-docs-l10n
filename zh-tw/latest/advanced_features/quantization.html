@@ -1,0 +1,1405 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>量化 &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_features/quantization';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/advanced_features/quantization.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+    <link rel="next" title="Quantized KV Cache" href="quantized_kv_cache.html" />
+    <link rel="prev" title="Reasoning Parser" href="separate_reasoning.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+  <meta name="docsearch:version" content="0.0.0.dev0" />
+    <meta name="docbuild:last-update" content="2026 年 04 月 27 日"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜尋</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI 相容的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama 相容的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang 原生的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs.html">結構化輸出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">量化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piecewise_cuda_graph.html">Piecewise CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/api/cli.html">SGLang Diffusion CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/cache/index.html">Caching Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/quantization.html">量化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/contributing.html">Contributing to SGLang Diffusion</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/release_lookup.html">Release Lookup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">深入了解並加入社群</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/advanced_features/quantization.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/advanced_features/quantization.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fadvanced_features/quantization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/advanced_features/quantization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="亮色"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="暗色"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>量化</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#platform-compatibility">Platform Compatibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemm-backends-for-fp4-fp8-quantization">GEMM Backends for FP4/FP8 Quantization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-gemm-backend-blockwise-fp8-gemm"><code class="docutils literal notranslate"><span class="pre">--fp8-gemm-backend</span></code> (Blockwise FP8 GEMM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp4-gemm-backend-nvfp4-gemm"><code class="docutils literal notranslate"><span class="pre">--fp4-gemm-backend</span></code> (NVFP4 GEMM)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offline-quantization">Offline Quantization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-offline-model-quantization">Examples of Offline Model Quantization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-unsloth">Using Unsloth</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-auto-round">Using auto-round</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-gptqmodel">使用 GPTQModel</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-llm-compressor">Using LLM Compressor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-nvidia-modelopt">Using NVIDIA ModelOpt</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pre-quantized-checkpoints">Using Pre-Quantized Checkpoints</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-your-own-quantized-checkpoints">建立您自己的量化檢查點</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">安裝</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-and-export-workflow">量化與匯出工作流程</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#available-quantization-methods">可用的量化方法</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-usage">Python API Usage</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#deploying-quantized-models">部署量化模型</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-features">進階功能</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits-of-modelopt">Benefits of ModelOpt</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-modelslim">Using ModelSlim</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-quantization">線上量化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchao-online-quantization-method">torchao online quantization method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quark-int4fp8-moe-online-quantization-method"><code class="docutils literal notranslate"><span class="pre">quark_int4fp8_moe</span></code> online quantization method</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">參考手冊</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantization">
+<h1>量化<a class="headerlink" href="#quantization" title="連結到這個標頭">#</a></h1>
+<p>SGLang supports various quantization methods, including offline quantization and online dynamic quantization.</p>
+<p>Offline quantization loads pre-quantized model weights directly during inference. This is required for quantization methods
+such as GPTQ and AWQ, which collect and pre-compute various statistics from the original weights using the calibration dataset.</p>
+<p>Online quantization dynamically computes scaling parameters—such as the maximum/minimum values of model weights—during runtime.
+Like NVIDIA FP8 training's <a class="reference external" href="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/examples/fp8_primer.html#Mixed-precision-training-with-FP8">delayed scaling</a> mechanism, online quantization calculates the appropriate scaling factors
+on-the-fly to convert high-precision weights into a lower-precision format.</p>
+<p><strong>Note: For better performance, usability and convenience, offline quantization is recommended over online quantization.</strong></p>
+<p>If you use a pre-quantized model, do not add <code class="docutils literal notranslate"><span class="pre">--quantization</span></code> to enable online quantization at the same time.
+For popular pre-quantized models, please visit <a class="reference external" href="https://huggingface.co/unsloth">Unsloth</a>, <a class="reference external" href="https://huggingface.co/collections/nvidia/inference-optimized-checkpoints-with-model-optimizer">NVIDIA ModelOpt</a>
+or <a class="reference external" href="https://huggingface.co/collections/neuralmagic">NeuralMagic</a> collections on HF for some
+popular quality validated quantized models. Quantized models must be validated via benchmarks post-quantization
+to guard against abnormal quantization loss regressions.</p>
+<section id="platform-compatibility">
+<h2>Platform Compatibility<a class="headerlink" href="#platform-compatibility" title="連結到這個標頭">#</a></h2>
+<p>The following table summarizes quantization method support across NVIDIA and AMD GPUs, Ascend NPUs.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head text-center"><p>NVIDIA GPUs</p></th>
+<th class="head text-center"><p>AMD GPUs (MI300X/MI325X/MI350X)</p></th>
+<th class="head text-center"><p>Ascend NPUs (A2/A3)</p></th>
+<th class="head"><p>備註</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fp8</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>WIP</p></td>
+<td><p>Aiter or Triton backend on AMD</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mxfp4</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>WIP</p></td>
+<td><p>Requires CDNA3/CDNA4 with MXFP support; uses Aiter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">blockwise_int8</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>Triton-based, works on both platforms</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">w8a8_int8</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">w8a8_fp8</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>Aiter or Triton FP8 on AMD</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">awq</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td><p>Uses Triton dequantize on AMD (vs. optimized CUDA kernels on NVIDIA). Uses CANN kernels on Ascend</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gptq</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td><p>Uses Triton or vLLM kernels on AMD. Uses CANN kernels on Ascend</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">compressed-tensors</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Partial</p></td>
+<td><p>Aiter paths for FP8/MoE on AMD. Uses CANN kernels on Ascend, <code class="docutils literal notranslate"><span class="pre">FP8</span></code> not supported yet</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quark</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>AMD Quark quantization; Aiter GEMM paths on AMD</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">auto-round</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Partial</p></td>
+<td><p>Platform-agnostic (Intel auto-round). Uses CANN kernels on Ascend</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quark_int4fp8_moe</span></code></p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>AMD-only; online INT4-to-FP8 MoE quantization (CDNA3/CDNA4)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">awq_marlin</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>Marlin kernels are CUDA-only</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gptq_marlin</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>Marlin kernels are CUDA-only</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gguf</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>WIP</p></td>
+<td><p>CUDA-only kernels in sgl-kernel</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">modelopt</span></code> / <code class="docutils literal notranslate"><span class="pre">modelopt_fp8</span></code></p></td>
+<td class="text-center"><p>Yes (Hopper/SM90+)</p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer">NVIDIA ModelOpt</a>; requires NVIDIA hardware</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">modelopt_fp4</span></code></p></td>
+<td class="text-center"><p>Yes (Blackwell/SM100+)</p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer">NVIDIA ModelOpt</a>; native FP4 on Blackwell (B200, GB200)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">petit_nvfp4</span></code></p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>Yes (MI250/MI300X/MI325X)</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>Enables NVFP4 on ROCm via <a class="reference external" href="https://github.com/causalflow-ai/petit-kernel">Petit</a>; use <code class="docutils literal notranslate"><span class="pre">modelopt_fp4</span></code> on NVIDIA Blackwell. Auto-selected when loading NVFP4 models on AMD. See <a class="reference external" href="https://lmsys.org/blog/2025-09-21-petit-amdgpu/">LMSYS blog</a> and <a class="reference external" href="https://rocm.blogs.amd.com/artificial-intelligence/fp4-mixed-precision/README.html">AMD ROCm blog</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bitsandbytes</span></code></p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Experimental</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p>Depends on bitsandbytes ROCm support</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">torchao</span></code> (<code class="docutils literal notranslate"><span class="pre">int4wo</span></code>, etc.)</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td class="text-center"><p>Partial</p></td>
+<td class="text-center"><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4wo</span></code> not supported on AMD; other methods may work</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">modelslim</span></code></p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>No</p></td>
+<td class="text-center"><p>Yes</p></td>
+<td><p>Ascend quantization; Uses CANN kernels</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>On AMD, several of these methods use <a class="reference external" href="https://github.com/ROCm/aiter">Aiter</a> for acceleration -- set <code class="docutils literal notranslate"><span class="pre">SGLANG_USE_AITER=1</span></code> where noted. See <a class="reference internal" href="../platforms/amd_gpu.html"><span class="std std-doc">AMD GPU setup</span></a> for installation and configuration details.</p>
+<p>On Ascend, various layers quantization configurations are supported, see <a class="reference internal" href="../platforms/ascend/ascend_npu_quantization.html"><span class="std std-doc">Ascend NPU quantization</span></a> for details.</p>
+</section>
+<section id="gemm-backends-for-fp4-fp8-quantization">
+<h2>GEMM Backends for FP4/FP8 Quantization<a class="headerlink" href="#gemm-backends-for-fp4-fp8-quantization" title="連結到這個標頭">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">備註</p>
+<p>Backend selection is supported only for <strong>blockwise FP8</strong> and <strong>NVFP4</strong> GEMM. When running FP8 or FP4 quantized models, you can select the GEMM backend via <code class="docutils literal notranslate"><span class="pre">--fp8-gemm-backend</span></code> and <code class="docutils literal notranslate"><span class="pre">--fp4-gemm-backend</span></code>.</p>
+</div>
+<section id="fp8-gemm-backend-blockwise-fp8-gemm">
+<h3><code class="docutils literal notranslate"><span class="pre">--fp8-gemm-backend</span></code> (Blockwise FP8 GEMM)<a class="headerlink" href="#fp8-gemm-backend-blockwise-fp8-gemm" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>後端</p></th>
+<th class="head"><p>Hardware</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>All</p></td>
+<td><p>Auto-selects based on hardware</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">deep_gemm</span></code></p></td>
+<td><p>SM90, SM100</p></td>
+<td><p>JIT-compiled; enabled when DeepGEMM is installed</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code></p></td>
+<td><p>SM100</p></td>
+<td><p>FlashInfer TensorRT-LLM backend; optimal for low-latency</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flashinfer_cutlass</span></code></p></td>
+<td><p>SM100/120</p></td>
+<td><p>FlashInfer CUTLASS groupwise FP8 GEMM</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">flashinfer_deepgemm</span></code></p></td>
+<td><p>SM90</p></td>
+<td><p>Uses swapAB optimization for small M dimensions in decoding</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cutlass</span></code></p></td>
+<td><p>SM90, SM100/120</p></td>
+<td><p>sgl-kernel CUTLASS</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">triton</span></code></p></td>
+<td><p>All</p></td>
+<td><p>Fallback; widely compatible</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">aiter</span></code></p></td>
+<td><p>ROCm</p></td>
+<td><p>AMD AITER backend</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong><code class="docutils literal notranslate"><span class="pre">auto</span></code> selection order:</strong> 1) DeepGEMM (SM90/SM100, installed); 2) FlashInfer TRTLLM (SM100, FlashInfer available); 3) CUTLASS (SM90/SM100/120); 4) AITER (AMD); 5) Triton. <strong>Exception:</strong> SM120 always resolves to Triton.</p>
+</section>
+<section id="fp4-gemm-backend-nvfp4-gemm">
+<h3><code class="docutils literal notranslate"><span class="pre">--fp4-gemm-backend</span></code> (NVFP4 GEMM)<a class="headerlink" href="#fp4-gemm-backend-nvfp4-gemm" title="連結到這個標頭">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>後端</p></th>
+<th class="head"><p>Hardware</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>SM100/120</p></td>
+<td><p>Auto-selects: <code class="docutils literal notranslate"><span class="pre">flashinfer_cudnn</span></code> on SM120; <code class="docutils literal notranslate"><span class="pre">flashinfer_cutlass</span></code> on SM100</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flashinfer_cutlass</span></code></p></td>
+<td><p>SM100/120</p></td>
+<td><p>FlashInfer CUTLASS backend</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">flashinfer_cudnn</span></code></p></td>
+<td><p>SM100/120 (CUDA 13+, cuDNN 9.15+)</p></td>
+<td><p>FlashInfer cuDNN backend; used on SM120 for performance</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code></p></td>
+<td><p>SM100</p></td>
+<td><p>FlashInfer TensorRT-LLM backend</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>When FlashInfer is unavailable for NVFP4, sgl-kernel CUTLASS is used as an automatic fallback.</p>
+</section>
+</section>
+<section id="offline-quantization">
+<h2>Offline Quantization<a class="headerlink" href="#offline-quantization" title="連結到這個標頭">#</a></h2>
+<p>To load already quantized models, simply load the model weights and config. <strong>Again, if the model has been quantized offline,
+there's no need to add <code class="docutils literal notranslate"><span class="pre">--quantization</span></code> argument when starting the engine. The quantization method will be parsed from the
+downloaded Hugging Face or msModelSlim config. For example, DeepSeek V3/R1 models are already in FP8, so do not add redundant parameters.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>Take note, if your model is <strong>per-channel quantized (INT8 or FP8) with per-token dynamic quantization activation</strong>, you can opt to include <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_int8</span></code> or <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_fp8</span></code> to invoke the corresponding CUTLASS int8_kernel or fp8_kernel in sgl-kernel. This action will ignore the Hugging Face config's quantization settings. For instance, with <code class="docutils literal notranslate"><span class="pre">neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic</span></code>, if you execute with <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">w8a8_fp8</span></code>, the system will use the <code class="docutils literal notranslate"><span class="pre">W8A8Fp8Config</span></code> from SGLang to invoke the sgl-kernel, rather than the <code class="docutils literal notranslate"><span class="pre">CompressedTensorsConfig</span></code> for vLLM kernels.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>w8a8_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<section id="examples-of-offline-model-quantization">
+<h3>Examples of Offline Model Quantization<a class="headerlink" href="#examples-of-offline-model-quantization" title="連結到這個標頭">#</a></h3>
+<section id="using-unsloth">
+<h4>Using <a class="reference external" href="https://docs.unsloth.ai/basics/inference-and-deployment/sglang-guide">Unsloth</a><a class="headerlink" href="#using-unsloth" title="連結到這個標頭">#</a></h4>
+<p>We strongly suggest the use of Unsloth to quantize and load the model. Please refer to <a class="reference external" href="https://docs.unsloth.ai/basics/inference-and-deployment/sglang-guide">SGLang Deployment &amp; Inference Guide with Unsloth</a>.</p>
+</section>
+<section id="using-auto-round">
+<h4>Using <a class="reference external" href="https://github.com/intel/auto-round">auto-round</a><a class="headerlink" href="#using-auto-round" title="連結到這個標頭">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>::
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>LLM 量化</p></li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># for LLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">auto_round</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoRound</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Llama-3.2-1B-Instruct&quot;</span>
+<span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&quot;Llama-3.2-1B-Instruct-autoround-4bit&quot;</span>
+<span class="c1"># Scheme examples: &quot;W2A16&quot;, &quot;W3A16&quot;, &quot;W4A16&quot;, &quot;W8A16&quot;, &quot;NVFP4&quot;, &quot;MXFP4&quot; (no real kernels), &quot;GGUF:Q4_K_M&quot;, etc.</span>
+<span class="n">scheme</span> <span class="o">=</span> <span class="s2">&quot;W4A16&quot;</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;auto_round&quot;</span>
+<span class="n">autoround</span> <span class="o">=</span> <span class="n">AutoRound</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">)</span>
+<span class="n">autoround</span><span class="o">.</span><span class="n">quantize_and_save</span><span class="p">(</span><span class="n">quant_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">)</span> <span class="c1"># quantize and save</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>VLM 量化</p></li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># for VLMs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">auto_round</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoRoundMLLM</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;Qwen/Qwen2-VL-2B-Instruct&quot;</span>
+<span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&quot;Qwen2-VL-2B-Instruct-autoround-4bit&quot;</span>
+<span class="n">scheme</span> <span class="o">=</span> <span class="s2">&quot;W4A16&quot;</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;auto_round&quot;</span>
+<span class="n">autoround</span> <span class="o">=</span> <span class="n">AutoRoundMLLM</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">scheme</span><span class="p">)</span>
+<span class="n">autoround</span><span class="o">.</span><span class="n">quantize_and_save</span><span class="p">(</span><span class="n">quant_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">)</span> <span class="c1"># quantize and save</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Command Line Usage (Gaudi/CPU/Intel GPU/CUDA)</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>auto-round<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>meta-llama/Llama-3.2-1B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--bits<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--group_size<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--format<span class="w"> </span><span class="s2">&quot;auto_round&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output_dir<span class="w"> </span>./tmp_autoround
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>known issues</p></li>
+</ul>
+<p>Several limitations currently affect offline quantized model loading in sglang, These issues might be resolved in future updates of sglang. If you experience any problems, consider using Hugging Face Transformers as an alternative.</p>
+<ol class="arabic">
+<li><p>Mixed-bit Quantization Limitations</p>
+<p>Mixed-bit quantization is not fully supported. Due to vLLM's layer fusion (e.g., QKV fusion), applying different bit-widths to components within the same fused layer can lead to compatibility issues.</p>
+</li>
+<li><p>Limited Support for Quantized MoE Models</p>
+<p>Quantized MoE models may encounter inference issues due to kernel limitations (e.g., lack of support for mlp.gate layer quantization). please try to skip quantizing these layers to avoid such errors.</p>
+</li>
+<li><p>Limited Support for Quantized VLMs</p>
+ <details>
+     <summary>VLM failure cases</summary>
+<p>Qwen2.5-VL-7B</p>
+<p>auto_round:auto_gptq format:  Accuracy is close to zero.</p>
+<p>GPTQ format:  Fails with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">output</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">aligned</span> <span class="k">with</span> <span class="n">the</span> <span class="n">quantized</span> <span class="n">weight</span> <span class="n">shape</span>
+</pre></div>
+</div>
+<p>auto_round:auto_awq and AWQ format:  These work as expected.</p>
+ </details>
+</li>
+</ol>
+</section>
+<section id="using-gptqmodel">
+<h4>使用 <a class="reference external" href="https://github.com/ModelCloud/GPTQModel">GPTQModel</a><a class="headerlink" href="#using-gptqmodel" title="連結到這個標頭">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>::
+</pre></div>
+</div>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gptqmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPTQModel</span><span class="p">,</span> <span class="n">QuantizeConfig</span>
+
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Llama-3.2-1B-Instruct&quot;</span>
+<span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&quot;Llama-3.2-1B-Instruct-gptqmodel-4bit&quot;</span>
+
+<span class="n">calibration_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+    <span class="s2">&quot;allenai/c4&quot;</span><span class="p">,</span> <span class="n">data_files</span><span class="o">=</span><span class="s2">&quot;en/c4-train.00001-of-01024.json.gz&quot;</span><span class="p">,</span>
+    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
+  <span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">))[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+<span class="n">quant_config</span> <span class="o">=</span> <span class="n">QuantizeConfig</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">group_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span> <span class="c1"># quantization config</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GPTQModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">quant_config</span><span class="p">)</span> <span class="c1"># load model</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">calibration_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># quantize</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">quant_path</span><span class="p">)</span> <span class="c1"># save model</span>
+</pre></div>
+</div>
+</section>
+<section id="using-llm-compressor">
+<h4>Using <a class="reference external" href="https://github.com/vllm-project/llm-compressor/">LLM Compressor</a><a class="headerlink" href="#using-llm-compressor" title="連結到這個標頭">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install</span>
+pip<span class="w"> </span>install<span class="w"> </span>llmcompressor
+</pre></div>
+</div>
+<p>Here, we take quantize <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3-8B-Instruct</span></code> to <code class="docutils literal notranslate"><span class="pre">FP8</span></code> as an example to elaborate on how to do offline quantization.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llmcompressor.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparseAutoModelForCausalLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llmcompressor.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">oneshot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llmcompressor.modifiers.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantizationModifier</span>
+
+<span class="c1"># Step 1: Load the original model.</span>
+<span class="n">MODEL_ID</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B-Instruct&quot;</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SparseAutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+  <span class="n">MODEL_ID</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">torch_dtype</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_ID</span><span class="p">)</span>
+
+<span class="c1"># Step 2: Perform offline quantization.</span>
+<span class="c1"># Step 2.1: Configure the simple PTQ quantization.</span>
+<span class="n">recipe</span> <span class="o">=</span> <span class="n">QuantizationModifier</span><span class="p">(</span>
+  <span class="n">targets</span><span class="o">=</span><span class="s2">&quot;Linear&quot;</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;FP8_DYNAMIC&quot;</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lm_head&quot;</span><span class="p">])</span>
+
+<span class="c1"># Step 2.2: Apply the quantization algorithm.</span>
+<span class="n">oneshot</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">recipe</span><span class="o">=</span><span class="n">recipe</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Save the model.</span>
+<span class="n">SAVE_DIR</span> <span class="o">=</span> <span class="n">MODEL_ID</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-FP8-Dynamic&quot;</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">SAVE_DIR</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">SAVE_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, you can directly use the quantized model with <code class="docutils literal notranslate"><span class="pre">SGLang</span></code>, by using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span><span class="nv">$PWD</span>/Meta-Llama-3-8B-Instruct-FP8-Dynamic<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+</section>
+<section id="using-nvidia-modelopt">
+<h4>Using <a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer">NVIDIA ModelOpt</a><a class="headerlink" href="#using-nvidia-modelopt" title="連結到這個標頭">#</a></h4>
+<p>NVIDIA Model Optimizer (ModelOpt) provides advanced quantization techniques optimized for NVIDIA hardware.</p>
+<p><strong>Offline vs. Online Quantization:</strong></p>
+<p>SGLang supports two modes for ModelOpt.</p>
+<ul class="simple">
+<li><p><strong>Offline Quantization (pre-quantized):</strong></p>
+<ul>
+<li><p><strong>Usage:</strong> Download a pre-quantized model from Hugging Face or run <code class="docutils literal notranslate"><span class="pre">hf_ptq.py</span></code> once to create a new quantized checkpoint. Then load this quantized checkpoint.</p></li>
+<li><p><strong>Pros:</strong> Fast server startup, quantization can be validated before deployment, efficient resource usage.</p></li>
+<li><p><strong>Cons:</strong> Requires an extra preparation step.</p></li>
+</ul>
+</li>
+<li><p><strong>Online Quantization (quant and serve):</strong></p>
+<ul>
+<li><p><strong>Usage:</strong> Load a standard BF16/FP16 model and add a flag. The engine applies quantization <em>on startup</em>.</p></li>
+<li><p><strong>Pros:</strong> Convenient (no new checkpoint needed).</p></li>
+<li><p><strong>Cons:</strong> <strong>High startup time</strong>, increases VRAM usage during initialization (risk of OOM).</p></li>
+</ul>
+</li>
+</ul>
+<p>The following sections guide you through using the Offline path: loading pre-quantized models or creating your own checkpoints.</p>
+<section id="using-pre-quantized-checkpoints">
+<h5>Using Pre-Quantized Checkpoints<a class="headerlink" href="#using-pre-quantized-checkpoints" title="連結到這個標頭">#</a></h5>
+<p>If a model is already quantized (e.g., from Hugging Face), you can load it directly.</p>
+<ul>
+<li><p><strong>FP8 Models:</strong>
+Use <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">modelopt_fp8</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>nvidia/Llama-3.1-8B-Instruct-FP8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>modelopt_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>FP4 Models:</strong>
+Use <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">modelopt_fp4</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>nvidia/Llama-3.3-70B-Instruct-NVFP4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>modelopt_fp4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="creating-your-own-quantized-checkpoints">
+<h5>建立您自己的量化檢查點<a class="headerlink" href="#creating-your-own-quantized-checkpoints" title="連結到這個標頭">#</a></h5>
+<p>If a pre-quantized checkpoint is not available for your model, you can create one using NVIDIA Model Optimizer's <code class="docutils literal notranslate"><span class="pre">hf_ptq.py</span></code> script.</p>
+<p><strong>Why quantize?</strong></p>
+<ul class="simple">
+<li><p>減少 VRAM 使用量</p></li>
+<li><p>Higher throughput and lower latency</p></li>
+<li><p>More flexible deployment (on smaller GPUs)</p></li>
+</ul>
+<p><strong>What can be quantized?</strong></p>
+<ul class="simple">
+<li><p>The entire model</p></li>
+<li><p>MLP layers only</p></li>
+<li><p>KV 快取</p></li>
+</ul>
+<p><strong>Key options in <code class="docutils literal notranslate"><span class="pre">hf_ptq.py</span></code>:</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">--qformat</span></code>: Quantization formats <code class="docutils literal notranslate"><span class="pre">fp8</span></code>, <code class="docutils literal notranslate"><span class="pre">nvfp4</span></code>, <code class="docutils literal notranslate"><span class="pre">nvfp4_mlp_only</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">--kv_cache_qformat</span></code>: KV cache quantization format (default: <code class="docutils literal notranslate"><span class="pre">fp8</span></code>)</p>
+<p><strong>Note:</strong> The default <code class="docutils literal notranslate"><span class="pre">kv_cache_qformat</span></code> may not be optimal for all use cases. Consider setting this explicitly.</p>
+<p><strong>Hardware requirements:</strong> Hopper and higher are recommended. Insufficient GPU memory may cause weight offloading, resulting in extremely long quantization time.</p>
+<p>For detailed usage and supported model architectures, see <a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer/tree/main/examples/llm_ptq">NVIDIA Model Optimizer LLM PTQ</a>.</p>
+<p>SGLang includes a streamlined workflow for quantizing models with ModelOpt and automatically exporting them for deployment.</p>
+</section>
+<section id="installation">
+<h5>安裝<a class="headerlink" href="#installation" title="連結到這個標頭">#</a></h5>
+<p>首先，安裝 ModelOpt：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nvidia-modelopt
+</pre></div>
+</div>
+</section>
+<section id="quantization-and-export-workflow">
+<h5>量化與匯出工作流程<a class="headerlink" href="#quantization-and-export-workflow" title="連結到這個標頭">#</a></h5>
+<p>SGLang provides an example script that demonstrates the complete ModelOpt quantization and export workflow. Run from the SGLang repository root (see <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/examples/usage/modelopt_quantize_and_export.py">modelopt_quantize_and_export.py</a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Quantize and export a model using ModelOpt FP8 quantization</span>
+python<span class="w"> </span>examples/usage/modelopt_quantize_and_export.py<span class="w"> </span>quantize<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>TinyLlama/TinyLlama-1.1B-Chat-v1.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--export-dir<span class="w"> </span>./quantized_tinyllama_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization-method<span class="w"> </span>modelopt_fp8
+
+<span class="c1"># For FP4 quantization (requires Blackwell GPU)</span>
+python<span class="w"> </span>examples/usage/modelopt_quantize_and_export.py<span class="w"> </span>quantize<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>TinyLlama/TinyLlama-1.1B-Chat-v1.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--export-dir<span class="w"> </span>./quantized_tinyllama_fp4<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization-method<span class="w"> </span>modelopt_fp4
+</pre></div>
+</div>
+</section>
+<section id="available-quantization-methods">
+<h5>可用的量化方法<a class="headerlink" href="#available-quantization-methods" title="連結到這個標頭">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">modelopt_fp8</span></code>: FP8 quantization with optimal performance on NVIDIA Hopper and Blackwell GPUs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modelopt_fp4</span></code>: FP4 quantization with optimal performance on Nvidia Blackwell GPUs</p></li>
+</ul>
+</section>
+<section id="python-api-usage">
+<h5>Python API Usage<a class="headerlink" href="#python-api-usage" title="連結到這個標頭">#</a></h5>
+<p>You can also use ModelOpt quantization programmatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.device_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.load_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.model_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.model_loader.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_model_loader</span>
+
+<span class="c1"># Configure model with ModelOpt quantization and export</span>
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;TinyLlama/TinyLlama-1.1B-Chat-v1.0&quot;</span><span class="p">,</span>
+    <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;modelopt_fp8&quot;</span><span class="p">,</span>  <span class="c1"># or &quot;modelopt_fp4&quot;</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">load_config</span> <span class="o">=</span> <span class="n">LoadConfig</span><span class="p">(</span>
+    <span class="n">modelopt_export_path</span><span class="o">=</span><span class="s2">&quot;./exported_model&quot;</span><span class="p">,</span>
+    <span class="n">modelopt_checkpoint_save_path</span><span class="o">=</span><span class="s2">&quot;./checkpoint.pth&quot;</span><span class="p">,</span>  <span class="c1"># optional, fake quantized checkpoint</span>
+<span class="p">)</span>
+<span class="n">device_config</span> <span class="o">=</span> <span class="n">DeviceConfig</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load and quantize the model (export happens automatically)</span>
+<span class="n">model_loader</span> <span class="o">=</span> <span class="n">get_model_loader</span><span class="p">(</span><span class="n">load_config</span><span class="p">,</span> <span class="n">model_config</span><span class="p">)</span>
+<span class="n">quantized_model</span> <span class="o">=</span> <span class="n">model_loader</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span>
+    <span class="n">model_config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span>
+    <span class="n">device_config</span><span class="o">=</span><span class="n">device_config</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="deploying-quantized-models">
+<h5>部署量化模型<a class="headerlink" href="#deploying-quantized-models" title="連結到這個標頭">#</a></h5>
+<p>After quantization and export, you can deploy the model with SGLang:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Deploy the exported quantized model</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>./quantized_tinyllama_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>modelopt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>Or using the Python API (use the same path as <code class="docutils literal notranslate"><span class="pre">modelopt_export_path</span></code> from the quantize step):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sglang</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sgl</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Deploy exported ModelOpt quantized model</span>
+    <span class="c1"># Path must match modelopt_export_path from quantize step (e.g., ./exported_model)</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">Engine</span><span class="p">(</span>
+        <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;./exported_model&quot;</span><span class="p">,</span>
+        <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;modelopt&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Run inference</span>
+    <span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">sampling_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+        <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+        <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prompt: </span><span class="si">{</span><span class="n">prompts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output: </span><span class="si">{</span><span class="n">output</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</section>
+<section id="advanced-features">
+<h5>進階功能<a class="headerlink" href="#advanced-features" title="連結到這個標頭">#</a></h5>
+<p><strong>Checkpoint Management</strong>: Save and restore fake quantized checkpoints for reuse:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save the fake quantized checkpoint during quantization</span>
+python<span class="w"> </span>examples/usage/modelopt_quantize_and_export.py<span class="w"> </span>quantize<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Llama-3.2-1B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--export-dir<span class="w"> </span>./quantized_model<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization-method<span class="w"> </span>modelopt_fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--checkpoint-save-path<span class="w"> </span>./my_checkpoint.pth
+
+<span class="c1"># The checkpoint can be reused for future quantization runs and skip calibration</span>
+</pre></div>
+</div>
+<p><strong>Export-only Workflow</strong>: If you have a pre-existing fake quantized ModelOpt checkpoint, you can export it directly. See <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/configs/load_config.py">LoadConfig</a> for the full API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.device_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.load_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.configs.model_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.model_loader.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_model_loader</span>
+
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;meta-llama/Llama-3.2-1B-Instruct&quot;</span><span class="p">,</span>
+    <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;modelopt_fp8&quot;</span><span class="p">,</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">load_config</span> <span class="o">=</span> <span class="n">LoadConfig</span><span class="p">(</span>
+    <span class="n">modelopt_checkpoint_restore_path</span><span class="o">=</span><span class="s2">&quot;./my_checkpoint.pth&quot;</span><span class="p">,</span>
+    <span class="n">modelopt_export_path</span><span class="o">=</span><span class="s2">&quot;./exported_model&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Load and export the model (DeviceConfig defaults to device=&quot;cuda&quot;)</span>
+<span class="n">model_loader</span> <span class="o">=</span> <span class="n">get_model_loader</span><span class="p">(</span><span class="n">load_config</span><span class="p">,</span> <span class="n">model_config</span><span class="p">)</span>
+<span class="n">model_loader</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">device_config</span><span class="o">=</span><span class="n">DeviceConfig</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="benefits-of-modelopt">
+<h5>Benefits of ModelOpt<a class="headerlink" href="#benefits-of-modelopt" title="連結到這個標頭">#</a></h5>
+<ul class="simple">
+<li><p><strong>Hardware Optimization</strong>: Specifically optimized for NVIDIA GPU architectures</p></li>
+<li><p><strong>Advanced Quantization</strong>: Supports cutting-edge FP8 and FP4 quantization techniques</p></li>
+<li><p><strong>Seamless Integration</strong>: Automatic export to HuggingFace format for easy deployment</p></li>
+<li><p><strong>Calibration-based</strong>: Uses calibration datasets for optimal quantization quality</p></li>
+<li><p><strong>Production Ready</strong>: Enterprise-grade quantization with NVIDIA support</p></li>
+</ul>
+</section>
+</section>
+<section id="using-modelslim">
+<h4>Using <a class="reference external" href="https://gitcode.com/Ascend/msmodelslim">ModelSlim</a><a class="headerlink" href="#using-modelslim" title="連結到這個標頭">#</a></h4>
+<p>MindStudio-ModelSlim (msModelSlim) is a model offline quantization compression tool launched by MindStudio and optimized for Ascend hardware.</p>
+<ul>
+<li><p><strong>Installation</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone repo and install msmodelslim:</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://gitcode.com/Ascend/msmodelslim.git
+<span class="nb">cd</span><span class="w"> </span>msmodelslim
+bash<span class="w"> </span>install.sh
+</pre></div>
+</div>
+</li>
+<li><p><strong>LLM quantization</strong></p>
+<p>Download the original floating-point weights of the large model. Taking Qwen3-32B as an example, you can go to <a class="reference external" href="https://huggingface.co/Qwen/Qwen3-32B">Qwen3-32B</a> to obtain the original model weights. Then install other dependencies (related to the model, refer to the huggingface model card).</p>
+<blockquote>
+<div><p>Note: You can find pre-quantized validated models on <a class="reference external" href="https://modelscope.cn/models/Eco-Tech">modelscope/Eco-Tech</a>.</p>
+</div></blockquote>
+<p><em>Traditional quantification methods require the preparation of calibration data files (<code class="docutils literal notranslate"><span class="pre">.jsonl</span></code> formats) for calibration in the quantification process.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Qwen3-32B/<span class="w">      </span><span class="c1"># floating-point model downloaded from official HF (or modelscope) repo</span>
+msmodelslim/<span class="w">    </span><span class="c1"># msmodelslim repo</span>
+<span class="w">  </span><span class="p">|</span>-----<span class="w"> </span>lab_calib<span class="w"> </span><span class="c1"># calibration date folder (put your dataset here in ```.jsonl``` format or use pre-prepared ones)</span>
+<span class="w">      </span><span class="p">|</span>-----<span class="w"> </span>some<span class="w"> </span>file<span class="w"> </span><span class="o">(</span>such<span class="w"> </span>as<span class="w"> </span>laos_calib.jsonl<span class="o">)</span>
+<span class="w">  </span><span class="p">|</span>-----<span class="w"> </span>lab_practice<span class="w"> </span><span class="c1"># best practice folder with configs for quantization</span>
+<span class="w">      </span><span class="p">|</span>-----<span class="w"> </span>model<span class="w"> </span>folder<span class="w"> </span><span class="o">(</span>such<span class="w"> </span>as<span class="w"> </span>qwen3_5_moe<span class="w"> </span>folder<span class="o">)</span><span class="w"> </span><span class="c1"># folder with quantization configs</span>
+<span class="w">          </span><span class="p">|</span>-----<span class="w"> </span>quant_config<span class="w"> </span><span class="o">(</span>such<span class="w"> </span>as<span class="w"> </span>qwen3_5_moe_w8a8.yaml<span class="o">)</span><span class="w"> </span><span class="c1"># quantization config</span>
+<span class="w">  </span><span class="p">|</span>-----<span class="w"> </span>another<span class="w"> </span>folders
+output_folder/<span class="w">   </span><span class="c1"># generated by below command</span>
+<span class="w">  </span><span class="p">|</span>-----<span class="w"> </span>quant_model_weights-00001-of-0001.safetensors<span class="w"> </span><span class="c1"># quantized weights</span>
+<span class="w">  </span><span class="p">|</span>-----<span class="w"> </span>quant_model_description.json<span class="w"> </span><span class="c1"># file with description of the quantization methods for each layer (```W4A4_DYNAMIC```, etc.)</span>
+<span class="w">  </span><span class="p">|</span>-----<span class="w"> </span>another<span class="w"> </span>files<span class="w"> </span><span class="o">(</span>such<span class="w"> </span>as<span class="w"> </span>config.json,<span class="w"> </span>tokenizer.json,<span class="w"> </span>etc.<span class="o">)</span>
+</pre></div>
+</div>
+<p>Run quantization using one-click quantization (recommended):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>msmodelslim<span class="w"> </span>quant<span class="w"> </span><span class="se">\</span>
+--model_path<span class="w"> </span><span class="si">${</span><span class="nv">MODEL_PATH</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+--save_path<span class="w"> </span><span class="si">${</span><span class="nv">SAVE_PATH</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+--device<span class="w"> </span>npu:0,1<span class="w"> </span><span class="se">\</span>
+--model_type<span class="w"> </span>Qwen3-32B<span class="w"> </span><span class="se">\</span>
+--quant_type<span class="w"> </span>w8a8<span class="w"> </span><span class="se">\</span>
+--trust_remote_code<span class="w"> </span>True
+</pre></div>
+</div>
+</li>
+<li><p><strong>Usage Example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+--model-path<span class="w"> </span><span class="nv">$PWD</span>/Qwen3-32B-w8a8<span class="w"> </span><span class="se">\</span>
+--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+</li>
+<li><p><strong>Available Quantization Methods</strong>:</p>
+<ul class="simple">
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W4A4_DYNAMIC</span></code> linear with online quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W8A8</span></code> linear with offline quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W8A8_DYNAMIC</span></code> linear with online quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W4A4_DYNAMIC</span></code> MOE with online quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W4A8_DYNAMIC</span></code> MOE with online quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W8A8_DYNAMIC</span></code> MOE with online quantization of activations</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">W4A8</span></code> linear TBD</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">W4A16</span></code> linear TBD</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">W48A16</span></code> linear TBD</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">W4A16</span></code> MoE in progress</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">W8A16</span></code> MoE in progress</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">KV</span> <span class="pre">Cache</span></code> in progress</p></li>
+<li><p>[ ]  <code class="docutils literal notranslate"><span class="pre">Attention</span></code> in progress</p></li>
+</ul>
+</li>
+</ul>
+<p>For more detailed examples of quantization of models, as well as information about their support, see the <a class="reference external" href="https://gitcode.com/Ascend/msmodelslim/blob/master/example/README.md">examples</a> section in ModelSLim repo.</p>
+</section>
+</section>
+</section>
+<section id="online-quantization">
+<h2>線上量化<a class="headerlink" href="#online-quantization" title="連結到這個標頭">#</a></h2>
+<p>To enable online quantization, you can simply specify <code class="docutils literal notranslate"><span class="pre">--quantization</span></code> in the command line. For example, you can launch the server with the following command to enable <code class="docutils literal notranslate"><span class="pre">FP8</span></code> quantization for model <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3.1-8B-Instruct</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quantization<span class="w"> </span>fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>Our team is working on supporting more online quantization methods. SGLang will soon support methods including but not limited to <code class="docutils literal notranslate"><span class="pre">[&quot;awq&quot;,</span> <span class="pre">&quot;gptq&quot;,</span> <span class="pre">&quot;marlin&quot;,</span> <span class="pre">&quot;gptq_marlin&quot;,</span> <span class="pre">&quot;awq_marlin&quot;,</span> <span class="pre">&quot;bitsandbytes&quot;,</span> <span class="pre">&quot;gguf&quot;]</span></code>.</p>
+<section id="torchao-online-quantization-method">
+<h3>torchao online quantization method<a class="headerlink" href="#torchao-online-quantization-method" title="連結到這個標頭">#</a></h3>
+<p>SGLang also supports quantization methods based on <a class="reference external" href="https://github.com/pytorch/ao">torchao</a>. You can simply specify <code class="docutils literal notranslate"><span class="pre">--torchao-config</span></code> in the command line to support this feature. For example, if you want to enable <code class="docutils literal notranslate"><span class="pre">int4wo-128</span></code> for model <code class="docutils literal notranslate"><span class="pre">meta-llama/Meta-Llama-3.1-8B-Instruct</span></code>, you can launch the server with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--torchao-config<span class="w"> </span>int4wo-128<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+<p>SGLang supports the following quantization methods based on torchao <code class="docutils literal notranslate"><span class="pre">[&quot;int8dq&quot;,</span> <span class="pre">&quot;int8wo&quot;,</span> <span class="pre">&quot;fp8wo&quot;,</span> <span class="pre">&quot;fp8dq-per_tensor&quot;,</span> <span class="pre">&quot;fp8dq-per_row&quot;,</span> <span class="pre">&quot;int4wo-32&quot;,</span> <span class="pre">&quot;int4wo-64&quot;,</span> <span class="pre">&quot;int4wo-128&quot;,</span> <span class="pre">&quot;int4wo-256&quot;]</span></code>.</p>
+<p>Note: According to <a class="reference external" href="https://github.com/sgl-project/sglang/issues/2219#issuecomment-2561890230">this issue</a>, <code class="docutils literal notranslate"><span class="pre">&quot;int8dq&quot;</span></code> method currently has some bugs when using together with cuda graph capture. So we suggest to disable cuda graph capture when using <code class="docutils literal notranslate"><span class="pre">&quot;int8dq&quot;</span></code> method. Namely, please use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model-path<span class="w"> </span>meta-llama/Meta-Llama-3.1-8B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--torchao-config<span class="w"> </span>int8dq<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disable-cuda-graph<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
+</pre></div>
+</div>
+</section>
+<section id="quark-int4fp8-moe-online-quantization-method">
+<h3><code class="docutils literal notranslate"><span class="pre">quark_int4fp8_moe</span></code> online quantization method<a class="headerlink" href="#quark-int4fp8-moe-online-quantization-method" title="連結到這個標頭">#</a></h3>
+<p>SGLang running on AMD GPUs (CDNA3 or CDNA4 architecture) supports the quantization method <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">quark_int4fp8_moe</span></code>, that will replace <a class="reference external" href="https://github.com/sgl-project/sglang/blob/v0.4.8/python/sglang/srt/layers/moe/fused_moe_triton/layer.py#L271">MoE layers</a> originally in high precision (bfloat16, float16 or float32) to use weights dynamically quantized to int4, that are upcasted to float8 during inference to run compute in float8 precision with activations dynamically quantized on the fly to float8.</p>
+<p>Other layers (e.g. projections in the attention layers) have their weights quantized online to float8 directly.</p>
+</section>
+</section>
+<section id="reference">
+<h2>參考手冊<a class="headerlink" href="#reference" title="連結到這個標頭">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ModelCloud/GPTQModel">GPTQModel</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vllm-project/llm-compressor/">LLM Compressor</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer">NVIDIA Model Optimizer (ModelOpt)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Model-Optimizer/tree/main/examples/llm_ptq">NVIDIA Model Optimizer LLM PTQ</a></p></li>
+<li><p><a class="reference external" href="https://github.com/causalflow-ai/petit-kernel">Petit: NVFP4 on ROCm</a> — <a class="reference external" href="https://lmsys.org/blog/2025-09-21-petit-amdgpu/">LMSYS blog</a>, <a class="reference external" href="https://rocm.blogs.amd.com/artificial-intelligence/fp4-mixed-precision/README.html">AMD ROCm blog</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pytorch/ao">Torchao: PyTorch Architecture Optimization</a></p></li>
+<li><p><a class="reference external" href="https://docs.vllm.ai/en/latest/quantization/">vLLM Quantization</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/auto-round">auto-round</a></p></li>
+<li><p><a class="reference external" href="https://gitcode.com/Ascend/msmodelslim">ModelSlim</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="separate_reasoning.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一頁</p>
+        <p class="prev-next-title">Reasoning Parser</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="quantized_kv_cache.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一頁</p>
+        <p class="prev-next-title">Quantized KV Cache</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#platform-compatibility">Platform Compatibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemm-backends-for-fp4-fp8-quantization">GEMM Backends for FP4/FP8 Quantization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-gemm-backend-blockwise-fp8-gemm"><code class="docutils literal notranslate"><span class="pre">--fp8-gemm-backend</span></code> (Blockwise FP8 GEMM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp4-gemm-backend-nvfp4-gemm"><code class="docutils literal notranslate"><span class="pre">--fp4-gemm-backend</span></code> (NVFP4 GEMM)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offline-quantization">Offline Quantization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-offline-model-quantization">Examples of Offline Model Quantization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-unsloth">Using Unsloth</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-auto-round">Using auto-round</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-gptqmodel">使用 GPTQModel</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-llm-compressor">Using LLM Compressor</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-nvidia-modelopt">Using NVIDIA ModelOpt</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pre-quantized-checkpoints">Using Pre-Quantized Checkpoints</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-your-own-quantized-checkpoints">建立您自己的量化檢查點</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">安裝</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-and-export-workflow">量化與匯出工作流程</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#available-quantization-methods">可用的量化方法</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-usage">Python API Usage</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#deploying-quantized-models">部署量化模型</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-features">進階功能</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits-of-modelopt">Benefits of ModelOpt</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-modelslim">Using ModelSlim</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-quantization">線上量化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchao-online-quantization-method">torchao online quantization method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quark-int4fp8-moe-online-quantization-method"><code class="docutils literal notranslate"><span class="pre">quark_int4fp8_moe</span></code> online quantization method</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">參考手冊</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 04 月 27 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

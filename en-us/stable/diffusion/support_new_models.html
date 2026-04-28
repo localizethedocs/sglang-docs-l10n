@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to Support New Diffusion Models &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diffusion/support_new_models';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/diffusion/support_new_models.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing to SGLang Diffusion" href="contributing.html" />
+    <link rel="prev" title="TeaCache Acceleration" href="performance/cache/teacache.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+  <meta name="docsearch:version" content="0.0.0.dev0" />
+    <meta name="docbuild:last-update" content="Apr 28, 2026"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/cli.html">SGLang diffusion CLI Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/index.html">Performance Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/profiling.html">Profiling Multimodal Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/cache/index.html">Caching Acceleration for Diffusion Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/cache/cache_dit.html">Cache-DiT Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/cache/teacache.html">TeaCache Acceleration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">How to Support New Diffusion Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci_perf.html">Perf Baseline Generation Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment_variables.html">Caching Acceleration</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/diffusion/support_new_models.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/diffusion/support_new_models.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdiffusion/support_new_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/diffusion/support_new_models.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>How to Support New Diffusion Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components-for-implementation">Key Components for Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-pipeline-stages">Available Pipeline Stages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-implementing-qwen-image-edit">Example: Implementing <code class="docutils literal notranslate"><span class="pre">Qwen-Image-Edit</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="how-to-support-new-diffusion-models">
+<h1>How to Support New Diffusion Models<a class="headerlink" href="#how-to-support-new-diffusion-models" title="Link to this heading">#</a></h1>
+<p>This document explains how to add support for new diffusion models in SGLang diffusion.</p>
+<section id="architecture-overview">
+<h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Link to this heading">#</a></h2>
+<p>SGLang diffusion is engineered for both performance and flexibility, built upon a modular pipeline architecture. This
+design allows developers to easily construct complex, customized pipelines for various diffusion models by combining and
+reusing different components.</p>
+<p>At its core, the architecture revolves around two key concepts, as highlighted in our <a class="reference external" href="https://lmsys.org/blog/2025-11-07-sglang-diffusion/#architecture">blog post</a>:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ComposedPipeline</span></code></strong>: This class orchestrates a series of <code class="docutils literal notranslate"><span class="pre">PipelineStage</span></code>s to define the complete generation process for a specific model. It acts as the main entry point for a model and manages the data flow between the different stages of the diffusion process.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">PipelineStage</span></code></strong>: Each stage is a modular component that encapsulates a common function within the diffusion process. Examples include prompt encoding, the denoising loop, or VAE decoding. These stages are designed to be self-contained and reusable across different pipelines.</p></li>
+</ul>
+</section>
+<section id="key-components-for-implementation">
+<h2>Key Components for Implementation<a class="headerlink" href="#key-components-for-implementation" title="Link to this heading">#</a></h2>
+<p>To add support for a new diffusion model, you will primarily need to define or configure the following components:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code></strong>: This is a dataclass that holds all the static configurations for your model pipeline. It includes paths to model components (like UNet, VAE, text encoders), precision settings (e.g., <code class="docutils literal notranslate"><span class="pre">fp16</span></code>, <code class="docutils literal notranslate"><span class="pre">bf16</span></code>), and other model-specific architectural parameters. Each model typically has its own subclass of <code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">SamplingParams</span></code></strong>: This dataclass defines the parameters that control the generation process at runtime. These are the user-provided inputs for a generation request, such as the <code class="docutils literal notranslate"><span class="pre">prompt</span></code>, <code class="docutils literal notranslate"><span class="pre">negative_prompt</span></code>, <code class="docutils literal notranslate"><span class="pre">guidance_scale</span></code>, <code class="docutils literal notranslate"><span class="pre">num_inference_steps</span></code>, <code class="docutils literal notranslate"><span class="pre">seed</span></code>, output dimensions (<code class="docutils literal notranslate"><span class="pre">height</span></code>, <code class="docutils literal notranslate"><span class="pre">width</span></code>), etc.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ComposedPipeline</span></code> (not a config)</strong>: This is the central class where you define the structure of your model’s generation pipeline. You will create a new class that inherits from <code class="docutils literal notranslate"><span class="pre">ComposedPipelineBase</span></code> and, within it, instantiate and chain together the necessary <code class="docutils literal notranslate"><span class="pre">PipelineStage</span></code>s in the correct order. See <code class="docutils literal notranslate"><span class="pre">ComposedPipelineBase</span></code> and <code class="docutils literal notranslate"><span class="pre">PipelineStage</span></code> base definitions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/pipelines/composed_pipeline_base.py"><code class="docutils literal notranslate"><span class="pre">ComposedPipelineBase</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/pipelines/stages/base.py"><code class="docutils literal notranslate"><span class="pre">PipelineStage</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/registry.py">Central registry (models/config mapping)</a></p></li>
+</ul>
+</li>
+<li><p><strong>Modules (components referenced by the pipeline)</strong>: Each pipeline references a set of modules that are loaded from the model repository (e.g., Diffusers <code class="docutils literal notranslate"><span class="pre">model_index.json</span></code>) and assembled via the registry/loader. Common modules include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">text_encoder</span></code>: Encodes text prompts into embeddings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tokenizer</span></code>: Tokenizes raw text input for the text encoder(s).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processor</span></code>: Preprocesses images and extracts features; often used in image-to-image tasks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image_encoder</span></code>: Specialized image feature extractor (may be distinct from or combined with <code class="docutils literal notranslate"><span class="pre">processor</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dit/transformer</span></code>: The core denoising network (DiT/UNet architecture) operating in latent space.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scheduler</span></code>: Controls the timestep schedule and denoising dynamics throughout inference.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vae</span></code>: Variational Autoencoder for encoding/decoding between pixel space and latent space.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="available-pipeline-stages">
+<h2>Available Pipeline Stages<a class="headerlink" href="#available-pipeline-stages" title="Link to this heading">#</a></h2>
+<p>You can build your custom <code class="docutils literal notranslate"><span class="pre">ComposedPipeline</span></code> by combining the following available stages as needed. Each stage is responsible for a specific part of the generation process.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Stage Class</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InputValidationStage</span></code></p></td>
+<td><p>Validates the user-provided <code class="docutils literal notranslate"><span class="pre">SamplingParams</span></code> to ensure they are correct before starting the pipeline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TextEncodingStage</span></code></p></td>
+<td><p>Encodes text prompts into embeddings using one or more text encoders.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ImageEncodingStage</span></code></p></td>
+<td><p>Encodes input images into embeddings, often used in image-to-image tasks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ImageVAEEncodingStage</span></code></p></td>
+<td><p>Specifically encodes an input image into the latent space using a Variational Autoencoder (VAE).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TimestepPreparationStage</span></code></p></td>
+<td><p>Prepares the scheduler’s timesteps for the diffusion process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LatentPreparationStage</span></code></p></td>
+<td><p>Creates the initial noisy latent tensor that will be denoised.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DenoisingStage</span></code></p></td>
+<td><p>Executes the main denoising loop, iteratively applying the model (e.g., UNet) to refine the latents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DecodingStage</span></code></p></td>
+<td><p>Decodes the final latent tensor from the denoising loop back into pixel space (e.g., an image) using the VAE.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DmdDenoisingStage</span></code></p></td>
+<td><p>A specialized denoising stage for certain model architectures.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CausalDMDDenoisingStage</span></code></p></td>
+<td><p>A specialized causal denoising stage for specific video models.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="example-implementing-qwen-image-edit">
+<h2>Example: Implementing <code class="docutils literal notranslate"><span class="pre">Qwen-Image-Edit</span></code><a class="headerlink" href="#example-implementing-qwen-image-edit" title="Link to this heading">#</a></h2>
+<p>To illustrate the process, let’s look at how <code class="docutils literal notranslate"><span class="pre">Qwen-Image-Edit</span></code> is implemented. The typical implementation order is:</p>
+<ol class="arabic">
+<li><p><strong>Analyze Required Modules</strong>:</p>
+<ul class="simple">
+<li><p>Study the target model’s components by examining its <code class="docutils literal notranslate"><span class="pre">model_index.json</span></code> or Diffusers implementation to identify required modules:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">processor</span></code>: Image preprocessing and feature extraction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scheduler</span></code>: Diffusion timestep scheduling</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">text_encoder</span></code>: Text-to-embedding conversion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tokenizer</span></code>: Text tokenization for the encoder</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transformer</span></code>: Core DiT denoising network</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vae</span></code>: Variational autoencoder for latent encoding/decoding</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Create Configs</strong>:</p>
+<ul class="simple">
+<li><p><strong>PipelineConfig</strong>: <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/configs/pipelines/qwen_image.py"><code class="docutils literal notranslate"><span class="pre">QwenImageEditPipelineConfig</span></code></a> defines model-specific parameters, precision settings, preprocessing functions, and latent shape calculations.</p></li>
+<li><p><strong>SamplingParams</strong>: <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/configs/sample/qwenimage.py"><code class="docutils literal notranslate"><span class="pre">QwenImageSamplingParams</span></code></a> sets runtime defaults like <code class="docutils literal notranslate"><span class="pre">num_frames=1</span></code>, <code class="docutils literal notranslate"><span class="pre">guidance_scale=4.0</span></code>, <code class="docutils literal notranslate"><span class="pre">num_inference_steps=50</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Implement Model Components</strong>:</p>
+<ul class="simple">
+<li><p>Adapt or implement specific model components in the appropriate directories:</p>
+<ul>
+<li><p><strong>DiT/Transformer</strong>: Implement in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/dits/"><code class="docutils literal notranslate"><span class="pre">runtime/models/dits/</span></code></a> - e.g., <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/dits/qwen_image.py"><code class="docutils literal notranslate"><span class="pre">qwen_image.py</span></code></a> for Qwen’s DiT architecture</p></li>
+<li><p><strong>Encoders</strong>: Implement in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/encoders/"><code class="docutils literal notranslate"><span class="pre">runtime/models/encoders/</span></code></a> - e.g., text encoders like <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/encoders/qwen2_5vl.py"><code class="docutils literal notranslate"><span class="pre">qwen2_5vl.py</span></code></a></p></li>
+<li><p><strong>VAEs</strong>: Implement in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/vaes/"><code class="docutils literal notranslate"><span class="pre">runtime/models/vaes/</span></code></a> - e.g., <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/vaes/autoencoder_kl_qwenimage.py"><code class="docutils literal notranslate"><span class="pre">autoencoder_kl_qwenimage.py</span></code></a></p></li>
+<li><p><strong>Schedulers</strong>: Implement in <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/models/schedulers/"><code class="docutils literal notranslate"><span class="pre">runtime/models/schedulers/</span></code></a> if needed</p></li>
+</ul>
+</li>
+<li><p>These components handle the core model logic, attention mechanisms, and data transformations specific to the target diffusion model.</p></li>
+</ul>
+</li>
+<li><p><strong>Define Pipeline Class</strong>:</p>
+<ul class="simple">
+<li><p>The <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/runtime/architectures/basic/qwen_image/qwen_image.py"><code class="docutils literal notranslate"><span class="pre">QwenImageEditPipeline</span></code></a> class inherits from <code class="docutils literal notranslate"><span class="pre">ComposedPipelineBase</span></code> and orchestrates stages sequentially.</p></li>
+<li><p>Declare required modules via <code class="docutils literal notranslate"><span class="pre">_required_config_modules</span></code> and implement the pipeline stages:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">QwenImageEditPipeline</span><span class="p">(</span><span class="n">ComposedPipelineBase</span><span class="p">):</span>
+    <span class="n">pipeline_name</span> <span class="o">=</span> <span class="s2">&quot;QwenImageEditPipeline&quot;</span>  <span class="c1"># Matches Diffusers model_index.json</span>
+    <span class="n">_required_config_modules</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;processor&quot;</span><span class="p">,</span> <span class="s2">&quot;scheduler&quot;</span><span class="p">,</span> <span class="s2">&quot;text_encoder&quot;</span><span class="p">,</span> <span class="s2">&quot;tokenizer&quot;</span><span class="p">,</span> <span class="s2">&quot;transformer&quot;</span><span class="p">,</span> <span class="s2">&quot;vae&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_pipeline_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_args</span><span class="p">:</span> <span class="n">ServerArgs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">InputValidationStage</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">ImageEncodingStage</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">ImageVAEEncodingStage</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">TimestepPreparationStage</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">LatentPreparationStage</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">DenoisingStage</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_stage</span><span class="p">(</span><span class="n">DecodingStage</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The pipeline is constructed by adding stages in order. <code class="docutils literal notranslate"><span class="pre">Qwen-Image-Edit</span></code> uses <code class="docutils literal notranslate"><span class="pre">ImageEncodingStage</span></code> (for prompt and image processing) and <code class="docutils literal notranslate"><span class="pre">ImageVAEEncodingStage</span></code> (for latent extraction) before standard denoising and decoding.</p>
+</li>
+<li><p><strong>Register Configs</strong>:</p>
+<ul class="simple">
+<li><p>Register the configs in the central registry (<a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/python/sglang/multimodal_gen/registry.py"><code class="docutils literal notranslate"><span class="pre">registry.py</span></code></a>) via <code class="docutils literal notranslate"><span class="pre">_register_configs</span></code> to enable automatic loading and instantiation for the model. Modules are automatically loaded and injected based on the config and repository structure.</p></li>
+</ul>
+</li>
+</ol>
+<p>By following this pattern of defining configurations and composing pipelines, you can integrate new diffusion models
+into SGLang with ease.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="performance/cache/teacache.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">TeaCache Acceleration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="contributing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Contributing to SGLang Diffusion</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components-for-implementation">Key Components for Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-pipeline-stages">Available Pipeline Stages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-implementing-qwen-image-edit">Example: Implementing <code class="docutils literal notranslate"><span class="pre">Qwen-Image-Edit</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 28, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
