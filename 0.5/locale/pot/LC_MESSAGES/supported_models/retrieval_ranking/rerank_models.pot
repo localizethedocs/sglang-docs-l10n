@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:55+0000\n"
+"POT-Creation-Date: 2026-04-28 10:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -140,7 +141,7 @@ msgstr ""
 
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:27
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:78
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:171
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:172
 msgid "Launch Command"
 msgstr ""
 
@@ -271,7 +272,7 @@ msgid ""
 msgstr ""
 
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:118
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:304
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:305
 msgid "`instruct` (optional): Instruction text for the reranker"
 msgstr ""
 
@@ -347,34 +348,43 @@ msgid ""
 msgstr ""
 
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:162
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:308
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:309
 msgid "Common Pitfalls"
 msgstr ""
 
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:164
 msgid ""
+"**`--chat-template` is required.** Without `--chat-template examples/"
+"chat_template/qwen3_reranker.jinja`, the server does not recognize the model "
+"as a decoder-only reranker and returns a 400 error: `\"This model does not "
+"appear to be an embedding model by default. Please add `--is-embedding`..."
+"\"`. The fix is to add the chat template flag, NOT `--is-embedding`."
+msgstr ""
+
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:165
+msgid ""
 "If you launch Qwen3-Reranker with `--is-embedding`, `/v1/rerank` cannot "
 "compute yes/no logprob scores. Relaunch **without** `--is-embedding`."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:165
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:166
 msgid ""
 "If you see a validation error like \"score should be a valid number\" and "
 "the backend returned a list, upgrade to a version that coerces "
 "`embedding[0]` into `score` for rerank responses."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:167
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:168
 msgid "Qwen3-VL-Reranker (multimodal decoder-only rerank)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:169
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:170
 msgid ""
 "Qwen3-VL-Reranker extends the Qwen3-Reranker to support multimodal content, "
 "allowing reranking of documents containing text, images, and videos."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:173
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:174
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "  --model-path Qwen/Qwen3-VL-Reranker-2B \\\n"
@@ -385,17 +395,17 @@ msgid ""
 "  --chat-template examples/chat_template/qwen3_vl_reranker.jinja\n"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:184
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:185
 msgid ""
 "Qwen3-VL-Reranker uses decoder-only logprob scoring (yes/no) like Qwen3-"
 "Reranker. Do NOT launch it with `--is-embedding`."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:187
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:188
 msgid "Text-Only Reranking (backward compatible)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:189
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:190
 msgid ""
 "import requests\n"
 "\n"
@@ -422,11 +432,11 @@ msgid ""
 "    print(f\"Score: {item['score']:.4f} - {item['document'][:60]}...\")\n"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:213
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:214
 msgid "Image Reranking (text query, image/mixed documents)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:215
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:216
 msgid ""
 "import requests\n"
 "\n"
@@ -471,11 +481,11 @@ msgid ""
 "    print(f\"Index: {item['index']}, Score: {item['score']:.4f}\")\n"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:256
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:257
 msgid "Multimodal Query Reranking (query with image)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:258
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:259
 msgid ""
 "import requests\n"
 "\n"
@@ -516,62 +526,62 @@ msgid ""
 "    print(f\"Index: {item['index']}, Score: {item['score']:.4f}\")\n"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:297
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:298
 msgid "Request Parameters (Multimodal)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:299
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:300
 msgid ""
 "`query` (required): Can be a string (text-only) or a list of content parts:"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:300
-msgid "`{\"type\": \"text\", \"text\": \"...\"}` for text"
-msgstr ""
-
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:301
-msgid ""
-"`{\"type\": \"image_url\", \"image_url\": {\"url\": \"...\"}}` for images"
+msgid "`{\"type\": \"text\", \"text\": \"...\"}` for text"
 msgstr ""
 
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:302
 msgid ""
-"`{\"type\": \"video_url\", \"video_url\": {\"url\": \"...\"}}` for videos"
+"`{\"type\": \"image_url\", \"image_url\": {\"url\": \"...\"}}` for images"
 msgstr ""
 
 #: ../../../supported_models/retrieval_ranking/rerank_models.md:303
+msgid ""
+"`{\"type\": \"video_url\", \"video_url\": {\"url\": \"...\"}}` for videos"
+msgstr ""
+
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:304
 msgid ""
 "`documents` (required): List where each document can be a string or list of "
 "content parts (same format as query)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:305
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:306
 msgid "`top_n` (optional): Maximum number of documents to return"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:306
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:307
 msgid ""
 "`return_documents` (optional): Whether to return documents in the response "
 "(default: `false`)"
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:310
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:311
 msgid ""
 "Always use `--chat-template examples/chat_template/qwen3_vl_reranker.jinja` "
 "for Qwen3-VL-Reranker."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:311
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:312
 msgid "Do NOT launch with `--is-embedding`."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:312
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:313
 msgid ""
 "For best results, use `--disable-radix-cache` to avoid caching issues with "
 "multimodal content."
 msgstr ""
 
-#: ../../../supported_models/retrieval_ranking/rerank_models.md:313
+#: ../../../supported_models/retrieval_ranking/rerank_models.md:314
 msgid ""
 "**Note**: Currently only `Qwen3-VL-Reranker-2B` is tested and supported. The "
 "8B model may have different behavior and is not guaranteed to work with this "
