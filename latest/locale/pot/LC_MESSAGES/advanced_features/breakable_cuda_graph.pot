@@ -1,0 +1,394 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/breakable_cuda_graph.md:1
+msgid "Breakable CUDA Graph"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:3
+msgid "Motivation"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:5
+msgid ""
+"Standard CUDA graphs capture an entire forward pass as a single, opaque "
+"graph. This is great for performance, but creates two problems:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:7
+msgid ""
+"**Debugging is hard.** When something goes wrong inside a captured graph "
+"(wrong outputs, numerical mismatches, crashes), there is no way to step "
+"through the operations or insert print statements because the graph replays "
+"as a monolithic unit."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:9
+msgid ""
+"**Some ops are incompatible.** Certain operations — dynamic control flow, "
+"host-device synchronization, JIT compilation, or ops that change behavior "
+"across iterations — cannot be captured into a CUDA graph at all. Today, the "
+"only workaround is to disable CUDA graphs entirely, which sacrifices the "
+"kernel launch overhead savings for the rest of the model."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:11
+msgid ""
+"**Breakable CUDA Graph** solves both problems by allowing graph breaks to be "
+"inserted at specific points. The computation is split into multiple captured "
+"graph segments with eager (non-graph) execution in between. This preserves "
+"most of the CUDA graph performance benefit while allowing targeted "
+"operations to run outside the graph."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:13
+msgid "Usage"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:15
+msgid "Debug Mode: Run Everything Eagerly"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:17
+msgid ""
+"The simplest use case is debugging. The `--debug-cuda-graph` flag wraps the "
+"entire decode forward pass in a graph break, so every operation runs eagerly "
+"while still going through the full CUDA graph capture/replay code path. This "
+"lets you debug CUDA graph issues without changing model code."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:19
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"    --debug-cuda-graph\n"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:25
+msgid ""
+"This mode is intended for debugging only — it eliminates the performance "
+"benefit of CUDA graphs since every op runs eagerly."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:27
+msgid "Selective Graph Breaks in Model Code"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:29
+msgid ""
+"For production use, you can mark specific functions as \"non-graphable\" "
+"using the `@eager_on_graph` decorator. During CUDA graph capture, these "
+"functions run eagerly between captured graph segments. Outside of capture, "
+"they behave normally."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:31
+msgid ""
+"from sglang.srt.model_executor.breakable_cuda_graph.breakable_cuda_graph "
+"import eager_on_graph\n"
+"\n"
+"@eager_on_graph(enable=True)\n"
+"def my_dynamic_op(x):\n"
+"    # This op is incompatible with CUDA graph capture\n"
+"    return some_dynamic_operation(x)\n"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:40
+msgid ""
+"You can also insert a bare graph break (no computation) using the "
+"`break_graph()` helper:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:42
+msgid ""
+"from sglang.srt.model_executor.breakable_cuda_graph.breakable_cuda_graph "
+"import break_graph\n"
+"\n"
+"def forward(self, x):\n"
+"    x = self.layer1(x)\n"
+"    break_graph()  # force a segment split here\n"
+"    x = self.layer2(x)\n"
+"    return x\n"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:52
+msgid ""
+"To enable breakable CUDA graph at the environment level (without debug "
+"mode), set the environment variable:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:54
+msgid ""
+"export SGLANG_USE_BREAKABLE_CUDA_GRAPH=1\n"
+"python -m sglang.launch_server \\\n"
+"    --model meta-llama/Llama-3.1-8B-Instruct\n"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:60
+msgid "Server Args"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "Argument"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`--debug-cuda-graph`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`False`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid ""
+"Enable debug/eager mode. Wraps the entire forward pass in a graph break so "
+"every op runs eagerly through the capture/replay path."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`SGLANG_USE_BREAKABLE_CUDA_GRAPH`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`0`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid ""
+"Environment variable. Enables breakable CUDA graph without debug mode. "
+"Required for `@eager_on_graph` decorators to take effect."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:67
+msgid "How It Works"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:69
+msgid "Capture"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:71
+msgid ""
+"Breakable CUDA graph extends PyTorch's `torch.cuda.CUDAGraph` by splitting a "
+"single capture into multiple segments separated by graph breaks."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:73
+msgid "During capture, the flow is:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:75
+msgid ""
+"Begin capture (segment 1)\n"
+"  ... graphable ops ...\n"
+"  @eager_on_graph function encountered:\n"
+"    1. End current capture segment\n"
+"    2. Run the function eagerly (allocates output tensors)\n"
+"    3. Record the function for later replay\n"
+"    4. Begin new capture segment\n"
+"  ... more graphable ops ...\n"
+"End capture (segment N)\n"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:87
+msgid ""
+"Each segment is independently instantiated as a CUDA graph executable. The "
+"non-graph functions and their argument references are stored for replay."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:89
+msgid "Replay"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:91
+msgid "During replay:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:93
+msgid ""
+"For each segment i:\n"
+"  1. Launch CUDA graph segment i\n"
+"  2. Run the recorded non-graph function i eagerly\n"
+"Launch final CUDA graph segment\n"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:100
+msgid ""
+"The non-graph functions are re-invoked with the same tensor references as "
+"capture time. Since these references point to the CUDA graph's static input/"
+"output buffers, they see updated values on each replay."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:102
+msgid "Output Writeback"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:104
+msgid ""
+"When a non-graph function produces output during replay, the result must be "
+"written back into the same tensor buffers that downstream graph segments "
+"reference. The mechanism handles:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:106
+msgid "**Plain tensors**: In-place `copy_()` into the original buffer."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:107
+msgid ""
+"**Structured outputs** (dataclasses, objects with tensor attributes): Tensor "
+"fields are copied in-place; non-tensor fields are replaced."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:108
+msgid ""
+"**Dicts of tensors**: Tensor values are copied in-place; non-tensor values "
+"are replaced."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:110
+msgid "Stream Fork/Join Tracking"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:112
+msgid ""
+"Some models fork work onto secondary CUDA streams (e.g., for overlapped "
+"computation). Breakable CUDA graph hooks `torch.cuda.Stream.wait_stream` to "
+"track which streams are forked from the capture stream. When a graph break "
+"occurs, all forked streams are automatically joined back before ending the "
+"capture segment, and re-forked after beginning the next segment."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:114
+msgid "Compatibility"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:116
+msgid ""
+"**NVIDIA CUDA only.** Breakable CUDA graph is not supported on ROCm/HIP or "
+"other non-CUDA platforms. On unsupported platforms, `--debug-cuda-graph` is "
+"automatically disabled with a warning."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:117
+msgid ""
+"**Requires `cuda-python`.** The `cuda.bindings` package must be installed "
+"(`pip install cuda-python`)."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:118
+msgid ""
+"**Not compatible with memory saver mode.** Cannot be used together with "
+"`SGLANG_MEMORY_SAVER_CUDA_GRAPH`."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:120
+msgid "Performance"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:122
+msgid ""
+"When no graph breaks are inserted, breakable CUDA graph has minimal overhead "
+"compared to standard CUDA graph — the capture/replay path is nearly "
+"identical."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:124
+msgid "Each graph break adds:"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:125
+msgid "One `cudaGraphLaunch` call (to replay the segment before the break)"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:126
+msgid "One eager Python function call"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:127
+msgid ""
+"One `cudaStreamBeginCapture` / `cudaStreamEndCapture` pair during capture"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:129
+msgid ""
+"For typical use cases with a small number of graph breaks, the overhead is "
+"negligible compared to the saved kernel launch overhead from the captured "
+"segments."
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:131
+msgid "Code Reference"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "File"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid ""
+"`python/sglang/srt/model_executor/breakable_cuda_graph/breakable_cuda_graph."
+"py`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid ""
+"Core implementation: `eager_on_graph`, `BreakableCUDAGraph`, "
+"`BreakableCUDAGraphCapture`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`python/sglang/srt/model_executor/breakable_cuda_graph/cuda_utils.py`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "CUDA runtime binding utilities"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`python/sglang/srt/model_executor/cuda_graph_runner.py`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "Integration with the main CUDA graph runner"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`python/sglang/srt/server_args.py`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`--debug-cuda-graph` flag and environment variable handling"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`python/sglang/srt/environ.py`"
+msgstr ""
+
+#: ../../../advanced_features/breakable_cuda_graph.md:0
+msgid "`SGLANG_USE_BREAKABLE_CUDA_GRAPH` environment variable definition"
+msgstr ""

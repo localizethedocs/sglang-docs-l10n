@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,7 +50,7 @@ msgid "HDK"
 msgstr ""
 
 #: ../../../platforms/ascend/ascend_npu.md:0
-msgid "25.3.RC1"
+msgid "25.5.2"
 msgstr ""
 
 #: ../../../platforms/ascend/ascend_npu.md:0
@@ -177,9 +178,9 @@ msgstr ""
 #: ../../../platforms/ascend/ascend_npu.md:41
 msgid ""
 "Prior to start work with SGLang on Ascend you need to install CANN Toolkit, "
-"Kernels operator package and NNAL version 8.3.RC2 or higher, check the "
-"[installation guide](https://www.hiascend.com/document/detail/zh/"
-"CANNCommunityEdition/83RC1/softwareinst/instg/instg_0008.html?"
+"Kernels operator package and NNAL version 8.5.0, check the [installation "
+"guide](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/850/"
+"softwareinst/instg/instg_0008.html?"
 "Mode=PmIns&InstallType=local&OS=openEuler&Software=cannToolKit)"
 msgstr ""
 
@@ -206,7 +207,7 @@ msgstr ""
 msgid ""
 "PYTORCH_VERSION=2.8.0\n"
 "TORCHVISION_VERSION=0.23.0\n"
-"TORCH_NPU_VERSION=2.8.0\n"
+"TORCH_NPU_VERSION=2.8.0.post2\n"
 "pip install torch==$PYTORCH_VERSION torchvision==$TORCHVISION_VERSION --"
 "index-url https://download.pytorch.org/whl/cpu\n"
 "pip install torch_npu==$TORCH_NPU_VERSION\n"
@@ -260,10 +261,24 @@ msgid ""
 msgstr ""
 
 #: ../../../platforms/ascend/ascend_npu.md:78
-msgid "Installing SGLang from source"
+msgid "Some other dependencies"
 msgstr ""
 
 #: ../../../platforms/ascend/ascend_npu.md:80
+msgid ""
+"# libGL\n"
+"apt update\n"
+"apt install libgl1 libglib2.0-0\n"
+"\n"
+"# ensure setuptools contains pkg_resources module\n"
+"pip install \"setuptools<80\"\n"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu.md:89
+msgid "Installing SGLang from source"
+msgstr ""
+
+#: ../../../platforms/ascend/ascend_npu.md:91
 msgid ""
 "# Use the last release branch\n"
 "git clone https://github.com/sgl-project/sglang.git\n"
@@ -272,25 +287,25 @@ msgid ""
 "pip install -e python[all_npu]\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:88
+#: ../../../platforms/ascend/ascend_npu.md:99
 msgid "Method 2: Using Docker Image"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:89
+#: ../../../platforms/ascend/ascend_npu.md:100
 msgid "Obtain Image"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:90
+#: ../../../platforms/ascend/ascend_npu.md:101
 msgid ""
 "You can download the SGLang image or build an image based on Dockerfile to "
 "obtain the Ascend NPU image."
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:91
+#: ../../../platforms/ascend/ascend_npu.md:102
 msgid "Download SGLang image"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:92
+#: ../../../platforms/ascend/ascend_npu.md:103
 msgid ""
 "dockerhub: docker.io/lmsysorg/sglang:$tag\n"
 "# Main-based tag, change main to specific version like v0.5.6,\n"
@@ -299,11 +314,11 @@ msgid ""
 "Atlas 800I A2: {main}-cann8.5.0-910b\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:99
+#: ../../../platforms/ascend/ascend_npu.md:110
 msgid "Build an image based on Dockerfile"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:100
+#: ../../../platforms/ascend/ascend_npu.md:111
 msgid ""
 "# Clone the SGLang repository\n"
 "git clone https://github.com/sgl-project/sglang.git\n"
@@ -312,27 +327,29 @@ msgid ""
 "# Build the docker image\n"
 "# If there are network errors, please modify the Dockerfile to use offline "
 "dependencies or use a proxy\n"
-"docker build -t <image_name> -f npu.Dockerfile .\n"
+"# <arch_tag> is the target architecture of the image, e.g. amd64, arm64\n"
+"docker build --build-arg TARGETARCH=<arch_tag> -t <image_name> -f npu."
+"Dockerfile .\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:110
+#: ../../../platforms/ascend/ascend_npu.md:122
 msgid "Create Docker"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:111
+#: ../../../platforms/ascend/ascend_npu.md:123
 msgid ""
 "__Notice:__ `--privileged` and `--network=host` are required by RDMA, which "
 "is typically needed by Ascend NPU clusters."
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:113
+#: ../../../platforms/ascend/ascend_npu.md:125
 msgid ""
 "__Notice:__ The following docker command is based on Atlas 800I A3 machines. "
 "If you are using Atlas 800I A2, make sure only `davinci[0-7]` are mapped "
 "into container."
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:115
+#: ../../../platforms/ascend/ascend_npu.md:127
 msgid ""
 "\n"
 "alias drun='docker run -it --rm --privileged --network=host --ipc=host --shm-"
@@ -360,21 +377,21 @@ msgid ""
 "Instruct --attention-backend ascend\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:134
+#: ../../../platforms/ascend/ascend_npu.md:146
 msgid "System Settings"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:136
+#: ../../../platforms/ascend/ascend_npu.md:148
 msgid "CPU performance power scheme"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:138
+#: ../../../platforms/ascend/ascend_npu.md:150
 msgid ""
 "The default power scheme on Ascend hardware is `ondemand` which could affect "
 "performance, changing it to `performance` is recommended."
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:140
+#: ../../../platforms/ascend/ascend_npu.md:152
 msgid ""
 "echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/"
 "scaling_governor\n"
@@ -384,22 +401,22 @@ msgid ""
 "performance\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:147
+#: ../../../platforms/ascend/ascend_npu.md:159
 msgid "Disable NUMA balancing"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:149
+#: ../../../platforms/ascend/ascend_npu.md:161
 msgid ""
 "sudo sysctl -w kernel.numa_balancing=0\n"
 "# Check\n"
 "cat /proc/sys/kernel/numa_balancing # shows 0\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:155
+#: ../../../platforms/ascend/ascend_npu.md:167
 msgid "Prevent swapping out system memory"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:157
+#: ../../../platforms/ascend/ascend_npu.md:169
 msgid ""
 "sudo sysctl -w vm.swappiness=10\n"
 "\n"
@@ -407,20 +424,20 @@ msgid ""
 "cat /proc/sys/vm/swappiness # shows 10\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:164
+#: ../../../platforms/ascend/ascend_npu.md:176
 msgid "Running SGLang Service"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:165
+#: ../../../platforms/ascend/ascend_npu.md:177
 msgid "Running Service For Large Language Models"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:166
-#: ../../../platforms/ascend/ascend_npu.md:230
+#: ../../../platforms/ascend/ascend_npu.md:178
+#: ../../../platforms/ascend/ascend_npu.md:242
 msgid "PD Mixed Scene"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:167
+#: ../../../platforms/ascend/ascend_npu.md:179
 msgid ""
 "# Enabling CPU Affinity\n"
 "export SGLANG_SET_CPU_AFFINITY=1\n"
@@ -428,15 +445,15 @@ msgid ""
 "Instruct --attention-backend ascend\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:173
-msgid "PD Separation Scene"
+#: ../../../platforms/ascend/ascend_npu.md:185
+msgid "PD Disaggregation Scene"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:174
+#: ../../../platforms/ascend/ascend_npu.md:186
 msgid "Launch Prefill Server"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:175
+#: ../../../platforms/ascend/ascend_npu.md:187
 msgid ""
 "# Enabling CPU Affinity\n"
 "export SGLANG_SET_CPU_AFFINITY=1\n"
@@ -461,11 +478,11 @@ msgid ""
 "    --port 8000\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:198
+#: ../../../platforms/ascend/ascend_npu.md:210
 msgid "Launch Decode Server"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:199
+#: ../../../platforms/ascend/ascend_npu.md:211
 msgid ""
 "# PIP: recommended to config first Prefill Server IP\n"
 "# PORT: one free port\n"
@@ -486,11 +503,11 @@ msgid ""
 "    --port 8001\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:218
+#: ../../../platforms/ascend/ascend_npu.md:230
 msgid "Launch Router"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:219
+#: ../../../platforms/ascend/ascend_npu.md:231
 msgid ""
 "python3 -m sglang_router.launch_router \\\n"
 "    --pd-disaggregation \\\n"
@@ -501,11 +518,11 @@ msgid ""
 "    --port 6688\n"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:229
+#: ../../../platforms/ascend/ascend_npu.md:241
 msgid "Running Service For Multimodal Language Models"
 msgstr ""
 
-#: ../../../platforms/ascend/ascend_npu.md:231
+#: ../../../platforms/ascend/ascend_npu.md:243
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path Qwen3-VL-30B-A3B-Instruct \\\n"

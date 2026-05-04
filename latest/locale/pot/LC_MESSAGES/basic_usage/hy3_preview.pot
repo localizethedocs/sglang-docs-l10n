@@ -1,0 +1,272 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/hy3_preview.md:1
+msgid "Hy3-preview Usage"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:3
+msgid ""
+"Hy3-preview is a large-scale language model (295B parameters, 21B active "
+"parameters) from Tencent Hunyuan team. SGLang supports serving Hy3-preview. "
+"This guide describes how to run Hy3-preview with native BF16."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:5
+msgid "Installation"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:7
+msgid "Docker"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:9
+msgid "docker pull lmsysorg/sglang:hy3-preview\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:13
+msgid "Build from Source"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:15
+msgid ""
+"# Install SGLang\n"
+"git clone https://github.com/sgl-project/sglang\n"
+"cd sglang\n"
+"pip3 install pip --upgrade\n"
+"pip3 install \"transformers>=5.6.0\"\n"
+"pip3 install -e \"python\"\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:24
+msgid "Launch Hy3-preview with SGLang"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:26
+msgid ""
+"To serve the [Hy3-preview](https://huggingface.co/tencent/Hy3-preview) model "
+"on 8 GPUs. On 8x96GB H20, SGLang can barely deploy the BF16 model and can "
+"only run small batch sizes or short requests. Use larger-memory GPUs such as "
+"H20-3e when possible."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:28
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model tencent/Hy3-preview \\\n"
+"  --tp 8 \\\n"
+"  --tool-call-parser hunyuan \\\n"
+"  --reasoning-parser hunyuan \\\n"
+"  --served-model-name hy3-preview\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:37
+msgid "EAGLE Speculative Decoding"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:39
+msgid ""
+"**Description**: SGLang supports Hy3-preview models with [EAGLE speculative "
+"decoding](https://docs.sglang.io/advanced_features/speculative_decoding."
+"html#eagle-decoding)."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:41
+msgid ""
+"**Usage**: Add `--speculative-algorithm`, `--speculative-num-steps`, `--"
+"speculative-eagle-topk`, and `--speculative-num-draft-tokens` to enable this "
+"feature. For example:"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:44
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model tencent/Hy3-preview \\\n"
+"  --tp 8 \\\n"
+"  --tool-call-parser hunyuan \\\n"
+"  --reasoning-parser hunyuan \\\n"
+"  --speculative-num-steps 1 \\\n"
+"  --speculative-eagle-topk 1 \\\n"
+"  --speculative-num-draft-tokens 2 \\\n"
+"  --speculative-algorithm EAGLE \\\n"
+"  --served-model-name hy3-preview\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:57
+msgid "OpenAI Client Example"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:59
+msgid "First, install the OpenAI Python client:"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:61
+msgid "uv pip install -U openai\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:65
+msgid ""
+"You can use the OpenAI client as follows to verify thinking-mode responses."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:67
+msgid ""
+"from openai import OpenAI\n"
+"\n"
+"# If running SGLang locally with its default OpenAI-compatible port:\n"
+"#   http://localhost:30000/v1\n"
+"openai_api_key = \"EMPTY\"\n"
+"openai_api_base = \"http://localhost:30000/v1\"\n"
+"\n"
+"client = OpenAI(\n"
+"    api_key=openai_api_key,\n"
+"    base_url=openai_api_base,\n"
+")\n"
+"messages = [\n"
+"    {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n"
+"    {\"role\": \"user\", \"content\": \"Hello.\"},\n"
+"]\n"
+"\n"
+"# Thinking mode is disabled by default (no need to pass "
+"chat_template_kwargs).\n"
+"resp = client.chat.completions.create(\n"
+"    model=\"hy3-preview\",\n"
+"    messages=messages,\n"
+"    temperature=1,\n"
+"    max_tokens=4096,\n"
+")\n"
+"print(resp.choices[0].message.content)\n"
+"\n"
+"# Thinking mode is enabled only if 'reasoning_effort' and "
+"'interleaved_thinking' are set in 'chat_template_kwargs'.\n"
+"# 'reasoning_effort' supports: 'high', 'low', 'no_think'.\n"
+"resp_think = client.chat.completions.create(\n"
+"    model=\"hy3-preview\",\n"
+"    messages=messages,\n"
+"    temperature=1,\n"
+"    max_tokens=4096,\n"
+"    extra_body={\n"
+"      \"chat_template_kwargs\": {\n"
+"          \"reasoning_effort\": \"high\",\n"
+"          \"interleaved_thinking\": True\n"
+"      },\n"
+"    },\n"
+")\n"
+"output_msg = resp_think.choices[0].message\n"
+"# thinking content\n"
+"print(output_msg.reasoning_content)\n"
+"# response content\n"
+"print(output_msg.content)\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:114
+msgid "cURL Usage"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:116
+msgid ""
+"curl http://localhost:30000/v1/chat/completions \\\n"
+"  -H \"Content-Type: application/json\" \\\n"
+"  -d '{\n"
+"    \"model\": \"hy3-preview\",\n"
+"    \"messages\": [\n"
+"      {\"role\": \"system\", \"content\": \"You are a helpful assistant."
+"\"},\n"
+"      {\"role\": \"user\", \"content\": \"Hello.\"}\n"
+"    ],\n"
+"    \"temperature\": 1,\n"
+"    \"max_tokens\": 4096\n"
+"  }'\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:130
+msgid "Benchmarking Results"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:132
+msgid ""
+"For benchmarking, disable prefix caching by adding `--disable-radix-cache` "
+"to the server command."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:134
+msgid ""
+"The following example runs the benchmark on 8 H20 GPUs with 96 GB memory "
+"each."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:136
+msgid ""
+"python3 -m sglang.bench_serving \\\n"
+"    --backend sglang \\\n"
+"    --flush-cache \\\n"
+"    --dataset-name random \\\n"
+"    --random-range-ratio 1.0 \\\n"
+"    --random-input-len 4096 \\\n"
+"    --random-output-len 4096 \\\n"
+"    --num-prompts 5 \\\n"
+"    --max-concurrency 1 \\\n"
+"    --output-file hy3_preview_h20.jsonl \\\n"
+"    --model tencent/Hy3-preview \\\n"
+"    --served-model-name hy3-preview\n"
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:151
+msgid "If successful, you will see the following output."
+msgstr ""
+
+#: ../../../basic_usage/hy3_preview.md:153
+msgid ""
+"============ Serving Benchmark Result ============\n"
+"Backend:                                 sglang\n"
+"Traffic request rate:                    inf\n"
+"Max request concurrency:                 1\n"
+"Successful requests:                     5\n"
+"Benchmark duration (s):                  176.41\n"
+"Total input tokens:                      20480\n"
+"Total input text tokens:                 20480\n"
+"Total generated tokens:                  20480\n"
+"Total generated tokens (retokenized):    20480\n"
+"Request throughput (req/s):              0.03\n"
+"Input token throughput (tok/s):          116.09\n"
+"Output token throughput (tok/s):         116.09\n"
+"Peak output token throughput (tok/s):    118.00\n"
+"Peak concurrent requests:                2\n"
+"Total token throughput (tok/s):          232.19\n"
+"Concurrency:                             1.00\n"
+"----------------End-to-End Latency----------------\n"
+"Mean E2E Latency (ms):                   35279.06\n"
+"Median E2E Latency (ms):                 35275.60\n"
+"P90 E2E Latency (ms):                    35294.13\n"
+"P99 E2E Latency (ms):                    35294.41\n"
+"---------------Time to First Token----------------\n"
+"Mean TTFT (ms):                          355.93\n"
+"Median TTFT (ms):                        309.28\n"
+"P99 TTFT (ms):                           518.36\n"
+"-----Time per Output Token (excl. 1st token)------\n"
+"Mean TPOT (ms):                          8.53\n"
+"Median TPOT (ms):                        8.54\n"
+"P99 TPOT (ms):                           8.54\n"
+"---------------Inter-Token Latency----------------\n"
+"Mean ITL (ms):                           8.53\n"
+"Median ITL (ms):                         8.54\n"
+"P95 ITL (ms):                            8.62\n"
+"P99 ITL (ms):                            8.74\n"
+"Max ITL (ms):                            31.70\n"
+"==================================================\n"
+msgstr ""

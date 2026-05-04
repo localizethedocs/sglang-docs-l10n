@@ -1,0 +1,404 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:1
+msgid "Adaptive Speculative Decoding"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:3
+msgid ""
+"Adaptive speculative decoding lets SGLang adjust `speculative_num_steps/"
+"speculative_num_draft_tokens` at runtime instead of keeping a single fixed "
+"value for the whole server lifetime. It is designed for workloads whose "
+"accept length changes over time, where one static step count is rarely "
+"optimal."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:6
+msgid "Current support"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:8
+msgid "Only `--speculative-algorithm EAGLE`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:9
+msgid "Only `--speculative-eagle-topk 1`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:10
+msgid ""
+"If either condition is not met, SGLang falls back to static speculative "
+"settings"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:12
+msgid "Why adaptive steps help"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:14
+msgid ""
+"`speculative_num_steps` controls how many draft-model autoregressive steps "
+"run in each speculative round. In practice, the best value depends on the "
+"current workload."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:16
+msgid ""
+"If `num_steps` is too small, the draft model could have produced more "
+"accepted tokens, but the round stops too early."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:17
+msgid ""
+"If `num_steps` is too large, the draft model produces many candidate tokens "
+"that the target model rejects, so extra draft work is wasted."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:19
+msgid ""
+"Real traffic often moves between high-acceptance and low-acceptance phases, "
+"so one fixed step count is usually a compromise. Adaptive mode tries to "
+"follow the workload instead of hard-coding a single global `num_steps`."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:21
+msgid "Design overview"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:23
+msgid "The adaptive mechanism has three pieces:"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:25
+msgid "`AdaptiveSpeculativeParams`: the EMA-based policy"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:26
+msgid "`SpecRuntimeState`: the per-tier runtime state bundle"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:27
+msgid ""
+"`AdaptiveController`: the coordinator that chooses a tier and activates the "
+"matching runtime state"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:29
+msgid ""
+"At startup, SGLang pre-builds one runtime state per candidate tier. By "
+"default, the candidate tiers are `candidate_steps = [1, 3, 7]`."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:31
+msgid ""
+"┌──────────────────────────────────────────────────────────┐\n"
+"│                      SpecRuntimeState                    │\n"
+"│                                                          │\n"
+"│  speculative_num_steps / speculative_num_draft_tokens   │\n"
+"│                                                          │\n"
+"│  ┌────────────────┐ ┌────────────────┐ ┌──────────────┐  │\n"
+"│  │  Draft stage   │ │  Verify stage  │ │ Extend stage │  │\n"
+"│  │                │ │                │ │              │  │\n"
+"│  │  attn_backend  │ │  attn_backend  │ │ attn_backend │  │\n"
+"│  │  cuda_graph    │ │  cuda_graph    │ │ cuda_graph   │  │\n"
+"│  └────────────────┘ └────────────────┘ └──────────────┘  │\n"
+"└──────────────────────────────────────────────────────────┘\n"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:46
+msgid ""
+"This matters because `CudaGraphRunner` is shape-dependent. Each candidate "
+"tier owns its own graph and backend state, so runtime switching is a "
+"reference swap, not an online graph recapture."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:48
+msgid "Runtime flow"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:50
+msgid ""
+"The adaptive update happens after verify and affects the next round, not the "
+"current one:"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:52
+msgid ""
+"┌─────────────────────────────────────────────────────────────────────┐\n"
+"│           EAGLEWorker.forward_batch_generation() — decode path      │\n"
+"│                                                                     │\n"
+"│   ① draft(batch)                                                    │\n"
+"│       │  draft model multi-step generation with current tier        │\n"
+"│       v                                                             │\n"
+"│   ② verify(batch, spec_info)                                        │\n"
+"│       │  target model tree verification                             │\n"
+"│       │  → produces accept_length_per_req                           │\n"
+"│       v                                                             │\n"
+"│   ③ forward_draft_extend_after_decode(batch)                        │\n"
+"│       │  draft model KV-cache catch-up                              │\n"
+"│       v                                                             │\n"
+"│   ④ adaptive_controller.on_verify_complete(accept_lengths)          │\n"
+"│       │                                                             │\n"
+"│       │  update EMA, apply warmup / interval / hysteresis gates     │\n"
+"│       │  if tier changed, select a pre-built state from pool        │\n"
+"│       v                                                             │\n"
+"│     worker.apply_runtime_state(state)                               │\n"
+"│                                                                     │\n"
+"│   Tier switch happens after the current round completes.            │\n"
+"│   Backends and CUDA graphs are never swapped mid-round.             │\n"
+"└─────────────────────────────────────────────────────────────────────┘\n"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:78
+msgid "How the policy decides"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:80
+msgid ""
+"After each verify pass, SGLang reads the accepted draft length per request, "
+"computes the batch average, smooths it with an exponential moving average "
+"(EMA), and switches among the pre-built candidate tiers `[1, 3, 7]` by "
+"default."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:82
+msgid "The decision logic is intentionally conservative:"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:84
+msgid "`warmup_batches` skips the first few batches"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:85
+msgid "`update_interval` avoids switching every batch"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:86
+msgid "`down_hysteresis` and `up_hysteresis` reduce oscillation"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:88
+msgid ""
+"Conceptually, the policy probes one step beyond the observed acceptance:"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:90
+msgid ""
+"target_steps ≈ clamp(round(ema_accept_len) + 1, min(candidate_steps), "
+"max(candidate_steps))\n"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:94
+msgid ""
+"So if recent requests consistently accept more drafted tokens, the policy "
+"tends to move up. If they start rejecting earlier, it tends to move down."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:96
+msgid "Usage"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:98
+msgid ""
+"`--speculative-adaptive-config` is optional, but the speculative setup still "
+"needs to be valid for adaptive mode."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:100
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model meta-llama/Llama-2-7b-chat-hf \\\n"
+"    --speculative-algorithm EAGLE \\\n"
+"    --speculative-draft-model-path lmsys/sglang-EAGLE-llama2-chat-7B \\\n"
+"    --speculative-eagle-topk 1 \\\n"
+"    --speculative-num-steps 3 \\\n"
+"    --speculative-num-draft-tokens 4 \\\n"
+"    --speculative-adaptive\n"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:111
+msgid ""
+"If you want to override the defaults, add `--speculative-adaptive-config /"
+"path/to/adaptive_spec.json`."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:113
+msgid "Example config:"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:115
+msgid ""
+"{\n"
+"  \"candidate_steps\": [1, 3, 7],\n"
+"  \"ema_alpha\": 0.2,\n"
+"  \"warmup_batches\": 10,\n"
+"  \"update_interval\": 5\n"
+"}\n"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:124
+msgid "Config file reference"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:126
+msgid "The config file is optional. Any omitted keys use defaults."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Key"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Meaning"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`candidate_steps`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`[1, 3, 7]`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid ""
+"Discrete `speculative_num_steps` tiers that adaptive mode can switch between"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`ema_alpha`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`0.2`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "EMA smoothing factor for accepted draft length"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`update_interval`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`5`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Recompute interval, in verify batches, after warmup"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`warmup_batches`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`10`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Number of verify batches to observe before switching"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`down_hysteresis`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`-0.25`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Extra margin before moving to a smaller step"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`up_hysteresis`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "`0.0`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:0
+msgid "Extra margin before moving to a larger step"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:137
+msgid ""
+"The initial `--speculative-num-steps` is snapped to the nearest value in "
+"`candidate_steps`."
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:139
+msgid "Monitoring"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:141
+msgid ""
+"You can inspect the active tier and acceptance metric via `/server_info`:"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:143
+msgid ""
+"curl -s http://127.0.0.1:30000/server_info | jq '.internal_states[0] | "
+"{speculative_num_steps, avg_spec_accept_length}'\n"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:147
+msgid "`speculative_num_steps` is the current active tier"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:148
+msgid ""
+"`avg_spec_accept_length` helps explain whether the server is likely to move "
+"up or down"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:150
+msgid "Tuning tips"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:152
+msgid "Start with the default candidate tiers `[1, 3, 7]`"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:153
+msgid "Use fewer tiers if you want lower startup and graph-memory overhead"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:154
+msgid "Increase `ema_alpha` to react faster, or lower it for more stability"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:155
+msgid ""
+"Increase `warmup_batches` or `update_interval` if tier switching is too noisy"
+msgstr ""
+
+#: ../../../advanced_features/adaptive_speculative_decoding.md:156
+msgid ""
+"If your workload is already stable and one static setting is well tuned, "
+"adaptive mode may not help much"
+msgstr ""

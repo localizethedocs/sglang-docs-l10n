@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,18 +67,30 @@ msgid ""
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:16
-msgid "**MPS**: always uses PyTorch SDPA."
+msgid ""
+"**Intel XPU**: uses XPU Flash Attention backend (fp16/bf16, head sizes "
+"64/96/128/192/256); otherwise falls back to PyTorch SDPA."
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:17
-msgid "**NPU**: always uses PyTorch SDPA."
+msgid ""
+"**MUSA**: uses FlashAttention when available; otherwise falls back to "
+"PyTorch SDPA."
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:18
+msgid "**MPS**: always uses PyTorch SDPA."
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:19
-msgid "Backend options"
+msgid "**NPU**: for ring attention uses FA otherwise uses PyTorch SDPA."
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:21
+msgid "Backend options"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:23
 msgid ""
 "For SGLang-native pipelines, the CLI accepts the lowercase names of "
 "`AttentionBackendEnum`. The table below lists the backends implemented by "
@@ -211,6 +223,34 @@ msgid "`AITER_SAGE`"
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:0
+msgid "`sla_attn`"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid "`SLA_ATTN`"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid ""
+"Sparse Linear Attention. Requires `SpargeAttn`. Install with `pip install "
+"git+https://github.com/thu-ml/SpargeAttn.git --no-build-isolation`."
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid "`sage_sla_attn`"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid "`SAGE_SLA_ATTN`"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid ""
+"SageAttention + Sparse Linear Attention. Requires `SpargeAttn` (same install "
+"as SLA)."
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
 msgid "`sparse_video_gen_2_attn`"
 msgstr ""
 
@@ -224,55 +264,55 @@ msgid ""
 "project/Sparse-VideoGen."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:36
+#: ../../../diffusion/performance/attention_backends.md:40
 msgid "Selection priority"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:38
+#: ../../../diffusion/performance/attention_backends.md:42
 msgid "The selection order in `runtime/layers/attention/selector.py` is:"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:40
+#: ../../../diffusion/performance/attention_backends.md:44
 msgid ""
 "`global_force_attn_backend(...)` / "
 "`global_force_attn_backend_context_manager(...)`"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:41
+#: ../../../diffusion/performance/attention_backends.md:45
 msgid "CLI `--attention-backend` (`ServerArgs.attention_backend`)"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:42
+#: ../../../diffusion/performance/attention_backends.md:46
 msgid "Auto selection (platform capability, dtype, and installed packages)"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:44
+#: ../../../diffusion/performance/attention_backends.md:48
 msgid "Configuration"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:46
+#: ../../../diffusion/performance/attention_backends.md:50
 msgid ""
 "Some backends require additional configuration. You can pass these "
 "parameters via `--attention-backend-config`. This argument accepts:"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:47
+#: ../../../diffusion/performance/attention_backends.md:51
 msgid "A path to a JSON or YAML configuration file."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:48
+#: ../../../diffusion/performance/attention_backends.md:52
 msgid "A JSON string (e.g., `'{\"sparsity\": 0.5}'`)."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:49
+#: ../../../diffusion/performance/attention_backends.md:53
 msgid "Key-value pairs (e.g., `\"sparsity=0.5,enable_x=true\"`)."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:51
+#: ../../../diffusion/performance/attention_backends.md:55
 msgid "Supported Configuration Parameters"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:53
+#: ../../../diffusion/performance/attention_backends.md:57
 msgid "**Sliding Tile Attention (`sliding_tile_attn`)**"
 msgstr ""
 
@@ -337,7 +377,7 @@ msgstr ""
 msgid "`15`"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:61
+#: ../../../diffusion/performance/attention_backends.md:65
 msgid "**Video Sparse Attention (`video_sparse_attn`)**"
 msgstr ""
 
@@ -357,7 +397,7 @@ msgstr ""
 msgid "`0.0`"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:67
+#: ../../../diffusion/performance/attention_backends.md:71
 msgid "**V-MoBA (`vmoba_attn`)**"
 msgstr ""
 
@@ -501,7 +541,7 @@ msgstr ""
 msgid "Number of spatiotemporal layers."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:86
+#: ../../../diffusion/performance/attention_backends.md:90
 msgid "Platform support matrix"
 msgstr ""
 
@@ -515,6 +555,14 @@ msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:0
 msgid "ROCm"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid "XPU"
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
+msgid "MUSA"
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:0
@@ -539,8 +587,10 @@ msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:0
 msgid ""
-"CUDA requires SM80+ and fp16/bf16. FlashAttention is only used when the "
-"required runtime is installed; otherwise it falls back to `torch_sdpa`."
+"CUDA requires SM80+ and fp16/bf16. XPU uses its own flash attention backend. "
+"FlashAttention is only used when the required runtime is installed; "
+"otherwise it falls back to `torch_sdpa`. No extra installations are required "
+"for NPU"
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:0
@@ -563,6 +613,10 @@ msgid ""
 msgstr ""
 
 #: ../../../diffusion/performance/attention_backends.md:0
+msgid "CUDA-only. Requires `SpargeAttn`."
+msgstr ""
+
+#: ../../../diffusion/performance/attention_backends.md:0
 msgid ""
 "CUDA-only. Requires `kernel.attn.vmoba_attn.vmoba`. Configure via `--"
 "attention-backend-config`."
@@ -572,15 +626,15 @@ msgstr ""
 msgid "CUDA-only. Requires `svg`."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:101
+#: ../../../diffusion/performance/attention_backends.md:107
 msgid "Usage"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:103
+#: ../../../diffusion/performance/attention_backends.md:109
 msgid "Select a backend via CLI"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:105
+#: ../../../diffusion/performance/attention_backends.md:111
 msgid ""
 "sglang generate \\\n"
 "  --model-path <MODEL_PATH_OR_ID> \\\n"
@@ -588,7 +642,7 @@ msgid ""
 "  --attention-backend fa\n"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:112
+#: ../../../diffusion/performance/attention_backends.md:118
 msgid ""
 "sglang generate \\\n"
 "  --model-path <MODEL_PATH_OR_ID> \\\n"
@@ -596,11 +650,11 @@ msgid ""
 "  --attention-backend torch_sdpa\n"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:119
+#: ../../../diffusion/performance/attention_backends.md:125
 msgid "Using Sliding Tile Attention (STA)"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:121
+#: ../../../diffusion/performance/attention_backends.md:127
 msgid ""
 "# Pass the mask strategy file path via config\n"
 "sglang generate \\\n"
@@ -611,16 +665,16 @@ msgid ""
 "mask_strategy.json\"\n"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:130
+#: ../../../diffusion/performance/attention_backends.md:136
 msgid "Notes for ROCm / MPS"
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:132
+#: ../../../diffusion/performance/attention_backends.md:138
 msgid ""
 "ROCm: use `--attention-backend torch_sdpa` or `fa` depending on what is "
 "available in your environment."
 msgstr ""
 
-#: ../../../diffusion/performance/attention_backends.md:133
+#: ../../../diffusion/performance/attention_backends.md:139
 msgid "MPS: the platform implementation always uses `torch_sdpa`."
 msgstr ""

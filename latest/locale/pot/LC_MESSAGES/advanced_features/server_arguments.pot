@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,13 +224,13 @@ msgid "`--model-path`<br>`--model`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:82
-#: ../../../advanced_features/server_arguments.md:154
 #: ../../../advanced_features/server_arguments.md:155
 #: ../../../advanced_features/server_arguments.md:156
 #: ../../../advanced_features/server_arguments.md:157
-#: ../../../advanced_features/server_arguments.md:231
-#: ../../../advanced_features/server_arguments.md:237
-#: ../../../advanced_features/server_arguments.md:280
+#: ../../../advanced_features/server_arguments.md:158
+#: ../../../advanced_features/server_arguments.md:232
+#: ../../../advanced_features/server_arguments.md:238
+#: ../../../advanced_features/server_arguments.md:282
 #: ../../../advanced_features/server_arguments.md:314
 msgid "<br>"
 msgstr ""
@@ -324,14 +324,15 @@ msgid ""
 "bitsandbytes quantization.\"layered\" loads weights layer by layer so that "
 "one can quantize a layer before loading another to make the peak memory "
 "envelope smaller. \"flash_rl\" will load the weights in flash_rl format. "
-"\"fastsafetensors\" and \"private\" are also supported."
+"\"fastsafetensors\" and \"private\" are also supported. \"runai_streamer\" "
+"enables direct model loading from object storage and shared file systems."
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
 msgid ""
 "`auto`, `pt`, `safetensors`, `npcache`, `dummy`, `sharded_state`, `gguf`, "
 "`bitsandbytes`, `layered`, `flash_rl`, `remote`, `remote_instance`, "
-"`fastsafetensors`, `private`"
+"`fastsafetensors`, `private`, `runai_streamer`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
@@ -637,7 +638,17 @@ msgid ""
 "flash_rl."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:123
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--enable-quant-communications`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Enable INT8 quantization of TP communications (Supported only for NPU for "
+"Qwen3 series)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:124
 msgid "Memory and scheduling"
 msgstr ""
 
@@ -905,7 +916,7 @@ msgid ""
 "added."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:150
+#: ../../../advanced_features/server_arguments.md:151
 msgid "Runtime options"
 msgstr ""
 
@@ -1108,7 +1119,7 @@ msgid ""
 "server is shutdown. This is only available for Engine, not for CLI."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:175
+#: ../../../advanced_features/server_arguments.md:176
 msgid "Logging"
 msgstr ""
 
@@ -1326,28 +1337,28 @@ msgid ""
 "50 100 500')."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:196
 #: ../../../advanced_features/server_arguments.md:197
+#: ../../../advanced_features/server_arguments.md:198
 msgid "<middle>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:196
 #: ../../../advanced_features/server_arguments.md:197
+#: ../../../advanced_features/server_arguments.md:198
 msgid "<base>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:196
 #: ../../../advanced_features/server_arguments.md:197
+#: ../../../advanced_features/server_arguments.md:198
 msgid "<count>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:196
 #: ../../../advanced_features/server_arguments.md:197
+#: ../../../advanced_features/server_arguments.md:198
 msgid "<value1>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:196
 #: ../../../advanced_features/server_arguments.md:197
+#: ../../../advanced_features/server_arguments.md:198
 msgid "<value2>"
 msgstr ""
 
@@ -1427,11 +1438,11 @@ msgid ""
 "<ip>:<port>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:203
+#: ../../../advanced_features/server_arguments.md:204
 msgid "<ip>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:203
+#: ../../../advanced_features/server_arguments.md:204
 msgid "<port>"
 msgstr ""
 
@@ -1439,7 +1450,7 @@ msgstr ""
 msgid "`localhost:4317`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:205
+#: ../../../advanced_features/server_arguments.md:206
 msgid "RequestMetricsExporter configuration"
 msgstr ""
 
@@ -1463,7 +1474,7 @@ msgid ""
 "metrics-to-file is enabled)."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:211
+#: ../../../advanced_features/server_arguments.md:212
 msgid "API related"
 msgstr ""
 
@@ -1484,8 +1495,8 @@ msgstr ""
 #: ../../../advanced_features/server_arguments.md:0
 msgid ""
 "Set **admin API key** for administrative/control endpoints (e.g., weights "
-"update, cache flush, `/get_server_info`). Endpoints marked as admin-only "
-"require `Authorization: Bearer <admin_api_key>` when this is set."
+"update, cache flush, `/server_info`). Endpoints marked as admin-only require "
+"`Authorization: Bearer <admin_api_key>` when this is set."
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
@@ -1630,7 +1641,7 @@ msgstr ""
 msgid "`openai`, `model`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:228
+#: ../../../advanced_features/server_arguments.md:229
 msgid "Data parallelism"
 msgstr ""
 
@@ -1659,7 +1670,7 @@ msgid ""
 "`total_tokens`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:234
+#: ../../../advanced_features/server_arguments.md:235
 msgid "Multi-node distributed serving"
 msgstr ""
 
@@ -1689,7 +1700,7 @@ msgstr ""
 msgid "The node rank."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:241
+#: ../../../advanced_features/server_arguments.md:242
 msgid "Model override args"
 msgstr ""
 
@@ -1712,7 +1723,7 @@ msgid ""
 "json-formatted sampling settings that will be returned in /get_model_info"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:247
+#: ../../../advanced_features/server_arguments.md:248
 msgid "LoRA"
 msgstr ""
 
@@ -1857,7 +1868,20 @@ msgstr ""
 msgid "`16`, `32`, `64`, `128`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:261
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--lora-drain-wait-threshold`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"When any LoRA adapter request waits longer than this threshold (in seconds), "
+"the scheduler will selectively drain one running adapter to make room. This "
+"mitigates extreme tail latency under high or skewed workloads by preventing "
+"a small set of adapters from monopolizing batch slots. Set to 0 to disable "
+"draining (default)."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:263
 msgid "Kernel Backends (Attention, Sampling, Grammar, GEMM)"
 msgstr ""
 
@@ -2027,7 +2051,7 @@ msgid ""
 "autotune."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:276
+#: ../../../advanced_features/server_arguments.md:278
 msgid "Speculative decoding"
 msgstr ""
 
@@ -2201,30 +2225,8 @@ msgstr ""
 msgid "Same as --quantization options"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:295
+#: ../../../advanced_features/server_arguments.md:297
 msgid "Ngram speculative decoding"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--speculative-ngram-min-match-window-size`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid ""
-"The minimum window size for pattern matching in ngram speculative decoding."
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--speculative-ngram-max-match-window-size`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid ""
-"The maximum window size for pattern matching in ngram speculative decoding."
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`12`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
@@ -2271,7 +2273,7 @@ msgid "`--speculative-ngram-max-trie-depth`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
-msgid "The max trie depth for ngram speculative decoding."
+msgid "Maximum suffix length stored and matched by the ngram trie."
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
@@ -2545,7 +2547,17 @@ msgid ""
 "enabled."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:338
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--elastic-ep-rejoin`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Indicates that this process is a relaunched elastic EP rank that should "
+"rejoin an existing process group during rank recovery."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:339
 msgid "Mamba Cache"
 msgstr ""
 
@@ -2626,7 +2638,7 @@ msgstr ""
 msgid "`256`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:347
+#: ../../../advanced_features/server_arguments.md:348
 msgid "Hierarchical cache"
 msgstr ""
 
@@ -2755,7 +2767,7 @@ msgid ""
 "for the storage backend."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:360
+#: ../../../advanced_features/server_arguments.md:361
 msgid "Hierarchical sparse attention"
 msgstr ""
 
@@ -2770,7 +2782,7 @@ msgid ""
 "other fields are algorithm-specific and passed to the algorithm constructor."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:365
+#: ../../../advanced_features/server_arguments.md:366
 msgid "LMCache"
 msgstr ""
 
@@ -2782,7 +2794,7 @@ msgstr ""
 msgid "Using LMCache as an alternative hierarchical cache solution"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:370
+#: ../../../advanced_features/server_arguments.md:371
 msgid "Ktransformers"
 msgstr ""
 
@@ -2845,7 +2857,7 @@ msgid ""
 "always uses 0."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:380
+#: ../../../advanced_features/server_arguments.md:381
 msgid "Diffusion LLM"
 msgstr ""
 
@@ -2865,73 +2877,7 @@ msgstr ""
 msgid "The diffusion LLM algorithm configurations. Must be a YAML file."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:387
-msgid "Double Sparsity"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--enable-double-sparsity`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "Enable double sparsity attention"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--ds-channel-config-path`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "The path of the double sparsity channel config"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--ds-heavy-channel-num`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "The number of heavy channels in double sparsity attention"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`32`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--ds-heavy-token-num`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "The number of heavy tokens in double sparsity attention"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--ds-heavy-channel-type`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "The type of heavy channels in double sparsity attention"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`qk`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`--ds-sparse-decode-threshold`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid ""
-"The minimum decode sequence length required before the double-sparsity "
-"backend switches from the dense fallback to the sparse decode kernel."
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:0
-msgid "`4096`"
-msgstr ""
-
-#: ../../../advanced_features/server_arguments.md:397
+#: ../../../advanced_features/server_arguments.md:388
 msgid "Offloading"
 msgstr ""
 
@@ -2983,7 +2929,7 @@ msgstr ""
 msgid "`cpu`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:406
+#: ../../../advanced_features/server_arguments.md:397
 msgid "Args for multi-item scoring"
 msgstr ""
 
@@ -2999,11 +2945,11 @@ msgid ""
 "query."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:409
+#: ../../../advanced_features/server_arguments.md:400
 msgid "<delimiter>"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:411
+#: ../../../advanced_features/server_arguments.md:402
 msgid "Optimization/debug options"
 msgstr ""
 
@@ -3314,11 +3260,19 @@ msgid "Set the maximum batch size when using torch compile."
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
+msgid "`32`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
 msgid "`--piecewise-cuda-graph-max-tokens`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
 msgid "Set the maximum tokens when using piecewise cuda graph."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`4096`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
@@ -3610,7 +3564,7 @@ msgid ""
 "accurate(but slower) evaluation of interpolated embedding values."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:476
+#: ../../../advanced_features/server_arguments.md:467
 msgid "Dynamic batch tokenizer"
 msgstr ""
 
@@ -3648,7 +3602,7 @@ msgstr ""
 msgid "`0.002`"
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:483
+#: ../../../advanced_features/server_arguments.md:474
 msgid "Debug tensor dumps"
 msgstr ""
 
@@ -3684,7 +3638,7 @@ msgstr ""
 msgid "Inject the outputs from jax as the input of every layer."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:491
+#: ../../../advanced_features/server_arguments.md:482
 msgid "PD disaggregation"
 msgstr ""
 
@@ -3779,7 +3733,7 @@ msgid ""
 "the overhead of this."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:502
+#: ../../../advanced_features/server_arguments.md:493
 msgid "Encode prefill disaggregation"
 msgstr ""
 
@@ -3824,7 +3778,7 @@ msgstr ""
 msgid "List of encoder server urls."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:510
+#: ../../../advanced_features/server_arguments.md:501
 msgid "Custom weight loader"
 msgstr ""
 
@@ -3844,6 +3798,30 @@ msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
 msgid "Disable mmap while loading weight using safetensors."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--weight-loader-prefetch-checkpoints`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"Prefetch checkpoint files into OS page cache before loading. Each rank "
+"prefetches a fraction of the shards in a background thread, reducing total "
+"network I/O on shared filesystems (NFS/Lustre) from N\\*checkpoint to "
+"1\\*checkpoint. Recommended for models on network storage."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--weight-loader-prefetch-num-threads`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "Number of threads per rank for checkpoint prefetching."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`4`"
 msgstr ""
 
 #: ../../../advanced_features/server_arguments.md:0
@@ -3900,7 +3878,7 @@ msgid ""
 "loader."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:521
+#: ../../../advanced_features/server_arguments.md:514
 msgid "For PD-Multiplexing"
 msgstr ""
 
@@ -3928,7 +3906,7 @@ msgstr ""
 msgid "Number of sm partition groups."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:528
+#: ../../../advanced_features/server_arguments.md:521
 msgid "Configuration file support"
 msgstr ""
 
@@ -3942,7 +3920,7 @@ msgid ""
 "options."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:533
+#: ../../../advanced_features/server_arguments.md:526
 msgid "For Multi-Modal"
 msgstr ""
 
@@ -4019,7 +3997,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:544
+#: ../../../advanced_features/server_arguments.md:537
 msgid "For checkpoint decryption"
 msgstr ""
 
@@ -4047,7 +4025,7 @@ msgstr ""
 msgid "Enable prefix multimodal cache. Currently only supports mm-only."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:551
+#: ../../../advanced_features/server_arguments.md:544
 msgid "Forward hooks"
 msgstr ""
 
@@ -4065,7 +4043,21 @@ msgid ""
 "factory."
 msgstr ""
 
-#: ../../../advanced_features/server_arguments.md:556
+#: ../../../advanced_features/server_arguments.md:549
+msgid "For MindStudio-probe(msProbe) dump"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid "`--msprobe-dump-config`"
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:0
+msgid ""
+"The path of the JSON configuration file for msProbe. If specified, enables "
+"msProbe dump."
+msgstr ""
+
+#: ../../../advanced_features/server_arguments.md:554
 msgid "Deprecated arguments"
 msgstr ""
 

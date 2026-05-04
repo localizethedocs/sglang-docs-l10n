@@ -1,0 +1,277 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/object_storage.md:1
+msgid "Loading Models from Object Storage"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:3
+msgid ""
+"SGLang supports direct loading of models from object storage (S3 and Google "
+"Cloud Storage) without requiring a full local download. This feature uses "
+"the `runai_streamer` load format to stream model weights directly from cloud "
+"storage, significantly reducing startup time and local storage requirements."
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:5
+msgid "Overview"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:7
+msgid ""
+"When loading models from object storage, SGLang uses a two-phase approach:"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:9
+msgid ""
+"**Metadata Download** (once, before process launch): Configuration files and "
+"tokenizer files are downloaded to a local cache"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:10
+msgid ""
+"**Weight Streaming** (lazy, during model loading): Model weights are "
+"streamed directly from object storage as needed"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:12
+msgid "Supported Storage Backends"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:14
+msgid "**Amazon S3**: `s3://bucket-name/path/to/model/`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:15
+msgid "**Google Cloud Storage**: `gs://bucket-name/path/to/model/`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:16
+msgid "**Azure Blob**: `az://some-azure-container/path/`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:17
+msgid "**S3 compatible**: `s3://bucket-name/path/to/model/`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:19
+msgid "Quick Start"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:21
+msgid "Basic Usage"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:23
+msgid "Simply provide an object storage URI as the model path:"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:25
+msgid ""
+"# S3\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path s3://my-bucket/models/llama-3-8b/ \\\n"
+"  --load-format runai_streamer\n"
+"\n"
+"# Google Cloud Storage\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path gs://my-bucket/models/llama-3-8b/ \\\n"
+"  --load-format runai_streamer\n"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:37
+msgid ""
+"**Note**: The `--load-format runai_streamer` is automatically detected when "
+"using object storage URIs, so you can omit it:"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:39
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path s3://my-bucket/models/llama-3-8b/\n"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:44
+msgid "With Tensor Parallelism"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:46
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path gs://my-bucket/models/llama-70b/ \\\n"
+"  --tp 4 \\\n"
+"  --model-loader-extra-config '{\"distributed\": true}'\n"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:53
+msgid "Configuration"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:55
+msgid "Load Format"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:57
+msgid ""
+"The `runai_streamer` load format is specifically designed for object "
+"storage, ssd and shared file systems"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:59
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path s3://bucket/model/ \\\n"
+"  --load-format runai_streamer\n"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:65
+msgid "Extended Configuration Parameters"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:67
+msgid ""
+"Use `--model-loader-extra-config` to pass additional configuration as a JSON "
+"string:"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:69
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path s3://bucket/model/ \\\n"
+"  --model-loader-extra-config '{\n"
+"    \"distributed\": true,\n"
+"    \"concurrency\": 8,\n"
+"    \"memory_limit\": 2147483648\n"
+"  }'\n"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:79
+msgid "Available Parameters"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "Parameter"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "Type"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "`distributed`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "bool"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid ""
+"Enable distributed streaming for multi-GPU setups. Automatically set to "
+"`true` for object storage paths and cuda alike devices."
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "Auto-detected"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "`concurrency`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "int"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid ""
+"Number of concurrent download streams. Higher values can improve throughput "
+"for large models."
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "4"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "`memory_limit`"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "Memory limit (in bytes) for the streaming buffer."
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:0
+msgid "System-dependent"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:88
+msgid "Performance Considerations"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:90
+msgid "Distributed Streaming"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:92
+msgid ""
+"For multi-GPU setups, enable distributed streaming to parallelize weight "
+"loading between the processes:"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:94
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path s3://bucket/model/ \\\n"
+"  --tp 8 \\\n"
+"  --model-loader-extra-config '{\"distributed\": true}'\n"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:101
+msgid "Limitations"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:103
+msgid ""
+"**Supported Formats**: Currently only supports `.safetensors` weight format "
+"(recommended format)"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:104
+msgid ""
+"**Supported Device**: Distributed streaming is supported on cuda alike "
+"devices. Otherwise fallback to non distributed streaming"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:106
+msgid "See Also"
+msgstr ""
+
+#: ../../../advanced_features/object_storage.md:108
+msgid ""
+"[Runai model streamer documentation](https://github.com/run-ai/runai-model-"
+"streamer)"
+msgstr ""
