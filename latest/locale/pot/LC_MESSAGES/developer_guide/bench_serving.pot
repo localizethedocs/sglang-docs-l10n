@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-16 08:46+0000\n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgid "Prerequisites"
 msgstr ""
 
 #: ../../../developer_guide/bench_serving.md:24
-msgid "Python 3.8+"
+msgid "Python 3.10+"
 msgstr ""
 
 #: ../../../developer_guide/bench_serving.md:25
@@ -732,52 +732,104 @@ msgid ""
 msgstr ""
 
 #: ../../../developer_guide/bench_serving.md:344
-msgid "Troubleshooting"
+msgid "Fake decode stress testing (PD disaggregation, decode-only):"
 msgstr ""
 
 #: ../../../developer_guide/bench_serving.md:346
+msgid ""
+"When benchmarking pure decode performance in a PD disaggregation setup, you "
+"can bypass the prefill node entirely by using `--fake-prefill`. This "
+"requires the decode server to be started with `--disaggregation-transfer-"
+"backend fake`:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:348
+msgid ""
+"# Step 1: Start a decode-only server with fake transfer backend\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --disaggregation-mode decode \\\n"
+"  --disaggregation-transfer-backend fake \\\n"
+"  --port 30001\n"
+"\n"
+"# Step 2: Run bench_serving with --fake-prefill\n"
+"python3 -m sglang.bench_serving \\\n"
+"  --backend sglang \\\n"
+"  --host 127.0.0.1 --port 30001 \\\n"
+"  --model meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --dataset-name random \\\n"
+"  --num-prompts 500 \\\n"
+"  --random-input-len 1024 --random-output-len 256 \\\n"
+"  --fake-prefill\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:367
+msgid "Similarly, `bench_one_batch_server` also supports `--fake-prefill`:"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:369
+msgid ""
+"python3 -m sglang.bench_one_batch_server \\\n"
+"  --base-url http://127.0.0.1:30001 \\\n"
+"  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
+"  --batch-size 32 --input-len 1024 --output-len 256 \\\n"
+"  --fake-prefill\n"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:377
+msgid ""
+"The `--fake-prefill` flag automatically injects special sentinel values into "
+"each request, telling the decode server to skip real KV transfer and "
+"generate fake KV data locally."
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:379
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../developer_guide/bench_serving.md:381
 msgid ""
 "All requests failed: verify `--backend`, server URL/port, `--model`, and "
 "authentication. Check warmup errors printed by the script."
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:347
+#: ../../../developer_guide/bench_serving.md:382
 msgid ""
 "Throughput seems too low: adjust `--request-rate` and `--max-concurrency`; "
 "verify server batch size/scheduling; ensure streaming is enabled if "
 "appropriate."
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:348
+#: ../../../developer_guide/bench_serving.md:383
 msgid ""
 "Token counts look odd: prefer chat/instruct models with proper chat "
 "templates; otherwise tokenization of gibberish may be inconsistent."
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:349
+#: ../../../developer_guide/bench_serving.md:384
 msgid ""
 "Image/MMMU datasets: ensure you installed extra deps (`pillow`, `datasets`, "
 "`pybase64`)."
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:350
+#: ../../../developer_guide/bench_serving.md:385
 msgid ""
 "Authentication errors (401/403): set `OPENAI_API_KEY` or disable auth on "
 "your server."
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:352
+#: ../../../developer_guide/bench_serving.md:387
 msgid "Notes"
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:354
+#: ../../../developer_guide/bench_serving.md:389
 msgid ""
 "The script raises the file descriptor soft limit (`RLIMIT_NOFILE`) to help "
 "with many concurrent connections."
 msgstr ""
 
-#: ../../../developer_guide/bench_serving.md:355
+#: ../../../developer_guide/bench_serving.md:390
 msgid ""
-"For sglang, `/get_server_info` is queried post-run to report speculative "
+"For sglang, `/server_info` is queried post-run to report speculative "
 "decoding accept length when available."
 msgstr ""

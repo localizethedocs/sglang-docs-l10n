@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,14 +101,6 @@ msgid "Not set"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_DISABLE_REQUEST_LOGGING`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "Disable request logging"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_LOG_REQUEST_HEADERS`"
 msgstr ""
 
@@ -177,7 +169,33 @@ msgstr ""
 msgid "Timeout (in seconds) for requests running in the decode batch"
 msgstr ""
 
-#: ../../../references/environment_variables.md:23
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_CACHE_DIR`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Cache directory for model weights and other data"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`~/.cache/sglang`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_PREFETCH_BLOCK_SIZE_MB`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Block size (in MB) for sequential checkpoint prefetch reads that warm the OS "
+"page cache before workers load weights via mmap"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`16`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:24
 msgid "Performance Tuning"
 msgstr ""
 
@@ -425,7 +443,15 @@ msgid ""
 "abs/2512.12087"
 msgstr ""
 
-#: ../../../references/environment_variables.md:52
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_USE_SGL_FA3_KERNEL`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "Use sgl-kernel implementation for FlashAttention v3"
+msgstr ""
+
+#: ../../../references/environment_variables.md:54
 msgid "DeepGEMM Configuration (Advanced Optimization)"
 msgstr ""
 
@@ -514,7 +540,7 @@ msgid ""
 "30min to less than 3min. Might cause performance degradation during runtime."
 msgstr ""
 
-#: ../../../references/environment_variables.md:65
+#: ../../../references/environment_variables.md:67
 msgid "DeepEP Configuration"
 msgstr ""
 
@@ -576,7 +602,7 @@ msgid ""
 "will be overlapped with DeepEP combine together."
 msgstr ""
 
-#: ../../../references/environment_variables.md:75
+#: ../../../references/environment_variables.md:77
 msgid "MORI Configuration"
 msgstr ""
 
@@ -632,6 +658,31 @@ msgid "`256`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_PREALLOC_MAX_RECV_TOKENS`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"This argument devives `SGLANG_MORI_NUM_MAX_DISPATCH_TOKENS_PER_RANK` which "
+"indicates customized amount of tokens preallocated for a rank, valid range "
+"from 1 to world_size*SGLANG_MORI_NUM_MAX_DISPATCH_TOKENS_PER_RANK, by "
+"default `0` means maximum. Setting a smaller value will reduce memory "
+"footprint but too small value could cause buffer overflow."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MORI_MOE_MAX_INPUT_TOKENS`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Truncate the dispatch buffer to this many rows before MoE computation, "
+"reducing kernel overhead on padding tokens. The value must be >= the actual "
+"number of received tokens (`totalRecvTokenNum`); setting it too small causes "
+"incorrect results. `0` disables truncation (use full buffer)."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_MORI_QP_PER_TRANSFER`"
 msgstr ""
 
@@ -655,11 +706,11 @@ msgstr ""
 msgid "Number of worker threads in the RDMA executor thread pool"
 msgstr ""
 
-#: ../../../references/environment_variables.md:87
+#: ../../../references/environment_variables.md:91
 msgid "NSA Backend Configuration (For DeepSeek V3.2)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:89
+#: ../../../references/environment_variables.md:93
 msgid ""
 "<!-- # Environment variable to control mtp precomputing of metadata for "
 "multi-step speculative decoding -->\n"
@@ -708,7 +759,7 @@ msgstr ""
 msgid "`2048`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:99
+#: ../../../references/environment_variables.md:103
 msgid "Memory Management"
 msgstr ""
 
@@ -758,7 +809,7 @@ msgid ""
 "`BAREX`, `INTRA_NODE_NVLINK`. If set to `true`, it defaults to `NVLINK`."
 msgstr ""
 
-#: ../../../references/environment_variables.md:109
+#: ../../../references/environment_variables.md:113
 msgid "Model-Specific Options"
 msgstr ""
 
@@ -790,7 +841,7 @@ msgid ""
 "backend=cutlass)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:117
+#: ../../../references/environment_variables.md:121
 msgid "Quantization"
 msgstr ""
 
@@ -800,16 +851,6 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Enable INT4 weight quantization"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_PER_TOKEN_GROUP_QUANT_8BIT_V2`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid ""
-"Apply per token group quantization kernel with fused silu and mul and masked "
-"m"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -873,7 +914,7 @@ msgstr ""
 msgid "`\"\"`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:131
+#: ../../../references/environment_variables.md:134
 msgid "Distributed Computing"
 msgstr ""
 
@@ -909,11 +950,60 @@ msgstr ""
 msgid "Set one visible device per process for distributed computing"
 msgstr ""
 
-#: ../../../references/environment_variables.md:140
+#: ../../../references/environment_variables.md:143
+msgid "PD Disaggregation — Staging Buffer (Heterogeneous TP)"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DISAGG_STAGING_BUFFER`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Enable GPU staging buffer for heterogeneous TP KV transfer. Required when "
+"prefill and decode use different TP/attention-TP sizes. Only for non-MLA "
+"models (e.g. GQA, MHA)."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DISAGG_STAGING_BUFFER_SIZE_MB`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Prefill-side per-worker staging buffer size in MB. Used for gathering KV "
+"head slices before bulk RDMA transfer."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`64`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DISAGG_STAGING_POOL_SIZE_MB`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Decode-side ring buffer pool total size in MB. Shared buffer receiving RDMA "
+"data from all prefill ranks. Larger values support higher concurrency."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_STAGING_USE_TORCH`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Force using PyTorch gather/scatter fallback instead of Triton fused kernels "
+"for staging operations. Useful for debugging."
+msgstr ""
+
+#: ../../../references/environment_variables.md:152
 msgid "Testing & Debugging (Internal/CI)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:142
+#: ../../../references/environment_variables.md:154
 msgid ""
 "*These variables are primarily used for internal testing, continuous "
 "integration, or debugging.*"
@@ -971,6 +1061,17 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Test request time statistics"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DEBUG_SYMM_MEM`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Enable debug checks that verify tensors passed to NCCL communication ops are "
+"allocated in the symmetric memory pool. Logs warnings (rank 0 only) with "
+"stack traces for any tensor not in the pool."
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -1032,7 +1133,7 @@ msgid ""
 "level-10 dumps."
 msgstr ""
 
-#: ../../../references/environment_variables.md:158
+#: ../../../references/environment_variables.md:171
 msgid "Profiling & Benchmarking"
 msgstr ""
 
@@ -1085,11 +1186,7 @@ msgstr ""
 msgid "Config BatchSpanProcessor.max_export_batch_size if tracing is enabled"
 msgstr ""
 
-#: ../../../references/environment_variables.md:0
-msgid "`64`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:168
+#: ../../../references/environment_variables.md:181
 msgid "Storage & Caching"
 msgstr ""
 
@@ -1138,7 +1235,7 @@ msgstr ""
 msgid "Not set (uses `--page-size`)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:178
+#: ../../../references/environment_variables.md:191
 msgid "Function Calling / Tool Use"
 msgstr ""
 
@@ -1156,6 +1253,6 @@ msgid ""
 "`strict=True` set"
 msgstr ""
 
-#: ../../../references/environment_variables.md:182
+#: ../../../references/environment_variables.md:195
 msgid "<br>"
 msgstr ""

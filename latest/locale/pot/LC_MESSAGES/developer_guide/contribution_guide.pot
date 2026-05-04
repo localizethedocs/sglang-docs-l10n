@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang latest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"POT-Creation-Date: 2026-05-04 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -410,7 +410,8 @@ msgid ""
 "[this](https://github.com/sgl-project/sglang/blob/"
 "f1b0eda55c2c4838e8ab90a0fac7fb1e3d7064ab/python/sglang/srt/models/"
 "deepseek_v2.py#L486-L491)). These are very likely the same for every layer. "
-"Please cache the result as a single boolean value whenever possible."
+"Please cache the result as a single boolean value in `__init__` whenever "
+"possible."
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:147
@@ -426,26 +427,32 @@ msgid ""
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:149
-msgid "Keep tests run fast."
+msgid ""
+"In a file, put core data structures at the top of the file. Put utility "
+"functions at the bottom of the file."
 msgstr ""
 
 #: ../../../developer_guide/contribution_guide.md:150
+msgid "Keep tests run fast."
+msgstr ""
+
+#: ../../../developer_guide/contribution_guide.md:151
 msgid ""
 "If a single test file run longer than 500 seconds, split it into multiple "
 "smaller files (e.g., `test_eagle_infer_a.py`, `test_eagle_infer_b.py`)."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:151
+#: ../../../developer_guide/contribution_guide.md:152
 msgid ""
 "If a single job in a github workflow runs longer than 30 mins, split it into "
 "smaller jobs/steps."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:152
+#: ../../../developer_guide/contribution_guide.md:153
 msgid "Reuse server launches in your unit tests to make tests run faster."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:153
+#: ../../../developer_guide/contribution_guide.md:154
 msgid ""
 "Never use `pickle.loads()`, `pickle.load()`, or `recv_pyobj()` to "
 "deserialize untrusted or network-received data. Python's [pickle module is "
@@ -454,31 +461,31 @@ msgid ""
 "as [msgpack](https://github.com/jcrist/msgspec) or JSON instead."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:154
+#: ../../../developer_guide/contribution_guide.md:155
 msgid "When supporting new hardware or features, follow these guidelines:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:155
+#: ../../../developer_guide/contribution_guide.md:156
 msgid "Do not drastically change existing code."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:156
+#: ../../../developer_guide/contribution_guide.md:157
 msgid ""
 "Always prefer new files to introduce specific components for your new "
 "hardware (e.g., `allocator_ascend.py`)."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:157
+#: ../../../developer_guide/contribution_guide.md:158
 msgid ""
 "If you write multiple if/else blocks for new features, ensure the common "
 "path (e.g., NVIDIA hardware or the existing code path) is the first branch."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:159
+#: ../../../developer_guide/contribution_guide.md:160
 msgid "How to update sgl-kernel"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:160
+#: ../../../developer_guide/contribution_guide.md:161
 msgid ""
 "Since sglang and the `sglang-kernel` (prior `sgl-kernel`) distribution are "
 "separate Python packages, our current GitHub CI infrastructure does not "
@@ -487,54 +494,54 @@ msgid ""
 "kernel/` source tree, you must use multiple PRs."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:163
+#: ../../../developer_guide/contribution_guide.md:164
 msgid "Follow these steps:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:165
+#: ../../../developer_guide/contribution_guide.md:166
 msgid ""
 "Submit a PR to update the sgl-kernel source code without using it in sglang "
 "python package (e.g., [#8884](https://github.com/sgl-project/sglang/"
 "pull/8884/files))."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:166
+#: ../../../developer_guide/contribution_guide.md:167
 msgid ""
 "Bump the version of the kernel package (e.g., [#9220](https://github.com/sgl-"
 "project/sglang/pull/9220/files))."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:167
+#: ../../../developer_guide/contribution_guide.md:168
 msgid ""
 "Once merged, this will trigger an automatic release of the `sglang-kernel` "
 "wheel to PyPI."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:168
+#: ../../../developer_guide/contribution_guide.md:169
 msgid ""
 "If not urgent, you can wait for other people to release the wheel. A new "
 "version will typically be released within one week."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:169
+#: ../../../developer_guide/contribution_guide.md:170
 msgid "Apply the changes:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:170
+#: ../../../developer_guide/contribution_guide.md:171
 msgid ""
 "Update the `sglang-kernel` version in `sglang/python/pyproject.toml` to use "
 "the modified kernels."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:171
+#: ../../../developer_guide/contribution_guide.md:172
 msgid "Update the related caller code in the sglang to use the new kernel."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:173
+#: ../../../developer_guide/contribution_guide.md:174
 msgid "Tips for newcomers"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:175
+#: ../../../developer_guide/contribution_guide.md:176
 msgid ""
 "If you want to contribute but don’t have a specific idea in mind, pick "
 "issues labeled [“good first issue” or “help wanted”](https://github.com/sgl-"
@@ -544,24 +551,24 @@ msgid ""
 "to the codebase."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:177
+#: ../../../developer_guide/contribution_guide.md:178
 msgid "Also check out the following materials as startup guide:"
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:178
+#: ../../../developer_guide/contribution_guide.md:179
 msgid ""
 "[Mini-SGLang](https://github.com/sgl-project/mini-sglang) for a quick "
 "overview on the structure of sglang."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:179
+#: ../../../developer_guide/contribution_guide.md:180
 msgid ""
 "[Code Walk-through](https://github.com/zhaochenyang20/Awesome-ML-SYS-"
 "Tutorial/tree/main/sglang/code-walk-through) for a deeper look into SGLang’s "
 "workflow."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:180
+#: ../../../developer_guide/contribution_guide.md:181
 msgid ""
 "[GTC-2026 Training Lab](https://drive.google.com/file/"
 "d/1mwOZEtipNLJzrflCTodj34KhuOZEoEw5/view?usp=drive_link) for hands-on "
@@ -569,12 +576,12 @@ msgid ""
 "launched SGLang instance."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:182
+#: ../../../developer_guide/contribution_guide.md:183
 msgid ""
 "If you have any questions or want to start a discussion, please feel free to "
 "ask in our [Slack channel](https://slack.sglang.io)."
 msgstr ""
 
-#: ../../../developer_guide/contribution_guide.md:184
+#: ../../../developer_guide/contribution_guide.md:185
 msgid "Thank you for your interest in SGLang. Happy coding!"
 msgstr ""
