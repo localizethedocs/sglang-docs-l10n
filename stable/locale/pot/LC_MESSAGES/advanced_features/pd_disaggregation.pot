@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:51+0000\n"
+"POT-Creation-Date: 2026-05-05 10:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,7 +110,7 @@ msgid "Mooncake"
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:30
-#: ../../../advanced_features/pd_disaggregation.md:160
+#: ../../../advanced_features/pd_disaggregation.md:213
 msgid "Requirements"
 msgstr ""
 
@@ -119,14 +119,14 @@ msgid "uv pip install mooncake-transfer-engine\n"
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:36
-#: ../../../advanced_features/pd_disaggregation.md:177
-#: ../../../advanced_features/pd_disaggregation.md:289
+#: ../../../advanced_features/pd_disaggregation.md:230
+#: ../../../advanced_features/pd_disaggregation.md:342
 msgid "Usage"
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:38
-#: ../../../advanced_features/pd_disaggregation.md:179
-#: ../../../advanced_features/pd_disaggregation.md:307
+#: ../../../advanced_features/pd_disaggregation.md:232
+#: ../../../advanced_features/pd_disaggregation.md:360
 msgid "Llama Single Node"
 msgstr ""
 
@@ -149,8 +149,8 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:55
-#: ../../../advanced_features/pd_disaggregation.md:196
-#: ../../../advanced_features/pd_disaggregation.md:324
+#: ../../../advanced_features/pd_disaggregation.md:249
+#: ../../../advanced_features/pd_disaggregation.md:377
 msgid "DeepSeek Multi-Node"
 msgstr ""
 
@@ -225,7 +225,7 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:125
-#: ../../../advanced_features/pd_disaggregation.md:267
+#: ../../../advanced_features/pd_disaggregation.md:320
 msgid "Advanced Configuration"
 msgstr ""
 
@@ -323,7 +323,19 @@ msgstr ""
 msgid "`300`"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:146
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGGREGATION_BOOTSTRAP_ENTRY_CLEANUP_INTERVAL`**"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "Interval (seconds) between cleanups of bootstrap entries"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "`120`"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:147
 msgid ""
 "If a greater mean TTFT is acceptable, you can `export "
 "SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT=600` (10 minutes) to relax the "
@@ -332,7 +344,7 @@ msgid ""
 "when a running decode node loses connection."
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:149
+#: ../../../advanced_features/pd_disaggregation.md:150
 msgid "Decode Server Configuration"
 msgstr ""
 
@@ -368,38 +380,146 @@ msgstr ""
 msgid "Timeout (seconds) for receiving KV Cache after request initialization"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:156
+#: ../../../advanced_features/pd_disaggregation.md:157
 msgid ""
 "If a greater mean TTFT is acceptable, you can `export "
 "SGLANG_DISAGGREGATION_WAITING_TIMEOUT=600` (10 minutes) to relax the timeout "
 "condition."
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:159
-msgid "NIXL"
+#: ../../../advanced_features/pd_disaggregation.md:160
+msgid "Heterogeneous TP with GPU Staging Buffer"
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:162
-msgid "Install via pip."
+msgid ""
+"When prefill and decode use different tensor parallelism (TP) sizes (e.g., "
+"prefill TP=4, decode DP attention with TP=1), the KV cache memory layout "
+"differs between the two sides. The **GPU staging buffer** solves this by "
+"gathering KV head slices into a contiguous buffer on the prefill side, "
+"performing bulk RDMA transfer, then scattering into the correct KV cache "
+"pages on the decode side. This provides **2–5x throughput improvement** over "
+"the default per-token slice approach at high concurrency and matches "
+"homogeneous TP baselines within ~5%."
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:164
-msgid "pip install nixl\n"
+msgid ""
+"Enable the staging buffer when prefill and decode use **different TP sizes** "
+"with the **Mooncake** transfer backend. When both sides use the same TP "
+"size, staging is automatically bypassed even if enabled."
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:166
+msgid ""
+"**Note:** The staging buffer is designed for non-MLA models (e.g. GQA, MHA). "
+"MLA models (e.g. DeepSeek-V2/V3) should not enable this flag."
 msgstr ""
 
 #: ../../../advanced_features/pd_disaggregation.md:168
+msgid "Environment Variables"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGG_STAGING_BUFFER`**"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "Enable GPU staging buffer for heterogeneous TP KV transfer"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "`False`"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGG_STAGING_BUFFER_SIZE_MB`**"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "Prefill-side per-worker staging buffer size in MB"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "`64`"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "**`SGLANG_DISAGG_STAGING_POOL_SIZE_MB`**"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "Decode-side ring buffer pool total size in MB"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:0
+msgid "`4096`"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:176
+msgid "Usage Example"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:178
+msgid ""
+"# Set staging buffer environment variables on BOTH prefill and decode\n"
+"export SGLANG_DISAGG_STAGING_BUFFER=1\n"
+"export SGLANG_DISAGG_STAGING_BUFFER_SIZE_MB=64\n"
+"export SGLANG_DISAGG_STAGING_POOL_SIZE_MB=4096\n"
+"\n"
+"# Prefill with TP=4\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path $MODEL_PATH \\\n"
+"  --disaggregation-mode prefill \\\n"
+"  --port 30000 \\\n"
+"  --tp 4 \\\n"
+"  --trust-remote-code \\\n"
+"  --disaggregation-ib-device mlx5_1,mlx5_2\n"
+"\n"
+"# Decode with TP=1 (or DP attention with effective attention TP=1)\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path $MODEL_PATH \\\n"
+"  --disaggregation-mode decode \\\n"
+"  --port 30001 \\\n"
+"  --tp 4 \\\n"
+"  --dp 4 \\\n"
+"  --enable-dp-attention \\\n"
+"  --trust-remote-code \\\n"
+"  --disaggregation-ib-device mlx5_3,mlx5_4\n"
+"\n"
+"# Router\n"
+"python -m sglang_router.launch_router \\\n"
+"  --pd-disaggregation \\\n"
+"  --prefill http://127.0.0.1:30000 \\\n"
+"  --decode http://127.0.0.1:30001 \\\n"
+"  --host 0.0.0.0 --port 8000\n"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:212
+msgid "NIXL"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:215
+msgid "Install via pip."
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:217
+msgid "pip install nixl\n"
+msgstr ""
+
+#: ../../../advanced_features/pd_disaggregation.md:221
 msgid ""
 "Or build from source - may be required if you already have UCX installed."
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:170
+#: ../../../advanced_features/pd_disaggregation.md:223
 msgid ""
 "git clone https://github.com/ai-dynamo/nixl.git\n"
 "cd nixl\n"
 "pip install . --config-settings=setup-args=\"-Ducx_path=/path/to/ucx\"\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:181
+#: ../../../advanced_features/pd_disaggregation.md:234
 msgid ""
 "python -m sglang.launch_server \\\n"
 "  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
@@ -417,7 +537,7 @@ msgid ""
 "8000\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:198
+#: ../../../advanced_features/pd_disaggregation.md:251
 msgid ""
 "# prefill 0\n"
 "python -m sglang.launch_server \\\n"
@@ -487,32 +607,32 @@ msgid ""
 "  --max-running-requests 128\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:269
+#: ../../../advanced_features/pd_disaggregation.md:322
 msgid "NIXL Backend Selection"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:271
+#: ../../../advanced_features/pd_disaggregation.md:324
 msgid ""
 "By default, NIXL uses the **UCX** backend for KV cache transfers. You can "
 "select a different NIXL plugin backend depending on your infrastructure "
 "using the environment variable `SGLANG_DISAGGREGATION_NIXL_BACKEND`."
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:273
+#: ../../../advanced_features/pd_disaggregation.md:326
 msgid "Example: `export SGLANG_DISAGGREGATION_NIXL_BACKEND=LIBFABRIC`"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:275
+#: ../../../advanced_features/pd_disaggregation.md:328
 msgid ""
 "**Available backends:** UCX (default), LIBFABRIC, or any installed NIXL "
 "plugin."
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:277
+#: ../../../advanced_features/pd_disaggregation.md:330
 msgid "Example usage:"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:278
+#: ../../../advanced_features/pd_disaggregation.md:331
 msgid ""
 "export SGLANG_DISAGGREGATION_NIXL_BACKEND=LIBFABRIC\n"
 "python -m sglang.launch_server \\\n"
@@ -522,39 +642,39 @@ msgid ""
 "  --port 30000\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:287
+#: ../../../advanced_features/pd_disaggregation.md:340
 msgid "ASCEND"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:291
+#: ../../../advanced_features/pd_disaggregation.md:344
 msgid ""
 "Use ascend backend with [memfabric_hybrid](https://gitcode.com/Ascend/"
 "memfabric_hybrid) and ASCEND_MF_STORE_URL being set"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:293
+#: ../../../advanced_features/pd_disaggregation.md:346
 msgid ""
 "pip install memfabric-hybrid==1.0.0\n"
 "export ASCEND_MF_STORE_URL=\"tcp://xxx.xx.xxx.xxx:xxxx\"\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:297
+#: ../../../advanced_features/pd_disaggregation.md:350
 msgid "Use mooncake backend, more details can be found in mooncake section."
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:298
+#: ../../../advanced_features/pd_disaggregation.md:351
 msgid "export ENABLE_ASCEND_TRANSFER_WITH_MOONCAKE=true\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:301
+#: ../../../advanced_features/pd_disaggregation.md:354
 msgid "ASCEND_NPU_PHY_ID need to be set in container env"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:302
+#: ../../../advanced_features/pd_disaggregation.md:355
 msgid "export ASCEND_NPU_PHY_ID=xxx\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:309
+#: ../../../advanced_features/pd_disaggregation.md:362
 msgid ""
 "python -m sglang.launch_server \\\n"
 "  --model-path meta-llama/Llama-3.1-8B-Instruct \\\n"
@@ -572,7 +692,7 @@ msgid ""
 "8000\n"
 msgstr ""
 
-#: ../../../advanced_features/pd_disaggregation.md:326
+#: ../../../advanced_features/pd_disaggregation.md:379
 msgid ""
 "# prefill 0\n"
 "python -m sglang.launch_server \\\n"
