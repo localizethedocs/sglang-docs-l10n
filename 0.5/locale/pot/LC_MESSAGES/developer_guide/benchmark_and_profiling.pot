@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:55+0000\n"
+"POT-Creation-Date: 2026-05-05 10:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,75 +27,185 @@ msgstr ""
 
 #: ../../../developer_guide/benchmark_and_profiling.md:5
 msgid ""
-"Benchmark the latency of running a single static batch without a server. The "
-"arguments are the same as for `launch_server.py`. Note that this is a "
-"simplified test script without a dynamic batching server, so it may run out "
-"of memory for a batch size that a real server can handle. A real server "
-"truncates the prefill into several batches, while this simplified script "
-"does not."
+"SGLang provides four benchmark tools that operate at different levels of the "
+"stack. The table below summarizes their key differences:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:7
-msgid "Without a server (do not need to launch a server)"
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Tool"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:8
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "HTTP Server"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Scheduler"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Use Case"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "`bench_serving`"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Yes (async HTTP client to a running server)"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Yes (indirectly, via server)"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
 msgid ""
-"python -m sglang.bench_one_batch --model-path meta-llama/Meta-Llama-3.1-8B-"
-"Instruct --batch 32 --input-len 256 --output-len 32\n"
+"Realistic online serving benchmarks with latency metrics (TTFT, TPOT, ITL)"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:11
-msgid ""
-"With a server (please use `sglang.launch_server` to launch a server first "
-"and run the following command.)"
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "`bench_one_batch_server`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:12
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Yes (sends HTTP requests to a running server)"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "End-to-end single-batch latency including HTTP and scheduler overhead"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "`bench_offline_throughput`"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "No"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Yes (directly uses `Engine` in-process)"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Maximum throughput measurement without HTTP overhead"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "`bench_one_batch`"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "No (directly calls `ModelRunner`)"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:0
+msgid "Kernel-level latency profiling of a single static batch"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:14
+msgid "Use `bench_serving` by default unless there are specific needs."
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:16
 msgid ""
-"python -m sglang.bench_one_batch_server --base-url http://127.0.0.1:30000 --"
+"**`bench_serving`** is an async HTTP load-testing client that sends requests "
+"at controlled rates with configurable concurrency to a running server. It "
+"measures realistic online serving metrics including time-to-first-token "
+"(TTFT), time-per-output-token (TPOT), inter-token latency (ITL), and "
+"throughput. Use `num-prompts >= 5 * max-concurrency` to measure steady-state "
+"performance. Launch a server with `sglang.launch_server` first."
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:18
+msgid ""
+"python3 -m sglang.bench_serving --backend sglang --max-concurrency 16 --num-"
+"prompts 80 --random-input-len 256 --random-output-len 32 --dataset-name "
+"random\n"
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:22
+msgid ""
+"**`bench_one_batch_server`** sends a single batch as one HTTP request to a "
+"running server. Due to only having a single batch, the server is never in a "
+"steady-state and metrics will be biased. Launch a server with `sglang."
+"launch_server` first."
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:24
+msgid ""
+"python3 -m sglang.bench_one_batch_server --base-url http://127.0.0.1:30000 --"
 "model-path meta-llama/Meta-Llama-3.1-8B-Instruct --batch-size 32 --input-len "
 "256 --output-len 32\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:17
+#: ../../../developer_guide/benchmark_and_profiling.md:28
 msgid ""
-"Benchmark offline processing. This script will start an offline engine and "
-"run the benchmark."
+"Pass `--enable-multi-batch` and set `--batch-size` to a multiple of the "
+"server's `--max-running-requests` to stabilize throughput measurements. "
+"Surplus requests are queued by the scheduler and promoted batch-by-batch, "
+"amortizing per-request prefill and first-step transients into steady-state "
+"decode. Under this flag, only `overall_throughput` is authoritative; "
+"`input_throughput`, `output_throughput`, `last_ttft`, and ITL include cross-"
+"batch queueing in their denominators and should be treated as informational."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:19
+#: ../../../developer_guide/benchmark_and_profiling.md:29
+msgid ""
+"Pass `--lora-name <name>` to route every prompt through a pre-loaded LoRA "
+"adapter. Requires the server to be launched with `--enable-lora --lora-paths "
+"<name>=<path>`."
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:31
+msgid ""
+"**`bench_offline_throughput`** directly instantiates the `Engine` object in-"
+"process (no HTTP server) and submits all requests at once via `engine."
+"generate()`. The engine's scheduler handles batching and execution. This "
+"measures maximum achievable throughput without any network overhead."
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:33
 msgid ""
 "python3 -m sglang.bench_offline_throughput --model-path meta-llama/Meta-"
 "Llama-3.1-8B-Instruct --num-prompts 10\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:23
+#: ../../../developer_guide/benchmark_and_profiling.md:37
 msgid ""
-"Benchmark online serving. Please use `sglang.launch_server` to launch a "
-"server first and run the following command."
+"**`bench_one_batch`** is the lowest-level tool. It directly instantiates a "
+"`ModelRunner` and calls `extend()` / `decode()` on a fixed static batch, "
+"bypassing the scheduler entirely. The prefill and decode phases are run "
+"separately, making profiling easier but rendering the metrics unrealistic. "
+"Because there is no dynamic batching, it may run out of memory for batch "
+"sizes that a real server can handle (a real server chunks prefill into "
+"smaller batches). This is best suited for profiling individual kernel "
+"performance."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:25
-msgid "python3 -m sglang.bench_serving --backend sglang --num-prompt 10\n"
+#: ../../../developer_guide/benchmark_and_profiling.md:39
+msgid ""
+"python3 -m sglang.bench_one_batch --model-path meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --batch-size 32 --input-len 256 --output-len 32\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:29
+#: ../../../developer_guide/benchmark_and_profiling.md:43
 msgid "Profile with PyTorch Profiler"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:31
+#: ../../../developer_guide/benchmark_and_profiling.md:45
 msgid ""
 "[Pytorch Profiler](https://pytorch.org/tutorials/recipes/recipes/"
 "profiler_recipe.html) is a convenient basic tool to inspect kernel execution "
 "time, call stack, and kernel overlap and occupancy."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:33
+#: ../../../developer_guide/benchmark_and_profiling.md:47
 msgid "Profile a server with `sglang.bench_serving`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:35
+#: ../../../developer_guide/benchmark_and_profiling.md:49
 msgid ""
 "# set trace path\n"
 "export SGLANG_TORCH_PROFILER_DIR=/root/sglang/profile_log\n"
@@ -109,35 +219,42 @@ msgid ""
 "Llama-3.1-8B-Instruct --num-prompts 10 --sharegpt-output-len 100 --profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:46
+#: ../../../developer_guide/benchmark_and_profiling.md:60
 msgid ""
-"The `SGLANG_TORCH_PROFILER_DIR` environment variable must be set on both the "
-"server and client side; otherwise, the trace file will not be generated "
-"correctly. A secure way to do this is by setting it in your shell's resource "
-"file (e.g., `~/.bashrc` for bash)."
+"For `bench_serving --profile`, the output directory is selected on the "
+"client side from `--profile-output-dir` or `SGLANG_TORCH_PROFILER_DIR` "
+"(fallback: `/tmp`), then sent in the `/start_profile` request. If you call `/"
+"start_profile` directly and do not provide `output_dir`, the server uses its "
+"own `SGLANG_TORCH_PROFILER_DIR` (fallback: `/tmp`)."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:48
+#: ../../../developer_guide/benchmark_and_profiling.md:63
+msgid ""
+"Setting `SGLANG_TORCH_PROFILER_DIR` on both server and client is still "
+"recommended to avoid confusion about where traces are written."
+msgstr ""
+
+#: ../../../developer_guide/benchmark_and_profiling.md:65
 msgid ""
 "For more details, please refer to [Bench Serving Guide](./bench_serving.md)."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:50
+#: ../../../developer_guide/benchmark_and_profiling.md:67
 msgid "Profile In PD Disaggregation Mode"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:52
+#: ../../../developer_guide/benchmark_and_profiling.md:69
 msgid ""
 "When profiling in PD disaggregation mode, prefill and decode workers **must "
 "be profiled separately** due to torch profiler limitations. The "
 "`bench_serving` command provides dedicated options for this:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:54
+#: ../../../developer_guide/benchmark_and_profiling.md:71
 msgid "Profile Prefill Workers"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:56
+#: ../../../developer_guide/benchmark_and_profiling.md:73
 msgid ""
 "# set trace path\n"
 "export SGLANG_TORCH_PROFILER_DIR=/root/sglang/profile_log\n"
@@ -159,11 +276,11 @@ msgid ""
 "pd-separated --profile-prefill-url http://127.0.0.1:30000\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:71
+#: ../../../developer_guide/benchmark_and_profiling.md:88
 msgid "Profile Decode Workers"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:73
+#: ../../../developer_guide/benchmark_and_profiling.md:90
 msgid ""
 "# send profiling request targeting decode workers\n"
 "python -m sglang.bench_serving --backend sglang --model meta-llama/"
@@ -171,21 +288,21 @@ msgid ""
 "pd-separated --profile-decode-url http://127.0.0.1:30001\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:78
+#: ../../../developer_guide/benchmark_and_profiling.md:95
 msgid "Important Notes"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:80
+#: ../../../developer_guide/benchmark_and_profiling.md:97
 msgid ""
 "`--profile-prefill-url` and `--profile-decode-url` are **mutually "
 "exclusive** - you cannot profile both at the same time"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:81
+#: ../../../developer_guide/benchmark_and_profiling.md:98
 msgid "Both options support multiple worker URLs for multi-instance setups:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:82
+#: ../../../developer_guide/benchmark_and_profiling.md:99
 msgid ""
 "# Profile multiple prefill workers\n"
 "python -m sglang.bench_serving --backend sglang --model meta-llama/"
@@ -198,23 +315,23 @@ msgid ""
 "decode-url http://127.0.0.1:30001 http://127.0.0.1:30003\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:89
+#: ../../../developer_guide/benchmark_and_profiling.md:106
 msgid ""
 "Make sure `SGLANG_TORCH_PROFILER_DIR` is set on all worker nodes before "
 "starting the servers"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:90
+#: ../../../developer_guide/benchmark_and_profiling.md:107
 msgid ""
 "For more details on setting up PD disaggregation, see [PD Disaggregation "
 "Guide](../advanced_features/pd_disaggregation.md)"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:92
+#: ../../../developer_guide/benchmark_and_profiling.md:109
 msgid "Profile a server with `sglang.bench_offline_throughput`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:93
+#: ../../../developer_guide/benchmark_and_profiling.md:110
 msgid ""
 "export SGLANG_TORCH_PROFILER_DIR=/root/sglang/profile_log\n"
 "\n"
@@ -229,21 +346,21 @@ msgid ""
 "frac=0.8\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:104
+#: ../../../developer_guide/benchmark_and_profiling.md:121
 msgid "Profile a server with `sglang.profiler`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:106
+#: ../../../developer_guide/benchmark_and_profiling.md:123
 msgid ""
 "When the server is running (e.g., processing a decoding request), you can "
 "start live profiling immediately by sending a profile request to the server."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:108
+#: ../../../developer_guide/benchmark_and_profiling.md:125
 msgid "You can do this by running `python3 -m sglang.profiler`. For example:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:110
+#: ../../../developer_guide/benchmark_and_profiling.md:127
 msgid ""
 "# Terminal 1: Send a generation request\n"
 "python3 -m sglang.test.send_one\n"
@@ -255,41 +372,41 @@ msgid ""
 "python3 -m sglang.profiler\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:119
+#: ../../../developer_guide/benchmark_and_profiling.md:136
 msgid "You can also combine the above operations into a single command"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:121
+#: ../../../developer_guide/benchmark_and_profiling.md:138
 msgid "python3 -m sglang.test.send_one --profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:125
+#: ../../../developer_guide/benchmark_and_profiling.md:142
 msgid "Profile a server with HTTP API endpoints"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:127
+#: ../../../developer_guide/benchmark_and_profiling.md:144
 msgid ""
 "SGLang provides HTTP API endpoints to control profiling on a running server. "
 "This allows you to start and stop profiling programmatically, which is "
 "useful for capturing specific workload patterns."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:129
+#: ../../../developer_guide/benchmark_and_profiling.md:146
 msgid "Using `/start_profile` endpoint"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:131
+#: ../../../developer_guide/benchmark_and_profiling.md:148
 msgid ""
 "The `/start_profile` endpoint starts profiling on the server. You can "
 "control when profiling begins and how long it runs using the following "
 "parameters:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:133
+#: ../../../developer_guide/benchmark_and_profiling.md:150
 msgid "**Basic usage:**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:135
+#: ../../../developer_guide/benchmark_and_profiling.md:152
 msgid ""
 "# Start profiling immediately for 10 steps\n"
 "curl -X POST http://127.0.0.1:30000/start_profile \\\n"
@@ -299,42 +416,42 @@ msgid ""
 "  }'\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:144
+#: ../../../developer_guide/benchmark_and_profiling.md:161
 msgid "**Parameters:**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:146
+#: ../../../developer_guide/benchmark_and_profiling.md:163
 msgid ""
 "`output_dir` (optional): Directory where profile traces will be saved. If "
 "not specified, uses `SGLANG_TORCH_PROFILER_DIR` environment variable, or `/"
 "tmp` as the default"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:147
+#: ../../../developer_guide/benchmark_and_profiling.md:164
 msgid ""
 "`num_steps` (optional): Number of steps to profile. If not specified, "
-"profiling continues until manually stopped with `/end_profile`"
+"profiling continues until manually stopped with `/stop_profile`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:148
+#: ../../../developer_guide/benchmark_and_profiling.md:165
 msgid ""
 "`start_step` (optional): Step number at which to start profiling "
 "(inclusive). Useful for skipping warmup iterations"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:149
+#: ../../../developer_guide/benchmark_and_profiling.md:166
 msgid ""
 "`activities` (optional): List of activities to profile, e.g., `[\"CPU\", "
 "\"GPU\"]`. Default is `[\"CPU\", \"GPU\"]`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:150
+#: ../../../developer_guide/benchmark_and_profiling.md:167
 msgid ""
 "`merge_profiles` (optional): Whether to merge distributed traces. Default is "
 "`false`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:152
+#: ../../../developer_guide/benchmark_and_profiling.md:169
 msgid ""
 "**Note on step ranges:** Profiling starts at `start_step` (inclusive) and "
 "continues for `num_steps` iterations. For example, with `start_step=3` and "
@@ -342,11 +459,11 @@ msgid ""
 "(10 steps total, starting from step 3)."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:154
+#: ../../../developer_guide/benchmark_and_profiling.md:171
 msgid "**Advanced usage with `start_step`:**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:156
+#: ../../../developer_guide/benchmark_and_profiling.md:173
 msgid ""
 "# Wait 5 steps (warmup), then profile for 10 steps\n"
 "curl -X POST http://127.0.0.1:30000/start_profile \\\n"
@@ -359,44 +476,44 @@ msgid ""
 "  }'\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:168
+#: ../../../developer_guide/benchmark_and_profiling.md:185
 msgid "**Continuous profiling (manual stop):**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:170
+#: ../../../developer_guide/benchmark_and_profiling.md:187
 msgid ""
-"# Start profiling without num_steps - must manually stop with /end_profile\n"
+"# Start profiling without num_steps - must manually stop with /stop_profile\n"
 "curl -X POST http://127.0.0.1:30000/start_profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:175
-msgid "Using `/end_profile` endpoint"
+#: ../../../developer_guide/benchmark_and_profiling.md:192
+msgid "Using `/stop_profile` endpoint"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:177
+#: ../../../developer_guide/benchmark_and_profiling.md:194
 msgid ""
-"The `/end_profile` endpoint stops an ongoing profiling session and saves the "
-"trace file."
+"The `/stop_profile` endpoint stops an ongoing profiling session and saves "
+"the trace file."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:179
+#: ../../../developer_guide/benchmark_and_profiling.md:196
 msgid ""
 "# Stop profiling and save traces\n"
-"curl -X POST http://127.0.0.1:30000/end_profile\n"
+"curl -X POST http://127.0.0.1:30000/stop_profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:184
+#: ../../../developer_guide/benchmark_and_profiling.md:201
 msgid ""
 "This is only needed when you start profiling without specifying `num_steps`. "
 "If `num_steps` is specified, profiling will automatically stop after that "
 "many steps."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:186
+#: ../../../developer_guide/benchmark_and_profiling.md:203
 msgid "Example workflow"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:188
+#: ../../../developer_guide/benchmark_and_profiling.md:205
 msgid ""
 "# Terminal 1: Start the server\n"
 "export SGLANG_TORCH_PROFILER_DIR=/tmp/profiles\n"
@@ -414,25 +531,25 @@ msgid ""
 "python -m sglang.bench_serving --backend sglang --num-prompts 100\n"
 "\n"
 "# Terminal 2: Stop profiling when done\n"
-"curl -X POST http://127.0.0.1:30000/end_profile\n"
+"curl -X POST http://127.0.0.1:30000/stop_profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:207
+#: ../../../developer_guide/benchmark_and_profiling.md:224
 msgid "Profiler Trace Merger for Distributed Traces"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:209
+#: ../../../developer_guide/benchmark_and_profiling.md:226
 msgid ""
 "SGLang now supports automatic merging of profiling traces from distributed "
 "setups with multiple parallelism types (TP, DP, PP, EP). This feature is "
 "particularly useful for analyzing performance across distributed runs."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:211
+#: ../../../developer_guide/benchmark_and_profiling.md:228
 msgid "Multi-Node Profiling and Shared Storage Considerations"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:213
+#: ../../../developer_guide/benchmark_and_profiling.md:230
 msgid ""
 "Single-node profiler output merging is completely supported. When profiling "
 "in distributed environments spanning multiple nodes, shared storage (e.g., "
@@ -440,17 +557,17 @@ msgid ""
 "enable merging of trace files."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:215
+#: ../../../developer_guide/benchmark_and_profiling.md:232
 msgid ""
 "If there is no shared storage accessible across nodes, automatic merging of "
 "trace files during profiling is not supported directly as of now."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:217
+#: ../../../developer_guide/benchmark_and_profiling.md:234
 msgid "HTTP API Usage"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:219
+#: ../../../developer_guide/benchmark_and_profiling.md:236
 msgid ""
 "# Start profiling with automatic trace merging enabled\n"
 "curl -X POST <BASE_URL>/start_profile \\\n"
@@ -464,11 +581,11 @@ msgid ""
 "  }'\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:231
+#: ../../../developer_guide/benchmark_and_profiling.md:248
 msgid "Command Line Usage"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:233
+#: ../../../developer_guide/benchmark_and_profiling.md:250
 msgid ""
 "# Start profiling with merge enabled\n"
 "python -m sglang.profiler \\\n"
@@ -480,42 +597,42 @@ msgid ""
 "(default=False)\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:243
+#: ../../../developer_guide/benchmark_and_profiling.md:260
 msgid "Output Files"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:245
+#: ../../../developer_guide/benchmark_and_profiling.md:262
 msgid "The profile merger generates:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:246
+#: ../../../developer_guide/benchmark_and_profiling.md:263
 msgid ""
 "Individual rank trace files: `{profile_id}-TP-{tp}-DP-{dp}-PP-{pp}-EP-{ep}."
 "trace.json.gz`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:247
+#: ../../../developer_guide/benchmark_and_profiling.md:264
 msgid "Merged trace file: `merged-{profile_id}.trace.json.gz`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:249
+#: ../../../developer_guide/benchmark_and_profiling.md:266
 msgid "Possible PyTorch bugs"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:250
+#: ../../../developer_guide/benchmark_and_profiling.md:267
 msgid ""
 "If in any cases you encounter the following error (for example, using qwen "
 "2.5 VL):"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:251
+#: ../../../developer_guide/benchmark_and_profiling.md:268
 msgid ""
 "RuntimeError: !stack.empty() INTERNAL ASSERT FAILED at \"/pytorch/torch/csrc/"
 "autograd/profiler_python.cpp\":983, please report a bug to PyTorch. Python "
 "replay stack is empty.\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:254
+#: ../../../developer_guide/benchmark_and_profiling.md:271
 msgid ""
 "This is likely a PyTorch Bug reported in [Bug: vLLM Profiler](https://github."
 "com/vllm-project/vllm/issues/18240) and [Bug: torch.profiler.profile]"
@@ -523,7 +640,7 @@ msgid ""
 "disable `with_stack` with an environment variable such as follows:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:255
+#: ../../../developer_guide/benchmark_and_profiling.md:272
 msgid ""
 "export SGLANG_PROFILE_WITH_STACK=False\n"
 "python -m sglang.bench_offline_throughput --model-path meta-llama/"
@@ -531,36 +648,36 @@ msgid ""
 "frac=0.8\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:260
+#: ../../../developer_guide/benchmark_and_profiling.md:277
 msgid "View traces"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:262
+#: ../../../developer_guide/benchmark_and_profiling.md:279
 msgid "Trace files can be loaded and visualized from:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:264
+#: ../../../developer_guide/benchmark_and_profiling.md:281
 msgid "https://ui.perfetto.dev/ (any browser)"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:265
+#: ../../../developer_guide/benchmark_and_profiling.md:282
 msgid "chrome://tracing (Chrome browser only)"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:267
+#: ../../../developer_guide/benchmark_and_profiling.md:284
 msgid ""
 "If browser cannot open trace file due to its large size, client can generate "
 "a small trace file (<100MB) by controlling number of prompts and lengths of "
 "prompt outputs. For example, when profiling a server,"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:271
+#: ../../../developer_guide/benchmark_and_profiling.md:288
 msgid ""
 "python -m sglang.bench_serving --backend sglang --model meta-llama/"
 "Llama-3.1-8B-Instruct --num-prompts 2 --sharegpt-output-len 100 --profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:275
+#: ../../../developer_guide/benchmark_and_profiling.md:292
 msgid ""
 "This command sets the number of prompts to 2 with `--num-prompts` argument "
 "and limits the length of output sequences to 100 with `--sharegpt-output-"
@@ -568,7 +685,7 @@ msgid ""
 "smoothly."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:277
+#: ../../../developer_guide/benchmark_and_profiling.md:294
 msgid ""
 "Additionally, if you want to locate the SGLang Python source code through "
 "the cuda kernel in Trace, you need to disable CUDA Graph when starting the "
@@ -576,29 +693,29 @@ msgid ""
 "the command to start the service."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:279
+#: ../../../developer_guide/benchmark_and_profiling.md:296
 msgid "Profile with Nsight"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:281
+#: ../../../developer_guide/benchmark_and_profiling.md:298
 msgid ""
 "[Nsight systems](https://docs.nvidia.com/nsight-systems/) is an advanced "
 "tool that exposes more profiling details, such as register and shared memory "
 "usage, annotated code regions and low-level CUDA APIs and events."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:283
+#: ../../../developer_guide/benchmark_and_profiling.md:300
 msgid "Prerequisite:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:285
+#: ../../../developer_guide/benchmark_and_profiling.md:302
 msgid ""
 "Install using apt, or run inside a [NVIDIA Docker container](https://catalog."
 "ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags) or [SGLang Docker "
 "container](https://github.com/sgl-project/sglang/tree/main/docker)."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:287
+#: ../../../developer_guide/benchmark_and_profiling.md:304
 msgid ""
 "# install nsys\n"
 "# https://docs.nvidia.com/nsight-systems/InstallationGuide/index.html\n"
@@ -614,22 +731,22 @@ msgid ""
 "apt install nsight-systems-cli\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:298
+#: ../../../developer_guide/benchmark_and_profiling.md:315
 msgid "To profile a single batch, use"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:300
+#: ../../../developer_guide/benchmark_and_profiling.md:317
 msgid ""
 "nsys profile --trace-fork-before-exec=true --cuda-graph-trace=node python3 -"
 "m sglang.bench_one_batch --model meta-llama/Meta-Llama-3-8B --batch-size 64 "
 "--input-len 512\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:304
+#: ../../../developer_guide/benchmark_and_profiling.md:321
 msgid "To profile a server, e.g."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:306
+#: ../../../developer_guide/benchmark_and_profiling.md:323
 msgid ""
 "# launch the server, set the delay and duration times according to needs\n"
 "# after the duration time has been used up, server will be killed by nsys\n"
@@ -643,39 +760,39 @@ msgid ""
 "dataset-name random --random-input 1024 --random-output 512\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:316
+#: ../../../developer_guide/benchmark_and_profiling.md:333
 msgid ""
 "In practice, we recommend users to set `--duration` argument to a large "
 "value. Whenever user wants the server to stop profiling. Firstly run:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:318
+#: ../../../developer_guide/benchmark_and_profiling.md:335
 msgid "nsys sessions list\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:322
+#: ../../../developer_guide/benchmark_and_profiling.md:339
 msgid "to get the session id in the form of `profile-XXXXX`, then run:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:324
+#: ../../../developer_guide/benchmark_and_profiling.md:341
 msgid "nsys stop --session=profile-XXXXX\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:328
+#: ../../../developer_guide/benchmark_and_profiling.md:345
 msgid "to manually kill the profiler and generate `nsys-rep` files instantly."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:330
+#: ../../../developer_guide/benchmark_and_profiling.md:347
 msgid "Use NVTX to annotate code regions, e.g. to see their execution time."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:332
+#: ../../../developer_guide/benchmark_and_profiling.md:349
 msgid ""
 "# install nvtx\n"
 "pip install nvtx\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:337
+#: ../../../developer_guide/benchmark_and_profiling.md:354
 msgid ""
 "# code snippets\n"
 "import nvtx\n"
@@ -683,11 +800,11 @@ msgid ""
 "    # some critical code\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:344
+#: ../../../developer_guide/benchmark_and_profiling.md:361
 msgid "Layer-wise NVTX Profiling with Nsight Systems"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:346
+#: ../../../developer_guide/benchmark_and_profiling.md:363
 msgid ""
 "SGLang provides built-in layerwise NVTX annotations that can be combined "
 "with the CUDA Profiler for detailed per-layer profiling in Nsight Systems. "
@@ -695,36 +812,36 @@ msgid ""
 "layer level."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:348
+#: ../../../developer_guide/benchmark_and_profiling.md:365
 msgid ""
 "Using `--enable-layerwise-nvtx-marker` with Nsight Systems and `/"
 "start_profile`"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:350
+#: ../../../developer_guide/benchmark_and_profiling.md:367
 msgid ""
 "The `--enable-layerwise-nvtx-marker` flag automatically adds NVTX markers to "
 "every layer in your model. This is particularly powerful when combined with "
 "Nsight Systems profiling to see detailed per-layer performance."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:352
+#: ../../../developer_guide/benchmark_and_profiling.md:369
 msgid ""
 "**Method 1: Using `/start_profile` with CUDA_PROFILER (for programmatic "
 "control)**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:354
+#: ../../../developer_guide/benchmark_and_profiling.md:371
 msgid ""
 "This method allows you to control exactly when profiling starts/stops via "
 "HTTP API while Nsight Systems is running."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:356
+#: ../../../developer_guide/benchmark_and_profiling.md:373
 msgid "Launch the server with layerwise NVTX enabled under Nsight Systems:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:358
+#: ../../../developer_guide/benchmark_and_profiling.md:375
 msgid ""
 "# Terminal 1: Start server with nsys and capture-range option\n"
 "nsys profile --trace-fork-before-exec=true \\\n"
@@ -738,20 +855,20 @@ msgid ""
 "    --disable-cuda-graph\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:371
+#: ../../../developer_guide/benchmark_and_profiling.md:388
 msgid ""
 "Note: NVTX markers are not emitted for kernel launches captured by CUDA "
 "graphs. Use `--disable-cuda-graph` to ensure all layerwise NVTX markers are "
 "emitted in the trace."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:373
+#: ../../../developer_guide/benchmark_and_profiling.md:390
 msgid ""
 "In another terminal, control profiling via `/start_profile` with "
 "`CUDA_PROFILER` activity:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:375
+#: ../../../developer_guide/benchmark_and_profiling.md:392
 msgid ""
 "# Terminal 2: Wait for server to be ready, then start CUDA profiling\n"
 "# Wait 3 steps for warmup, then profile for 10 steps\n"
@@ -764,49 +881,49 @@ msgid ""
 "  }'\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:387
+#: ../../../developer_guide/benchmark_and_profiling.md:404
 msgid "Send requests to generate load:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:389
+#: ../../../developer_guide/benchmark_and_profiling.md:406
 msgid ""
 "# Terminal 3: Generate workload\n"
 "python -m sglang.bench_serving --backend sglang --num-prompts 100\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:394
+#: ../../../developer_guide/benchmark_and_profiling.md:411
 msgid ""
 "Profiling will automatically stop after 10 steps (due to `num_steps: 10`). "
 "If you hadn't specified `num_steps`, you would need to manually stop it:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:396
+#: ../../../developer_guide/benchmark_and_profiling.md:413
 msgid ""
 "# Terminal 2: Only needed if num_steps was not specified\n"
-"curl -X POST http://127.0.0.1:30000/end_profile\n"
+"curl -X POST http://127.0.0.1:30000/stop_profile\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:401
+#: ../../../developer_guide/benchmark_and_profiling.md:418
 msgid ""
 "The `--capture-range=cudaProfilerApi` option tells Nsight Systems to only "
 "capture data between `cudaProfilerStart()` and `cudaProfilerStop()` calls "
-"(triggered by `/start_profile` and `/end_profile`), reducing overhead and "
+"(triggered by `/start_profile` and `/stop_profile`), reducing overhead and "
 "file size. The `start_step` parameter skips the first 3 steps to avoid "
 "capturing warmup overhead."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:403
+#: ../../../developer_guide/benchmark_and_profiling.md:420
 msgid "**Method 2: Simpler approach without `/start_profile` API**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:405
+#: ../../../developer_guide/benchmark_and_profiling.md:422
 msgid ""
 "For simpler use cases where you don't need fine-grained control over "
 "profiling start/stop, you can profile with Nsight Systems capturing the "
 "entire workload:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:407
+#: ../../../developer_guide/benchmark_and_profiling.md:424
 msgid ""
 "# Terminal 1: Start server with layerwise NVTX\n"
 "# Note: --disable-cuda-graph ensures all NVTX markers are emitted\n"
@@ -822,87 +939,87 @@ msgid ""
 "  python -m sglang.bench_serving --backend sglang --num-prompts 10\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:422
+#: ../../../developer_guide/benchmark_and_profiling.md:439
 msgid ""
 "This approach profiles the entire client execution, including all server "
 "interactions. The layerwise NVTX markers will be visible in the Nsight "
 "Systems timeline."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:424
+#: ../../../developer_guide/benchmark_and_profiling.md:441
 msgid "**Viewing the profiling results:**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:426
+#: ../../../developer_guide/benchmark_and_profiling.md:443
 msgid "Open the generated `.qdrep` file with Nsight Systems:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:428
+#: ../../../developer_guide/benchmark_and_profiling.md:445
 msgid "nsys-ui layerwise_profile.qdrep\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:432
+#: ../../../developer_guide/benchmark_and_profiling.md:449
 msgid "In the Nsight Systems GUI, you'll see:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:433
+#: ../../../developer_guide/benchmark_and_profiling.md:450
 msgid ""
 "**NVTX ranges**: Each layer appears as a labeled range in the timeline with "
 "detailed information in the marker metadata"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:434
+#: ../../../developer_guide/benchmark_and_profiling.md:451
 msgid ""
 "**CUDA kernels**: All GPU kernels are shown alongside the layer annotations"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:435
+#: ../../../developer_guide/benchmark_and_profiling.md:452
 msgid ""
 "**Layer hierarchy**: The full module path (e.g., `meta-llama/Meta-"
 "Llama-3.1-8B-Instruct.model.layers.0.self_attn.qkv_proj`) helps identify "
 "specific layers. The prefix uses the full model path from `--model-path`."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:436
+#: ../../../developer_guide/benchmark_and_profiling.md:453
 msgid ""
 "**Tensor shapes**: Input/output dimensions and parameter shapes are included "
 "in the NVTX marker data"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:438
+#: ../../../developer_guide/benchmark_and_profiling.md:455
 msgid "**Benefits of layerwise NVTX profiling:**"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:440
+#: ../../../developer_guide/benchmark_and_profiling.md:457
 msgid ""
 "**Granular visibility**: See exactly which layers are taking the most time"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:441
+#: ../../../developer_guide/benchmark_and_profiling.md:458
 msgid "**Memory tracking**: Identify layers with large memory allocations"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:442
+#: ../../../developer_guide/benchmark_and_profiling.md:459
 msgid "**Bottleneck identification**: Quickly locate inefficient operations"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:443
+#: ../../../developer_guide/benchmark_and_profiling.md:460
 msgid ""
 "**Communication overhead**: In multi-GPU setups, see per-layer communication "
 "costs"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:444
+#: ../../../developer_guide/benchmark_and_profiling.md:461
 msgid ""
 "**Development debugging**: Validate that model architecture changes have the "
 "expected performance impact"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:446
+#: ../../../developer_guide/benchmark_and_profiling.md:463
 msgid "Other tips"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:448
+#: ../../../developer_guide/benchmark_and_profiling.md:465
 msgid ""
 "You can benchmark a model using dummy weights by only providing the config."
 "json file. This allows for quick testing of model variants without training. "
@@ -910,14 +1027,14 @@ msgid ""
 "need a correct `config.json` under the checkpoint folder."
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:449
+#: ../../../developer_guide/benchmark_and_profiling.md:466
 msgid ""
 "You can benchmark a model with modified configs (e.g., less layers) by using "
 "`--json-model-override-args`. For example, you can benchmark a model with "
 "only 2 layers and 2 kv heads using:"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:451
+#: ../../../developer_guide/benchmark_and_profiling.md:468
 msgid ""
 "python -m sglang.bench_one_batch --model-path meta-llama/Meta-Llama-3.1-8B-"
 "Instruct --batch 32 --input-len 256 --output-len 32 --load-format dummy --"
@@ -925,14 +1042,14 @@ msgid ""
 "\"num_key_value_heads\": 1}'\n"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:455
+#: ../../../developer_guide/benchmark_and_profiling.md:472
 msgid ""
 "You can use `--python-backtrace=cuda` to see python call stack for all CUDA "
 "kernels, as in PyTorch Profiler. (Caveat: this can cause inaccurately long "
 "kernel runtimes for CUDA event based timing)"
 msgstr ""
 
-#: ../../../developer_guide/benchmark_and_profiling.md:456
+#: ../../../developer_guide/benchmark_and_profiling.md:473
 msgid ""
 "For more arguments see [Nsight Systems User Guide](https://docs.nvidia.com/"
 "nsight-systems/UserGuide/index.html)."

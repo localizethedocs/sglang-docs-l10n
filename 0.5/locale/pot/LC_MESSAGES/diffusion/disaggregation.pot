@@ -1,0 +1,556 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-05 10:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/disaggregation.md:1
+msgid "Disaggregated Diffusion Pipeline"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:3
+msgid ""
+"Split a monolithic text-to-video/image pipeline into independent "
+"**Encoder**, **Denoiser**, and **Decoder** roles, each running on its own "
+"GPU(s). A central **DiffusionServer** routes requests through the pipeline."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:5
+msgid "Quick Start"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:7
+msgid ""
+"Disaggregation is controlled by a single flag: `--disagg-role`. Each "
+"component is launched independently, just like LLM PD disaggregation."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--disagg-role`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "What it runs"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`monolithic`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "(Default) Standard single-server mode"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`encoder`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid ""
+"All stages with the default `RoleType.ENCODER` affinity: "
+"`InputValidationStage`, `TextEncodingStage` (plus `ImageEncodingStage` / "
+"`ImageVAEEncodingStage` for image-conditioned pipelines), "
+"`LatentPreparationStage`, `TimestepPreparationStage`, and any model-specific "
+"\"before denoising\" stage (e.g. `QwenImageLayeredBeforeDenoisingStage`, "
+"`GlmImageBeforeDenoisingStage`)."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`denoiser`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid ""
+"`DenoisingStage` (and its subclasses: `CausalDMDDenoisingStage`, "
+"`DmdDenoisingStage`, `LTX2AVDenoisingStage`, `LTX2RefinementStage`, "
+"`Hunyuan3DShapeDenoisingStage`, ...) — the DiT forward loop plus the "
+"scheduler stepping it drives."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`decoder`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid ""
+"`DecodingStage` (VAE decode) and its subclasses (`LTX2AVDecodingStage`, "
+"`HeliosDecodingStage`, ...)."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`server`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "DiffusionServer head node + HTTP server (no GPU)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:17
+msgid ""
+"Each stage declares its role via the `role_affinity` property on "
+"`PipelineStage` (default `ENCODER`). When `--disagg-role` is not "
+"`monolithic`, the pipeline only instantiates stages whose affinity matches, "
+"so the above table is the source of truth for what actually runs in each "
+"process."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:19
+msgid "Single-Machine Example (Verified)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:21
+msgid ""
+"The following commands have been tested end-to-end on an 8×H200 machine with "
+"`Wan-AI/Wan2.1-T2V-1.3B-Diffusers`. Each role runs on a separate GPU via `--"
+"base-gpu-id`; the `server` head node requires no GPU."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:25
+msgid ""
+"# Terminal 1: Encoder (GPU 0)\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers \\\n"
+"    --disagg-role encoder \\\n"
+"    --disagg-server-addr tcp://127.0.0.1:19655 \\\n"
+"    --scheduler-port 19000 \\\n"
+"    --num-gpus 1 --base-gpu-id 0\n"
+"\n"
+"# Terminal 2: Denoiser (GPU 1)\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers \\\n"
+"    --disagg-role denoiser \\\n"
+"    --disagg-server-addr tcp://127.0.0.1:19655 \\\n"
+"    --scheduler-port 19001 \\\n"
+"    --num-gpus 1 --base-gpu-id 1\n"
+"\n"
+"# Terminal 3: Decoder (GPU 2)\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers \\\n"
+"    --disagg-role decoder \\\n"
+"    --disagg-server-addr tcp://127.0.0.1:19655 \\\n"
+"    --scheduler-port 19002 \\\n"
+"    --num-gpus 1 --base-gpu-id 2\n"
+"\n"
+"# Terminal 4: DiffusionServer head (no GPU, receives HTTP requests)\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-1.3B-Diffusers \\\n"
+"    --disagg-role server \\\n"
+"    --encoder-urls  \"tcp://127.0.0.1:19000\" \\\n"
+"    --denoiser-urls \"tcp://127.0.0.1:19001\" \\\n"
+"    --decoder-urls  \"tcp://127.0.0.1:19002\" \\\n"
+"    --host 0.0.0.0 --port 22000 \\\n"
+"    --scheduler-port 19655\n"
+"\n"
+"# Send request (video generation)\n"
+"curl http://127.0.0.1:22000/v1/videos \\\n"
+"    -H \"Content-Type: application/json\" \\\n"
+"    -d '{\"model\": \"Wan-AI/Wan2.1-T2V-1.3B-Diffusers\", \"prompt\": \"A "
+"curious raccoon exploring a garden, cinematic\", \"size\": \"832x480\"}'\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:62
+msgid ""
+"**Tested result (8×H200):** Encoder 2.3 s (TextEncoding) → Denoiser 312.8 s "
+"(50 steps, layerwise offload) → Decoder 7.1 s (VAE decode). Total ~322 s for "
+"81-frame 1024×1024 video."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:66
+msgid ""
+"**Tip:** `--base-gpu-id` controls which physical GPU the role uses. Encoder "
+"and Decoder can share a GPU (e.g. both `--base-gpu-id 0`) to save resources, "
+"but make sure the combined GPU memory is sufficient."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:70
+msgid "Multi-Machine Example"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:72
+msgid ""
+"The exact same CLI pattern — just replace `127.0.0.1` with actual IPs and "
+"add RDMA flags for direct transfer:"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:75
+msgid ""
+"# Machine A (10.0.0.1): Encoder\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-14B-Diffusers \\\n"
+"    --disagg-role encoder \\\n"
+"    --disagg-server-addr tcp://10.0.0.4:19655 \\\n"
+"    --scheduler-port 19000 \\\n"
+"    --num-gpus 1 \\\n"
+"    --disagg-p2p-hostname 10.0.0.1 --disagg-ib-device mlx5_0\n"
+"\n"
+"# Machine B (10.0.0.2): Denoiser (4 GPUs with SP)\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-14B-Diffusers \\\n"
+"    --disagg-role denoiser \\\n"
+"    --disagg-server-addr tcp://10.0.0.4:19655 \\\n"
+"    --scheduler-port 19001 \\\n"
+"    --num-gpus 4 --denoiser-sp 4 --denoiser-ulysses 2 --denoiser-ring 2 \\\n"
+"    --disagg-p2p-hostname 10.0.0.2 --disagg-ib-device mlx5_0\n"
+"\n"
+"# Machine C (10.0.0.3): Decoder\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-14B-Diffusers \\\n"
+"    --disagg-role decoder \\\n"
+"    --disagg-server-addr tcp://10.0.0.4:19655 \\\n"
+"    --scheduler-port 19002 \\\n"
+"    --num-gpus 1 \\\n"
+"    --disagg-p2p-hostname 10.0.0.3 --disagg-ib-device mlx5_0\n"
+"\n"
+"# Machine D (10.0.0.4): DiffusionServer head\n"
+"sglang serve --model-path Wan-AI/Wan2.1-T2V-14B-Diffusers \\\n"
+"    --disagg-role server \\\n"
+"    --encoder-urls  \"tcp://10.0.0.1:19000\" \\\n"
+"    --denoiser-urls \"tcp://10.0.0.2:19001\" \\\n"
+"    --decoder-urls  \"tcp://10.0.0.3:19002\" \\\n"
+"    --host 0.0.0.0 --port 30000 \\\n"
+"    --scheduler-port 19655 \\\n"
+"    --disagg-dispatch-policy max_free_slots\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:111
+msgid ""
+"ZMQ handles startup order gracefully — instances and head can start in any "
+"order."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:113
+msgid "Multiple Instances per Role"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:115
+msgid "Use semicolons in `--*-urls` to register multiple instances:"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:117
+msgid ""
+"# 2 encoders + 2 denoisers (4-GPU SP each) + 1 decoder\n"
+"sglang serve --model-path ... --disagg-role server \\\n"
+"    --encoder-urls  \"tcp://10.0.0.1:35000;tcp://10.0.0.2:35000\" \\\n"
+"    --denoiser-urls \"tcp://10.0.0.3:35000;tcp://10.0.0.4:35000\" \\\n"
+"    --decoder-urls  \"tcp://10.0.0.5:35000\"\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:125
+msgid "Port Convention"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:127
+msgid ""
+"Result endpoints are derived deterministically from the head node's `--"
+"scheduler-port` (default: 5555):"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Socket"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Port"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "DS frontend (ROUTER)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`scheduler_port`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Encoder result (PULL)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`scheduler_port + 1`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Denoiser result (PULL)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`scheduler_port + 2`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Decoder result (PULL)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`scheduler_port + 3`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:136
+msgid ""
+"Role instances derive their result endpoint automatically from `--disagg-"
+"server-addr`. No manual endpoint configuration needed."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:138
+msgid "Transfer Mechanism"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:140
+msgid ""
+"Tensor data between roles (encoder→denoiser, denoiser→decoder) is "
+"transferred via a P2P transfer engine. The DiffusionServer only routes "
+"lightweight control messages (alloc/push/ready); actual tensor data flows "
+"directly between instances."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:142
+msgid ""
+"**mooncake-transfer-engine** is required for disaggregated diffusion. It "
+"provides RDMA for direct GPU-to-GPU data movement."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:144
+msgid "pip install mooncake-transfer-engine\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:148
+msgid "Transfer Flow"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:150
+msgid ""
+"**Sender** (encoder/denoiser) stages tensors: async copy to transfer buffer "
+"(GPU or CPU pinned, depending on GPUDirect support), overlapped with "
+"metadata JSON serialization."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:151
+msgid ""
+"**Sender** sends `transfer_staged` control message to DiffusionServer "
+"(metadata only, no tensor data)."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:152
+msgid ""
+"**DiffusionServer** sends `transfer_alloc` to receiver → receiver allocates "
+"buffer slot → replies `transfer_allocated`."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:153
+msgid ""
+"**DiffusionServer** sends `transfer_push` to receiver with sender's address "
+"info."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:154
+msgid ""
+"**Receiver** pulls data via transfer engine (Mooncake RDMA or mock), sends "
+"`transfer_ready`."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:155
+msgid ""
+"**Receiver** loads tensors async on a dedicated transfer stream, overlapped "
+"with the previous request's compute."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:157
+msgid ""
+"Decoder results (final output) flow back through DiffusionServer as raw ZMQ "
+"frames to the HTTP client."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:159
+msgid "RDMA Flags"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Flag"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Description"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--disagg-p2p-hostname`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`127.0.0.1`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "RDMA-reachable hostname/IP of this instance"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--disagg-ib-device`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`None`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "InfiniBand device (e.g., `mlx5_0`, `mlx5_roce0`)"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--disagg-transfer-pool-size`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "256 MiB"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Pinned memory pool per instance"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:167
+msgid ""
+"Set `--disagg-p2p-hostname` to the actual IP on each machine. For multi-"
+"machine, `--disagg-ib-device` specifies the RDMA NIC."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:169
+msgid "Per-Role Parallelism"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--encoder-tp`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Encoder tensor parallelism"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid ""
+"`--denoiser-tp` / `--denoiser-sp` / `--denoiser-ulysses` / `--denoiser-ring`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Denoiser parallelism"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--decoder-tp`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Decoder tensor parallelism"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:177
+msgid "If not specified, parallelism is auto-derived from `--num-gpus`."
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:179
+msgid "Other Options"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--disagg-timeout`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`600`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "Timeout (seconds) for pending requests"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`--disagg-dispatch-policy`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`round_robin`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:0
+msgid "`round_robin` or `max_free_slots`"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:186
+msgid "Python API"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:188
+msgid ""
+"For programmatic single-machine deployment, `launch_pool_disagg_server()` is "
+"available:"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:190
+msgid ""
+"from sglang.multimodal_gen.runtime.server_args import ServerArgs\n"
+"from sglang.multimodal_gen.runtime.launch_server import "
+"launch_pool_disagg_server\n"
+"\n"
+"server_args = ServerArgs.from_kwargs(\n"
+"    model_path=\"Wan-AI/Wan2.1-T2V-14B-Diffusers\",\n"
+"    denoiser_sp=4, denoiser_ulysses=2, denoiser_ring=2,\n"
+"    disagg_ib_device=\"mlx5_0\",\n"
+")\n"
+"\n"
+"launch_pool_disagg_server(\n"
+"    server_args,\n"
+"    encoder_gpus=[[0]],\n"
+"    denoiser_gpus=[[1, 2, 3, 4], [5, 6, 7, 8]],\n"
+"    decoder_gpus=[[0]],\n"
+")\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:208
+msgid "Architecture"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:210
+msgid ""
+"Client ─── HTTP (port 30000) ──► FastAPI Server\n"
+"                                      │\n"
+"                                      ▼\n"
+"                              DiffusionServer (ROUTER, scheduler_port)\n"
+"                              ┌───────┼───────┐\n"
+"                   PUSH work  │       │       │  PUSH work\n"
+"                              ▼       │       ▼\n"
+"                    Encoder[0..N]     │    Decoder[0..K]\n"
+"                              │       │       ▲\n"
+"                   P2P tensor │       │       │ P2P tensor\n"
+"                   transfer   ▼       │       │ transfer\n"
+"                          Denoiser[0..M] ─────┘\n"
+"                                      │\n"
+"                    PULL results ◄────┘  (decoder → DS → client)\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:227
+msgid "Request State Machine"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:229
+msgid ""
+"PENDING → ENCODER_WAITING → ENCODER_RUNNING → ENCODER_DONE\n"
+"                                                    │\n"
+"                        DENOISING_WAITING → DENOISING_RUNNING → "
+"DENOISING_DONE\n"
+"                                                                       │\n"
+"                                    DECODER_WAITING → DECODER_RUNNING → "
+"DONE\n"
+msgstr ""
+
+#: ../../../diffusion/disaggregation.md:237
+msgid "Any state can transition to `FAILED` or `TIMED_OUT`."
+msgstr ""

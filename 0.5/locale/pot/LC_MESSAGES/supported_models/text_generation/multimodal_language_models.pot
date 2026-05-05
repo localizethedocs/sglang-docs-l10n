@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:55+0000\n"
+"POT-Creation-Date: 2026-05-05 10:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -441,6 +442,20 @@ msgid ""
 msgstr ""
 
 #: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "**Qwen3-ASR** (0.6B, 1.7B)"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "`Qwen/Qwen3-ASR-1.7B`"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid ""
+"Alibaba's automatic speech recognition models supporting 52 languages. "
+"Served via the `/v1/audio/transcriptions` endpoint."
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
 msgid "**Qwen3-Omni**"
 msgstr ""
 
@@ -455,18 +470,54 @@ msgid ""
 "**Talker** component (audio generation) is not yet supported."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:56
-msgid "Video Input Support"
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "**LFM2-VL**"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "`LiquidAI/LFM2.5-VL-1.6B`"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid ""
+"Liquid AI's vision-language model combining a SigLip2 vision encoder (NaFlex "
+"variable-resolution) with the LFM2 hybrid attention + short convolution "
+"language model. Supports multi-image inputs."
 msgstr ""
 
 #: ../../../supported_models/text_generation/multimodal_language_models.md:58
+msgid "Audio Transcription"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:60
 msgid ""
-"SGLang supports video input for Vision-Language Models (VLMs), enabling "
-"temporal reasoning tasks such as video question answering, captioning, and "
-"holistic scene understanding. Video clips are decoded, key frames are "
-"sampled, and the resulting tensors are batched together with the text "
-"prompt, allowing multimodal inference to integrate visual and linguistic "
-"context."
+"SGLang supports audio-only ASR models via the OpenAI-compatible `/v1/audio/"
+"transcriptions` endpoint. Upload an audio file and receive a transcription."
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:62
+msgid "Launch Command"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:64
+msgid ""
+"sglang serve \\\n"
+"  --model-path Qwen/Qwen3-ASR-1.7B \\\n"
+"  --served-model-name qwen3-asr \\\n"
+"  --trust-remote-code \\\n"
+"  --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:72
+msgid "Example Request"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:74
+msgid ""
+"curl http://localhost:30000/v1/audio/transcriptions \\\n"
+"  -F file=@audio.wav \\\n"
+"  -F model=qwen3-asr \\\n"
+"  -F response_format=verbose_json\n"
 msgstr ""
 
 #: ../../../supported_models/text_generation/multimodal_language_models.md:0
@@ -475,6 +526,36 @@ msgstr ""
 
 #: ../../../supported_models/text_generation/multimodal_language_models.md:0
 msgid "Example Identifier"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "**Whisper**"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "`openai/whisper-large-v3`"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "OpenAI's speech recognition model."
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:0
+msgid "Use `--trust-remote-code`. Supports 52 languages."
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:86
+msgid "Video Input Support"
+msgstr ""
+
+#: ../../../supported_models/text_generation/multimodal_language_models.md:88
+msgid ""
+"SGLang supports video input for Vision-Language Models (VLMs), enabling "
+"temporal reasoning tasks such as video question answering, captioning, and "
+"holistic scene understanding. Video clips are decoded, key frames are "
+"sampled, and the resulting tensors are batched together with the text "
+"prompt, allowing multimodal inference to integrate visual and linguistic "
+"context."
 msgstr ""
 
 #: ../../../supported_models/text_generation/multimodal_language_models.md:0
@@ -529,23 +610,24 @@ msgstr ""
 #: ../../../supported_models/text_generation/multimodal_language_models.md:0
 msgid ""
 "The processor samples at 2 FPS, at a max of 128 frames, as per model "
-"training. The model uses [EVS](../../python/sglang/srt/multimodal/evs/README."
-"md), a pruning method that removes redundant tokens from video embeddings. "
-"By default `video_pruning_rate=0.7`. Change this by providing: `--json-model-"
-"override-args '{\"video_pruning_rate\": 0.0}'` to disable EVS, for example."
+"training. The model uses [EVS](../../../python/sglang/srt/multimodal/evs/"
+"README.md), a pruning method that removes redundant tokens from video "
+"embeddings. By default `video_pruning_rate=0.7`. Change this by providing: "
+"`--json-model-override-args '{\"video_pruning_rate\": 0.0}'` to disable EVS, "
+"for example."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:69
+#: ../../../supported_models/text_generation/multimodal_language_models.md:99
 msgid ""
 "Use `sgl.video(path, num_frames)` when building prompts to attach clips from "
 "your SGLang programs."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:71
+#: ../../../supported_models/text_generation/multimodal_language_models.md:101
 msgid "Example OpenAI-compatible request that sends a video clip:"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:73
+#: ../../../supported_models/text_generation/multimodal_language_models.md:103
 msgid ""
 "import requests\n"
 "\n"
@@ -576,69 +658,70 @@ msgid ""
 "print(response.text)\n"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:101
+#: ../../../supported_models/text_generation/multimodal_language_models.md:131
 msgid "Usage Notes"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:103
+#: ../../../supported_models/text_generation/multimodal_language_models.md:133
 msgid "Performance Optimization"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:105
+#: ../../../supported_models/text_generation/multimodal_language_models.md:135
 msgid ""
 "For multimodal models, you can use the `--keep-mm-feature-on-device` flag to "
 "optimize for latency at the cost of increased GPU memory usage:"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:107
+#: ../../../supported_models/text_generation/multimodal_language_models.md:137
 msgid ""
 "**Default behavior**: Multimodal feature tensors are moved to CPU after "
 "processing to save GPU memory"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:108
+#: ../../../supported_models/text_generation/multimodal_language_models.md:138
 msgid ""
 "**With `--keep-mm-feature-on-device`**: Feature tensors remain on GPU, "
 "reducing device-to-host copy overhead and improving latency, but consuming "
 "more GPU memory"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:110
+#: ../../../supported_models/text_generation/multimodal_language_models.md:140
 msgid ""
 "Use this flag when you have sufficient GPU memory and want to minimize "
 "latency for multimodal inference."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:112
+#: ../../../supported_models/text_generation/multimodal_language_models.md:142
 msgid "Multimodal Inputs Limitation"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:114
+#: ../../../supported_models/text_generation/multimodal_language_models.md:144
 msgid ""
 "**Use `--mm-process-config '{\"image\":{\"max_pixels\":1048576},\"video\":"
 "{\"fps\":3,\"max_pixels\":602112,\"max_frames\":60}}'`**: To set `image`, "
 "`video`, and `audio` input limits."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:116
+#: ../../../supported_models/text_generation/multimodal_language_models.md:146
 msgid ""
 "This can reduce GPU memory usage, improve inference speed, and help to avoid "
 "OOM, but may impact model performance, thus set a proper value based on your "
-"specific use case. Currently, only `qwen_vl` supports this config. Please "
-"refer to [qwen_vl processor](https://github.com/sgl-project/sglang/blob/main/"
-"python/sglang/srt/multimodal/processors/qwen_vl.py) for understanding the "
-"meaning of each parameter."
+"specific use case. The config entries are passed as `images_kwargs`, "
+"`videos_kwargs`, and `audio_kwargs` to the HuggingFace processor, so each "
+"modality's settings are kept separate and do not collide. Refer to the "
+"HuggingFace documentation for your model's processor to understand the "
+"available parameters."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:118
+#: ../../../supported_models/text_generation/multimodal_language_models.md:148
 msgid "Bidirectional Attention in Multimodal Model Serving"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:119
+#: ../../../supported_models/text_generation/multimodal_language_models.md:149
 msgid "**Note for serving the Gemma-3 multimodal model**:"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:121
+#: ../../../supported_models/text_generation/multimodal_language_models.md:151
 msgid ""
 "As mentioned in [Welcome Gemma 3: Google's all new multimodal, multilingual, "
 "long context open LLM ](https://huggingface.co/blog/gemma3#multimodality), "
@@ -649,13 +732,13 @@ msgid ""
 "and Chunked Prefill."
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:124
+#: ../../../supported_models/text_generation/multimodal_language_models.md:154
 msgid ""
 "To enable bidirectional attention, you can use the `TritonAttnBackend` while "
 "disabling CUDA Graph and Chunked Prefill. Example launch command:"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:125
+#: ../../../supported_models/text_generation/multimodal_language_models.md:155
 msgid ""
 "python -m sglang.launch_server \\\n"
 "  --model-path google/gemma-3-4b-it \\\n"
@@ -667,7 +750,7 @@ msgid ""
 "  --chunked-prefill-size -1 # Disable Chunked Prefill\n"
 msgstr ""
 
-#: ../../../supported_models/text_generation/multimodal_language_models.md:136
+#: ../../../supported_models/text_generation/multimodal_language_models.md:166
 msgid ""
 "If higher serving performance is required and a certain degree of accuracy "
 "loss is acceptable, you may choose to use other attention backends, and you "
