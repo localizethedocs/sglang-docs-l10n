@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:55+0000\n"
+"POT-Creation-Date: 2026-05-05 10:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,8 +148,12 @@ msgid ""
 "\n"
 "nest_asyncio.apply()\n"
 "\n"
+"import sglang.test.doc_patch  # noqa: F401\n"
+"\n"
 "model_path = \"Qwen/Qwen2.5-VL-3B-Instruct\"\n"
-"chat_template = \"qwen2-vl\""
+"chat_template = \"qwen2-vl\"\n"
+"example_image_url = \"https://raw.githubusercontent.com/sgl-project/sglang/"
+"main/examples/assets/example_image.png\""
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
@@ -160,14 +164,7 @@ msgid ""
 "\n"
 "from sglang.srt.parser.conversation import chat_templates\n"
 "\n"
-"image = Image.open(\n"
-"    BytesIO(\n"
-"        requests.get(\n"
-"            \"https://github.com/sgl-project/sglang/blob/main/examples/"
-"assets/example_image.png?raw=true\"\n"
-"        ).content\n"
-"    )\n"
-")\n"
+"image = Image.open(BytesIO(requests.get(example_image_url).content))\n"
 "\n"
 "conv = chat_templates[chat_template].copy()\n"
 "conv.append_message(conv.roles[0], f\"What's shown here: {conv.image_token}?"
@@ -181,7 +178,7 @@ msgid ""
 "image"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:125
+#: ../../../advanced_features/vlm_query.ipynb:122
 msgid "Basic Offline Engine API Call"
 msgstr ""
 
@@ -200,12 +197,12 @@ msgid ""
 "print(out[\"text\"])"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:159
-#: ../../../advanced_features/vlm_query.ipynb:323
+#: ../../../advanced_features/vlm_query.ipynb:156
+#: ../../../advanced_features/vlm_query.ipynb:314
 msgid "Call with Processor Output"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:161
+#: ../../../advanced_features/vlm_query.ipynb:158
 msgid ""
 "Using a HuggingFace processor to preprocess text and images, and passing the "
 "``processor_output`` directly into ``Engine.generate``."
@@ -228,12 +225,12 @@ msgid ""
 "print(out[\"text\"])"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:194
-#: ../../../advanced_features/vlm_query.ipynb:353
+#: ../../../advanced_features/vlm_query.ipynb:191
+#: ../../../advanced_features/vlm_query.ipynb:344
 msgid "Call with Precomputed Embeddings"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:196
+#: ../../../advanced_features/vlm_query.ipynb:193
 msgid ""
 "You can pre-calculate image features to avoid repeated visual encoding "
 "processes."
@@ -245,10 +242,9 @@ msgid ""
 "from transformers import Qwen2_5_VLForConditionalGeneration\n"
 "\n"
 "processor = AutoProcessor.from_pretrained(model_path, use_fast=True)\n"
-"vision = (\n"
-"    Qwen2_5_VLForConditionalGeneration.from_pretrained(model_path).eval()."
-"visual.cuda()\n"
-")"
+"model = Qwen2_5_VLForConditionalGeneration.from_pretrained(model_path)."
+"eval()\n"
+"vision = model.model.visual.cuda()"
 msgstr ""
 
 #: ../../../advanced_features/vlm_query.ipynb:-1
@@ -263,6 +259,7 @@ msgid ""
 "    processor_output[\"pixel_values\"].cuda(), "
 "processor_output[\"image_grid_thw\"].cuda()\n"
 ")\n"
+"precomputed_embeddings = precomputed_embeddings.pooler_output\n"
 "\n"
 "multi_modal_item = dict(\n"
 "    processor_output,\n"
@@ -277,11 +274,11 @@ msgid ""
 "llm.shutdown()"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:252
+#: ../../../advanced_features/vlm_query.ipynb:249
 msgid "Querying Llama 4 Vision Model"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:254
+#: ../../../advanced_features/vlm_query.ipynb:251
 msgid ""
 "model_path = \"meta-llama/Llama-4-Scout-17B-16E-Instruct\"\n"
 "chat_template = \"llama-4\"\n"
@@ -293,14 +290,7 @@ msgid ""
 "from sglang.srt.parser.conversation import chat_templates\n"
 "\n"
 "# Download the same example image\n"
-"image = Image.open(\n"
-"    BytesIO(\n"
-"        requests.get(\n"
-"            \"https://github.com/sgl-project/sglang/blob/main/examples/"
-"assets/example_image.png?raw=true\"\n"
-"        ).content\n"
-"    )\n"
-")\n"
+"image = Image.open(BytesIO(requests.get(example_image_url).content))\n"
 "\n"
 "conv = chat_templates[chat_template].copy()\n"
 "conv.append_message(conv.roles[0], f\"What's shown here: {conv.image_token}?"
@@ -315,17 +305,17 @@ msgid ""
 "image"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:295
+#: ../../../advanced_features/vlm_query.ipynb:286
 msgid "Llama 4 Basic Call"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:297
+#: ../../../advanced_features/vlm_query.ipynb:288
 msgid ""
 "Llama 4 requires more computational resources, so it's configured with multi-"
 "GPU parallelism (tp_size=4) and larger context length."
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:299
+#: ../../../advanced_features/vlm_query.ipynb:290
 msgid ""
 "llm = Engine(\n"
 "    model_path=model_path,\n"
@@ -340,13 +330,13 @@ msgid ""
 "print(out[\"text\"])"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:325
+#: ../../../advanced_features/vlm_query.ipynb:316
 msgid ""
 "Using HuggingFace processor to preprocess data can reduce computational "
 "overhead during inference."
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:327
+#: ../../../advanced_features/vlm_query.ipynb:318
 msgid ""
 "from transformers import AutoProcessor\n"
 "\n"
@@ -363,7 +353,7 @@ msgid ""
 "print(out)"
 msgstr ""
 
-#: ../../../advanced_features/vlm_query.ipynb:355
+#: ../../../advanced_features/vlm_query.ipynb:346
 msgid ""
 "from transformers import AutoProcessor\n"
 "from transformers import Llama4ForConditionalGeneration\n"

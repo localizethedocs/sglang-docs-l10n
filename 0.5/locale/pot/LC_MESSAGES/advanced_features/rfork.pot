@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:55+0000\n"
+"POT-Creation-Date: 2026-05-05 10:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,7 +65,7 @@ msgid "remote-instance-weight-loader-backend"
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
-msgid "`nccl` or `transfer_engine`, default value is `nccl`"
+msgid "`nccl`, `transfer_engine`, or `modelexpress`. Default is `nccl`."
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
@@ -73,7 +73,9 @@ msgid "remote-instance-weight-loader-seed-instance-ip"
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
-msgid "IP address of the seed instance who will provide the model weight"
+msgid ""
+"IP address of the seed instance who will provide the model weight. Used by "
+"`nccl` and `transfer_engine` backends."
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
@@ -81,7 +83,9 @@ msgid "remote-instance-weight-loader-seed-instance-service-port"
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
-msgid "the port that the seed instance's HTTP server is listening on"
+msgid ""
+"the port that the seed instance's HTTP server is listening on. Used by "
+"`nccl` and `transfer_engine` backends."
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
@@ -91,8 +95,8 @@ msgstr ""
 #: ../../../advanced_features/rfork.md:0
 msgid ""
 "the list of available ports on the seed instance that will be used to build "
-"NCCL communication groups between seed and client instance. This argument is "
-"only needed by `nccl` backend."
+"NCCL communication groups between seed and client instance. Only needed by "
+"`nccl` backend."
 msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
@@ -101,28 +105,41 @@ msgstr ""
 
 #: ../../../advanced_features/rfork.md:0
 msgid ""
-"set to start seed service that supports TransferEngine as backend. It is "
-"needed for seed instances when using `transfer_engine` as backend."
+"set to start seed service that supports TransferEngine as backend. Needed "
+"for seed instances when using `transfer_engine` as backend."
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:18
+#: ../../../advanced_features/rfork.md:0
+msgid "modelexpress-config"
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:0
+msgid ""
+"JSON config for `modelexpress` backend. Keys: `\"url\"` (required, gRPC host:"
+"port of ModelExpress server), `\"model_name\"` (optional, defaults to `--"
+"model-path`), `\"source\"` (optional bool, `true` for seed mode)."
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:19
 msgid "NCCL as backend"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:20
-#: ../../../advanced_features/rfork.md:37
+#: ../../../advanced_features/rfork.md:21
+#: ../../../advanced_features/rfork.md:38
+#: ../../../advanced_features/rfork.md:58
 msgid "seed instance:"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:21
+#: ../../../advanced_features/rfork.md:22
 msgid "python -m sglang.launch_server [args]\n"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:25
+#: ../../../advanced_features/rfork.md:26
+#: ../../../advanced_features/rfork.md:64
 msgid "client instance:"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:26
+#: ../../../advanced_features/rfork.md:27
 msgid ""
 "python -m sglang.launch_server [args] \\\n"
 "  --load-format remote_instance \\\n"
@@ -134,17 +151,17 @@ msgid ""
 "  --remote-instance-weight-loader-backend nccl\n"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:35
+#: ../../../advanced_features/rfork.md:36
 msgid "TransferEngine as backend"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:38
+#: ../../../advanced_features/rfork.md:39
 msgid ""
 "python -m sglang.launch_server [args] \\\n"
 "  --remote-instance-weight-loader-start-seed-via-transfer-engine\n"
 msgstr ""
 
-#: ../../../advanced_features/rfork.md:43
+#: ../../../advanced_features/rfork.md:44
 msgid ""
 "python -m sglang.launch_server [args] \\\n"
 "  --load-format remote_instance \\\n"
@@ -152,4 +169,49 @@ msgid ""
 "  --remote-instance-weight-loader-seed-instance-service-port "
 "[seed_instance_service_port] \\\n"
 "  --remote-instance-weight-loader-backend transfer_engine\n"
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:52
+msgid "ModelExpress as backend"
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:54
+msgid ""
+"[ModelExpress](https://github.com/ai-dynamo/modelexpress) is a coordination "
+"service that manages P2P weight transfer metadata. It removes the need for "
+"direct seed IP/port configuration by providing a centralized registry that "
+"seeds publish to and clients discover from. Under the hood it uses "
+"TransferEngine (Mooncake) for the actual RDMA data transfer."
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:56
+msgid ""
+"A running ModelExpress server is required. See the [ModelExpress "
+"documentation](https://github.com/ai-dynamo/modelexpress) for setup "
+"instructions."
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:59
+msgid ""
+"python -m sglang.launch_server [args] \\\n"
+"  --modelexpress-config '{\"url\": \"[modelexpress_grpc_host:port]\", "
+"\"model_name\": \"[model_name]\", \"source\": true}'\n"
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:65
+msgid ""
+"python -m sglang.launch_server [args] \\\n"
+"  --load-format remote_instance \\\n"
+"  --remote-instance-weight-loader-backend modelexpress \\\n"
+"  --modelexpress-config '{\"url\": \"[modelexpress_grpc_host:port]\", "
+"\"model_name\": \"[model_name]\"}'\n"
+msgstr ""
+
+#: ../../../advanced_features/rfork.md:72
+msgid ""
+"The seed publishes its TransferEngine session ID and tensor layout to "
+"ModelExpress. The client queries ModelExpress to discover the seed, then "
+"pulls weights directly via RDMA. This enables dynamic seed discovery without "
+"hardcoding IPs, and supports multiple models through a single ModelExpress "
+"instance."
 msgstr ""

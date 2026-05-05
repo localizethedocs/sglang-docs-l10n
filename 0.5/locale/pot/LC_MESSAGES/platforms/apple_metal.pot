@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-05 10:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/apple_metal.md:1
+msgid "Apple Silicon with Metal (MLX)"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:3
+msgid ""
+"This document describes how run SGLang on Apple Silicon using [Metal (MLX)]"
+"(https://opensource.apple.com/projects/mlx/). If you encounter issues or "
+"have questions, please [open an issue](https://github.com/sgl-project/sglang/"
+"issues)."
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:5
+msgid "Install SGLang"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:7
+msgid "You can install SGLang using one of the methods below."
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:9
+msgid "Install from Source"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:11
+msgid ""
+"# Use the default branch\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"# Install sglang python package\n"
+"pip install --upgrade pip\n"
+"rm -f python/pyproject.toml && mv python/pyproject_other.toml python/"
+"pyproject.toml\n"
+"uv pip install -e \"python[all_mps]\"\n"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:22
+msgid "Launch of the Serving Engine"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:24
+msgid "Launch the server with:"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:26
+msgid ""
+"SGLANG_USE_MLX=1 python -m sglang.launch_server \\\n"
+"  --model <MODEL_ID_OR_PATH> \\\n"
+"  --disable-cuda-graph \\\n"
+"  --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:33
+msgid "**Key Parameters Explained:**"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:35
+msgid ""
+"`SGLANG_USE_MLX=1` - Enables the use of MLX as the SGLang runtime backend "
+"(if disabled, SGLang will fall back to `torch.mps`, which has less support)"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:36
+msgid ""
+"`--disable-cuda-graph` - Disables usage of CUDA graph, which is not relevant "
+"for Apple Metal."
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:37
+msgid ""
+"`--disable-overlap-schedule` - Disables overlap scheduling (enabled/not "
+"present by default) achieved using MLX's `async_eval()`"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:40
+msgid "Benchmarking with Requests"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:42
+msgid ""
+"`sglang.benchmark_one_batch` calls the synchronous prefill/decode methods "
+"directly without going through the scheduler and the overlap code path."
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:44
+msgid ""
+"`sglang.benchmark_offline_throughput` can toggle overlap scheduling as it "
+"uses the scheduler and the overlap code path by using the flag `--disable-"
+"overlap-schedule`."
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:46
+msgid "Throughput Testing"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:48
+msgid "Basic synchronous one batch throughput:"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:49
+msgid ""
+"SGLANG_USE_MLX=1 python -m sglang.bench_one_batch \\\n"
+"  --model-path <MODEL_ID_OR_PATH> \\\n"
+"  --disable-cuda-graph \\\n"
+"  --tp-size 1 \\\n"
+"  --batch-size 1 \\\n"
+"  --input-len 60 \\\n"
+"  --output-len 10\n"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:59
+msgid "Synchronous offline throughput:"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:60
+msgid ""
+"SGLANG_USE_MLX=1 python -m sglang.bench_offline_throughput \\\n"
+"  --model-path <MODEL_ID_OR_PATH> \\\n"
+"  --disable-cuda-graph \\\n"
+"  --num-prompts 1 \\\n"
+"  --disable-overlap-schedule\n"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:68
+msgid "Asynchronous offline throughput:"
+msgstr ""
+
+#: ../../../platforms/apple_metal.md:69
+msgid ""
+"SGLANG_USE_MLX=1 python -m sglang.bench_offline_throughput \\\n"
+"  --model-path <MODEL_ID_OR_PATH> \\\n"
+"  --disable-cuda-graph \\\n"
+"  --num-prompts 1\n"
+msgstr ""
