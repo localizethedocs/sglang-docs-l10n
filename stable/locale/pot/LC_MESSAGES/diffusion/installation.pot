@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 08:51+0000\n"
+"POT-Creation-Date: 2026-05-05 10:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +22,10 @@ msgid "Install SGLang-Diffusion"
 msgstr ""
 
 #: ../../../diffusion/installation.md:3
-msgid "You can install SGLang-Diffusion using one of the methods below."
+msgid ""
+"You can install SGLang-Diffusion using one of the methods below. The "
+"standard installation already includes SGLang's optimized kernel stack, "
+"including both `sgl-kernel` and JIT kernels used by diffusion workloads."
 msgstr ""
 
 #: ../../../diffusion/installation.md:5
@@ -117,7 +121,7 @@ msgstr ""
 #: ../../../diffusion/installation.md:68
 msgid ""
 "For detailed ROCm system configuration and installation from source, see "
-"[AMD GPUs](../../platforms/amd_gpu.md)."
+"[AMD GPUs](../platforms/amd_gpu.md)."
 msgstr ""
 
 #: ../../../diffusion/installation.md:70
@@ -125,7 +129,9 @@ msgid "Platform-Specific: MUSA (Moore Threads GPUs)"
 msgstr ""
 
 #: ../../../diffusion/installation.md:72
-msgid "For Moore Threads GPUs (MTGPU) with the MUSA software stack:"
+msgid ""
+"For Moore Threads GPUs (MTGPU) with the MUSA software stack, please follow "
+"the instructions below to install from source:"
 msgstr ""
 
 #: ../../../diffusion/installation.md:74
@@ -142,22 +148,69 @@ msgid ""
 msgstr ""
 
 #: ../../../diffusion/installation.md:85
-msgid "Platform-Specific: Ascend NPU"
+msgid "Platform-Specific: Intel XPU"
 msgstr ""
 
 #: ../../../diffusion/installation.md:87
 msgid ""
-"For Ascend NPU, please follow the [NPU installation guide](../platforms/"
-"ascend_npu.md)."
+"For Intel Data Center GPU Max or Arc GPUs, follow the [XPU installation "
+"guide](../platforms/xpu.md) to set up the base environment, then install "
+"diffusion dependencies:"
 msgstr ""
 
 #: ../../../diffusion/installation.md:89
+msgid "pip install -e \"python[diffusion]\"\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:93
+msgid "Platform-Specific: Ascend NPU"
+msgstr ""
+
+#: ../../../diffusion/installation.md:95
+msgid ""
+"For Ascend NPU, please follow the [NPU installation guide](../platforms/"
+"ascend/ascend_npu.md)."
+msgstr ""
+
+#: ../../../diffusion/installation.md:97
 msgid "Quick test:"
 msgstr ""
 
-#: ../../../diffusion/installation.md:91
+#: ../../../diffusion/installation.md:99
 msgid ""
 "sglang generate --model-path black-forest-labs/FLUX.1-dev \\\n"
 "    --prompt \"A logo With Bold Large text: SGL Diffusion\" \\\n"
 "    --save-output\n"
+msgstr ""
+
+#: ../../../diffusion/installation.md:105
+msgid "Platform-Specific: Apple MPS"
+msgstr ""
+
+#: ../../../diffusion/installation.md:107
+msgid ""
+"For Apple MPS, please follow the instructions below to install from source:"
+msgstr ""
+
+#: ../../../diffusion/installation.md:109
+msgid ""
+"# Install ffmpeg\n"
+"brew install ffmpeg\n"
+"\n"
+"# Install uv\n"
+"brew install uv\n"
+"\n"
+"# Clone the repository\n"
+"git clone https://github.com/sgl-project/sglang.git\n"
+"cd sglang\n"
+"\n"
+"# Create and activate a virtual environment\n"
+"uv venv -p 3.11 sglang-diffusion\n"
+"source sglang-diffusion/bin/activate\n"
+"\n"
+"# Install the Python packages\n"
+"uv pip install --upgrade pip\n"
+"rm -f python/pyproject.toml && mv python/pyproject_other.toml python/"
+"pyproject.toml\n"
+"uv pip install -e \"python[all_mps]\"\n"
 msgstr ""
