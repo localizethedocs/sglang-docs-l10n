@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 10:54+0000\n"
+"POT-Creation-Date: 2026-07-21 10:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -266,6 +266,20 @@ msgid "`8192`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_MAX_KV_CHUNK_CAPACITY`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Maximum number of tokens in each KV chunk for DeepSeek MHA chunked prefix "
+"cache"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`131072`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_FUSED_MLA_ENABLE_ROPE_FUSION`"
 msgstr ""
 
@@ -451,7 +465,7 @@ msgstr ""
 msgid "Use sgl-kernel implementation for FlashAttention v3"
 msgstr ""
 
-#: ../../../references/environment_variables.md:54
+#: ../../../references/environment_variables.md:55
 msgid "DeepGEMM Configuration (Advanced Optimization)"
 msgstr ""
 
@@ -540,16 +554,8 @@ msgid ""
 "30min to less than 3min. Might cause performance degradation during runtime."
 msgstr ""
 
-#: ../../../references/environment_variables.md:67
+#: ../../../references/environment_variables.md:68
 msgid "DeepEP Configuration"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "`SGLANG_DEEPEP_BF16_DISPATCH`"
-msgstr ""
-
-#: ../../../references/environment_variables.md:0
-msgid "Use Bfloat16 for dispatch"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -707,7 +713,7 @@ msgid "Number of worker threads in the RDMA executor thread pool"
 msgstr ""
 
 #: ../../../references/environment_variables.md:91
-msgid "NSA Backend Configuration (For DeepSeek V3.2)"
+msgid "DSA Backend Configuration (For DeepSeek V3.2)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:93
@@ -717,23 +723,50 @@ msgid ""
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_NSA_FUSE_TOPK`"
+msgid "`SGLANG_DSA_FUSE_TOPK`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid ""
 "Fuse the operation of picking topk logits and picking topk indices from page "
-"table"
+"table (`SGLANG_NSA_FUSE_TOPK` is a deprecated alias)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_NSA_ENABLE_MTP_PRECOMPUTE_METADATA`"
+msgid "`SGLANG_DSA_TOPK_FLASHINFER_DETERMINISTIC`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Use deterministic FlashInfer topk kernels when `--dsa-topk-"
+"backend=flashinfer`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DSA_TOPK_FLASHINFER_TIE_BREAK`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Tie-break mode for FlashInfer DSA topk when `--dsa-topk-backend=flashinfer`: "
+"unset disables explicit tie-breaking, `small` prefers the smaller candidate "
+"index for equal scores, and `large` prefers the larger candidate index for "
+"equal scores. Setting this variable makes FlashInfer use deterministic topk."
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`unset`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_DSA_ENABLE_MTP_PRECOMPUTE_METADATA`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid ""
 "Precompute metadata that can be shared among different draft steps when MTP "
-"is enabled"
+"is enabled (`SGLANG_NSA_ENABLE_MTP_PRECOMPUTE_METADATA` is a deprecated "
+"alias)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -745,21 +778,22 @@ msgid "Control whether to use fused metadata copy kernel for cuda graph replay"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
-msgid "`SGLANG_NSA_PREFILL_DENSE_ATTN_KV_LEN_THRESHOLD`"
+msgid "`SGLANG_DSA_PREFILL_DENSE_ATTN_KV_LEN_THRESHOLD`"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid ""
 "When the maximum kv len in current prefill batch exceeds this value, the "
 "sparse mla kernel will be applied, else it falls back to dense MHA "
-"implementation. Default to the index topk of model (2048 for DeepSeek V3.2)"
+"implementation. Default to the index topk of model (2048 for DeepSeek V3.2) "
+"(`SGLANG_NSA_PREFILL_DENSE_ATTN_KV_LEN_THRESHOLD` is a deprecated alias)"
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "`2048`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:103
+#: ../../../references/environment_variables.md:105
 msgid "Memory Management"
 msgstr ""
 
@@ -809,7 +843,7 @@ msgid ""
 "`BAREX`, `INTRA_NODE_NVLINK`. If set to `true`, it defaults to `NVLINK`."
 msgstr ""
 
-#: ../../../references/environment_variables.md:113
+#: ../../../references/environment_variables.md:115
 msgid "Model-Specific Options"
 msgstr ""
 
@@ -819,6 +853,20 @@ msgstr ""
 
 #: ../../../references/environment_variables.md:0
 msgid "Use AITER optimize implementation"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid "`SGLANG_ROCM_USE_MULTI_STREAM`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Allocate alt CUDA/HIP stream on ROCm/AITER to overlap shared and routed "
+"experts in DeepseekV2 MoE. Requires the HIP env `GPU_MAX_HW_QUEUES>=5` "
+"(default `4`, the cap on HSA/ROCr HW queues HIP creates) so the alt stream "
+"gets its own queue instead of serializing with the main stream. Best paired "
+"with `--deepep-mode low_latency` so Mori's AsyncLL kernel offloads dispatch/"
+"combine to copy engines and frees CUs."
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
@@ -841,7 +889,7 @@ msgid ""
 "backend=cutlass)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:121
+#: ../../../references/environment_variables.md:124
 msgid "Quantization"
 msgstr ""
 
@@ -881,6 +929,16 @@ msgid ""
 msgstr ""
 
 #: ../../../references/environment_variables.md:0
+msgid "`SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
+msgid ""
+"Enable FlashInfer TRTLLM per-token NVFP4 activation scaling; ignores "
+"checkpoint activation FP32 scale by treating it as `1`"
+msgstr ""
+
+#: ../../../references/environment_variables.md:0
 msgid "`SGLANG_NVFP4_CKPT_FP8_NEXTN_MOE`"
 msgstr ""
 
@@ -914,7 +972,7 @@ msgstr ""
 msgid "`\"\"`"
 msgstr ""
 
-#: ../../../references/environment_variables.md:134
+#: ../../../references/environment_variables.md:138
 msgid "Distributed Computing"
 msgstr ""
 
@@ -950,7 +1008,7 @@ msgstr ""
 msgid "Set one visible device per process for distributed computing"
 msgstr ""
 
-#: ../../../references/environment_variables.md:143
+#: ../../../references/environment_variables.md:147
 msgid "PD Disaggregation — Staging Buffer (Heterogeneous TP)"
 msgstr ""
 
@@ -999,11 +1057,11 @@ msgid ""
 "for staging operations. Useful for debugging."
 msgstr ""
 
-#: ../../../references/environment_variables.md:152
+#: ../../../references/environment_variables.md:156
 msgid "Testing & Debugging (Internal/CI)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:154
+#: ../../../references/environment_variables.md:158
 msgid ""
 "*These variables are primarily used for internal testing, continuous "
 "integration, or debugging.*"
@@ -1133,7 +1191,7 @@ msgid ""
 "level-10 dumps."
 msgstr ""
 
-#: ../../../references/environment_variables.md:171
+#: ../../../references/environment_variables.md:175
 msgid "Profiling & Benchmarking"
 msgstr ""
 
@@ -1186,7 +1244,7 @@ msgstr ""
 msgid "Config BatchSpanProcessor.max_export_batch_size if tracing is enabled"
 msgstr ""
 
-#: ../../../references/environment_variables.md:181
+#: ../../../references/environment_variables.md:185
 msgid "Storage & Caching"
 msgstr ""
 
@@ -1235,7 +1293,7 @@ msgstr ""
 msgid "Not set (uses `--page-size`)"
 msgstr ""
 
-#: ../../../references/environment_variables.md:191
+#: ../../../references/environment_variables.md:195
 msgid "Function Calling / Tool Use"
 msgstr ""
 
@@ -1253,6 +1311,6 @@ msgid ""
 "`strict=True` set"
 msgstr ""
 
-#: ../../../references/environment_variables.md:195
+#: ../../../references/environment_variables.md:199
 msgid "<br>"
 msgstr ""

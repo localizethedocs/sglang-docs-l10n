@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 10:54+0000\n"
+"POT-Creation-Date: 2026-07-21 10:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,9 +90,9 @@ msgstr ""
 #: ../../../diffusion/api/openai_api.md:175
 #: ../../../diffusion/api/openai_api.md:226
 #: ../../../diffusion/api/openai_api.md:256
-#: ../../../diffusion/api/openai_api.md:350
-#: ../../../diffusion/api/openai_api.md:365
-#: ../../../diffusion/api/openai_api.md:378
+#: ../../../diffusion/api/openai_api.md:351
+#: ../../../diffusion/api/openai_api.md:366
+#: ../../../diffusion/api/openai_api.md:379
 msgid "**Curl Example:**"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgid "curl -sS -X GET \"http://localhost:30010/models\"\n"
 msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:44
-#: ../../../diffusion/api/openai_api.md:384
+#: ../../../diffusion/api/openai_api.md:385
 msgid "**Response Example:**"
 msgstr ""
 
@@ -407,13 +407,15 @@ msgid "**Important Notes:**"
 msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:271
-msgid "Mutual Exclusion: Only one LoRA can be *merged* (active) at a time"
+msgid ""
+"Mutual Exclusion: Only one LoRA configuration can be active per target at a "
+"time"
 msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:272
 msgid ""
-"Switching: To switch LoRAs, you must first `unmerge` the current one, then "
-"`set` the new one"
+"Switching: To switch LoRAs, deactivate the current LoRA with "
+"`unmerge_lora_weights`, then `set` the new one"
 msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:273
@@ -428,8 +430,9 @@ msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:277
 msgid ""
-"Loads one or more LoRA adapters and merges their weights into the model. "
-"Supports both single LoRA (backward compatible) and multiple LoRA adapters."
+"Loads one or more LoRA adapters and applies them to the model. By default, "
+"regular weights are statically merged, while FSDP-sharded weights use "
+"dynamic LoRA to avoid full-gather memory peaks."
 msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:279
@@ -437,7 +440,7 @@ msgid "**Endpoint:** `POST /v1/set_lora`"
 msgstr ""
 
 #: ../../../diffusion/api/openai_api.md:281
-#: ../../../diffusion/api/openai_api.md:346
+#: ../../../diffusion/api/openai_api.md:347
 msgid "**Parameters:**"
 msgstr ""
 
@@ -488,11 +491,18 @@ msgid ""
 "1.0 reduce the effect, values > 1.0 amplify the effect"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:291
+#: ../../../diffusion/api/openai_api.md:290
+msgid ""
+"`merge_mode` (string, optional): `\"auto\"` (default server policy), "
+"`\"merge\"` (force static merge), or `\"dynamic\"` (apply LoRA at forward "
+"time)"
+msgstr ""
+
+#: ../../../diffusion/api/openai_api.md:292
 msgid "**Single LoRA Example:**"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:293
+#: ../../../diffusion/api/openai_api.md:294
 msgid ""
 "curl -X POST http://localhost:30010/v1/set_lora \\\n"
 "  -H \"Content-Type: application/json\" \\\n"
@@ -504,11 +514,11 @@ msgid ""
 "      }'\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:304
+#: ../../../diffusion/api/openai_api.md:305
 msgid "**Multiple LoRA Example:**"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:306
+#: ../../../diffusion/api/openai_api.md:307
 msgid ""
 "curl -X POST http://localhost:30010/v1/set_lora \\\n"
 "  -H \"Content-Type: application/json\" \\\n"
@@ -521,11 +531,11 @@ msgid ""
 "      }'\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:317
+#: ../../../diffusion/api/openai_api.md:318
 msgid "**Multiple LoRA with Same Target:**"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:319
+#: ../../../diffusion/api/openai_api.md:320
 msgid ""
 "curl -X POST http://localhost:30010/v1/set_lora \\\n"
 "  -H \"Content-Type: application/json\" \\\n"
@@ -538,101 +548,101 @@ msgid ""
 "      }'\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:330
+#: ../../../diffusion/api/openai_api.md:331
 msgid "[!NOTE] When using multiple LoRAs:"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:332
+#: ../../../diffusion/api/openai_api.md:333
 msgid ""
 "All list parameters (`lora_nickname`, `lora_path`, `target`, `strength`) "
 "must have the same length"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:333
+#: ../../../diffusion/api/openai_api.md:334
 msgid ""
 "If `target` or `strength` is a single value, it will be applied to all LoRAs"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:334
-msgid "Multiple LoRAs applied to the same target will be merged in order"
+#: ../../../diffusion/api/openai_api.md:335
+msgid "Multiple LoRAs applied to the same target are applied in order"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:337
+#: ../../../diffusion/api/openai_api.md:338
 msgid "**Merge LoRA Weights**"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:339
+#: ../../../diffusion/api/openai_api.md:340
 msgid "Manually merges the currently set LoRA weights into the base model."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:341
+#: ../../../diffusion/api/openai_api.md:342
 msgid ""
-"[!NOTE] `set_lora` automatically performs a merge, so this is typically only "
-"needed if you have manually unmerged but want to re-apply the same LoRA "
-"without calling `set_lora` again.*"
+"[!NOTE] With FSDP-sharded weights, manual merge may require a full-gather "
+"and can OOM. Use `set_lora` with `merge_mode=\"auto\"` or `\"dynamic\"` for "
+"the lower-peak path."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:344
+#: ../../../diffusion/api/openai_api.md:345
 msgid "**Endpoint:** `POST /v1/merge_lora_weights`"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:347
+#: ../../../diffusion/api/openai_api.md:348
 msgid ""
 "`target` (string, optional): Which transformer(s) to merge. One of "
 "\"all\" (default), \"transformer\", \"transformer_2\", \"critic\""
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:348
+#: ../../../diffusion/api/openai_api.md:349
 msgid ""
 "`strength` (float, optional): LoRA strength for merge, default 1.0. Values < "
 "1.0 reduce the effect, values > 1.0 amplify the effect"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:352
+#: ../../../diffusion/api/openai_api.md:353
 msgid ""
 "curl -X POST http://localhost:30010/v1/merge_lora_weights \\\n"
 "  -H \"Content-Type: application/json\" \\\n"
 "  -d '{\"strength\": 0.8}'\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:359
+#: ../../../diffusion/api/openai_api.md:360
 msgid "**Unmerge LoRA Weights**"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:361
+#: ../../../diffusion/api/openai_api.md:362
 msgid ""
 "Unmerges the currently active LoRA weights from the base model, restoring it "
 "to its original state. This **must** be called before setting a different "
 "LoRA."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:363
+#: ../../../diffusion/api/openai_api.md:364
 msgid "**Endpoint:** `POST /v1/unmerge_lora_weights`"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:367
+#: ../../../diffusion/api/openai_api.md:368
 msgid ""
 "curl -X POST http://localhost:30010/v1/unmerge_lora_weights \\\n"
 "  -H \"Content-Type: application/json\"\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:372
+#: ../../../diffusion/api/openai_api.md:373
 msgid "**List LoRA Adapters**"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:374
+#: ../../../diffusion/api/openai_api.md:375
 msgid "Returns loaded LoRA adapters and current application status per module."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:376
+#: ../../../diffusion/api/openai_api.md:377
 msgid "**Endpoint:** `GET /v1/list_loras`"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:380
+#: ../../../diffusion/api/openai_api.md:381
 msgid "curl -sS -X GET \"http://localhost:30010/v1/list_loras\"\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:386
+#: ../../../diffusion/api/openai_api.md:387
 msgid ""
 "{\n"
 "  \"loaded_adapters\": [\n"
@@ -646,6 +656,7 @@ msgid ""
 "        \"nickname\": \"lora2\",\n"
 "        \"path\": \"tarn59/pixel_art_style_lora_z_image_turbo\",\n"
 "        \"merged\": true,\n"
+"        \"mode\": \"merged\",\n"
 "        \"strength\": 1.0\n"
 "      }\n"
 "    ]\n"
@@ -653,136 +664,136 @@ msgid ""
 "}\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:405
+#: ../../../diffusion/api/openai_api.md:407
 msgid "Notes:"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:406
+#: ../../../diffusion/api/openai_api.md:408
 msgid ""
 "If LoRA is not enabled for the current pipeline, the server will return an "
 "error."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:407
+#: ../../../diffusion/api/openai_api.md:409
 msgid ""
 "`num_lora_layers_with_weights` counts only layers that have LoRA weights "
 "applied for the active adapter."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:409
+#: ../../../diffusion/api/openai_api.md:411
 msgid "Example: Switching LoRAs"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:411
+#: ../../../diffusion/api/openai_api.md:413
 msgid "Set LoRA A:"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:412
+#: ../../../diffusion/api/openai_api.md:414
 msgid ""
 "curl -X POST http://localhost:30010/v1/set_lora -d '{\"lora_nickname\": "
 "\"lora_a\", \"lora_path\": \"path/to/A\"}'\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:415
+#: ../../../diffusion/api/openai_api.md:417
 msgid "Generate with LoRA A..."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:416
+#: ../../../diffusion/api/openai_api.md:418
 msgid "Unmerge LoRA A:"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:417
+#: ../../../diffusion/api/openai_api.md:419
 msgid "curl -X POST http://localhost:30010/v1/unmerge_lora_weights\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:420
+#: ../../../diffusion/api/openai_api.md:422
 msgid "Set LoRA B:"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:421
+#: ../../../diffusion/api/openai_api.md:423
 msgid ""
 "curl -X POST http://localhost:30010/v1/set_lora -d '{\"lora_nickname\": "
 "\"lora_b\", \"lora_path\": \"path/to/B\"}'\n"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:424
+#: ../../../diffusion/api/openai_api.md:426
 msgid "Generate with LoRA B..."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:426
+#: ../../../diffusion/api/openai_api.md:428
 msgid "Adjust Output Quality"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:428
+#: ../../../diffusion/api/openai_api.md:430
 msgid ""
 "The server supports adjusting output quality and compression levels for both "
 "image and video generation through the `output-quality` and `output-"
 "compression` parameters."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:430
+#: ../../../diffusion/api/openai_api.md:432
 msgid "Parameters"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:432
+#: ../../../diffusion/api/openai_api.md:434
 msgid ""
 "**`output-quality`** (string, optional): Preset quality level that "
 "automatically sets compression. **Default is `\"default\"`**. Valid values:"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:433
+#: ../../../diffusion/api/openai_api.md:435
 msgid "`\"maximum\"`: Highest quality (100)"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:434
+#: ../../../diffusion/api/openai_api.md:436
 msgid "`\"high\"`: High quality (90)"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:435
+#: ../../../diffusion/api/openai_api.md:437
 msgid "`\"medium\"`: Medium quality (55)"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:436
+#: ../../../diffusion/api/openai_api.md:438
 msgid "`\"low\"`: Lower quality (35)"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:437
+#: ../../../diffusion/api/openai_api.md:439
 msgid ""
 "`\"default\"`: Auto-adjust based on media type (50 for video, 75 for image)"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:439
+#: ../../../diffusion/api/openai_api.md:441
 msgid ""
 "**`output-compression`** (integer, optional): Direct compression level "
 "override (0-100). **Default is `None`**. When provided (not `None`), takes "
 "precedence over `output-quality`."
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:440
+#: ../../../diffusion/api/openai_api.md:442
 msgid "`0`: Lowest quality, smallest file size"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:441
+#: ../../../diffusion/api/openai_api.md:443
 msgid "`100`: Highest quality, largest file size"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:443
+#: ../../../diffusion/api/openai_api.md:445
 msgid "Notes"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:445
+#: ../../../diffusion/api/openai_api.md:447
 msgid ""
 "**Precedence**: When both `output-quality` and `output-compression` are "
 "provided, `output-compression` takes precedence"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:446
+#: ../../../diffusion/api/openai_api.md:448
 msgid ""
 "**Format Support**: Quality settings apply to JPEG, and video formats. PNG "
 "uses lossless compression and ignores these settings"
 msgstr ""
 
-#: ../../../diffusion/api/openai_api.md:447
+#: ../../../diffusion/api/openai_api.md:449
 msgid ""
 "**File Size vs Quality**: Lower compression values (or \"low\" quality "
 "preset) produce smaller files but may show visible artifacts"
