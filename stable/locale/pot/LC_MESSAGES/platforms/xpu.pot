@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 10:54+0000\n"
+"POT-Creation-Date: 2026-07-21 10:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,4 +197,106 @@ msgid ""
 "Additionally, the requests can be formed with [OpenAI Completions API]"
 "(https://docs.sglang.io/basic_usage/openai_api_completions.html) and sent "
 "via the command line (e.g. using `curl`) or via your own script."
+msgstr ""
+
+#: ../../../platforms/xpu.md:94
+msgid "Prefill-Decode (P/D) Disaggregation on Intel XPU [Experimental]"
+msgstr ""
+
+#: ../../../platforms/xpu.md:96
+msgid ""
+"SGLang supports prefill-decode disaggregation on Intel XPU using the [NIXL]"
+"(https://github.com/ai-dynamo/nixl) KV-transfer backend."
+msgstr ""
+
+#: ../../../platforms/xpu.md:98
+msgid "**Tested models:**"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Model"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Notes"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "[Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid ""
+"Used in integration tests; verified on Intel XPU with homogeneous P/D (XPU "
+"prefill + XPU decode)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid ""
+"[Qwen/Qwen2.5-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:0
+msgid "Verified on Intel XPU with homogeneous P/D (XPU prefill + XPU decode)"
+msgstr ""
+
+#: ../../../platforms/xpu.md:105
+msgid "**Prerequisites:** `pip install nixl sglang-router`"
+msgstr ""
+
+#: ../../../platforms/xpu.md:107
+msgid "**Start the prefill server (GPU 0):**"
+msgstr ""
+
+#: ../../../platforms/xpu.md:109
+msgid ""
+"ZE_AFFINITY_MASK=0 UCX_POSIX_USE_PROC_LINK=n python -m sglang.launch_server "
+"\\\n"
+"    --model-path Qwen/Qwen3-0.6B --trust-remote-code --device xpu \\\n"
+"    --disaggregation-mode prefill --disaggregation-transfer-backend nixl \\\n"
+"    --disaggregation-bootstrap-port 12335 --host 0.0.0.0 --port 30000\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:116
+msgid "**Start the decode server (GPU 1):**"
+msgstr ""
+
+#: ../../../platforms/xpu.md:118
+msgid ""
+"ZE_AFFINITY_MASK=1 UCX_POSIX_USE_PROC_LINK=n python -m sglang.launch_server "
+"\\\n"
+"    --model-path Qwen/Qwen3-0.6B --trust-remote-code --device xpu \\\n"
+"    --disaggregation-mode decode --disaggregation-transfer-backend nixl \\\n"
+"    --disaggregation-bootstrap-port 12335 --host 0.0.0.0 --port 30001\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:125
+msgid "**Start the router:**"
+msgstr ""
+
+#: ../../../platforms/xpu.md:127
+msgid ""
+"python -m sglang_router.launch_router \\\n"
+"    --pd-disaggregation \\\n"
+"    --prefill http://127.0.0.1:30000 \\\n"
+"    --decode  http://127.0.0.1:30001 \\\n"
+"    --host 0.0.0.0 --port 8000\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:135
+msgid "**Send a request:**"
+msgstr ""
+
+#: ../../../platforms/xpu.md:137
+msgid ""
+"curl http://127.0.0.1:8000/v1/completions \\\n"
+"    -H \"Content-Type: application/json\" \\\n"
+"    -d '{\"model\": \"Qwen/Qwen3-0.6B\", \"prompt\": \"The capital of France "
+"is\", \"max_tokens\": 32}'\n"
+msgstr ""
+
+#: ../../../platforms/xpu.md:143
+msgid ""
+"**Note:** `UCX_POSIX_USE_PROC_LINK=n` is required on Intel XPU to avoid UCX "
+"shared-memory transport issues."
 msgstr ""

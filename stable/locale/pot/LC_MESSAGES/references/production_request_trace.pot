@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang stable\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 10:54+0000\n"
+"POT-Creation-Date: 2026-07-21 10:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,35 +143,45 @@ msgid ""
 "0: disable tracing\n"
 "1: Trace important slices\n"
 "2: Trace all slices except nested ones\n"
-"3: Trace all slices\n"
+"3: Trace all slices (default)\n"
 msgstr ""
 
 #: ../../../references/production_request_trace.md:57
-msgid "The trace level can be dynamically set via HTTP API, for example:"
+msgid "**At startup** — set `SGLANG_TRACE_LEVEL` before launching the server:"
 msgstr ""
 
 #: ../../../references/production_request_trace.md:58
+msgid ""
+"SGLANG_TRACE_LEVEL=2 python -m sglang.launch_server --enable-trace --otlp-"
+"traces-endpoint 0.0.0.0:4317 <other options>\n"
+msgstr ""
+
+#: ../../../references/production_request_trace.md:62
+msgid "**At runtime** — dynamically adjust via HTTP API without restarting:"
+msgstr ""
+
+#: ../../../references/production_request_trace.md:63
 msgid "curl http://0.0.0.0:30000/set_trace_level?level=2\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:61
+#: ../../../references/production_request_trace.md:66
 msgid ""
 "Replace `0.0.0.0:30000` with your actual server address, and replace "
 "`level=2` with the level you want to set."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:63
+#: ../../../references/production_request_trace.md:68
 msgid ""
 "**Note**: You must set the parameter `--enable-trace`; otherwise, the trace "
 "capability will not be enabled regardless of any dynamic adjustments to the "
 "trace level."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:65
+#: ../../../references/production_request_trace.md:70
 msgid "How to add Tracing for slices you're interested in?(API introduction)"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:66
+#: ../../../references/production_request_trace.md:71
 msgid ""
 "We have already inserted instrumentation points in the tokenizer and "
 "scheduler main threads. If you wish to trace additional request execution "
@@ -179,50 +189,50 @@ msgid ""
 "tracing package as described below."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:68
+#: ../../../references/production_request_trace.md:73
 msgid ""
 "**All of the following implementations are done in python/sglang/srt/"
 "observability/req_time_stats.py. If you want to add another slice, please do "
 "it here.**"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:70
+#: ../../../references/production_request_trace.md:75
 msgid "Initialization"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:72
+#: ../../../references/production_request_trace.md:77
 msgid ""
 "Every process involved in tracing during the initialization phase should "
 "execute:"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:73
+#: ../../../references/production_request_trace.md:78
 msgid "process_tracing_init(otlp_traces_endpoint, server_name)\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:76
+#: ../../../references/production_request_trace.md:81
 msgid ""
 "The otlp_traces_endpoint is obtained from the arguments, and you can set "
 "server_name freely, but it should remain consistent across all processes."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:78
+#: ../../../references/production_request_trace.md:83
 msgid ""
 "Every thread involved in tracing during the initialization phase should "
 "execute:"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:79
+#: ../../../references/production_request_trace.md:84
 msgid "trace_set_thread_info(\"thread label\", tp_rank, dp_rank)\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:82
+#: ../../../references/production_request_trace.md:87
 msgid ""
 "The \"thread label\" can be regarded as the name of the thread, used to "
 "distinguish different threads in the visualization view."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:84
+#: ../../../references/production_request_trace.md:89
 msgid ""
 "Create a trace context for a request  Each request needs to call "
 "`TraceReqContext()` to initialize a request context, which is used to "
@@ -230,31 +240,31 @@ msgid ""
 "within the request object or maintain it as a global variable."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:87
+#: ../../../references/production_request_trace.md:92
 msgid "Mark the beginning and end of a request"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:88
+#: ../../../references/production_request_trace.md:93
 msgid ""
 "trace_ctx.trace_req_start().\n"
 "trace_ctx.trace_req_finish()\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:92
+#: ../../../references/production_request_trace.md:97
 msgid ""
 "trace_req_start() and trace_req_finish() must be called within the same "
 "process, for example, in the tokenizer."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:94
+#: ../../../references/production_request_trace.md:99
 msgid "Add tracing for a slice"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:96
+#: ../../../references/production_request_trace.md:101
 msgid "Add slice tracing normally:"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:97
+#: ../../../references/production_request_trace.md:102
 msgid ""
 "trace_ctx.trace_slice_start(RequestStage.TOKENIZER.stage_name)\n"
 "trace_ctx.trace_slice_end(RequestStage.TOKENIZER.stage_name)\n"
@@ -263,47 +273,47 @@ msgid ""
 "trace_ctx.trace_slice(slice: TraceSliceContext)\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:105
+#: ../../../references/production_request_trace.md:110
 msgid ""
 "The end of the last slice in a thread must be marked with "
 "thread_finish_flag=True, or explicitly call trace_ctx.abort(); otherwise, "
 "the thread's span will not be properly generated."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:106
+#: ../../../references/production_request_trace.md:111
 msgid ""
 "trace_ctx.slice_end(RequestStage.D.stage_name, thread_finish_flag = True)\n"
 "trace_ctx.abort()\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:111
+#: ../../../references/production_request_trace.md:116
 msgid ""
 "When the request execution flow transfers to another thread, the thread "
 "context needs to be explicitly rebuilt."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:112
+#: ../../../references/production_request_trace.md:117
 msgid ""
 "receiver: Execute the following code after receiving the request via ZMQ"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:113
+#: ../../../references/production_request_trace.md:118
 msgid "trace_ctx.rebuild_thread_context()\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:117
+#: ../../../references/production_request_trace.md:122
 msgid ""
 "How to Extend the Tracing Framework to Support Complex Tracing Scenarios"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:119
+#: ../../../references/production_request_trace.md:124
 msgid ""
 "The currently provided tracing package still has potential for further "
 "development. If you wish to build more advanced features upon it, you must "
 "first understand its existing design principles."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:121
+#: ../../../references/production_request_trace.md:126
 msgid ""
 "The core of the tracing framework's implementation lies in the design of the "
 "span structure and the trace context. To aggregate scattered slices and "
@@ -313,7 +323,7 @@ msgid ""
 "follows:"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:122
+#: ../../../references/production_request_trace.md:127
 msgid ""
 "TraceReqContext (req_id=\"req-123\")\n"
 "├── TraceThreadContext(thread_label=\"scheduler\", tp_rank=0)\n"
@@ -323,7 +333,7 @@ msgid ""
 "      └── TraceSliceContext(slice_name=\"prefill\")\n"
 msgstr ""
 
-#: ../../../references/production_request_trace.md:131
+#: ../../../references/production_request_trace.md:136
 msgid ""
 "Each traced request maintains a global `TraceReqContext` and creates a "
 "corresponding request span. For every thread that processes the request, a "
@@ -333,7 +343,7 @@ msgid ""
 "`TraceThreadContext`."
 msgstr ""
 
-#: ../../../references/production_request_trace.md:133
+#: ../../../references/production_request_trace.md:138
 msgid ""
 "In addition to the above hierarchy, each slice also records its previous "
 "slice via Span.add_link(), which can be used to trace the execution flow."
