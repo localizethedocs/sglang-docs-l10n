@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SGLang 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 10:57+0000\n"
+"POT-Creation-Date: 2026-07-21 10:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,12 +31,13 @@ msgstr ""
 
 #: ../../../advanced_features/hisparse_guide.md:5
 msgid ""
-"**Prerequisites**: HiSparse only works with models that use **DeepSeek "
-"Sparse Attention (DSA)**  architectures (e.g., DeepSeek-V3.2, GLM-5). These "
-"models natively select a subset of tokens for attention, making it possible "
-"to keep only the top-k KV on GPU while storing the full KV in host memory — "
-"without accuracy loss.  Additionally, HiSparse currently requires **PD "
-"disaggregation mode** and is enabled on the **decode instance** only."
+"**Prerequisites**: HiSparse works with models that use **DeepSeek Sparse "
+"Attention (DSA)** architectures (e.g., DeepSeek-V3.2, GLM-5.1) and "
+"**DeepSeek V4**. These models natively select a subset of tokens for "
+"attention, making it possible to keep only the top-k KV on GPU while storing "
+"the full KV in host memory — without accuracy loss. Additionally, HiSparse "
+"currently requires **PD disaggregation mode** and is enabled on the **decode "
+"instance** only."
 msgstr ""
 
 #: ../../../advanced_features/hisparse_guide.md:7
@@ -142,6 +144,12 @@ msgid ""
 msgstr ""
 
 #: ../../../advanced_features/hisparse_guide.md:43
+msgid ""
+"For DeepSeek V4, the direct-to-host path writes only C4 KV into the decode "
+"host pool. The c4_indexer and C128 KV remain device-to-device transfers."
+msgstr ""
+
+#: ../../../advanced_features/hisparse_guide.md:45
 msgid "Server Arguments"
 msgstr ""
 
@@ -181,11 +189,11 @@ msgstr ""
 msgid "Configuration for HiSparse (see below)"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:50
+#: ../../../advanced_features/hisparse_guide.md:52
 msgid "HiSparse Config Parameters"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:52
+#: ../../../advanced_features/hisparse_guide.md:54
 msgid "Pass as a JSON string via `--hisparse-config`:"
 msgstr ""
 
@@ -223,27 +231,27 @@ msgid ""
 "capacity"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:60
+#: ../../../advanced_features/hisparse_guide.md:62
 msgid ""
 "Example: `--hisparse-config='{\"top_k\": 2048, \"device_buffer_size\": 6144, "
 "\"host_to_device_ratio\": 10}'`"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:62
+#: ../../../advanced_features/hisparse_guide.md:64
 msgid "Deployment"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:64
+#: ../../../advanced_features/hisparse_guide.md:66
 msgid ""
 "HiSparse currently requires **PD disaggregation mode** and is enabled only "
 "on the **decode instance**."
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:66
+#: ../../../advanced_features/hisparse_guide.md:68
 msgid "Prefill Instance"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:68
+#: ../../../advanced_features/hisparse_guide.md:70
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path /path/to/model \\\n"
@@ -258,11 +266,11 @@ msgid ""
 "    --nnodes 1 --node-rank 0\n"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:82
+#: ../../../advanced_features/hisparse_guide.md:84
 msgid "Decode Instance (with HiSparse)"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:84
+#: ../../../advanced_features/hisparse_guide.md:86
 msgid ""
 "python3 -m sglang.launch_server \\\n"
 "    --model-path /path/to/model \\\n"
@@ -271,8 +279,7 @@ msgid ""
 "    --context-length 81920 \\\n"
 "    --tp-size 8 --dp-size 8 --enable-dp-attention \\\n"
 "    --mem-fraction-static 0.85 \\\n"
-"    --kv-cache-dtype bfloat16 \\\n"
-"    --nsa-decode-backend flashmla_sparse \\\n"
+"    --disable-radix-cache \\\n"
 "    --disaggregation-mode decode \\\n"
 "    --disaggregation-ib-device mlx5_0,mlx5_1,mlx5_2,mlx5_3 \\\n"
 "    --dist-init-addr 127.0.0.1:5757 \\\n"
@@ -282,11 +289,21 @@ msgid ""
 "\"host_to_device_ratio\": 10}'\n"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:102
+#: ../../../advanced_features/hisparse_guide.md:103
+msgid ""
+"**Note**: For DSA models, `--kv-cache-dtype` defaults to `auto`, which "
+"resolves to `fp8_e4m3` on SM100+ (Blackwell) and `bfloat16` on older "
+"architectures. The DSA decode backend is automatically selected based on KV "
+"dtype (`bfloat16` → `flashmla_sparse`, `fp8_e4m3` → `flashmla_kv`). DSA "
+"backend flags apply only to DSA models; DeepSeek V4 uses its own `dsv4` "
+"attention backend."
+msgstr ""
+
+#: ../../../advanced_features/hisparse_guide.md:105
 msgid "Benchmark"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:104
+#: ../../../advanced_features/hisparse_guide.md:107
 msgid ""
 "python3 -m sglang.bench_serving \\\n"
 "    --backend sglang \\\n"
@@ -304,62 +321,53 @@ msgid ""
 "    --flush-cache \\\n"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:121
+#: ../../../advanced_features/hisparse_guide.md:124
 msgid "Key Notes"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:123
+#: ../../../advanced_features/hisparse_guide.md:126
 msgid ""
 "The prefill instance does not need `--enable-hisparse`; it is unaware of "
 "HiSparse."
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:124
-msgid ""
-"On the decode instance, the following flags are **required** for HiSparse:"
-msgstr ""
-
-#: ../../../advanced_features/hisparse_guide.md:125
-msgid ""
-"`--kv-cache-dtype bfloat16` — currently only bfloat16 KV cache is supported "
-"(more dtypes planned)."
-msgstr ""
-
-#: ../../../advanced_features/hisparse_guide.md:126
-msgid ""
-"`--nsa-decode-backend flashmla_sparse` — currently only `flashmla_sparse` "
-"backend is supported."
-msgstr ""
-
 #: ../../../advanced_features/hisparse_guide.md:127
-msgid "`--enable-hisparse` — enables HiSparse."
+msgid ""
+"On the decode instance, `--enable-hisparse` and `--hisparse-config` are "
+"required for HiSparse."
 msgstr ""
 
 #: ../../../advanced_features/hisparse_guide.md:128
 msgid ""
-"`--hisparse-config` — HiSparse configuration (top_k, device_buffer_size, "
-"host_to_device_ratio)."
+"For DSA models, `--kv-cache-dtype bfloat16` uses `flashmla_sparse`, and `--"
+"kv-cache-dtype fp8_e4m3` uses `flashmla_kv`."
 msgstr ""
 
 #: ../../../advanced_features/hisparse_guide.md:129
+msgid ""
+"For DeepSeek V4, DSA backend flags are not applicable. DeepSeek V4 uses the "
+"`dsv4` attention backend and `fp8_e4m3` KV cache by default."
+msgstr ""
+
+#: ../../../advanced_features/hisparse_guide.md:130
 msgid ""
 "`host_to_device_ratio` should be configured based on the host machine's "
 "available memory. For example:"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:130
+#: ../../../advanced_features/hisparse_guide.md:131
 msgid "**~1 TB** host memory → `host_to_device_ratio: 5`"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:131
+#: ../../../advanced_features/hisparse_guide.md:132
 msgid "**~2 TB** host memory → `host_to_device_ratio: 10`"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:133
+#: ../../../advanced_features/hisparse_guide.md:134
 msgid "Acknowledgments"
 msgstr ""
 
-#: ../../../advanced_features/hisparse_guide.md:135
+#: ../../../advanced_features/hisparse_guide.md:136
 msgid ""
 "We would like to thank the SGLang team and community for the implementation "
 "and generous support, especially Zhiqiang Xie, Zhangheng Huang, Tingwei "
