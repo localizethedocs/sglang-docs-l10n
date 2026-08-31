@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-22 08:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/qwen3.md:1
+msgid "Qwen3-Next Usage"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:3
+msgid ""
+"SGLang has supported Qwen3-Next-80B-A3B-Instruct and Qwen3-Next-80B-A3B-"
+"Thinking since [this PR](https://github.com/sgl-project/sglang/pull/10233)."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:5
+msgid "Launch Qwen3-Next with SGLang"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:7
+msgid "To serve Qwen3-Next models on 4xH100/H200 GPUs:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:9
+msgid ""
+"python3 -m sglang.launch_server --model Qwen/Qwen3-Next-80B-A3B-Instruct --"
+"tp 4\n"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:13
+msgid "Configuration Tips"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:14
+msgid ""
+"`--max-mamba-cache-size`: Adjust `--max-mamba-cache-size` to increase mamba "
+"cache space and max running requests capability. It will decrease KV cache "
+"space as a trade-off. You can adjust it according to workload."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:15
+msgid ""
+"`--mamba-ssm-dtype`: `bfloat16` or `float32`, use `bfloat16` to save mamba "
+"cache size and `float32` to get more accurate results. The default setting "
+"is `float32`."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:16
+msgid ""
+"`--mamba-full-memory-ratio`: The ratio of mamba state memory to full kv "
+"cache memory. The default is 0.9."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:18
+msgid "Mamba Radix Cache"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:19
+msgid ""
+"SGLang supports prefix caching for Qwen3-Next models named "
+"`MambaRadixCache`, which improves inference speed by reusing computation "
+"results. There are two versions of `MambaRadixCache`:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:20
+msgid ""
+"`no_buffer`: The default version, which is also other hybrid linear models' "
+"choice. When it is enabled, SGLang will automatically close overlap schedule "
+"for compatibility reasons."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:21
+msgid ""
+"`extra_buffer`: An optimized version that is compatible with features like "
+"page size > 1, overlap schedule, and speculative decoding. It also supports "
+"storing mamba state in branching positions. However, it requires two extra "
+"mamba spaces for a ping-pong buffer for each request. To enable it, add the "
+"argument `--mamba-scheduler-strategy extra_buffer` when launching the server."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:23
+msgid "EAGLE Speculative Decoding"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:24
+msgid ""
+"**Description**: SGLang has supported Qwen3-Next models with [EAGLE "
+"speculative decoding](https://docs.sglang.io/advanced_features/"
+"speculative_decoding.html#EAGLE-Decoding)."
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:26
+msgid ""
+"**Usage**: Add arguments `--speculative-algorithm`, `--speculative-num-"
+"steps`, `--speculative-eagle-topk` and `--speculative-num-draft-tokens` to "
+"enable this feature. For example:"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:29
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model Qwen/Qwen3-Next-80B-A3B-Instruct \\\n"
+"  --tp 4 \\\n"
+"  --speculative-num-steps 3 \\\n"
+"  --speculative-eagle-topk 1 \\\n"
+"  --speculative-num-draft-tokens 4 \\\n"
+"  --speculative-algo NEXTN\n"
+msgstr ""
+
+#: ../../../basic_usage/qwen3.md:39
+msgid ""
+"Details can be seen in [this PR](https://github.com/sgl-project/sglang/"
+"pull/10233)."
+msgstr ""
