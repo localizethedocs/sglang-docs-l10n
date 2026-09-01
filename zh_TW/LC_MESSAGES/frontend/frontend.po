@@ -1,0 +1,415 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../frontend/frontend.ipynb:2
+msgid ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
+msgstr ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
+
+#: ../../../frontend/frontend.ipynb:9
+msgid "SGLang Frontend Language"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:20
+msgid ""
+"SGLang frontend language can be used to define simple and easy prompts in a "
+"convenient, structured way."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:32
+msgid "Launch A Server"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:34
+msgid "Launch the server in your terminal and wait for it to initialize."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid "[ ]:"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"import requests\n"
+"import os\n"
+"\n"
+"from sglang import assistant_begin, assistant_end\n"
+"from sglang import assistant, function, gen, system, user\n"
+"from sglang import image\n"
+"from sglang import RuntimeEndpoint, set_default_backend\n"
+"from sglang.srt.utils import load_image\n"
+"from sglang.test.test_utils import is_in_ci\n"
+"from sglang.utils import print_highlight, terminate_process, "
+"wait_for_server\n"
+"\n"
+"if is_in_ci():\n"
+"    from patch import launch_server_cmd\n"
+"else:\n"
+"    from sglang.utils import launch_server_cmd\n"
+"\n"
+"\n"
+"server_process, port = launch_server_cmd(\n"
+"    \"python -m sglang.launch_server --model-path Qwen/Qwen2.5-7B-Instruct --"
+"host 0.0.0.0\"\n"
+")\n"
+"\n"
+"wait_for_server(f\"http://localhost:{port}\")\n"
+"print(f\"Server started on http://localhost:{port}\")"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:76
+msgid ""
+"Set the default backend. Note: Besides the local server, you may use also "
+"``OpenAI`` or other API endpoints."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid "set_default_backend(RuntimeEndpoint(f\"http://localhost:{port}\"))"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:97
+msgid "Basic Usage"
+msgstr "基礎用法"
+
+#: ../../../frontend/frontend.ipynb:99
+msgid ""
+"The most simple way of using SGLang frontend language is a simple question "
+"answer dialog between a user and an assistant."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def basic_qa(s, question):\n"
+"    s += system(f\"You are a helpful assistant than can answer questions."
+"\")\n"
+"    s += user(question)\n"
+"    s += assistant(gen(\"answer\", max_tokens=512))"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"state = basic_qa(\"List 3 countries and their capitals.\")\n"
+"print_highlight(state[\"answer\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:134
+msgid "Multi-turn Dialog"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:136
+msgid "SGLang frontend language can also be used to define multi-turn dialogs."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def multi_turn_qa(s):\n"
+"    s += system(f\"You are a helpful assistant than can answer questions."
+"\")\n"
+"    s += user(\"Please give me a list of 3 countries and their capitals.\")\n"
+"    s += assistant(gen(\"first_answer\", max_tokens=512))\n"
+"    s += user(\"Please give me another list of 3 countries and their "
+"capitals.\")\n"
+"    s += assistant(gen(\"second_answer\", max_tokens=512))\n"
+"    return s\n"
+"\n"
+"\n"
+"state = multi_turn_qa()\n"
+"print_highlight(state[\"first_answer\"])\n"
+"print_highlight(state[\"second_answer\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:169
+msgid "Control flow"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:171
+msgid ""
+"You may use any Python code within the function to define more complex "
+"control flows."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def tool_use(s, question):\n"
+"    s += assistant(\n"
+"        \"To answer this question: \"\n"
+"        + question\n"
+"        + \". I need to use a \"\n"
+"        + gen(\"tool\", choices=[\"calculator\", \"search engine\"])\n"
+"        + \". \"\n"
+"    )\n"
+"\n"
+"    if s[\"tool\"] == \"calculator\":\n"
+"        s += assistant(\"The math expression is: \" + gen(\"expression\"))\n"
+"    elif s[\"tool\"] == \"search engine\":\n"
+"        s += assistant(\"The key word to search is: \" + gen(\"word\"))\n"
+"\n"
+"\n"
+"state = tool_use(\"What is 2 * 2?\")\n"
+"print_highlight(state[\"tool\"])\n"
+"print_highlight(state[\"expression\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:210
+msgid "Parallelism"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:212
+msgid ""
+"Use ``fork`` to launch parallel prompts. Because ``sgl.gen`` is non-"
+"blocking, the for loop below issues two generation calls in parallel."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def tip_suggestion(s):\n"
+"    s += assistant(\n"
+"        \"Here are two tips for staying healthy: \"\n"
+"        \"1. Balanced Diet. 2. Regular Exercise.\\n\\n\"\n"
+"    )\n"
+"\n"
+"    forks = s.fork(2)\n"
+"    for i, f in enumerate(forks):\n"
+"        f += assistant(\n"
+"            f\"Now, expand tip {i+1} into a paragraph:\\n\"\n"
+"            + gen(\"detailed_tip\", max_tokens=256, stop=\"\\n\\n\")\n"
+"        )\n"
+"\n"
+"    s += assistant(\"Tip 1:\" + forks[0][\"detailed_tip\"] + \"\\n\")\n"
+"    s += assistant(\"Tip 2:\" + forks[1][\"detailed_tip\"] + \"\\n\")\n"
+"    s += assistant(\n"
+"        \"To summarize the above two tips, I can say:\\n\" + "
+"gen(\"summary\", max_tokens=512)\n"
+"    )\n"
+"\n"
+"\n"
+"state = tip_suggestion()\n"
+"print_highlight(state[\"summary\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:255
+msgid "Constrained Decoding"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:257
+msgid ""
+"Use ``regex`` to specify a regular expression as a decoding constraint. This "
+"is only supported for local models."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def regular_expression_gen(s):\n"
+"    s += user(\"What is the IP address of the Google DNS servers?\")\n"
+"    s += assistant(\n"
+"        gen(\n"
+"            \"answer\",\n"
+"            temperature=0,\n"
+"            regex=r\"((25[0-5]|2[0-4]\\d|[01]?\\d\\d?).){3}(25[0-5]|"
+"2[0-4]\\d|[01]?\\d\\d?)\",\n"
+"        )\n"
+"    )\n"
+"\n"
+"\n"
+"state = regular_expression_gen()\n"
+"print_highlight(state[\"answer\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:290
+msgid "Use ``regex`` to define a ``JSON`` decoding schema."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"character_regex = (\n"
+"    r\"\"\"\\{\\n\"\"\"\n"
+"    + r\"\"\"    \"name\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"    \"house\": \"(Gryffindor|Slytherin|Ravenclaw|Hufflepuff)\","
+"\\n\"\"\"\n"
+"    + r\"\"\"    \"blood status\": \"(Pure-blood|Half-blood|Muggle-born)\","
+"\\n\"\"\"\n"
+"    + r\"\"\"    \"occupation\": \"(student|teacher|auror|ministry of magic|"
+"death eater|order of the phoenix)\",\\n\"\"\"\n"
+"    + r\"\"\"    \"wand\": \\{\\n\"\"\"\n"
+"    + r\"\"\"        \"wood\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"        \"core\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"        \"length\": [0-9]{1,2}\\.[0-9]{0,2}\\n\"\"\"\n"
+"    + r\"\"\"    \\},\\n\"\"\"\n"
+"    + r\"\"\"    \"alive\": \"(Alive|Deceased)\",\\n\"\"\"\n"
+"    + r\"\"\"    \"patronus\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"    \"bogart\": \"[\\w\\d\\s]{1,16}\"\\n\"\"\"\n"
+"    + r\"\"\"\\}\"\"\"\n"
+")\n"
+"\n"
+"\n"
+"@function\n"
+"def character_gen(s, name):\n"
+"    s += user(\n"
+"        f\"{name} is a character in Harry Potter. Please fill in the "
+"following information about this character.\"\n"
+"    )\n"
+"    s += assistant(gen(\"json_output\", max_tokens=256, "
+"regex=character_regex))\n"
+"\n"
+"\n"
+"state = character_gen(\"Harry Potter\")\n"
+"print_highlight(state[\"json_output\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:338
+msgid "Batching"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:340
+msgid "Use ``run_batch`` to run a batch of prompts."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def text_qa(s, question):\n"
+"    s += user(question)\n"
+"    s += assistant(gen(\"answer\", stop=\"\\n\"))\n"
+"\n"
+"\n"
+"states = text_qa.run_batch(\n"
+"    [\n"
+"        {\"question\": \"What is the capital of the United Kingdom?\"},\n"
+"        {\"question\": \"What is the capital of France?\"},\n"
+"        {\"question\": \"What is the capital of Japan?\"},\n"
+"    ],\n"
+"    progress_bar=True,\n"
+")\n"
+"\n"
+"for i, state in enumerate(states):\n"
+"    print_highlight(f\"Answer {i+1}: {states[i]['answer']}\")"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:377
+msgid "Streaming"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:379
+msgid "Use ``stream`` to stream the output to the user."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def text_qa(s, question):\n"
+"    s += user(question)\n"
+"    s += assistant(gen(\"answer\", stop=\"\\n\"))\n"
+"\n"
+"\n"
+"state = text_qa.run(\n"
+"    question=\"What is the capital of France?\", temperature=0.1, "
+"stream=True\n"
+")\n"
+"\n"
+"for out in state.text_iter():\n"
+"    print(out, end=\"\", flush=True)"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:411
+msgid "Complex Prompts"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:413
+msgid ""
+"You may use ``{system|user|assistant}_{begin|end}`` to define complex "
+"prompts."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def chat_example(s):\n"
+"    s += system(\"You are a helpful assistant.\")\n"
+"    # Same as: s += s.system(\"You are a helpful assistant.\")\n"
+"\n"
+"    with s.user():\n"
+"        s += \"Question: What is the capital of France?\"\n"
+"\n"
+"    s += assistant_begin()\n"
+"    s += \"Answer: \" + gen(\"answer\", max_tokens=100, stop=\"\\n\")\n"
+"    s += assistant_end()\n"
+"\n"
+"\n"
+"state = chat_example()\n"
+"print_highlight(state[\"answer\"])"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid "terminate_process(server_process)"
+msgstr "terminate_process(server_process)"
+
+#: ../../../frontend/frontend.ipynb:457
+msgid "Multi-modal Generation"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:459
+msgid ""
+"You may use SGLang frontend language to define multi-modal prompts. See "
+"`here <https://docs.sglang.ai/supported_models/generative_models.html>`__ "
+"for supported models."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"server_process, port = launch_server_cmd(\n"
+"    \"python -m sglang.launch_server --model-path Qwen/Qwen2.5-VL-7B-"
+"Instruct --host 0.0.0.0\"\n"
+")\n"
+"\n"
+"wait_for_server(f\"http://localhost:{port}\")\n"
+"print(f\"Server started on http://localhost:{port}\")"
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:493
+msgid "Ask a question about an image."
+msgstr ""
+
+#: ../../../frontend/frontend.ipynb:-1
+msgid ""
+"@function\n"
+"def image_qa(s, image_file, question):\n"
+"    s += user(image(image_file) + question)\n"
+"    s += assistant(gen(\"answer\", max_tokens=256))\n"
+"\n"
+"\n"
+"image_url = \"https://github.com/sgl-project/sglang/blob/main/test/lang/"
+"example_image.png?raw=true\"\n"
+"image_bytes, _ = load_image(image_url)\n"
+"state = image_qa(image_bytes, \"What is in the image?\")\n"
+"print_highlight(state[\"answer\"])"
+msgstr ""
