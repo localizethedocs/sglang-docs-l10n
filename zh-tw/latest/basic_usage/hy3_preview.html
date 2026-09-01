@@ -1,0 +1,853 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-TW" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hy3-preview Usage &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=a12556bb"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/translations.js?v=cbf116e0"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'basic_usage/hy3_preview';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/deprecation_banner.js?v=5ccf3c89"></script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/basic_usage/hy3_preview.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜尋" href="../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-TW"/>
+  <meta name="docsearch:version" content="0.0.0.dev0" />
+    <meta name="docbuild:last-update" content="2026 年 08 月 31 日"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜尋</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜尋</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜尋</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">開始使用</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">安裝 SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎用法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">發送請求</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api.html">OpenAI 相容的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ollama_api.html">Ollama 相容的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">離線引擎 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang 原生的 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">進階功能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/object_storage.html">Loading Models from Object Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/adaptive_speculative_decoding.html">Adaptive Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">結構化輸出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">量化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/piecewise_cuda_graph.html">Piecewise CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/breakable_cuda_graph.html">Breakable CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">支援的模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/api/cli.html">SGLang Diffusion CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/index.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/ring_sp_performance.html">Ring SP Benchmark: Wan2.2-TI2V-5B (u1r2 vs Baseline)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/cache/index.html">Caching Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/quantization.html">量化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/contributing.html">Contributing to SGLang Diffusion</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">硬體平臺</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">開發者指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">貢獻指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">參考</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">疑難排解與常見問題</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">環境變數</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">前端語言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/release_lookup.html">Release Lookup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">深入了解並加入社群</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="來源儲存庫"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/basic_usage/hy3_preview.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/basic_usage/hy3_preview.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbasic_usage/hy3_preview.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="開啟議題"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下載此頁面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/basic_usage/hy3_preview.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下載原始檔"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全螢幕模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜尋" aria-label="搜尋" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hy3-preview Usage</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目錄 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">安裝</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker">Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-from-source">Build from Source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-hy3-preview-with-sglang">Launch Hy3-preview with SGLang</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eagle-speculative-decoding">EAGLE Speculative Decoding</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-client-example">OpenAI Client Example</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curl-usage">cURL Usage</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-results">Benchmarking Results</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hy3-preview-usage">
+<h1>Hy3-preview Usage<a class="headerlink" href="#hy3-preview-usage" title="連結到這個標頭">#</a></h1>
+<p>Hy3-preview is a large-scale language model (295B parameters, 21B active parameters) from Tencent Hunyuan team. SGLang supports serving Hy3-preview. This guide describes how to run Hy3-preview with native BF16.</p>
+<section id="installation">
+<h2>安裝<a class="headerlink" href="#installation" title="連結到這個標頭">#</a></h2>
+<section id="docker">
+<h3>Docker<a class="headerlink" href="#docker" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>lmsysorg/sglang:hy3-preview
+</pre></div>
+</div>
+</section>
+<section id="build-from-source">
+<h3>Build from Source<a class="headerlink" href="#build-from-source" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install SGLang</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang
+<span class="nb">cd</span><span class="w"> </span>sglang
+pip3<span class="w"> </span>install<span class="w"> </span>pip<span class="w"> </span>--upgrade
+pip3<span class="w"> </span>install<span class="w"> </span><span class="s2">"transformers&gt;=5.6.0"</span>
+pip3<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">"python"</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="launch-hy3-preview-with-sglang">
+<h2>Launch Hy3-preview with SGLang<a class="headerlink" href="#launch-hy3-preview-with-sglang" title="連結到這個標頭">#</a></h2>
+<p>To serve the <a class="reference external" href="https://huggingface.co/tencent/Hy3-preview">Hy3-preview</a> model on 8 GPUs. On 8x96GB H20, SGLang can barely deploy the BF16 model and can only run small batch sizes or short requests. Use larger-memory GPUs such as H20-3e when possible.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>tencent/Hy3-preview<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tool-call-parser<span class="w"> </span>hunyuan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reasoning-parser<span class="w"> </span>hunyuan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--served-model-name<span class="w"> </span>hy3-preview
+</pre></div>
+</div>
+<section id="eagle-speculative-decoding">
+<h3>EAGLE Speculative Decoding<a class="headerlink" href="#eagle-speculative-decoding" title="連結到這個標頭">#</a></h3>
+<p><strong>Description</strong>: SGLang supports Hy3-preview models with <a class="reference external" href="https://docs.sglang.io/advanced_features/speculative_decoding.html#eagle-decoding">EAGLE speculative decoding</a>.</p>
+<p><strong>Usage</strong>:
+Add <code class="docutils literal notranslate"><span class="pre">--speculative-algorithm</span></code>, <code class="docutils literal notranslate"><span class="pre">--speculative-num-steps</span></code>, <code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span></code>, and <code class="docutils literal notranslate"><span class="pre">--speculative-num-draft-tokens</span></code> to enable this feature. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>tencent/Hy3-preview<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tool-call-parser<span class="w"> </span>hunyuan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reasoning-parser<span class="w"> </span>hunyuan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--speculative-num-steps<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--speculative-eagle-topk<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--speculative-num-draft-tokens<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--speculative-algorithm<span class="w"> </span>EAGLE<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--served-model-name<span class="w"> </span>hy3-preview
+</pre></div>
+</div>
+</section>
+</section>
+<section id="openai-client-example">
+<h2>OpenAI Client Example<a class="headerlink" href="#openai-client-example" title="連結到這個標頭">#</a></h2>
+<p>First, install the OpenAI Python client:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>openai
+</pre></div>
+</div>
+<p>You can use the OpenAI client as follows to verify thinking-mode responses.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="c1"># If running SGLang locally with its default OpenAI-compatible port:</span>
+<span class="c1">#   http://localhost:30000/v1</span>
+<span class="n">openai_api_key</span> <span class="o">=</span> <span class="s2">"EMPTY"</span>
+<span class="n">openai_api_base</span> <span class="o">=</span> <span class="s2">"http://localhost:30000/v1"</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="n">openai_api_key</span><span class="p">,</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="n">openai_api_base</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"You are a helpful assistant."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Hello."</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># Thinking mode is disabled by default (no need to pass chat_template_kwargs).</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"hy3-preview"</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="c1"># Thinking mode is enabled only if 'reasoning_effort' and 'interleaved_thinking' are set in 'chat_template_kwargs'.</span>
+<span class="c1"># 'reasoning_effort' supports: 'high', 'low', 'no_think'.</span>
+<span class="n">resp_think</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"hy3-preview"</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+      <span class="s2">"chat_template_kwargs"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">"reasoning_effort"</span><span class="p">:</span> <span class="s2">"high"</span><span class="p">,</span>
+          <span class="s2">"interleaved_thinking"</span><span class="p">:</span> <span class="kc">True</span>
+      <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">output_msg</span> <span class="o">=</span> <span class="n">resp_think</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span>
+<span class="c1"># thinking content</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output_msg</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">)</span>
+<span class="c1"># response content</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output_msg</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="curl-usage">
+<h3>cURL Usage<a class="headerlink" href="#curl-usage" title="連結到這個標頭">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:30000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "hy3-preview",</span>
+<span class="s1">    "messages": [</span>
+<span class="s1">      {"role": "system", "content": "You are a helpful assistant."},</span>
+<span class="s1">      {"role": "user", "content": "Hello."}</span>
+<span class="s1">    ],</span>
+<span class="s1">    "temperature": 1,</span>
+<span class="s1">    "max_tokens": 4096</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="benchmarking-results">
+<h2>Benchmarking Results<a class="headerlink" href="#benchmarking-results" title="連結到這個標頭">#</a></h2>
+<p>For benchmarking, disable prefix caching by adding <code class="docutils literal notranslate"><span class="pre">--disable-radix-cache</span></code> to the server command.</p>
+<p>The following example runs the benchmark on 8 H20 GPUs with 96 GB memory each.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.bench_serving<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--backend<span class="w"> </span>sglang<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--flush-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataset-name<span class="w"> </span>random<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-range-ratio<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-input-len<span class="w"> </span><span class="m">4096</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--random-output-len<span class="w"> </span><span class="m">4096</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-prompts<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-concurrency<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-file<span class="w"> </span>hy3_preview_h20.jsonl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>tencent/Hy3-preview<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--served-model-name<span class="w"> </span>hy3-preview
+</pre></div>
+</div>
+<p>If successful, you will see the following output.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">============</span><span class="w"> </span>Serving<span class="w"> </span>Benchmark<span class="w"> </span><span class="nv">Result</span><span class="w"> </span><span class="o">============</span>
+Backend:<span class="w">                                 </span>sglang
+Traffic<span class="w"> </span>request<span class="w"> </span>rate:<span class="w">                    </span>inf
+Max<span class="w"> </span>request<span class="w"> </span>concurrency:<span class="w">                 </span><span class="m">1</span>
+Successful<span class="w"> </span>requests:<span class="w">                     </span><span class="m">5</span>
+Benchmark<span class="w"> </span>duration<span class="w"> </span><span class="o">(</span>s<span class="o">)</span>:<span class="w">                  </span><span class="m">176</span>.41
+Total<span class="w"> </span>input<span class="w"> </span>tokens:<span class="w">                      </span><span class="m">20480</span>
+Total<span class="w"> </span>input<span class="w"> </span>text<span class="w"> </span>tokens:<span class="w">                 </span><span class="m">20480</span>
+Total<span class="w"> </span>generated<span class="w"> </span>tokens:<span class="w">                  </span><span class="m">20480</span>
+Total<span class="w"> </span>generated<span class="w"> </span>tokens<span class="w"> </span><span class="o">(</span>retokenized<span class="o">)</span>:<span class="w">    </span><span class="m">20480</span>
+Request<span class="w"> </span>throughput<span class="w"> </span><span class="o">(</span>req/s<span class="o">)</span>:<span class="w">              </span><span class="m">0</span>.03
+Input<span class="w"> </span>token<span class="w"> </span>throughput<span class="w"> </span><span class="o">(</span>tok/s<span class="o">)</span>:<span class="w">          </span><span class="m">116</span>.09
+Output<span class="w"> </span>token<span class="w"> </span>throughput<span class="w"> </span><span class="o">(</span>tok/s<span class="o">)</span>:<span class="w">         </span><span class="m">116</span>.09
+Peak<span class="w"> </span>output<span class="w"> </span>token<span class="w"> </span>throughput<span class="w"> </span><span class="o">(</span>tok/s<span class="o">)</span>:<span class="w">    </span><span class="m">118</span>.00
+Peak<span class="w"> </span>concurrent<span class="w"> </span>requests:<span class="w">                </span><span class="m">2</span>
+Total<span class="w"> </span>token<span class="w"> </span>throughput<span class="w"> </span><span class="o">(</span>tok/s<span class="o">)</span>:<span class="w">          </span><span class="m">232</span>.19
+Concurrency:<span class="w">                             </span><span class="m">1</span>.00
+----------------End-to-End<span class="w"> </span>Latency----------------
+Mean<span class="w"> </span>E2E<span class="w"> </span>Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                   </span><span class="m">35279</span>.06
+Median<span class="w"> </span>E2E<span class="w"> </span>Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                 </span><span class="m">35275</span>.60
+P90<span class="w"> </span>E2E<span class="w"> </span>Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                    </span><span class="m">35294</span>.13
+P99<span class="w"> </span>E2E<span class="w"> </span>Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                    </span><span class="m">35294</span>.41
+---------------Time<span class="w"> </span>to<span class="w"> </span>First<span class="w"> </span>Token----------------
+Mean<span class="w"> </span>TTFT<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                          </span><span class="m">355</span>.93
+Median<span class="w"> </span>TTFT<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                        </span><span class="m">309</span>.28
+P99<span class="w"> </span>TTFT<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                           </span><span class="m">518</span>.36
+-----Time<span class="w"> </span>per<span class="w"> </span>Output<span class="w"> </span>Token<span class="w"> </span><span class="o">(</span>excl.<span class="w"> </span>1st<span class="w"> </span>token<span class="o">)</span>------
+Mean<span class="w"> </span>TPOT<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                          </span><span class="m">8</span>.53
+Median<span class="w"> </span>TPOT<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                        </span><span class="m">8</span>.54
+P99<span class="w"> </span>TPOT<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                           </span><span class="m">8</span>.54
+---------------Inter-Token<span class="w"> </span>Latency----------------
+Mean<span class="w"> </span>ITL<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                           </span><span class="m">8</span>.53
+Median<span class="w"> </span>ITL<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                         </span><span class="m">8</span>.54
+P95<span class="w"> </span>ITL<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                            </span><span class="m">8</span>.62
+P99<span class="w"> </span>ITL<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                            </span><span class="m">8</span>.74
+Max<span class="w"> </span>ITL<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:<span class="w">                            </span><span class="m">31</span>.70
+<span class="o">==================================================</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目錄
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">安裝</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker">Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-from-source">Build from Source</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-hy3-preview-with-sglang">Launch Hy3-preview with SGLang</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eagle-speculative-decoding">EAGLE Speculative Decoding</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-client-example">OpenAI Client Example</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curl-usage">cURL Usage</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-results">Benchmarking Results</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最後更新於 2026 年 08 月 31 日。
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

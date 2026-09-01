@@ -1,0 +1,1307 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quantization &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diffusion/quantization';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/deprecation_banner.js?v=5ccf3c89"></script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/diffusion/quantization.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing to SGLang Diffusion" href="contributing.html" />
+    <link rel="prev" title="Ring SP Benchmark: Wan2.2-TI2V-5B (u1r2 vs Baseline)" href="performance/ring_sp_performance.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+  <meta name="docsearch:version" content="0.0.0.dev0" />
+    <meta name="docbuild:last-update" content="Aug 31, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/object_storage.html">Loading Models from Object Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/adaptive_speculative_decoding.html">Adaptive Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/piecewise_cuda_graph.html">Piecewise CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/breakable_cuda_graph.html">Breakable CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/cli.html">SGLang Diffusion CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/index.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/ring_sp_performance.html">Ring SP Benchmark: Wan2.2-TI2V-5B (u1r2 vs Baseline)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/cache/index.html">Caching Acceleration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to SGLang Diffusion</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/release_lookup.html">Release Lookup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/diffusion/quantization.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/diffusion/quantization.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdiffusion/quantization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/diffusion/quantization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-reference">Quick Reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quant-families">Quant Families</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-quantization">Online Quantization</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-online-quantization">FP8 Online Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mxfp4-online-quantization">MXFP4 Online Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skipping-layers">Skipping Layers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validated-modelopt-checkpoints">Validated ModelOpt Checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelopt-fp8">ModelOpt FP8</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-examples">Usage Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelopt-nvfp4">ModelOpt NVFP4</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Usage Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nunchaku-svdquant">Nunchaku (SVDQuant)</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-naming-and-auto-detection">File Naming and Auto-Detection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Usage Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelslim">ModelSlim</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantization">
+<h1>Quantization<a class="headerlink" href="#quantization" title="Link to this heading">#</a></h1>
+<p>SGLang-Diffusion supports quantized transformer checkpoints. In most cases, keep
+the base model and the quantized transformer override separate.</p>
+<section id="quick-reference">
+<h2>Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this heading">#</a></h2>
+<p>Use these paths:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--model-path</span></code>: the base or original model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code>: a quantized transformers-style transformer component directory that already contains its own <code class="docutils literal notranslate"><span class="pre">config.json</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code>: quantized transformer weights provided as a single safetensors file, a sharded safetensors directory, a local path, or a Hugging Face repo ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--quantization</span></code>: apply online quantization to unquantized models at load time (activations are quantized dynamically)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--quantization-ignored-layers</span></code> layer name patterns to keep unquantized (e.g. <code class="docutils literal notranslate"><span class="pre">attention.to_</span></code>)</p></li>
+</ul>
+<p>Recommended example for pre-quantized checkpoints:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>black-forest-labs/FLUX.2-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-weights-path<span class="w"> </span>black-forest-labs/FLUX.2-dev-NVFP4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a curious pikachu"</span>
+</pre></div>
+</div>
+<p>For quantized transformers-style transformer component folders:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>/path/to/base-model<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>/path/to/quantized-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A Logo With Bold Large Text: SGL Diffusion"</span>
+</pre></div>
+</div>
+<p>NOTE: Some model-specific integrations also accept a quantized repo or local
+directory directly as <code class="docutils literal notranslate"><span class="pre">--model-path</span></code>, but that is a compatibility path. If a
+repo contains multiple candidate checkpoints, pass
+<code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> explicitly.</p>
+</section>
+<section id="quant-families">
+<h2>Quant Families<a class="headerlink" href="#quant-families" title="Link to this heading">#</a></h2>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">quant_family</span></code> means a checkpoint and loading family with shared CLI
+usage and loader behavior. It is not just the numeric precision or a kernel
+backend.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>quant_family</p></th>
+<th class="head"><p>checkpoint form</p></th>
+<th class="head"><p>canonical CLI</p></th>
+<th class="head"><p>supported models</p></th>
+<th class="head"><p>extra dependency</p></th>
+<th class="head"><p>platform / notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fp8</span></code> / <code class="docutils literal notranslate"><span class="pre">mxfp4</span></code> (online quantization)</p></td>
+<td><p>Unquantized checkpoint (offline via AMD Quark coming soon)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">{fp8,mxfp4}</span></code></p></td>
+<td><p>Z-Image-Turbo (validated), others likely work. More support coming soon.</p></td>
+<td><p>MXFP4: <code class="docutils literal notranslate"><span class="pre">aiter</span></code> on ROCm</p></td>
+<td><p>MXFP4 requires ROCm and MI350+ (gfx95x). Weights quantized at load time, activations quantized to <code class="docutils literal notranslate"><span class="pre">fp8</span></code> / <code class="docutils literal notranslate"><span class="pre">mxfp4</span></code> dynamically.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fp8</span></code> (offline quantization)</p></td>
+<td><p>Quantized transformer component folder, or safetensors with <code class="docutils literal notranslate"><span class="pre">quantization_config</span></code> metadata</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code> or <code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code></p></td>
+<td><p>ALL</p></td>
+<td><p>None</p></td>
+<td><p>Component-folder and single-file flows are both supported</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">modelopt-fp8</span></code></p></td>
+<td><p>Converted ModelOpt FP8 transformer directory or repo with <code class="docutils literal notranslate"><span class="pre">config.json</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p>FLUX.1, FLUX.2, Wan2.2, HunyuanVideo, Qwen Image, Qwen Image Edit</p></td>
+<td><p>None</p></td>
+<td><p>Serialized config stays <code class="docutils literal notranslate"><span class="pre">quant_method=modelopt</span></code> with <code class="docutils literal notranslate"><span class="pre">quant_algo=FP8</span></code>; <code class="docutils literal notranslate"><span class="pre">dit_layerwise_offload</span></code> is supported and <code class="docutils literal notranslate"><span class="pre">dit_cpu_offload</span></code> stays disabled</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">modelopt-nvfp4</span></code></p></td>
+<td><p>Mixed transformer directory/repo with <code class="docutils literal notranslate"><span class="pre">config.json</span></code>, or raw NVFP4 safetensors export/repo</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code> for mixed overrides; <code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> for raw exports</p></td>
+<td><p>FLUX.1, FLUX.2, Wan2.2</p></td>
+<td><p>None</p></td>
+<td><p>Mixed override repos keep the base model separate; raw exports such as <code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.2-dev-NVFP4</span></code> still use the weights-path flow</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nunchaku-svdq</span></code></p></td>
+<td><p>Pre-quantized Nunchaku transformer weights, usually named <code class="docutils literal notranslate"><span class="pre">svdq-{int4|fp4}_r{rank}-...</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code></p></td>
+<td><p>Model-specific support such as Qwen-Image, FLUX, and Z-Image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nunchaku</span></code></p></td>
+<td><p>SGLang can infer precision and rank from the filename and supports both <code class="docutils literal notranslate"><span class="pre">int4</span></code> and <code class="docutils literal notranslate"><span class="pre">nvfp4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">msmodelslim</span></code></p></td>
+<td><p>Pre-quantized msmodelslim transformer weights</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--model-path</span></code></p></td>
+<td><p>Wan2.2 family</p></td>
+<td><p>None</p></td>
+<td><p>Currently only compatible with the Ascend NPU family and supports both <code class="docutils literal notranslate"><span class="pre">w8a8</span></code> and <code class="docutils literal notranslate"><span class="pre">w4a4</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="online-quantization">
+<h2>Online Quantization<a class="headerlink" href="#online-quantization" title="Link to this heading">#</a></h2>
+<p>Online quantization applies quantization to unquantized models at load time. This is useful for when pre-quantized checkpoints are not available.</p>
+<section id="fp8-online-quantization">
+<h3>FP8 Online Quantization<a class="headerlink" href="#fp8-online-quantization" title="Link to this heading">#</a></h3>
+<p>Apply FP8 quantization to any unquantized model:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Tongyi-MAI/Z-Image-Turbo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization<span class="w"> </span>fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+</section>
+<section id="mxfp4-online-quantization">
+<h3>MXFP4 Online Quantization<a class="headerlink" href="#mxfp4-online-quantization" title="Link to this heading">#</a></h3>
+<p>MXFP4 provides aggressive 4-bit compression with online quantization. <strong>Note: Requires ROCm and MI350+ (gfx95x) GPU.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Tongyi-MAI/Z-Image-Turbo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization<span class="w"> </span>mxfp4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<p><strong>Note:</strong> Requires <code class="docutils literal notranslate"><span class="pre">aiter</span></code> package with MXFP4 kernel support</p>
+</section>
+<section id="skipping-layers">
+<h3>Skipping Layers<a class="headerlink" href="#skipping-layers" title="Link to this heading">#</a></h3>
+<p>By default, online quantization quantizes every linear layer in
+the transformer. However, <code class="docutils literal notranslate"><span class="pre">--quantization-ignored-layers</span></code> can be used to keep specific layers in their original precision:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Tongyi-MAI/Z-Image-Turbo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization<span class="w"> </span>fp8<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization-ignored-layers<span class="w"> </span>attention.to_<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+
+sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Tongyi-MAI/Z-Image-Turbo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization<span class="w"> </span>mxfp4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization-ignored-layers<span class="w"> </span>attention.to_<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<p>Each pattern is matched against the full layer prefix (e.g. <code class="docutils literal notranslate"><span class="pre">layers.0.attention.to_q</span></code>). A layer is skipped and left unquantizd if its prefix contains any of the given patterns.</p>
+</section>
+</section>
+<section id="validated-modelopt-checkpoints">
+<h2>Validated ModelOpt Checkpoints<a class="headerlink" href="#validated-modelopt-checkpoints" title="Link to this heading">#</a></h2>
+<p>This section is the canonical support matrix for the nine diffusion ModelOpt
+checkpoints currently wired up in SGLang docs and validation coverage.</p>
+<p>Published checkpoints keep the serialized quantization config as
+<code class="docutils literal notranslate"><span class="pre">quant_method=modelopt</span></code>; the FP8 vs NVFP4 split below is a documentation label
+derived from <code class="docutils literal notranslate"><span class="pre">quant_algo</span></code>.</p>
+<p>Eight of the nine repos live under <code class="docutils literal notranslate"><span class="pre">lmsys/*</span></code>. The FLUX.2 NVFP4 entry keeps the
+official <code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.2-dev-NVFP4</span></code> repo.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Quant Algo</p></th>
+<th class="head"><p>Base Model</p></th>
+<th class="head"><p>Preferred CLI</p></th>
+<th class="head"><p>HF Repo</p></th>
+<th class="head"><p>Current Scope</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.1-dev</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/flux1-dev-modelopt-fp8-sglang-transformer</span></code></p></td>
+<td><p>single-transformer override, deterministic latent/image comparison, H100 benchmark, torch-profiler trace</p></td>
+<td><p>SGLang converter keeps a validated BF16 fallback set for modulation and FF projection layers; use <code class="docutils literal notranslate"><span class="pre">--model-id</span> <span class="pre">FLUX.1-dev</span></code> for local mirrors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.2-dev</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/flux2-dev-modelopt-fp8-sglang-transformer</span></code></p></td>
+<td><p>single-transformer override load and generation path</p></td>
+<td><p>published SGLang-ready transformer override</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wan-AI/Wan2.2-T2V-A14B-Diffusers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/wan22-t2v-a14b-modelopt-fp8-sglang-transformer</span></code></p></td>
+<td><p>primary <code class="docutils literal notranslate"><span class="pre">transformer</span></code> quantized, <code class="docutils literal notranslate"><span class="pre">transformer_2</span></code> kept BF16</p></td>
+<td><p>primary-transformer-only path; keep <code class="docutils literal notranslate"><span class="pre">transformer_2</span></code> on the base checkpoint, and do not describe this as dual-transformer full-model FP8 unless that path is validated separately</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">hunyuanvideo-community/HunyuanVideo</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/hunyuanvideo-modelopt-fp8-sglang-transformer</span></code></p></td>
+<td><p>single-transformer override, BF16-vs-FP8 video comparison, H100 benchmark, torch-profiler trace</p></td>
+<td><p>HunyuanVideo uses different ModelOpt/diffusers and SGLang runtime module names; the converter maps those names before writing FP8 scale tensors and BF16 fallback ignores</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen-Image</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/qwen-image-modelopt-fp8-sglang-transformer</span></code></p></td>
+<td><p>single-transformer override, BF16-vs-FP8 image comparison, H100 benchmark, torch-profiler trace</p></td>
+<td><p>shares the Qwen Image FP8 fallback preset; keep <code class="docutils literal notranslate"><span class="pre">img_in</span></code>, <code class="docutils literal notranslate"><span class="pre">txt_in</span></code>, timestep embedder, <code class="docutils literal notranslate"><span class="pre">norm_out.linear</span></code>, <code class="docutils literal notranslate"><span class="pre">proj_out</span></code>, <code class="docutils literal notranslate"><span class="pre">img_mod</span></code>/<code class="docutils literal notranslate"><span class="pre">txt_mod</span></code>, and <code class="docutils literal notranslate"><span class="pre">img_mlp.net.2</span></code> in BF16</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen-Image-Edit-2511</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/qwen-image-edit-modelopt-fp8-sglang-transformer</span></code></p></td>
+<td><p>TI2I edit path, BF16-vs-FP8 image comparison, H100 benchmark</p></td>
+<td><p>shares <code class="docutils literal notranslate"><span class="pre">QwenImageTransformer2DModel</span></code> with Qwen Image and uses the same Qwen Image FP8 fallback preset</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NVFP4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.1-dev</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/flux1-dev-modelopt-nvfp4-sglang-transformer</span></code></p></td>
+<td><p>mixed BF16+NVFP4 transformer override, correctness validation, 4x RTX 5090 benchmark, torch-profiler trace</p></td>
+<td><p>use <code class="docutils literal notranslate"><span class="pre">build_modelopt_nvfp4_transformer.py</span></code>; validated builder keeps selected FLUX.1 modules in BF16 and sets <code class="docutils literal notranslate"><span class="pre">swap_weight_nibbles=false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NVFP4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.2-dev</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">black-forest-labs/FLUX.2-dev-NVFP4</span></code></p></td>
+<td><p>packed-QKV load path</p></td>
+<td><p>official raw export repo; validated packed export detection and runtime layout handling</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NVFP4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wan-AI/Wan2.2-T2V-A14B-Diffusers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lmsys/wan22-t2v-a14b-modelopt-nvfp4-sglang-transformer</span></code></p></td>
+<td><p>primary <code class="docutils literal notranslate"><span class="pre">transformer</span></code> quantized with ModelOpt NVFP4, <code class="docutils literal notranslate"><span class="pre">transformer_2</span></code> kept BF16</p></td>
+<td><p>primary-transformer-only path; keep <code class="docutils literal notranslate"><span class="pre">transformer_2</span></code> on the base checkpoint; the default FP4 GEMM backend is <code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These nine checkpoints are also the intended case set for the B200 diffusion
+CI job (<code class="docutils literal notranslate"><span class="pre">multimodal-gen-test-1-b200</span></code>).</p>
+</section>
+<section id="modelopt-fp8">
+<h2>ModelOpt FP8<a class="headerlink" href="#modelopt-fp8" title="Link to this heading">#</a></h2>
+<section id="usage-examples">
+<h3>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading">#</a></h3>
+<p>Converted ModelOpt FP8 checkpoints should be loaded as transformer component
+overrides. If the repo or local directory already contains <code class="docutils literal notranslate"><span class="pre">config.json</span></code>, use
+<code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>black-forest-labs/FLUX.2-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/flux2-dev-modelopt-fp8-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A Logo With Bold Large Text: SGL Diffusion"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Wan-AI/Wan2.2-T2V-A14B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/wan22-t2v-a14b-modelopt-fp8-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a fox walking through neon rain"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>hunyuanvideo-community/HunyuanVideo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/hunyuanvideo-modelopt-fp8-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--height<span class="w"> </span><span class="m">544</span><span class="w"> </span>--width<span class="w"> </span><span class="m">960</span><span class="w"> </span>--num-frames<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A cinematic shot of a red sports car driving through rain at night"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/qwen-image-modelopt-fp8-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A tiny astronaut reading a book under a glass greenhouse"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen-Image-Edit-2511<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/qwen-image-edit-modelopt-fp8-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-path<span class="w"> </span>/path/to/input.png<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"Turn the scene into a warm watercolor illustration"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code> is the canonical flag for converted ModelOpt FP8
+transformer component repos or directories that already carry <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p></li>
+<li><p>If the override repo or local directory contains its own <code class="docutils literal notranslate"><span class="pre">config.json</span></code>,
+SGLang reads the quantization config from that override instead of relying on
+the base model config.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> still works when you intentionally point at raw
+weight files or a directory that should be metadata-probed as weights first.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dit_layerwise_offload</span></code> is supported for ModelOpt FP8 checkpoints.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dit_cpu_offload</span></code> still stays disabled for ModelOpt FP8 checkpoints.</p></li>
+<li><p>The layerwise offload path now preserves the non-contiguous FP8 weight stride
+expected by the runtime FP8 GEMM path.</p></li>
+<li><p>On disk, the quantization config stays <code class="docutils literal notranslate"><span class="pre">quant_method=modelopt</span></code> with
+<code class="docutils literal notranslate"><span class="pre">quant_algo=FP8</span></code>; the <code class="docutils literal notranslate"><span class="pre">modelopt-fp8</span></code> label in this document is a support
+family name, not a serialized config key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hunyuanvideo-community/HunyuanVideo</span></code> uses the <code class="docutils literal notranslate"><span class="pre">hunyuan-video</span></code> converter
+preset. Use <code class="docutils literal notranslate"><span class="pre">--model-type</span> <span class="pre">hunyuan-video</span></code> to force it, or rely on
+auto-detection from <code class="docutils literal notranslate"><span class="pre">_class_name=HunyuanVideoTransformer3DModel</span></code>.</p></li>
+<li><p>The validated HunyuanVideo FP8 fallback preset keeps <code class="docutils literal notranslate"><span class="pre">context_embedder</span></code>,
+<code class="docutils literal notranslate"><span class="pre">x_embedder.proj</span></code>, timestep/guidance/text embedder linear layers,
+<code class="docutils literal notranslate"><span class="pre">norm_out.linear</span></code>, <code class="docutils literal notranslate"><span class="pre">proj_out</span></code>, double-block modulation linear layers, and
+single-block modulation linear layers in BF16.</p></li>
+<li><p>HunyuanVideo ModelOpt exports use diffusers module names that do not match
+SGLang runtime module names for fused QKV and fused QKV+MLP layers. The
+converter maps the names before selecting scale tensors and before writing
+the runtime ignore list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen-Image</span></code> and <code class="docutils literal notranslate"><span class="pre">Qwen/Qwen-Image-Edit-2511</span></code> share the <code class="docutils literal notranslate"><span class="pre">qwen-image</span></code>
+converter preset. Use <code class="docutils literal notranslate"><span class="pre">--model-type</span> <span class="pre">qwen-image</span></code> to force it, or rely on
+auto-detection from <code class="docutils literal notranslate"><span class="pre">_class_name=QwenImageTransformer2DModel</span></code>.</p></li>
+<li><p>The validated Qwen Image FP8 fallback preset keeps <code class="docutils literal notranslate"><span class="pre">img_in</span></code>, <code class="docutils literal notranslate"><span class="pre">txt_in</span></code>,
+timestep embedder linear layers, <code class="docutils literal notranslate"><span class="pre">norm_out.linear</span></code>, <code class="docutils literal notranslate"><span class="pre">proj_out</span></code>,
+<code class="docutils literal notranslate"><span class="pre">transformer_blocks.*.(img_mod|txt_mod)</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">transformer_blocks.*.img_mlp.net.2</span></code> in BF16.</p></li>
+<li><p>For Qwen Image FP8 conversion, write explicit BF16 fallback tensors before
+honoring ModelOpt ignored weights. Otherwise converter stats can report a
+fallback while the output checkpoint still retains the source FP8 tensor.</p></li>
+<li><p>To build the converted checkpoint yourself from a ModelOpt diffusers export,
+use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">sglang.multimodal_gen.tools.build_modelopt_fp8_transformer</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="modelopt-nvfp4">
+<h2>ModelOpt NVFP4<a class="headerlink" href="#modelopt-nvfp4" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Usage Examples<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>For mixed ModelOpt NVFP4 transformer overrides that already contain
+<code class="docutils literal notranslate"><span class="pre">config.json</span></code>, keep the base model and quantized transformer separate and use
+<code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>black-forest-labs/FLUX.1-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/flux1-dev-modelopt-nvfp4-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A Logo With Bold Large Text: SGL Diffusion"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<p>For raw NVFP4 exports such as the official FLUX.2 release, use
+<code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>black-forest-labs/FLUX.2-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-weights-path<span class="w"> </span>black-forest-labs/FLUX.2-dev-NVFP4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A Logo With Bold Large Text: SGL Diffusion"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<p>SGLang also supports passing the NVFP4 repo or local directory directly as
+<code class="docutils literal notranslate"><span class="pre">--model-path</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>black-forest-labs/FLUX.2-dev-NVFP4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"A Logo With Bold Large Text: SGL Diffusion"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<p>For a dual-transformer Wan2.2 export where only the primary <code class="docutils literal notranslate"><span class="pre">transformer</span></code>
+was quantized:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Wan-AI/Wan2.2-T2V-A14B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-path<span class="w"> </span>lmsys/wan22-t2v-a14b-modelopt-nvfp4-sglang-transformer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a fox walking through neon rain"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Notes<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code> for mixed ModelOpt NVFP4 transformer repos or local
+directories that already include <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> for raw NVFP4 exports, individual
+safetensors files, or repo layouts that should be treated as weights first.</p></li>
+<li><p>For dual-transformer pipelines such as <code class="docutils literal notranslate"><span class="pre">Wan2.2-T2V-A14B-Diffusers</span></code>, the
+primary <code class="docutils literal notranslate"><span class="pre">--transformer-path</span></code> override targets only <code class="docutils literal notranslate"><span class="pre">transformer</span></code>. Use a
+per-component override such as <code class="docutils literal notranslate"><span class="pre">--transformer-2-path</span></code> only when you
+intentionally want a non-default <code class="docutils literal notranslate"><span class="pre">transformer_2</span></code>.</p></li>
+<li><p>On Blackwell, the diffusion ModelOpt NVFP4 path defaults to FlashInfer
+TensorRT-LLM FP4 GEMM (<code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code>).</p></li>
+<li><p>Direct <code class="docutils literal notranslate"><span class="pre">--model-path</span></code> loading is a compatibility path for FLUX.2 NVFP4-style
+repos or local directories.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> is provided explicitly, it takes precedence
+over the compatibility <code class="docutils literal notranslate"><span class="pre">--model-path</span></code> flow.</p></li>
+<li><p>For local directories, SGLang first looks for <code class="docutils literal notranslate"><span class="pre">*-mixed.safetensors</span></code>, then
+falls back to loading from the directory.</p></li>
+<li><p>To force the diffusion ModelOpt FP4 path onto a different FlashInfer
+backend, set <code class="docutils literal notranslate"><span class="pre">SGLANG_DIFFUSION_FLASHINFER_FP4_GEMM_BACKEND</span></code>. Supported values
+include <code class="docutils literal notranslate"><span class="pre">flashinfer_cudnn</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_cutlass</span></code>, and <code class="docutils literal notranslate"><span class="pre">flashinfer_trtllm</span></code>.</p></li>
+<li><p>On disk, the quantization config stays <code class="docutils literal notranslate"><span class="pre">quant_method=modelopt</span></code> with
+<code class="docutils literal notranslate"><span class="pre">quant_algo=NVFP4</span></code>; the <code class="docutils literal notranslate"><span class="pre">modelopt-nvfp4</span></code> label here is again a documentation
+family name rather than a serialized config key.</p></li>
+</ul>
+</section>
+</section>
+<section id="nunchaku-svdquant">
+<h2>Nunchaku (SVDQuant)<a class="headerlink" href="#nunchaku-svdquant" title="Link to this heading">#</a></h2>
+<section id="install">
+<h3>Install<a class="headerlink" href="#install" title="Link to this heading">#</a></h3>
+<p>Install the runtime dependency first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nunchaku
+</pre></div>
+</div>
+<p>For platform-specific installation methods and troubleshooting, see the
+<a class="reference external" href="https://nunchaku.tech/docs/nunchaku/installation/installation.html">Nunchaku installation guide</a>.</p>
+</section>
+<section id="file-naming-and-auto-detection">
+<h3>File Naming and Auto-Detection<a class="headerlink" href="#file-naming-and-auto-detection" title="Link to this heading">#</a></h3>
+<p>For Nunchaku checkpoints, <code class="docutils literal notranslate"><span class="pre">--model-path</span></code> should still point to the original
+base model, while <code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> points to the quantized
+transformer weights.</p>
+<p>If the basename of <code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> contains the pattern
+<code class="docutils literal notranslate"><span class="pre">svdq-(int4|fp4)_r{rank}</span></code>, SGLang will automatically:</p>
+<ul class="simple">
+<li><p>enable SVDQuant</p></li>
+<li><p>infer <code class="docutils literal notranslate"><span class="pre">--quantization-precision</span></code></p></li>
+<li><p>infer <code class="docutils literal notranslate"><span class="pre">--quantization-rank</span></code></p></li>
+</ul>
+<p>Examples:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>checkpoint name fragment</p></th>
+<th class="head"><p>inferred precision</p></th>
+<th class="head"><p>inferred rank</p></th>
+<th class="head"><p>notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-int4_r32</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>Standard INT4 checkpoint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-int4_r128</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">128</span></code></p></td>
+<td><p>Higher-quality INT4 checkpoint</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-fp4_r32</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvfp4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fp4</span></code> in the filename maps to CLI value <code class="docutils literal notranslate"><span class="pre">nvfp4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-fp4_r128</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvfp4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">128</span></code></p></td>
+<td><p>Higher-quality NVFP4 checkpoint</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Common filenames:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>filename</p></th>
+<th class="head"><p>precision</p></th>
+<th class="head"><p>rank</p></th>
+<th class="head"><p>typical use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-int4_r32-qwen-image.safetensors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>Balanced default</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-int4_r128-qwen-image.safetensors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">128</span></code></p></td>
+<td><p>Quality-focused</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-fp4_r32-qwen-image.safetensors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvfp4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>RTX 50-series / NVFP4 path</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-fp4_r128-qwen-image.safetensors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvfp4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">128</span></code></p></td>
+<td><p>Quality-focused NVFP4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-int4_r32-qwen-image-lightningv1.0-4steps.safetensors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">32</span></code></p></td>
+<td><p>Lightning 4-step</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">svdq-int4_r128-qwen-image-lightningv1.1-8steps.safetensors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">128</span></code></p></td>
+<td><p>Lightning 8-step</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If your checkpoint name does not follow this convention, pass
+<code class="docutils literal notranslate"><span class="pre">--enable-svdquant</span></code>, <code class="docutils literal notranslate"><span class="pre">--quantization-precision</span></code>, and <code class="docutils literal notranslate"><span class="pre">--quantization-rank</span></code>
+explicitly.</p>
+</section>
+<section id="id3">
+<h3>Usage Examples<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Recommended auto-detected flow:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-weights-path<span class="w"> </span>/path/to/svdq-int4_r32-qwen-image.safetensors<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+<p>Manual override when the filename does not encode the quant settings:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen-Image<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transformer-weights-path<span class="w"> </span>/path/to/custom_nunchaku_checkpoint.safetensors<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-svdquant<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization-precision<span class="w"> </span>int4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quantization-rank<span class="w"> </span><span class="m">128</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Notes<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--transformer-weights-path</span></code> is the canonical flag for Nunchaku checkpoints.
+Older config names such as <code class="docutils literal notranslate"><span class="pre">quantized_model_path</span></code> are treated as
+compatibility aliases.</p></li>
+<li><p>Auto-detection only happens when the checkpoint basename matches
+<code class="docutils literal notranslate"><span class="pre">svdq-(int4|fp4)_r{rank}</span></code>.</p></li>
+<li><p>The CLI values are <code class="docutils literal notranslate"><span class="pre">int4</span></code> and <code class="docutils literal notranslate"><span class="pre">nvfp4</span></code>. In filenames, the NVFP4 variant is
+written as <code class="docutils literal notranslate"><span class="pre">fp4</span></code>.</p></li>
+<li><p>Lightning checkpoints usually expect matching <code class="docutils literal notranslate"><span class="pre">--num-inference-steps</span></code>, such
+as <code class="docutils literal notranslate"><span class="pre">4</span></code> or <code class="docutils literal notranslate"><span class="pre">8</span></code>.</p></li>
+<li><p>Current runtime validation only allows Nunchaku on NVIDIA CUDA Ampere (SM8x)
+or SM12x GPUs. Hopper (SM90) is currently rejected.</p></li>
+</ul>
+</section>
+</section>
+<section id="modelslim">
+<h2><a class="reference external" href="https://gitcode.com/Ascend/msmodelslim">ModelSlim</a><a class="headerlink" href="#modelslim" title="Link to this heading">#</a></h2>
+<p>MindStudio-ModelSlim (msModelSlim) is a model offline quantization compression tool launched by MindStudio and optimized for Ascend hardware.</p>
+<ul>
+<li><p><strong>Installation</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone repo and install msmodelslim:</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://gitcode.com/Ascend/msmodelslim.git
+<span class="nb">cd</span><span class="w"> </span>msmodelslim
+bash<span class="w"> </span>install.sh
+</pre></div>
+</div>
+</li>
+<li><p><strong>Multimodal_sd quantization</strong></p>
+<p>Download the original floating-point weights of the large model. Taking Wan2.2-T2V-A14B as an example, you can go to <a class="reference external" href="https://modelscope.cn/models/Wan-AI/Wan2.2-T2V-A14B">Wan2.2-T2V-A14B</a> to obtain the original model weights. Then install other dependencies (related to the model, refer to the modelscope model card).</p>
+<blockquote>
+<div><p>Note: You can find pre-quantized validated models on <a class="reference external" href="https://modelscope.cn/models/Eco-Tech">modelscope/Eco-Tech</a>.</p>
+</div></blockquote>
+<p>Run quantization using one-click quantization (recommended):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>msmodelslim<span class="w"> </span>quant<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model_path<span class="w"> </span>/path/to/wan2_2_float_weights<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save_path<span class="w"> </span>/path/to/wan2_2_quantized_weights<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--device<span class="w"> </span>npu<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model_type<span class="w"> </span>Wan2_2<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--quant_type<span class="w"> </span>w8a8<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--trust_remote_code<span class="w"> </span>True
+</pre></div>
+</div>
+<p>For more detailed examples of quantization of models, as well as information about their support, see the <a class="reference external" href="https://gitcode.com/Ascend/msmodelslim/blob/master/example/multimodal_sd/README.md">examples</a> section in ModelSLim repo.</p>
+<blockquote>
+<div><p>Note: SGLang does not support quantized embeddings, please disable this option when quantizing using msmodelslim.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Auto-Detection and different formats</strong></p>
+<p>For msmodelslim checkpoints, it’s enough to specify only <code class="docutils literal notranslate"><span class="pre">--model-path</span></code>, the detection of quantization occurs automatically for each layer using parsing of      <code class="docutils literal notranslate"><span class="pre">quant_model_description.json</span></code> config.</p>
+<p>In the case of <code class="docutils literal notranslate"><span class="pre">Wan2.2</span></code> only <code class="docutils literal notranslate"><span class="pre">Diffusers</span></code> weights storage format are supported, whereas modelslim saves the quantized model in the original <code class="docutils literal notranslate"><span class="pre">Wan2.2</span></code> format,
+for conversion in use <code class="docutils literal notranslate"><span class="pre">python/sglang/multimodal_gen/tools/wan_repack.py</span></code> script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>wan_repack.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input-path<span class="w"> </span><span class="o">{</span>path_to_quantized_model<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-path<span class="w"> </span><span class="o">{</span>path_to_converted_model<span class="o">}</span>
+</pre></div>
+</div>
+<p>After that, please copy all files from original <code class="docutils literal notranslate"><span class="pre">Diffusers</span></code> checkpoint (instead of <code class="docutils literal notranslate"><span class="pre">transformer</span></code>/<code class="docutils literal notranslate"><span class="pre">tranfsormer_2</span></code> folders)</p>
+</li>
+<li><p><strong>Usage Example</strong></p>
+<p>With auto-detected flow:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sglang<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Eco-Tech/Wan2.2-T2V-A14B-Diffusers-w8a8<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--prompt<span class="w"> </span><span class="s2">"a beautiful sunset"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-output
+</pre></div>
+</div>
+</li>
+<li><p><strong>Available Quantization Methods</strong>:</p>
+<ul class="simple">
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W4A4_DYNAMIC</span></code> linear with online quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W8A8</span></code> linear with offline quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">W8A8_DYNAMIC</span></code> linear with online quantization of activations</p></li>
+<li><p>[x]  <code class="docutils literal notranslate"><span class="pre">mxfp8</span></code> linear with online/offline MXFP8 quantization (Ascend A5, CANN ≥ 8.0.RC3; see <a class="reference internal" href="../platforms/ascend/ascend_npu_quantization.html#diffusion-model-quantization-on-ascend-npu"><span class="std std-ref">Ascend NPU quantization</span></a>)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="performance/ring_sp_performance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Ring SP Benchmark: Wan2.2-TI2V-5B (u1r2 vs Baseline)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="contributing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Contributing to SGLang Diffusion</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-reference">Quick Reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quant-families">Quant Families</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-quantization">Online Quantization</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8-online-quantization">FP8 Online Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mxfp4-online-quantization">MXFP4 Online Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skipping-layers">Skipping Layers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validated-modelopt-checkpoints">Validated ModelOpt Checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelopt-fp8">ModelOpt FP8</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-examples">Usage Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelopt-nvfp4">ModelOpt NVFP4</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Usage Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nunchaku-svdquant">Nunchaku (SVDQuant)</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-naming-and-auto-detection">File Naming and Auto-Detection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Usage Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelslim">ModelSlim</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 31, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

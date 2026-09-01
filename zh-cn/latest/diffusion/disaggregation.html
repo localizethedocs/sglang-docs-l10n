@@ -1,0 +1,992 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Disaggregated Diffusion Pipeline &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=48e1d35e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/translations.js?v=540d3cec"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diffusion/disaggregation';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/deprecation_banner.js?v=5ccf3c89"></script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/diffusion/disaggregation.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="0.0.0.dev0" />
+    <meta name="docbuild:last-update" content="2026 年 08 月 31 日"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/object_storage.html">Loading Models from Object Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/adaptive_speculative_decoding.html">Adaptive Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/piecewise_cuda_graph.html">Piecewise CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/breakable_cuda_graph.html">Breakable CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/cli.html">SGLang Diffusion CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/index.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/ring_sp_performance.html">Ring SP Benchmark: Wan2.2-TI2V-5B (u1r2 vs Baseline)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance/cache/index.html">Caching Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to SGLang Diffusion</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/release_lookup.html">Release Lookup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/diffusion/disaggregation.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/diffusion/disaggregation.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdiffusion/disaggregation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/diffusion/disaggregation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="亮色"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="暗色"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>亮色</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>暗色</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Disaggregated Diffusion Pipeline</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-machine-example-verified">Single-Machine Example (Verified)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-machine-example">Multi-Machine Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-instances-per-role">Multiple Instances per Role</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#port-convention">Port Convention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-mechanism">Transfer Mechanism</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-flow">Transfer Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rdma-flags">RDMA Flags</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-role-parallelism">Per-Role Parallelism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-options">Other Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api">Python API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#request-state-machine">Request State Machine</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="disaggregated-diffusion-pipeline">
+<h1>Disaggregated Diffusion Pipeline<a class="headerlink" href="#disaggregated-diffusion-pipeline" title="链接到此标题。">#</a></h1>
+<p>Split a monolithic text-to-video/image pipeline into independent <strong>Encoder</strong>, <strong>Denoiser</strong>, and <strong>Decoder</strong> roles, each running on its own GPU(s). A central <strong>DiffusionServer</strong> routes requests through the pipeline.</p>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="链接到此标题。">#</a></h2>
+<p>Disaggregation is controlled by a single flag: <code class="docutils literal notranslate"><span class="pre">--disagg-role</span></code>. Each component is launched independently, just like LLM PD disaggregation.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">--disagg-role</span></code></p></th>
+<th class="head"><p>What it runs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">monolithic</span></code></p></td>
+<td><p>(Default) Standard single-server mode</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">encoder</span></code></p></td>
+<td><p>All stages with the default <code class="docutils literal notranslate"><span class="pre">RoleType.ENCODER</span></code> affinity: <code class="docutils literal notranslate"><span class="pre">InputValidationStage</span></code>, <code class="docutils literal notranslate"><span class="pre">TextEncodingStage</span></code> (plus <code class="docutils literal notranslate"><span class="pre">ImageEncodingStage</span></code> / <code class="docutils literal notranslate"><span class="pre">ImageVAEEncodingStage</span></code> for image-conditioned pipelines), <code class="docutils literal notranslate"><span class="pre">LatentPreparationStage</span></code>, <code class="docutils literal notranslate"><span class="pre">TimestepPreparationStage</span></code>, and any model-specific &quot;before denoising&quot; stage (e.g. <code class="docutils literal notranslate"><span class="pre">QwenImageLayeredBeforeDenoisingStage</span></code>, <code class="docutils literal notranslate"><span class="pre">GlmImageBeforeDenoisingStage</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">denoiser</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DenoisingStage</span></code> (and its subclasses: <code class="docutils literal notranslate"><span class="pre">CausalDMDDenoisingStage</span></code>, <code class="docutils literal notranslate"><span class="pre">DmdDenoisingStage</span></code>, <code class="docutils literal notranslate"><span class="pre">LTX2AVDenoisingStage</span></code>, <code class="docutils literal notranslate"><span class="pre">LTX2RefinementStage</span></code>, <code class="docutils literal notranslate"><span class="pre">Hunyuan3DShapeDenoisingStage</span></code>, ...) — the DiT forward loop plus the scheduler stepping it drives.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decoder</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DecodingStage</span></code> (VAE decode) and its subclasses (<code class="docutils literal notranslate"><span class="pre">LTX2AVDecodingStage</span></code>, <code class="docutils literal notranslate"><span class="pre">HeliosDecodingStage</span></code>, ...).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">server</span></code></p></td>
+<td><p>DiffusionServer head node + HTTP server (no GPU)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p>Each stage declares its role via the <code class="docutils literal notranslate"><span class="pre">role_affinity</span></code> property on <code class="docutils literal notranslate"><span class="pre">PipelineStage</span></code> (default <code class="docutils literal notranslate"><span class="pre">ENCODER</span></code>). When <code class="docutils literal notranslate"><span class="pre">--disagg-role</span></code> is not <code class="docutils literal notranslate"><span class="pre">monolithic</span></code>, the pipeline only instantiates stages whose affinity matches, so the above table is the source of truth for what actually runs in each process.</p>
+</div></blockquote>
+<section id="single-machine-example-verified">
+<h3>Single-Machine Example (Verified)<a class="headerlink" href="#single-machine-example-verified" title="链接到此标题。">#</a></h3>
+<p>The following commands have been tested end-to-end on an 8×H200 machine with
+<code class="docutils literal notranslate"><span class="pre">Wan-AI/Wan2.1-T2V-1.3B-Diffusers</span></code>. Each role runs on a separate GPU via
+<code class="docutils literal notranslate"><span class="pre">--base-gpu-id</span></code>; the <code class="docutils literal notranslate"><span class="pre">server</span></code> head node requires no GPU.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Terminal 1: Encoder (GPU 0)</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-1.3B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>encoder<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-server-addr<span class="w"> </span>tcp://127.0.0.1:19655<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-gpus<span class="w"> </span><span class="m">1</span><span class="w"> </span>--base-gpu-id<span class="w"> </span><span class="m">0</span>
+
+<span class="c1"># Terminal 2: Denoiser (GPU 1)</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-1.3B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>denoiser<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-server-addr<span class="w"> </span>tcp://127.0.0.1:19655<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-gpus<span class="w"> </span><span class="m">1</span><span class="w"> </span>--base-gpu-id<span class="w"> </span><span class="m">1</span>
+
+<span class="c1"># Terminal 3: Decoder (GPU 2)</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-1.3B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>decoder<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-server-addr<span class="w"> </span>tcp://127.0.0.1:19655<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19002</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-gpus<span class="w"> </span><span class="m">1</span><span class="w"> </span>--base-gpu-id<span class="w"> </span><span class="m">2</span>
+
+<span class="c1"># Terminal 4: DiffusionServer head (no GPU, receives HTTP requests)</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-1.3B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--encoder-urls<span class="w">  </span><span class="s2">"tcp://127.0.0.1:19000"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--denoiser-urls<span class="w"> </span><span class="s2">"tcp://127.0.0.1:19001"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--decoder-urls<span class="w">  </span><span class="s2">"tcp://127.0.0.1:19002"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">22000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19655</span>
+
+<span class="c1"># Send request (video generation)</span>
+curl<span class="w"> </span>http://127.0.0.1:22000/v1/videos<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">'{"model": "Wan-AI/Wan2.1-T2V-1.3B-Diffusers", "prompt": "A curious raccoon exploring a garden, cinematic", "size": "832x480"}'</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Tested result (8×H200):</strong>
+Encoder 2.3 s (TextEncoding) → Denoiser 312.8 s (50 steps, layerwise offload) → Decoder 7.1 s (VAE decode).
+Total ~322 s for 81-frame 1024×1024 video.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Tip:</strong> <code class="docutils literal notranslate"><span class="pre">--base-gpu-id</span></code> controls which physical GPU the role uses.
+Encoder and Decoder can share a GPU (e.g. both <code class="docutils literal notranslate"><span class="pre">--base-gpu-id</span> <span class="pre">0</span></code>) to save resources,
+but make sure the combined GPU memory is sufficient.</p>
+</div></blockquote>
+</section>
+<section id="multi-machine-example">
+<h3>Multi-Machine Example<a class="headerlink" href="#multi-machine-example" title="链接到此标题。">#</a></h3>
+<p>The exact same CLI pattern — just replace <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> with actual IPs and add
+RDMA flags for direct transfer:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Machine A (10.0.0.1): Encoder</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-14B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>encoder<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-server-addr<span class="w"> </span>tcp://10.0.0.4:19655<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-gpus<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-p2p-hostname<span class="w"> </span><span class="m">10</span>.0.0.1<span class="w"> </span>--disagg-ib-device<span class="w"> </span>mlx5_0
+
+<span class="c1"># Machine B (10.0.0.2): Denoiser (4 GPUs with SP)</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-14B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>denoiser<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-server-addr<span class="w"> </span>tcp://10.0.0.4:19655<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-gpus<span class="w"> </span><span class="m">4</span><span class="w"> </span>--denoiser-sp<span class="w"> </span><span class="m">4</span><span class="w"> </span>--denoiser-ulysses<span class="w"> </span><span class="m">2</span><span class="w"> </span>--denoiser-ring<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-p2p-hostname<span class="w"> </span><span class="m">10</span>.0.0.2<span class="w"> </span>--disagg-ib-device<span class="w"> </span>mlx5_0
+
+<span class="c1"># Machine C (10.0.0.3): Decoder</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-14B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>decoder<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-server-addr<span class="w"> </span>tcp://10.0.0.4:19655<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19002</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--num-gpus<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-p2p-hostname<span class="w"> </span><span class="m">10</span>.0.0.3<span class="w"> </span>--disagg-ib-device<span class="w"> </span>mlx5_0
+
+<span class="c1"># Machine D (10.0.0.4): DiffusionServer head</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Wan-AI/Wan2.1-T2V-14B-Diffusers<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-role<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--encoder-urls<span class="w">  </span><span class="s2">"tcp://10.0.0.1:19000"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--denoiser-urls<span class="w"> </span><span class="s2">"tcp://10.0.0.2:19001"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--decoder-urls<span class="w">  </span><span class="s2">"tcp://10.0.0.3:19002"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--scheduler-port<span class="w"> </span><span class="m">19655</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--disagg-dispatch-policy<span class="w"> </span>max_free_slots
+</pre></div>
+</div>
+<blockquote>
+<div><p>ZMQ handles startup order gracefully — instances and head can start in any order.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="multiple-instances-per-role">
+<h2>Multiple Instances per Role<a class="headerlink" href="#multiple-instances-per-role" title="链接到此标题。">#</a></h2>
+<p>Use semicolons in <code class="docutils literal notranslate"><span class="pre">--*-urls</span></code> to register multiple instances:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2 encoders + 2 denoisers (4-GPU SP each) + 1 decoder</span>
+sglang<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>...<span class="w"> </span>--disagg-role<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--encoder-urls<span class="w">  </span><span class="s2">"tcp://10.0.0.1:35000;tcp://10.0.0.2:35000"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--denoiser-urls<span class="w"> </span><span class="s2">"tcp://10.0.0.3:35000;tcp://10.0.0.4:35000"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--decoder-urls<span class="w">  </span><span class="s2">"tcp://10.0.0.5:35000"</span>
+</pre></div>
+</div>
+</section>
+<section id="port-convention">
+<h2>Port Convention<a class="headerlink" href="#port-convention" title="链接到此标题。">#</a></h2>
+<p>Result endpoints are derived deterministically from the head node's <code class="docutils literal notranslate"><span class="pre">--scheduler-port</span></code> (default: 5555):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Socket</p></th>
+<th class="head"><p>Port</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DS frontend (ROUTER)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_port</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Encoder result (PULL)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_port</span> <span class="pre">+</span> <span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Denoiser result (PULL)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_port</span> <span class="pre">+</span> <span class="pre">2</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Decoder result (PULL)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_port</span> <span class="pre">+</span> <span class="pre">3</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Role instances derive their result endpoint automatically from <code class="docutils literal notranslate"><span class="pre">--disagg-server-addr</span></code>. No manual endpoint configuration needed.</p>
+</section>
+<section id="transfer-mechanism">
+<h2>Transfer Mechanism<a class="headerlink" href="#transfer-mechanism" title="链接到此标题。">#</a></h2>
+<p>Tensor data between roles (encoder→denoiser, denoiser→decoder) is transferred via a P2P transfer engine. The DiffusionServer only routes lightweight control messages (alloc/push/ready); actual tensor data flows directly between instances.</p>
+<p><strong>mooncake-transfer-engine</strong> is required for disaggregated diffusion. It provides RDMA for direct GPU-to-GPU data movement.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mooncake-transfer-engine
+</pre></div>
+</div>
+<section id="transfer-flow">
+<h3>Transfer Flow<a class="headerlink" href="#transfer-flow" title="链接到此标题。">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Sender</strong> (encoder/denoiser) stages tensors: async copy to transfer buffer (GPU or CPU pinned, depending on GPUDirect support), overlapped with metadata JSON serialization.</p></li>
+<li><p><strong>Sender</strong> sends <code class="docutils literal notranslate"><span class="pre">transfer_staged</span></code> control message to DiffusionServer (metadata only, no tensor data).</p></li>
+<li><p><strong>DiffusionServer</strong> sends <code class="docutils literal notranslate"><span class="pre">transfer_alloc</span></code> to receiver → receiver allocates buffer slot → replies <code class="docutils literal notranslate"><span class="pre">transfer_allocated</span></code>.</p></li>
+<li><p><strong>DiffusionServer</strong> sends <code class="docutils literal notranslate"><span class="pre">transfer_push</span></code> to receiver with sender's address info.</p></li>
+<li><p><strong>Receiver</strong> pulls data via transfer engine (Mooncake RDMA or mock), sends <code class="docutils literal notranslate"><span class="pre">transfer_ready</span></code>.</p></li>
+<li><p><strong>Receiver</strong> loads tensors async on a dedicated transfer stream, overlapped with the previous request's compute.</p></li>
+</ol>
+<p>Decoder results (final output) flow back through DiffusionServer as raw ZMQ frames to the HTTP client.</p>
+</section>
+<section id="rdma-flags">
+<h3>RDMA Flags<a class="headerlink" href="#rdma-flags" title="链接到此标题。">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Flag</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disagg-p2p-hostname</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></p></td>
+<td><p>RDMA-reachable hostname/IP of this instance</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disagg-ib-device</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>InfiniBand device (e.g., <code class="docutils literal notranslate"><span class="pre">mlx5_0</span></code>, <code class="docutils literal notranslate"><span class="pre">mlx5_roce0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disagg-transfer-pool-size</span></code></p></td>
+<td><p>256 MiB</p></td>
+<td><p>Pinned memory pool per instance</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">--disagg-p2p-hostname</span></code> to the actual IP on each machine. For multi-machine, <code class="docutils literal notranslate"><span class="pre">--disagg-ib-device</span></code> specifies the RDMA NIC.</p>
+</section>
+</section>
+<section id="per-role-parallelism">
+<h2>Per-Role Parallelism<a class="headerlink" href="#per-role-parallelism" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Flag</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--encoder-tp</span></code></p></td>
+<td><p>Encoder tensor parallelism</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--denoiser-tp</span></code> / <code class="docutils literal notranslate"><span class="pre">--denoiser-sp</span></code> / <code class="docutils literal notranslate"><span class="pre">--denoiser-ulysses</span></code> / <code class="docutils literal notranslate"><span class="pre">--denoiser-ring</span></code></p></td>
+<td><p>Denoiser parallelism</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--decoder-tp</span></code></p></td>
+<td><p>Decoder tensor parallelism</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If not specified, parallelism is auto-derived from <code class="docutils literal notranslate"><span class="pre">--num-gpus</span></code>.</p>
+</section>
+<section id="other-options">
+<h2>Other Options<a class="headerlink" href="#other-options" title="链接到此标题。">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Flag</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disagg-timeout</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">600</span></code></p></td>
+<td><p>Timeout (seconds) for pending requests</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disagg-dispatch-policy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">round_robin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">round_robin</span></code> or <code class="docutils literal notranslate"><span class="pre">max_free_slots</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="python-api">
+<h2>Python API<a class="headerlink" href="#python-api" title="链接到此标题。">#</a></h2>
+<p>For programmatic single-machine deployment, <code class="docutils literal notranslate"><span class="pre">launch_pool_disagg_server()</span></code> is available:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang.multimodal_gen.runtime.server_args</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServerArgs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.multimodal_gen.runtime.launch_server</span><span class="w"> </span><span class="kn">import</span> <span class="n">launch_pool_disagg_server</span>
+
+<span class="n">server_args</span> <span class="o">=</span> <span class="n">ServerArgs</span><span class="o">.</span><span class="n">from_kwargs</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">"Wan-AI/Wan2.1-T2V-14B-Diffusers"</span><span class="p">,</span>
+    <span class="n">denoiser_sp</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">denoiser_ulysses</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">denoiser_ring</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">disagg_ib_device</span><span class="o">=</span><span class="s2">"mlx5_0"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">launch_pool_disagg_server</span><span class="p">(</span>
+    <span class="n">server_args</span><span class="p">,</span>
+    <span class="n">encoder_gpus</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="n">denoiser_gpus</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]],</span>
+    <span class="n">decoder_gpus</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">]],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="链接到此标题。">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Client ─── HTTP (port 30000) ──► FastAPI Server
+                                      │
+                                      ▼
+                              DiffusionServer (ROUTER, scheduler_port)
+                              ┌───────┼───────┐
+                   PUSH work  │       │       │  PUSH work
+                              ▼       │       ▼
+                    Encoder[0..N]     │    Decoder[0..K]
+                              │       │       ▲
+                   P2P tensor │       │       │ P2P tensor
+                   transfer   ▼       │       │ transfer
+                          Denoiser[0..M] ─────┘
+                                      │
+                    PULL results ◄────┘  (decoder → DS → client)
+</pre></div>
+</div>
+<section id="request-state-machine">
+<h3>Request State Machine<a class="headerlink" href="#request-state-machine" title="链接到此标题。">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PENDING → ENCODER_WAITING → ENCODER_RUNNING → ENCODER_DONE
+                                                    │
+                        DENOISING_WAITING → DENOISING_RUNNING → DENOISING_DONE
+                                                                       │
+                                    DECODER_WAITING → DECODER_RUNNING → DONE
+</pre></div>
+</div>
+<p>Any state can transition to <code class="docutils literal notranslate"><span class="pre">FAILED</span></code> or <code class="docutils literal notranslate"><span class="pre">TIMED_OUT</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-machine-example-verified">Single-Machine Example (Verified)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-machine-example">Multi-Machine Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-instances-per-role">Multiple Instances per Role</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#port-convention">Port Convention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-mechanism">Transfer Mechanism</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-flow">Transfer Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rdma-flags">RDMA Flags</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-role-parallelism">Per-Role Parallelism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-options">Other Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api">Python API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#request-state-machine">Request State Machine</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 2026 年 08 月 31 日.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

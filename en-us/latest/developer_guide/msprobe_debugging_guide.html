@@ -1,0 +1,1398 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MSProbe Debugging Guide &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=57f6f774" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=3f106740"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/msprobe_debugging_guide';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/deprecation_banner.js?v=5ccf3c89"></script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/developer_guide/msprobe_debugging_guide.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+  <meta name="docsearch:version" content="0.0.0.dev0" />
+    <meta name="docbuild:last-update" content="Aug 31, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/ollama_api.html">Ollama-Compatible API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/popular_model_usage.html">Popular Model Usage (DeepSeek, GPT-OSS, GLM, Llama, MiniMax, Qwen, and more)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/object_storage.html">Loading Models from Object Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/adaptive_speculative_decoding.html">Adaptive Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantized_kv_cache.html">Quantized KV Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/expert_parallelism.html">Expert Parallelism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_dpa_smg_guide.html">DP, DPA and SGLang DP Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/epd_disaggregation.html">EPD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pipeline_parallelism.html">Pipeline Parallelism for Long Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query VLM with Offline Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/dp_for_multi_modal_encoder.html">DP for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/cuda_graph_for_multi_modal_encoder.html">Cuda Graph for Multi-Modal Encoder in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/piecewise_cuda_graph.html">Piecewise CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/breakable_cuda_graph.html">Breakable CUDA Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sgl_model_gateway.html">SGLang Model Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/sglang_for_rl.html">SGLang for RL Systems</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/text_generation/index.html">Text Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/retrieval_ranking/index.html">Retrieval &amp; Ranking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/specialized/index.html">Specialized Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/extending/index.html">Extending SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SGLang Diffusion</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/index.html">SGLang Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/installation.html">Install SGLang-Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/compatibility_matrix.html">Compatibility Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/api/cli.html">SGLang Diffusion CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/api/openai_api.html">SGLang Diffusion OpenAI API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/index.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/ring_sp_performance.html">Ring SP Benchmark: Wan2.2-TI2V-5B (u1r2 vs Baseline)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/attention_backends.html">Attention Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/performance/cache/index.html">Caching Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diffusion/contributing.html">Contributing to SGLang Diffusion</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend/ascend_npu_support.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_jit_kernel_guide.html">Development Guide for JIT Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bench_serving.html">Bench Serving Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluating_new_models.html">Evaluating New Models with SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Production Request Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/post_training_integration.html">Post-Training Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/release_lookup.html">Release Lookup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn More and Join the Community</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/developer_guide/msprobe_debugging_guide.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/developer_guide/msprobe_debugging_guide.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fdeveloper_guide/msprobe_debugging_guide.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_guide/msprobe_debugging_guide.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MSProbe Debugging Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-msprobe">Introduction to MSProbe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-details">Basic Details</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-concepts-msprobe-dumping-levels">Background Concepts: MSProbe Dumping Levels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-install-msprobe">Prerequisites: Install MSProbe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-configuration-parameters">Key Configuration Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-parameter-table">Configuration Parameter Table</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#default-configuration">Default configuration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">Outputs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-examples">End-to-End Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-advanced-debugging-with-custom-configuration">Example : Advanced Debugging with Custom Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-enable">Step 1: Enable</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-custom-configuration-json">Prepare Custom Configuration JSON</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-msprobe-with-custom-configuration-in-sglang">Enable MSProbe with Custom Configuration in SGLang</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-collect-data">Step 2: Collect Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-dump-data-for-problem-benchmark-sides">Collect Dump Data for Problem &amp; Benchmark Sides</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#check-generated-dump-files">Check Generated Dump Files</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-visualize">Step 3: Visualize</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-problem-vs-benchmark-comparison-multi-rank">Visualize Problem vs. Benchmark Comparison (Multi-Rank)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-tensorboard">Launch TensorBoard</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-analyze-root-cause">Step 4: Analyze Root Cause</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#locate-root-cause">Locate Root Cause</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-root-cause">Verify the Root Cause</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-dump-files-generated">No Dump Files Generated</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump-files-are-too-large-excessive-data">Dump Files Are Too Large (Excessive Data)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorboard-visualization-fails">TensorBoard Visualization Fails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-comparison-shows-no-divergence-but-model-accuracy-is-low">Numerical Comparison Shows No Divergence But Model Accuracy Is Low</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">Appendix</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump-directory-description">Dump directory description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump-json-file-description">dump.json file description</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l0-level">L0 level</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l1-level">L1 level</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mix-level">mix level</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="msprobe-debugging-guide">
+<h1>MSProbe Debugging Guide<a class="headerlink" href="#msprobe-debugging-guide" title="Link to this heading">#</a></h1>
+<section id="introduction-to-msprobe">
+<h2>Introduction to MSProbe<a class="headerlink" href="#introduction-to-msprobe" title="Link to this heading">#</a></h2>
+<p>MSProbe is a debugging tool for AI models that diagnoses accuracy anomalies and
+numerical errors during model training and inference. It captures and monitors intermediate data (feature maps, weights,
+activations, layer outputs) and contextual metadata (prompts, tensor dtypes, hardware configuration), and supports
+visual analysis to systematically trace the root cause of accuracy degradation or numerical errors (e.g., NaN/Inf,
+output drift, mismatched predictions).</p>
+</section>
+<section id="basic-details">
+<h2>Basic Details<a class="headerlink" href="#basic-details" title="Link to this heading">#</a></h2>
+<section id="background-concepts-msprobe-dumping-levels">
+<h3>Background Concepts: MSProbe Dumping Levels<a class="headerlink" href="#background-concepts-msprobe-dumping-levels" title="Link to this heading">#</a></h3>
+<p>MSProbe supports three accuracy levels for data dumping, each for different debugging needs:</p>
+<ul class="simple">
+<li><p><strong>L0</strong>: Dumps tensors/statistics at the <strong>module level</strong> and generates <code class="docutils literal notranslate"><span class="pre">construct.json</span></code> (for network structure
+reconstruction in visualization). Requires passing a model/submodule handle.</p></li>
+<li><p><strong>L1</strong>: Dumps tensors/statistics at the <strong>torch API level</strong>, suitable for fine-grained API-level numerical checking.</p></li>
+<li><p><strong>mix</strong>: Combines L0 + L1, ideal for scenarios that require both <strong>graph reconstruction</strong> and <strong>numerical comparison</strong>.</p></li>
+</ul>
+</section>
+<section id="prerequisites-install-msprobe">
+<h3>Prerequisites: Install MSProbe<a class="headerlink" href="#prerequisites-install-msprobe" title="Link to this heading">#</a></h3>
+<p>Install MSProbe with pip:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mindstudio-probe<span class="w"> </span>--pre
+</pre></div>
+</div>
+</section>
+<section id="key-configuration-parameters">
+<h3>Key Configuration Parameters<a class="headerlink" href="#key-configuration-parameters" title="Link to this heading">#</a></h3>
+<p>MSProbe uses a JSON configuration file for customized data dumping. All core parameters are listed in the table below,
+with the default JSON configuration provided for reference.</p>
+<section id="configuration-parameter-table">
+<h4>Configuration Parameter Table<a class="headerlink" href="#configuration-parameter-table" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Field</p></th>
+<th class="head text-left"><p>Description</p></th>
+<th class="head text-center"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">task</span></code></p></td>
+<td class="text-left"><p>Type of dump task. Common PyTorch values include <code class="docutils literal notranslate"><span class="pre">&quot;statistics&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;tensor&quot;</span></code>. A statistics task collects tensor statistics (mean, variance, max, min, etc.) while a tensor task captures arbitrary tensors.</p></td>
+<td class="text-center"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">dump_path</span></code></p></td>
+<td class="text-left"><p>Directory where dump results are stored. When omitted, <code class="docutils literal notranslate"><span class="pre">MSProbe</span></code> uses its default path.</p></td>
+<td class="text-center"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">rank</span></code></p></td>
+<td class="text-left"><p>Ranks to sample. An empty list collects every rank. For single-card tasks you must set this field to <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p></td>
+<td class="text-center"><p>No</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">step</span></code></p></td>
+<td class="text-left"><p>Token iteration(s) to sample. An empty list means every iteration.</p></td>
+<td class="text-center"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">level</span></code></p></td>
+<td class="text-left"><p>Dump level string (<code class="docutils literal notranslate"><span class="pre">&quot;L0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;L1&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;mix&quot;</span></code>). <code class="docutils literal notranslate"><span class="pre">L0</span></code> targets <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code>, <code class="docutils literal notranslate"><span class="pre">L1</span></code> targets <code class="docutils literal notranslate"><span class="pre">torch.api</span></code>, and <code class="docutils literal notranslate"><span class="pre">mix</span></code> collects both.</p></td>
+<td class="text-center"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">async_dump</span></code></p></td>
+<td class="text-left"><p>Whether to enable asynchronous dump (supported for PyTorch <code class="docutils literal notranslate"><span class="pre">statistics</span></code>/<code class="docutils literal notranslate"><span class="pre">tensor</span></code> tasks). Defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
+<td class="text-center"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">scope</span></code></p></td>
+<td class="text-left"><p>Customize the scope of dump. Provide two module or API names that follow the tool’s naming convention to lock a range, only data between the two names will be dumped. An empty list dumps every module or torch API.<br/><br/>Examples:<br/><code class="docutils literal notranslate"><span class="pre">&quot;scope&quot;:</span> <span class="pre">[&quot;Module.conv1.Conv2d.forward.0&quot;,</span> <span class="pre">&quot;Module.fc2.Linear.forward.0&quot;]</span></code><br/><code class="docutils literal notranslate"><span class="pre">&quot;scope&quot;:</span> <span class="pre">[&quot;Tensor.add.0.forward&quot;,</span> <span class="pre">&quot;Functional.square.2.forward&quot;]</span></code><br/><br/>The <code class="docutils literal notranslate"><span class="pre">level</span></code> setting determines what can be provided—modules when <code class="docutils literal notranslate"><span class="pre">level=L0</span></code>, APIs when <code class="docutils literal notranslate"><span class="pre">level=L1</span></code>, and either modules or APIs when <code class="docutils literal notranslate"><span class="pre">level=mix</span></code>.</p></td>
+<td class="text-center"><p>No</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
+<td class="text-left"><p>Customize dump list, only dumps elements from the list. An empty list dumps every module or torch API. Options include:<br/><br/>򴎲Supply the full names of specific APIs in PyTorch pynative scenarios to only dump those APIs. Example: <code class="docutils literal notranslate"><span class="pre">&quot;list&quot;:</span> <span class="pre">[&quot;Tensor.permute.1.forward&quot;,</span> <span class="pre">&quot;Tensor.transpose.2.forward&quot;,</span> <span class="pre">&quot;Torch.relu.3.backward&quot;]</span></code>.<br/>򴎲When <code class="docutils literal notranslate"><span class="pre">level=mix</span></code>, you can provide module names so that the dump expands to everything produced while the module is running. Example: <code class="docutils literal notranslate"><span class="pre">&quot;list&quot;:</span> <span class="pre">[&quot;Module.module.language_model.encoder.layers.0.mlp.ParallelMlp.forward.0&quot;]</span></code>.<br/>򴎲Provide a substring such as <code class="docutils literal notranslate"><span class="pre">&quot;list&quot;:</span> <span class="pre">[&quot;relu&quot;]</span></code> to dump every API whose name contains the substring. When <code class="docutils literal notranslate"><span class="pre">level=mix</span></code>, modules whose names contain the substring are also expanded.</p></td>
+<td class="text-center"><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="default-configuration">
+<h4>Default configuration<a class="headerlink" href="#default-configuration" title="Link to this heading">#</a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"task"</span><span class="p">:</span><span class="w"> </span><span class="s2">"statistics"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"dump_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./dump_path"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"rank"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">  </span><span class="nt">"step"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">  </span><span class="nt">"level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"L1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"async_dump"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"statistics"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"list"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"data_mode"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"all"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"summary_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"statistics"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"tensor"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"list"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"data_mode"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"all"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"file_format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npy"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"acc_check"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"white_list"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"black_list"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"error_data_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="outputs">
+<h4>Outputs<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h4>
+<p>Dump files are written into <code class="docutils literal notranslate"><span class="pre">dump_path</span></code> you defined. They usually contain:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dump.json</span></code>, which records metadata such as dtype, shape, min, max, mean, L2 norm, and <code class="docutils literal notranslate"><span class="pre">requires_grad</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">construct.json</span></code>, hierarchical structure description, when <code class="docutils literal notranslate"><span class="pre">level</span></code> is <code class="docutils literal notranslate"><span class="pre">L0</span></code> or <code class="docutils literal notranslate"><span class="pre">mix</span></code> (required for visualization), its
+content is not empty.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stack.json</span></code>, record the call stack information of API/Module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump_tensor_data</span></code>, generated when <code class="docutils literal notranslate"><span class="pre">task</span></code> is <code class="docutils literal notranslate"><span class="pre">tensor</span></code> and save the collected tensor data.</p></li>
+</ul>
+<p>See <a class="reference internal" href="#dump-directory-description"><span class="std std-ref">dump directory description</span></a> for details.</p>
+<blockquote>
+<div><p><strong>Note</strong>: When MSProbe is enabled, cuda graph is disabled(disable_cuda_graph=True) because MSProbe only supports dump
+in eager mode, warmup is disabled(skip_server_warmup=True) because there is no need to dump data for this stage.</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="end-to-end-examples">
+<h2>End-to-End Examples<a class="headerlink" href="#end-to-end-examples" title="Link to this heading">#</a></h2>
+<p>MSProbe’s full debugging workflow follows <strong>Enable → Collect Data → Visualize → Analyze Root Cause</strong>. Below is a common
+E2E example for SGLang-based model inference debugging.</p>
+<section id="example-advanced-debugging-with-custom-configuration">
+<h3>Example : Advanced Debugging with Custom Configuration<a class="headerlink" href="#example-advanced-debugging-with-custom-configuration" title="Link to this heading">#</a></h3>
+<p>Suitable for targeted debugging (e.g., only collect statistics data for specific ranks/steps, enable mix level for graph
+reconstruction + numerical comparison) and root cause analysis via <strong>problem vs. benchmark comparison</strong>.</p>
+<section id="step-1-enable">
+<h4>Step 1: Enable<a class="headerlink" href="#step-1-enable" title="Link to this heading">#</a></h4>
+<section id="prepare-custom-configuration-json">
+<h5>Prepare Custom Configuration JSON<a class="headerlink" href="#prepare-custom-configuration-json" title="Link to this heading">#</a></h5>
+<p>Create <code class="docutils literal notranslate"><span class="pre">msprobe-config.json</span></code> (dump statistics data for rank0/1, step0/1, mix level):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"task"</span><span class="p">:</span><span class="w"> </span><span class="s2">"statistics"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"dump_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./problem_dump"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"rank"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"step"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mix"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"async_dump"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"statistics"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"list"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"data_mode"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"all"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"summary_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"statistics"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="enable-msprobe-with-custom-configuration-in-sglang">
+<h5>Enable MSProbe with Custom Configuration in SGLang<a class="headerlink" href="#enable-msprobe-with-custom-configuration-in-sglang" title="Link to this heading">#</a></h5>
+<p>Launch the SGLang server and specify the configuration file path with <code class="docutils literal notranslate"><span class="pre">--msprobe-dump-config</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.launch_server<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen2.5-0.5B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--port<span class="w"> </span><span class="m">1027</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--msprobe-dump-config<span class="w"> </span>/home/msprobe-config.json
+</pre></div>
+</div>
+</section>
+</section>
+<section id="step-2-collect-data">
+<h4>Step 2: Collect Data<a class="headerlink" href="#step-2-collect-data" title="Link to this heading">#</a></h4>
+<section id="collect-dump-data-for-problem-benchmark-sides">
+<h5>Collect Dump Data for Problem &amp; Benchmark Sides<a class="headerlink" href="#collect-dump-data-for-problem-benchmark-sides" title="Link to this heading">#</a></h5>
+<p>Send normal inference requests to trigger model running (MSProbe automatically collects data during request processing):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">     "model": "Qwen/Qwen2.5-0.5B-Instruct",</span>
+<span class="s1">     "messages": [</span>
+<span class="s1">         {</span>
+<span class="s1">             "role": "user",</span>
+<span class="s1">             "content": "Hello, my name is"</span>
+<span class="s1">         }</span>
+<span class="s1">     ],</span>
+<span class="s1">     "max_tokens": 10</span>
+<span class="s1"> }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>http://127.0.0.1:1027/v1/chat/completions
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Problem side</strong>: Run the above SGLang server (with the accuracy/numerical issue) and send inference request; dump
+data is saved to <code class="docutils literal notranslate"><span class="pre">./problem_dump</span></code>.</p></li>
+<li><p><strong>Benchmark side</strong>: Launch a normal SGLang server (without the issue, e.g., stable framework version/operator) with
+the <strong>same custom configuration</strong> and send the <strong>same inference request</strong>; rename the dump directory
+to <code class="docutils literal notranslate"><span class="pre">./bench_dump</span></code>.</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Key Requirement</strong>: Problem and benchmark dumps must use the same inputs and sampling points (rank/step)
+for valid comparison.</p>
+</div></blockquote>
+</section>
+<section id="check-generated-dump-files">
+<h5>Check Generated Dump Files<a class="headerlink" href="#check-generated-dump-files" title="Link to this heading">#</a></h5>
+<p>Dump files are saved to <code class="docutils literal notranslate"><span class="pre">./problem_dump</span></code> and <code class="docutils literal notranslate"><span class="pre">./bench_dump</span></code> you defined and include core files for subsequent analysis:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dump.json</span></code>: Records tensor metadata of APIs and modules (dtype, shape, min/max/mean, L2 norm, <code class="docutils literal notranslate"><span class="pre">requires_grad</span></code>, etc.).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stack.json</span></code>: Logs call stack information of APIs and modules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">construct.json</span></code>: hierarchical structure description, required for visualization, its content is not empty.</p></li>
+</ul>
+</section>
+</section>
+<section id="step-3-visualize">
+<h4>Step 3: Visualize<a class="headerlink" href="#step-3-visualize" title="Link to this heading">#</a></h4>
+<section id="visualize-problem-vs-benchmark-comparison-multi-rank">
+<h5>Visualize Problem vs. Benchmark Comparison (Multi-Rank)<a class="headerlink" href="#visualize-problem-vs-benchmark-comparison-multi-rank" title="Link to this heading">#</a></h5>
+<p>Generate a multi-rank comparison visualization file (mix level generates <code class="docutils literal notranslate"><span class="pre">construct.json</span></code> for graph reconstruction):</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>msprobe<span class="w"> </span>graph_visualize<span class="w"> </span>-tp<span class="w"> </span>./problem_dump/step0<span class="w"> </span>-gp<span class="w"> </span>./bench_dump/step0<span class="w"> </span>-o<span class="w"> </span>./graph_output
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-tp</span></code>: Path to problem-side dump data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-gp</span></code>: Path to benchmark-side dump data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-o</span></code>: Output directory for visualization files</p></li>
+</ul>
+<p>If you want overflow check (for NaN/Inf detection), please specify the parameter <code class="docutils literal notranslate"><span class="pre">-oc</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>msprobe<span class="w"> </span>graph_visualize<span class="w"> </span>-tp<span class="w"> </span>./problem_dump/step0<span class="w"> </span>-gp<span class="w"> </span>./bench_dump/step0<span class="w"> </span>-o<span class="w"> </span>./graph_output<span class="w"> </span>-oc
+</pre></div>
+</div>
+<p>After the comparison or build task finishes, a <code class="docutils literal notranslate"><span class="pre">compare_{timestamp}.vis.db</span></code> file is created under <code class="docutils literal notranslate"><span class="pre">graph_output</span></code>.</p>
+</section>
+<section id="launch-tensorboard">
+<h5>Launch TensorBoard<a class="headerlink" href="#launch-tensorboard" title="Link to this heading">#</a></h5>
+<p>Start TensorBoard:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tensorboard<span class="w"> </span>--logdir<span class="w"> </span>./graph_output<span class="w"> </span>--bind_all<span class="w"> </span>--port<span class="w"> </span><span class="m">6006</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="step-4-analyze-root-cause">
+<h4>Step 4: Analyze Root Cause<a class="headerlink" href="#step-4-analyze-root-cause" title="Link to this heading">#</a></h4>
+<section id="locate-root-cause">
+<h5>Locate Root Cause<a class="headerlink" href="#locate-root-cause" title="Link to this heading">#</a></h5>
+<p>Root Cause Analysis in TensorBoard:</p>
+<ul class="simple">
+<li><p>Divergent nodes (with accuracy/numerical differences) are highlighted in <strong>red</strong> (darker red = larger difference).</p></li>
+<li><p>Click on divergent nodes to view detailed tensor data (inputs/outputs, parameters) and API/module call stacks.</p></li>
+<li><p>Use the <strong>search/filter</strong> function to quickly locate key layers/APIs (e.g., “relu”, “conv”).</p></li>
+<li><p>Switch between ranks/steps via the UI to check cross-rank/cross-step divergence.</p></li>
+<li><p>Check the <strong>overflow check</strong> tab for NaN/Inf values in specific nodes (the direct cause of numerical instability).</p></li>
+</ul>
+</section>
+<section id="verify-the-root-cause">
+<h5>Verify the Root Cause<a class="headerlink" href="#verify-the-root-cause" title="Link to this heading">#</a></h5>
+<p>After locating the divergent node (e.g., a specific Conv layer or torch API with abnormal tensor values), verify by:</p>
+<ul class="simple">
+<li><p>Narrowing the dump scope to this node (via <code class="docutils literal notranslate"><span class="pre">scope</span></code>/<code class="docutils literal notranslate"><span class="pre">list</span></code> in the configuration file) for fine-grained data collection.</p></li>
+<li><p>Modifying the problematic layer/API (e.g., replacing the operator, adjusting the dtype) and re-running the debugging
+workflow to confirm the issue is resolved.</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<section id="no-dump-files-generated">
+<h3>No Dump Files Generated<a class="headerlink" href="#no-dump-files-generated" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>To confirm if MSProbe is installed, use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">show</span> <span class="pre">mindstudio_probe</span></code> to troubleshoot. If it is installed, the MSProbe
+version information will be printed. If it is confirmed that it has not been installed, please
+use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mindstudio-probe</span> <span class="pre">--pre</span></code> for installation;</p></li>
+<li><p>Confirm the <code class="docutils literal notranslate"><span class="pre">--msprobe-dump-config</span></code> parameter points to the <strong>correct JSON file path</strong>.</p></li>
+</ol>
+</section>
+<section id="dump-files-are-too-large-excessive-data">
+<h3>Dump Files Are Too Large (Excessive Data)<a class="headerlink" href="#dump-files-are-too-large-excessive-data" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Start with <code class="docutils literal notranslate"><span class="pre">task:</span> <span class="pre">&quot;statistics&quot;</span></code> instead of <code class="docutils literal notranslate"><span class="pre">&quot;tensor&quot;</span></code> to collect only tensor statistics (avoids raw tensor dump);</p></li>
+<li><p>Narrow the dump range with the <code class="docutils literal notranslate"><span class="pre">scope</span></code> field (specify start/end module/API);</p></li>
+<li><p>Filter dump targets with the <code class="docutils literal notranslate"><span class="pre">list</span></code> field (only dump specific modules/APIs or substrings);</p></li>
+<li><p>Sample specific <code class="docutils literal notranslate"><span class="pre">rank</span></code> and <code class="docutils literal notranslate"><span class="pre">step</span></code> (avoid dumping all ranks/iterations).</p></li>
+</ol>
+</section>
+<section id="tensorboard-visualization-fails">
+<h3>TensorBoard Visualization Fails<a class="headerlink" href="#tensorboard-visualization-fails" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Confirm <code class="docutils literal notranslate"><span class="pre">construct.json</span></code> is not empty (requires <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">L0</span></code> or <code class="docutils literal notranslate"><span class="pre">mix</span></code> – L1 does not generate graph files);</p></li>
+<li><p>Check that the <code class="docutils literal notranslate"><span class="pre">-tp</span></code> (problem dump) and <code class="docutils literal notranslate"><span class="pre">-gp</span></code> (benchmark dump) paths point to <strong>valid rank/step subdirectories</strong> (
+e.g., <code class="docutils literal notranslate"><span class="pre">srep0/rank0</span></code>);</p></li>
+<li><p>Ensure the MSProbe version is up-to-date (reinstall with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mindstudio-probe</span> <span class="pre">--pre</span> <span class="pre">--upgrade</span></code>);</p></li>
+<li><p>Verify TensorBoard is installed and the <code class="docutils literal notranslate"><span class="pre">--logdir</span></code> parameter points to the directory containing <code class="docutils literal notranslate"><span class="pre">.vis.db</span></code> files (not
+the file itself).</p></li>
+</ol>
+</section>
+<section id="numerical-comparison-shows-no-divergence-but-model-accuracy-is-low">
+<h3>Numerical Comparison Shows No Divergence But Model Accuracy Is Low<a class="headerlink" href="#numerical-comparison-shows-no-divergence-but-model-accuracy-is-low" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Expand the dump <code class="docutils literal notranslate"><span class="pre">step</span></code> range (check more token iterations for late-stage divergence);</p></li>
+<li><p>Switch to <code class="docutils literal notranslate"><span class="pre">task:</span> <span class="pre">&quot;tensor&quot;</span></code> (statistics may mask subtle numerical differences in raw tensor data);</p></li>
+<li><p>Ensure the problem and benchmark dumps use <strong>the same input data/hardware configuration</strong> (different inputs lead to
+invalid comparisons);</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">manual</span> <span class="pre">mapping</span></code> feature in TensorBoard (automatic mapping may miss some nodes for custom models).</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="appendix">
+<h2>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
+<section id="dump-directory-description">
+<h3>Dump directory description<a class="headerlink" href="#dump-directory-description" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>├── problem_dump or bench_dump
+│   ├── step0
+│   │   ├── rank0
+│   │   │   ├── dump_tensor_data
+│   │   │   │    ├── Tensor.permute.1.forward.pt
+│   │   │   │    ├── Functional.linear.5.backward.output.pt    # Format: {api_type}.{api_name}.{call_count}.{forward/backward}.{input/output}.{arg_index}.
+│   │   │   │    │                                              # arg_index is the nth input or output of the API. If an input is a list, keep numbering with decimals (e.g., 1.1 is the first element of the first argument).
+│   │   │   │    ├── Module.conv1.Conv2d.forward.0.input.0.pt          # Format: {Module}.{module_name}.{class_name}.{forward/backward}.{call_count}.{input/output}.{arg_index}.
+│   │   │   │    ├── Module.conv1.Conv2d.forward.0.parameters.bias.pt  # Module parameter data: {Module}.{module_name}.{class_name}.forward.{call_count}.parameters.{parameter_name}.
+│   │   │   │    └── Module.conv1.Conv2d.parameters_grad.weight.pt     # Module parameter gradients: {Module}.{module_name}.{class_name}.parameters_grad.{parameter_name}. Gradients do not include call_count because the same gradient updates all invocations.
+│   │   │   │                                                          # When the `model` argument passed to dump is a List[torch.nn.Module] or Tuple[torch.nn.Module], module-level data names also include the index inside the list ({Module}.{index}.*), e.g., Module.0.conv1.Conv2d.forward.0.input.0.pt.
+│   │   │   ├── dump.json
+│   │   │   ├── stack.json
+│   │   │   ├── dump_error_info.log
+│   │   │   └── construct.json
+│   │   ├── rank1
+│   │   │   ├── dump_tensor_data
+│   │   │   │   └── ...
+│   │   │   ├── dump.json
+│   │   │   ├── stack.json
+│   │   │   ├── dump_error_info.log
+│   │   │   └── construct.json
+│   │   ├── ...
+│   │   │
+│   │   └── rank7
+│   ├── step1
+│   │   ├── ...
+│   ├── step2
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rank</span></code>: Device ID. Each card writes its data to the corresponding <code class="docutils literal notranslate"><span class="pre">rank{ID}</span></code> directory. In non-distributed scenarios
+the directory is simply named <code class="docutils literal notranslate"><span class="pre">rank</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump_tensor_data</span></code>: Save the collected tensor data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump.json</span></code>: Statistics for the forward data of each API or module, including names, dtype, shape, max, min, mean, L2
+norm (square root of the L2 variance), and CRC-32 when <code class="docutils literal notranslate"><span class="pre">summary_mode=&quot;md5&quot;</span></code>.
+See dump.json file description for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump_error_info.log</span></code>: Present only when the dump tool encountered an error and records the failure log.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stack.json</span></code>: Call stacks for APIs/modules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">construct.json</span></code>: Hierarchical structure description. Empty when <code class="docutils literal notranslate"><span class="pre">level=L1</span></code>.</p></li>
+</ul>
+</section>
+<section id="dump-json-file-description">
+<h3>dump.json file description<a class="headerlink" href="#dump-json-file-description" title="Link to this heading">#</a></h3>
+<section id="l0-level">
+<h4>L0 level<a class="headerlink" href="#l0-level" title="Link to this heading">#</a></h4>
+<p>An L0 <code class="docutils literal notranslate"><span class="pre">dump.json</span></code> contains forward/backward I/O for modules together with parameters and parameter gradients. Using
+PyTorch’s <code class="docutils literal notranslate"><span class="pre">Conv2d</span></code> as an example, the network code looks like:</p>
+<p><code class="docutils literal notranslate"><span class="pre">output</span> <span class="pre">=</span> <span class="pre">self.conv2(input)</span>&#160; <span class="pre">#</span> <span class="pre">self.conv2</span> <span class="pre">=</span> <span class="pre">torch.nn.Conv2d(64,</span> <span class="pre">128,</span> <span class="pre">5,</span> <span class="pre">padding=2,</span> <span class="pre">bias=True)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">dump.json</span></code> contains the following entries:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Module.conv2.Conv2d.forward.0</span></code>: Forward data of the module. <code class="docutils literal notranslate"><span class="pre">input_args</span></code> represents positional inputs, <code class="docutils literal notranslate"><span class="pre">input_kwargs</span></code>
+represents keyword inputs, <code class="docutils literal notranslate"><span class="pre">output</span></code> stores forward outputs, and <code class="docutils literal notranslate"><span class="pre">parameters</span></code> stores weights/biases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Module.conv2.Conv2d.parameters_grad</span></code>: Parameter gradients (weight and bias).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Module.conv2.Conv2d.backward.0</span></code>: Backward data of the module. <code class="docutils literal notranslate"><span class="pre">input</span></code> represents gradients that flow into the
+module (gradients of the forward outputs) and <code class="docutils literal notranslate"><span class="pre">output</span></code> represents gradients that flow out (gradients of the module
+inputs).</p></li>
+</ul>
+<p><strong>Note</strong>: When the <code class="docutils literal notranslate"><span class="pre">model</span></code> parameter passed to the dump API is <code class="docutils literal notranslate"><span class="pre">List[torch.nn.Module]</span></code> or <code class="docutils literal notranslate"><span class="pre">Tuple[torch.nn.Module]</span></code>,
+module-level names include the index inside the list (<code class="docutils literal notranslate"><span class="pre">{Module}.{index}.*</span></code>). Example: <code class="docutils literal notranslate"><span class="pre">Module.0.conv1.Conv2d.forward.0</span></code>.</p>
+<details>
+<summary>L0 dump.json</summary>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"task"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tensor"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"L0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"framework"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pytorch"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"dump_data_dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/dump/path"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Module.conv2.Conv2d.forward.0"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"input_args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">14</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">14</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.638758659362793</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2544615864753723</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">70.50277709960938</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.forward.0.input.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"input_kwargs"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">      </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">10</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6815717220306396</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-1.5120246410369873</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.025344856083393097</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">149.65576171875</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.forward.0.output.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">5</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05992485210299492</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.05999220535159111</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0006165213999338448</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.421217441558838</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.forward.0.parameters.weight.pt"</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"bias"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05744686722755432</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.04894155263900757</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.006410328671336174</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.17263513803482056</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.forward.0.parameters.bias.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"Module.conv2.Conv2d.parameters_grad"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">5</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.018550323322415352</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.008627401664853096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0006675920449197292</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.26084786653518677</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.parameters_grad.weight.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"bias"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.014914230443537235</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.006656786892563105</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.002657240955159068</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.029451673850417137</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.parameters_grad.bias.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"Module.conv2.Conv2d.backward.0"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">10</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0015069986693561077</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.001139344065450132</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.3215508210560074e-06</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.020567523315548897</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.backward.0.input.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">14</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">14</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0007466732058674097</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.00044813455315306783</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">6.814070275140693e-06</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01474067009985447</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Module.conv2.Conv2d.backward.0.output.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details>
+</section>
+<section id="l1-level">
+<h4>L1 level<a class="headerlink" href="#l1-level" title="Link to this heading">#</a></h4>
+<p>An L1 <code class="docutils literal notranslate"><span class="pre">dump.json</span></code> records forward/backward I/O for APIs. Using PyTorch’s <code class="docutils literal notranslate"><span class="pre">relu</span></code> function as an
+example (<code class="docutils literal notranslate"><span class="pre">output</span> <span class="pre">=</span> <span class="pre">torch.nn.functional.relu(input)</span></code>), the file contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Functional.relu.0.forward</span></code>: Forward data of the API. <code class="docutils literal notranslate"><span class="pre">input_args</span></code> are positional inputs, <code class="docutils literal notranslate"><span class="pre">input_kwargs</span></code> are keyword
+inputs, and <code class="docutils literal notranslate"><span class="pre">output</span></code> stores the forward outputs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Functional.relu.0.backward</span></code>: Backward data of the API. <code class="docutils literal notranslate"><span class="pre">input</span></code> represents the gradients of the forward outputs,
+and <code class="docutils literal notranslate"><span class="pre">output</span></code> represents the gradients that flow back to the forward inputs.</p></li>
+</ul>
+<details>
+<summary>L1 dump.json</summary>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"task"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tensor"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"L1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"framework"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pytorch"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"dump_data_dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/dump/path"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Functional.relu.0.forward"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"input_args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3864083290100098</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-1.3364859819412231</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03711778670549393</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">236.20692443847656</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Functional.relu.0.forward.input.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"input_kwargs"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">      </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3864083290100098</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.16849493980407715</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">175.23345947265625</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Functional.relu.0.forward.output.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"Functional.relu.0.backward"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0001815402356442064</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.00013352684618439525</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00011915402356442064</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.007598237134516239</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Functional.relu.0.backward.input.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.Tensor"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"dtype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"torch.float32"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mi">32</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">16</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">28</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"Max"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0001815402356442064</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Min"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.00012117840378778055</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0098118724831693e-08</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"Norm"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.006532244384288788</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"requires_grad"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"data_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Functional.relu.0.backward.output.0.pt"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details>
+</section>
+<section id="mix-level">
+<h4>mix level<a class="headerlink" href="#mix-level" title="Link to this heading">#</a></h4>
+<p>A <code class="docutils literal notranslate"><span class="pre">mix</span></code> dump.json contains both L0 and L1 level data; the file format is the same as the examples above.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-msprobe">Introduction to MSProbe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-details">Basic Details</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-concepts-msprobe-dumping-levels">Background Concepts: MSProbe Dumping Levels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-install-msprobe">Prerequisites: Install MSProbe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-configuration-parameters">Key Configuration Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-parameter-table">Configuration Parameter Table</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#default-configuration">Default configuration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">Outputs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-examples">End-to-End Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-advanced-debugging-with-custom-configuration">Example : Advanced Debugging with Custom Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-enable">Step 1: Enable</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-custom-configuration-json">Prepare Custom Configuration JSON</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-msprobe-with-custom-configuration-in-sglang">Enable MSProbe with Custom Configuration in SGLang</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-collect-data">Step 2: Collect Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-dump-data-for-problem-benchmark-sides">Collect Dump Data for Problem &amp; Benchmark Sides</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#check-generated-dump-files">Check Generated Dump Files</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-visualize">Step 3: Visualize</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-problem-vs-benchmark-comparison-multi-rank">Visualize Problem vs. Benchmark Comparison (Multi-Rank)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-tensorboard">Launch TensorBoard</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-analyze-root-cause">Step 4: Analyze Root Cause</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#locate-root-cause">Locate Root Cause</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-root-cause">Verify the Root Cause</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-dump-files-generated">No Dump Files Generated</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump-files-are-too-large-excessive-data">Dump Files Are Too Large (Excessive Data)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorboard-visualization-fails">TensorBoard Visualization Fails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-comparison-shows-no-divergence-but-model-accuracy-is-low">Numerical Comparison Shows No Divergence But Model Accuracy Is Low</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">Appendix</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump-directory-description">Dump directory description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump-json-file-description">dump.json file description</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l0-level">L0 level</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#l1-level">L1 level</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mix-level">mix level</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 31, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
