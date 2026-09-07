@@ -1,0 +1,180 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-08 08:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../platforms/nvidia_jetson.md:1
+msgid "NVIDIA Jetson Orin"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:3
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:5
+msgid "Before starting, ensure the following:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:7
+msgid ""
+"[**NVIDIA Jetson AGX Orin Devkit**](https://www.nvidia.com/en-us/autonomous-"
+"machines/embedded-systems/jetson-orin/) is set up with **JetPack 6.1** or "
+"later."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:8
+msgid "**CUDA Toolkit** and **cuDNN** are installed."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:9
+msgid "Verify that the Jetson AGX Orin is in **high-performance mode**:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:10
+msgid "sudo nvpmodel -m 0\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:14
+msgid "Installing and running SGLang with Jetson Containers"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:15
+msgid "Clone the jetson-containers github repository:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:16
+msgid "git clone https://github.com/dusty-nv/jetson-containers.git\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:19
+msgid "Run the installation script:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:20
+msgid "bash jetson-containers/install.sh\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:23
+msgid "Build the container image:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:24
+msgid "jetson-containers build sglang\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:27
+msgid "Run the container:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:28
+msgid "jetson-containers run $(autotag sglang)\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:31
+msgid "Or you can also manually run a container with this command:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:32
+msgid "docker run --runtime nvidia -it --rm --network=host IMAGE_NAME\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:37
+msgid "Running Inference"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:40
+msgid "Launch the server:"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:41
+msgid ""
+"python -m sglang.launch_server \\\n"
+"  --model-path deepseek-ai/DeepSeek-R1-Distill-Llama-8B \\\n"
+"  --device cuda \\\n"
+"  --dtype half \\\n"
+"  --attention-backend flashinfer \\\n"
+"  --mem-fraction-static 0.8 \\\n"
+"  --context-length 8192\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:50
+msgid ""
+"The quantization and limited context length (`--dtype half --context-length "
+"8192`) are due to the limited computational resources in [Nvidia jetson kit]"
+"(https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-"
+"orin/). A detailed explanation can be found in [Server Arguments](../"
+"advanced_features/server_arguments.md)."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:52
+msgid ""
+"After launching the engine, refer to [Chat completions](https://docs.sglang."
+"io/basic_usage/openai_api_completions.html#Usage) to test the usability."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:54
+msgid "Running quantization with TorchAO"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:56
+msgid "TorchAO is suggested to NVIDIA Jetson Orin."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:57
+msgid ""
+"python -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --device cuda \\\n"
+"    --dtype bfloat16 \\\n"
+"    --attention-backend flashinfer \\\n"
+"    --mem-fraction-static 0.8 \\\n"
+"    --context-length 8192 \\\n"
+"    --torchao-config int4wo-128\n"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:67
+msgid ""
+"This enables TorchAO's int4 weight-only quantization with a 128-group size. "
+"The usage of `--torchao-config int4wo-128` is also for memory efficiency."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:71
+msgid "Structured output with XGrammar"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:73
+msgid ""
+"Please refer to [SGLang doc structured output](../advanced_features/"
+"structured_outputs.ipynb)."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:76
+msgid ""
+"Thanks to the support from [Nurgaliyev Shakhizat](https://github.com/"
+"shahizat), [Dustin Franklin](https://github.com/dusty-nv) and [Johnny Núñez "
+"Cano](https://github.com/johnnynunez)."
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:78
+msgid "References"
+msgstr ""
+
+#: ../../../platforms/nvidia_jetson.md:80
+msgid ""
+"[NVIDIA Jetson AGX Orin Documentation](https://developer.nvidia.com/embedded/"
+"jetson-agx-orin)"
+msgstr ""
