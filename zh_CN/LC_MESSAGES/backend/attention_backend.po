@@ -1,0 +1,265 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../backend/attention_backend.md:1
+msgid "Attention Backend"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:3
+msgid "Supporting matrix for different attention backends"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Backend**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Page Size > 1**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Spec Decoding**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**MLA**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Sliding Window**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**MultiModal**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**FlashInfer**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "❌"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "✅"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**FA3**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Triton**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Torch Native**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**FlashMLA**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:0
+msgid "**Ascend**"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:14
+msgid ""
+"Note: Every kernel backend is compatible with a page size > 1 by specifying "
+"an argument such as `--page-size 16`. This is because a page size of 16 can "
+"be converted to a page size of 1 in the kernel backend. The \"❌\" and "
+"\"✅\" symbols in the table above under \"Page Size > 1\" indicate whether "
+"the kernel actually operates with a page size greater than 1, rather than "
+"treating a page size of 16 as a page size of 1."
+msgstr ""
+
+#: ../../../backend/attention_backend.md:18
+msgid "User guide"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:20
+msgid "Launch command for different attention backends."
+msgstr ""
+
+#: ../../../backend/attention_backend.md:22
+msgid "FlashInfer (Default for Non-Hopper Machines, e.g., A100, A40)"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:23
+msgid ""
+"python3 -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --attention-backend flashinfer\n"
+"python3 -m sglang.launch_server --tp 8 --model deepseek-ai/DeepSeek-V3 --"
+"attention-backend flashinfer --trust-remote-code\n"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:28
+msgid "FlashAttention 3 (Default for Hopper Machines, e.g., H100, H200, H20)"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:29
+msgid ""
+"python3 -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --attention-backend fa3\n"
+"python3 -m sglang.launch_server --tp 8 --model deepseek-ai/DeepSeek-V3 --"
+"trust-remote-code --attention-backend fa3\n"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:34
+msgid "Triton"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:35
+msgid ""
+"python3 -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --attention-backend triton\n"
+"python3 -m sglang.launch_server --tp 8 --model deepseek-ai/DeepSeek-V3 --"
+"attention-backend triton --trust-remote-code\n"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:40
+msgid "Torch Native"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:41
+msgid ""
+"python3 -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --attention-backend torch_native\n"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:45
+msgid "FlashMLA"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:46
+msgid ""
+"python3 -m sglang.launch_server --tp 8 --model deepseek-ai/DeepSeek-R1 --"
+"attention-backend flashmla --trust-remote-code\n"
+"python3 -m sglang.launch_server --tp 8 --model deepseek-ai/DeepSeek-R1 --"
+"attention-backend flashmla --kv-cache-dtype fp8_e4m3 --trust-remote-code\n"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:51
+msgid "Ascend"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:52
+msgid ""
+"python3 -m sglang.launch_server --model meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --attention-backend ascend\n"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:57
+msgid "Steps to add a new attention backend"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:58
+msgid ""
+"To add a new attention backend, you can learn from the existing backends "
+"(`python/sglang/srt/layers/attention/triton_backend.py`, `python/sglang/srt/"
+"layers/attention/flashattention_backend.py`) and follow the steps below."
+msgstr ""
+
+#: ../../../backend/attention_backend.md:62
+msgid "Run without cuda graph. Support the two forward functions"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:63
+msgid "forward_extend"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:64
+msgid ""
+"Will be used for prefill, prefill with KV cache, and target verification"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:65
+#: ../../../backend/attention_backend.md:68
+msgid "It will be called once per layer"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:66
+msgid "forward_decode"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:67
+msgid "Will be used for normal decode, and draft decode"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:69
+msgid "init_forward_metadata"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:70
+msgid "Initialize the class and common metadata shared by all layers"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:71
+msgid "Call the plan function for optimizations like split_kv"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:72
+msgid "It will be called once per forward"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:73
+msgid ""
+"Run with cuda graph. It has two phases (capture and replay) and you need to "
+"implement three functions"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:74
+msgid "init_cuda_graph_state"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:75
+msgid "It will be called once during life time"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:76
+msgid "Create all common shared buffers"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:77
+msgid "init_forward_metadata_capture_cuda_graph"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:78
+msgid "It will be called before capturing a cuda graph"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:79
+msgid ""
+"It is similar to init_forward_metadata but write the medatada to some pre-"
+"defined buffers"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:80
+msgid "init_forward_metadata_replay_cuda_graph"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:81
+msgid "It will be called before replaying a cuda graph"
+msgstr ""
+
+#: ../../../backend/attention_backend.md:82
+msgid "This function is in the critical path and needs to be fast"
+msgstr ""
