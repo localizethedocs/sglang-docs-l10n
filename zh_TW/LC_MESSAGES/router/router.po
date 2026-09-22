@@ -1,0 +1,410 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../router/router.md:1
+msgid "Router for Data Parallelism"
+msgstr ""
+
+#: ../../../router/router.md:3
+msgid ""
+"Given multiple GPUs running multiple SGLang Runtimes, SGLang Router "
+"distributes the requests to different Runtimes with its unique cache-aware "
+"load-balancing algorithm."
+msgstr ""
+
+#: ../../../router/router.md:5
+msgid ""
+"The router is an independent Python package, and it can be used as a drop-in "
+"replacement for the OpenAI API."
+msgstr ""
+
+#: ../../../router/router.md:7
+msgid "Installation"
+msgstr "安裝"
+
+#: ../../../router/router.md:9
+msgid "pip install sglang-router\n"
+msgstr ""
+
+#: ../../../router/router.md:13
+msgid ""
+"Detailed usage of the router can be found in [launch_router](https://github."
+"com/sgl-project/sglang/blob/main/sgl-router/py_src/sglang_router/"
+"launch_router.py) and [launch_server](https://github.com/sgl-project/sglang/"
+"blob/main/sgl-router/py_src/sglang_router/launch_server.py). Also, you can "
+"directly run the following command to see the usage of the router."
+msgstr ""
+
+#: ../../../router/router.md:15
+msgid ""
+"python -m sglang_router.launch_server --help\n"
+"python -m sglang_router.launch_router --help\n"
+msgstr ""
+
+#: ../../../router/router.md:20
+msgid "The router supports two working modes:"
+msgstr ""
+
+#: ../../../router/router.md:22 ../../../router/router.md:25
+msgid "Co-launch Router and Runtimes"
+msgstr ""
+
+#: ../../../router/router.md:23
+msgid "Launch Runtimes and Router separately"
+msgstr ""
+
+#: ../../../router/router.md:27
+msgid ""
+"This will be a drop-in replacement for the existing `--dp-size` argument of "
+"SGLang Runtime. Under the hood, it uses multi-processes to launch multiple "
+"workers, wait for them to be ready, then connect the router to all workers."
+msgstr ""
+
+#: ../../../router/router.md:29
+msgid ""
+"python -m sglang_router.launch_server --model-path meta-llama/Meta-"
+"Llama-3.1-8B-Instruct --dp-size 4 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../router/router.md:33
+msgid ""
+"After the server is ready, you can directly send requests to the router as "
+"the same way as sending requests to each single worker."
+msgstr ""
+
+#: ../../../router/router.md:35
+msgid "Please adjust the batchsize accordingly to achieve maximum throughput."
+msgstr ""
+
+#: ../../../router/router.md:37
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://localhost:30000/generate\"\n"
+"data = {\"text\": \"What is the capital of France?\"}\n"
+"\n"
+"response = requests.post(url, json=data)\n"
+"print(response.json())\n"
+msgstr ""
+
+#: ../../../router/router.md:47
+msgid "Launch Runtimes and Router Separately"
+msgstr ""
+
+#: ../../../router/router.md:49
+msgid ""
+"This is useful for multi-node DP. First, launch workers on multiple nodes, "
+"then launch a router on the main node, and connect the router to all workers."
+msgstr ""
+
+#: ../../../router/router.md:51
+msgid ""
+"python -m sglang_router.launch_router --worker-urls http://worker_url_1 "
+"http://worker_url_2\n"
+msgstr ""
+
+#: ../../../router/router.md:55
+msgid "Dynamic Scaling APIs"
+msgstr ""
+
+#: ../../../router/router.md:57
+msgid ""
+"We offer `/add_worker` and `/remove_worker` APIs to dynamically add or "
+"remove workers from the router."
+msgstr ""
+
+#: ../../../router/router.md:59
+msgid "`/add_worker`"
+msgstr ""
+
+#: ../../../router/router.md:61 ../../../router/router.md:79
+msgid "Usage:"
+msgstr ""
+
+#: ../../../router/router.md:63
+msgid ""
+"curl -X POST http://localhost:30000/add_worker?url=http://worker_url_1\n"
+msgstr ""
+
+#: ../../../router/router.md:67 ../../../router/router.md:85
+msgid "Example:"
+msgstr ""
+
+#: ../../../router/router.md:69
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-"
+"Instruct --port 30001\n"
+"\n"
+"curl -X POST http://localhost:30000/add_worker?url=http://127.0.0.1:30001\n"
+"\n"
+"# Successfully added worker: http://127.0.0.1:30001\n"
+msgstr ""
+
+#: ../../../router/router.md:77
+msgid "`/remove_worker`"
+msgstr ""
+
+#: ../../../router/router.md:81
+msgid ""
+"curl -X POST http://localhost:30000/remove_worker?url=http://worker_url_1\n"
+msgstr ""
+
+#: ../../../router/router.md:87
+msgid ""
+"curl -X POST http://localhost:30000/remove_worker?"
+"url=http://127.0.0.1:30001\n"
+"\n"
+"# Successfully removed worker: http://127.0.0.1:30001\n"
+msgstr ""
+
+#: ../../../router/router.md:93 ../../../router/router.md:104
+msgid "Note:"
+msgstr ""
+
+#: ../../../router/router.md:95
+msgid ""
+"For cache-aware router, the worker will be removed from the tree and the "
+"queues."
+msgstr ""
+
+#: ../../../router/router.md:97
+msgid "Fault Tolerance"
+msgstr ""
+
+#: ../../../router/router.md:99
+msgid "We provide retries based for failure tolerance."
+msgstr ""
+
+#: ../../../router/router.md:101
+msgid ""
+"If the request to a worker fails for `max_worker_retries` times, the router "
+"will remove the worker from the router and move on to the next worker."
+msgstr ""
+
+#: ../../../router/router.md:102
+msgid ""
+"If the total number of retries exceeds `max_total_retries`, the router will "
+"return an error."
+msgstr ""
+
+#: ../../../router/router.md:106
+msgid "`max_worker_retries` is 3 and `max_total_retries` is 6 by default."
+msgstr ""
+
+#: ../../../router/router.md:108
+msgid "Routing Strategies"
+msgstr ""
+
+#: ../../../router/router.md:110
+msgid "Cache-Aware Load-Balancing Router"
+msgstr ""
+
+#: ../../../router/router.md:112
+msgid ""
+"The native router combines two strategies to optimize both cache utilization "
+"and request distribution:"
+msgstr ""
+
+#: ../../../router/router.md:114
+msgid "Cache-Aware Routing (Approximate Tree)"
+msgstr ""
+
+#: ../../../router/router.md:115
+msgid "Load-Balancing Routing (Shortest Queue with Balance Thresholds)"
+msgstr ""
+
+#: ../../../router/router.md:117
+msgid ""
+"The router dynamically switches between these strategies based on load "
+"conditions:"
+msgstr ""
+
+#: ../../../router/router.md:119
+msgid "Uses load balancing when the system is imbalanced"
+msgstr ""
+
+#: ../../../router/router.md:120
+msgid "Uses cache-aware routing when the system is balanced"
+msgstr ""
+
+#: ../../../router/router.md:122
+msgid "A system is considered imbalanced if both conditions are met:"
+msgstr ""
+
+#: ../../../router/router.md:124
+msgid "(max_load - min_load) > balance_abs_threshold"
+msgstr ""
+
+#: ../../../router/router.md:125
+msgid "max_load > balance_rel_threshold * min_load"
+msgstr ""
+
+#: ../../../router/router.md:127
+msgid "***Cache-Aware Routing (Approximate Tree)***"
+msgstr ""
+
+#: ../../../router/router.md:129
+msgid ""
+"When the workers are considered to be balanced, the router maintains an "
+"approximate radix tree for each worker based on request history, eliminating "
+"the need for direct cache state queries on each worker. The tree stores raw "
+"text characters instead of token IDs to avoid tokenization overhead."
+msgstr ""
+
+#: ../../../router/router.md:131
+msgid "Process:"
+msgstr ""
+
+#: ../../../router/router.md:133
+msgid "For each request, find the worker with the highest prefix match."
+msgstr ""
+
+#: ../../../router/router.md:135
+msgid ""
+"If match rate > cache_threshold, route the request to the worker with "
+"highest match (likely has relevant data cached)"
+msgstr ""
+
+#: ../../../router/router.md:136
+msgid ""
+"If match rate ≤ cache_threshold, route the request to the worker with "
+"smallest tree size (most available cache capacity)"
+msgstr ""
+
+#: ../../../router/router.md:138
+msgid ""
+"Background maintenance: Periodically evict least recently used leaf nodes on "
+"the approximate tree to prevent memory overflow."
+msgstr ""
+
+#: ../../../router/router.md:140
+msgid "***Load-Balancing (Shortest Queue)***"
+msgstr ""
+
+#: ../../../router/router.md:142
+msgid ""
+"For unbalanced systems, this strategy tracks pending request counts per "
+"worker and routes new requests to the least busy worker. This helps maintain "
+"optimal load distribution across workers."
+msgstr ""
+
+#: ../../../router/router.md:144
+msgid "***Data-Parallelism Aware Routing***"
+msgstr ""
+
+#: ../../../router/router.md:146
+msgid ""
+"An additional DP-aware routing strategy can be enabled on top of the sgl-"
+"router’s hybrid cache-aware load-balancing strategy by setting the `--dp-"
+"aware` flag when starting the router."
+msgstr ""
+
+#: ../../../router/router.md:148
+msgid ""
+"When this flag is enabled, the router attempts to contact the workers to "
+"retrieve the `dp_size` of each one and registers the new workers at the DP-"
+"rank level.  In this mode, the router applies the cache-aware routing "
+"strategy in a more fine-grained manner, with assistance from the DP "
+"controller on the SRT side."
+msgstr ""
+
+#: ../../../router/router.md:150
+msgid ""
+"By default (when the flag is not set), the SRT’s DP controller distributes "
+"incoming requests across DP ranks in a round-robin fashion."
+msgstr ""
+
+#: ../../../router/router.md:152
+msgid "Configuration Parameters"
+msgstr ""
+
+#: ../../../router/router.md:154
+msgid "`cache_threshold`: (float, 0.0 to 1.0, default: 0.5)"
+msgstr ""
+
+#: ../../../router/router.md:155
+msgid "Minimum prefix match ratio to use highest-match routing."
+msgstr ""
+
+#: ../../../router/router.md:156
+msgid ""
+"Below this threshold, the request will be routed to the worker with most "
+"available cache space."
+msgstr ""
+
+#: ../../../router/router.md:158
+msgid "`balance_abs_threshold`: (integer, default: 32)"
+msgstr ""
+
+#: ../../../router/router.md:159
+msgid "Absolute difference threshold for load imbalance detection."
+msgstr ""
+
+#: ../../../router/router.md:160
+msgid ""
+"The system is potentially imbalanced if (max_load - min_load) > "
+"abs_threshold."
+msgstr ""
+
+#: ../../../router/router.md:162
+msgid "`balance_rel_threshold`: (float, default: 1.0001)"
+msgstr ""
+
+#: ../../../router/router.md:163
+msgid "Relative ratio threshold for load imbalance detection."
+msgstr ""
+
+#: ../../../router/router.md:164
+msgid ""
+"The system is potentially imbalanced if max_load > min_load * rel_threshold."
+msgstr ""
+
+#: ../../../router/router.md:165
+msgid ""
+"Used in conjunction with `balance_abs_threshold` to determine the final "
+"imbalance state."
+msgstr ""
+
+#: ../../../router/router.md:167
+msgid "`eviction_interval`: (integer, default: 60)"
+msgstr ""
+
+#: ../../../router/router.md:168
+msgid ""
+"Interval in seconds between LRU eviction cycles for the approximate trees."
+msgstr ""
+
+#: ../../../router/router.md:169
+msgid ""
+"Background thread periodically evicts least recently used nodes to maintain "
+"tree size."
+msgstr ""
+
+#: ../../../router/router.md:171
+msgid "`max_tree_size`: (integer, default: 16777216)"
+msgstr ""
+
+#: ../../../router/router.md:172
+msgid "Maximum nodes on the approximate tree."
+msgstr ""
+
+#: ../../../router/router.md:173
+msgid ""
+"When exceeded, LRU leaf nodes are evicted during the next eviction cycle."
+msgstr ""
