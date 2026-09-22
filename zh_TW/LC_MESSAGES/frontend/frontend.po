@@ -1,0 +1,401 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../frontend/frontend.md:1
+msgid "Frontend: Structured Generation Language (SGLang)"
+msgstr ""
+
+#: ../../../frontend/frontend.md:2
+msgid ""
+"The frontend language can be used with local models or API models. It is an "
+"alternative to the OpenAI API. You may find it easier to use for complex "
+"prompting workflow."
+msgstr ""
+
+#: ../../../frontend/frontend.md:4
+msgid "Quick Start"
+msgstr ""
+
+#: ../../../frontend/frontend.md:5
+msgid ""
+"The example below shows how to use SGLang to answer a multi-turn question."
+msgstr ""
+
+#: ../../../frontend/frontend.md:7
+msgid "Using Local Models"
+msgstr ""
+
+#: ../../../frontend/frontend.md:8
+msgid "First, launch a server with"
+msgstr ""
+
+#: ../../../frontend/frontend.md:9
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3-8B-"
+"Instruct --port 30000\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:13
+msgid "Then, connect to the server and answer a multi-turn question."
+msgstr ""
+
+#: ../../../frontend/frontend.md:15
+msgid ""
+"from sglang import function, system, user, assistant, gen, "
+"set_default_backend, RuntimeEndpoint\n"
+"\n"
+"@function\n"
+"def multi_turn_question(s, question_1, question_2):\n"
+"    s += system(\"You are a helpful assistant.\")\n"
+"    s += user(question_1)\n"
+"    s += assistant(gen(\"answer_1\", max_tokens=256))\n"
+"    s += user(question_2)\n"
+"    s += assistant(gen(\"answer_2\", max_tokens=256))\n"
+"\n"
+"set_default_backend(RuntimeEndpoint(\"http://localhost:30000\"))\n"
+"\n"
+"state = multi_turn_question.run(\n"
+"    question_1=\"What is the capital of the United States?\",\n"
+"    question_2=\"List two local attractions.\",\n"
+")\n"
+"\n"
+"for m in state.messages():\n"
+"    print(m[\"role\"], \":\", m[\"content\"])\n"
+"\n"
+"print(state[\"answer_1\"])\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:39
+msgid "Using OpenAI Models"
+msgstr ""
+
+#: ../../../frontend/frontend.md:40
+msgid "Set the OpenAI API Key"
+msgstr ""
+
+#: ../../../frontend/frontend.md:41
+msgid "export OPENAI_API_KEY=sk-******\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:45
+msgid "Then, answer a multi-turn question."
+msgstr ""
+
+#: ../../../frontend/frontend.md:46
+msgid ""
+"from sglang import function, system, user, assistant, gen, "
+"set_default_backend, OpenAI\n"
+"\n"
+"@function\n"
+"def multi_turn_question(s, question_1, question_2):\n"
+"    s += system(\"You are a helpful assistant.\")\n"
+"    s += user(question_1)\n"
+"    s += assistant(gen(\"answer_1\", max_tokens=256))\n"
+"    s += user(question_2)\n"
+"    s += assistant(gen(\"answer_2\", max_tokens=256))\n"
+"\n"
+"set_default_backend(OpenAI(\"gpt-3.5-turbo\"))\n"
+"\n"
+"state = multi_turn_question.run(\n"
+"    question_1=\"What is the capital of the United States?\",\n"
+"    question_2=\"List two local attractions.\",\n"
+")\n"
+"\n"
+"for m in state.messages():\n"
+"    print(m[\"role\"], \":\", m[\"content\"])\n"
+"\n"
+"print(state[\"answer_1\"])\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:70
+msgid "More Examples"
+msgstr ""
+
+#: ../../../frontend/frontend.md:71
+msgid ""
+"Anthropic and VertexAI (Gemini) models are also supported. You can find more "
+"examples at [examples/quick_start](https://github.com/sgl-project/sglang/"
+"tree/main/examples/frontend_language/quick_start)."
+msgstr ""
+
+#: ../../../frontend/frontend.md:74
+msgid "Language Feature"
+msgstr ""
+
+#: ../../../frontend/frontend.md:75
+msgid "To begin with, import sglang."
+msgstr ""
+
+#: ../../../frontend/frontend.md:76
+msgid "import sglang as sgl\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:80
+msgid ""
+"`sglang` provides some simple primitives such as `gen`, `select`, `fork`, "
+"`image`. You can implement your prompt flow in a function decorated by `sgl."
+"function`. You can then invoke the function with `run` or `run_batch`. The "
+"system will manage the state, chat template, parallelism and batching for "
+"you."
+msgstr ""
+
+#: ../../../frontend/frontend.md:85
+msgid ""
+"The complete code for the examples below can be found at [readme_examples.py]"
+"(https://github.com/sgl-project/sglang/blob/main/examples/frontend_language/"
+"usage/readme_examples.py)"
+msgstr ""
+
+#: ../../../frontend/frontend.md:87
+msgid "Control Flow"
+msgstr ""
+
+#: ../../../frontend/frontend.md:88
+msgid ""
+"You can use any Python code within the function body, including control "
+"flow, nested function calls, and external libraries."
+msgstr ""
+
+#: ../../../frontend/frontend.md:90
+msgid ""
+"@sgl.function\n"
+"def tool_use(s, question):\n"
+"    s += \"To answer this question: \" + question + \". \"\n"
+"    s += \"I need to use a \" + sgl.gen(\"tool\", choices=[\"calculator\", "
+"\"search engine\"]) + \". \"\n"
+"\n"
+"    if s[\"tool\"] == \"calculator\":\n"
+"        s += \"The math expression is\" + sgl.gen(\"expression\")\n"
+"    elif s[\"tool\"] == \"search engine\":\n"
+"        s += \"The key word to search is\" + sgl.gen(\"word\")\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:102
+msgid "Parallelism"
+msgstr ""
+
+#: ../../../frontend/frontend.md:103
+msgid ""
+"Use `fork` to launch parallel prompts. Because `sgl.gen` is non-blocking, "
+"the for loop below issues two generation calls in parallel."
+msgstr ""
+
+#: ../../../frontend/frontend.md:106
+msgid ""
+"@sgl.function\n"
+"def tip_suggestion(s):\n"
+"    s += (\n"
+"        \"Here are two tips for staying healthy: \"\n"
+"        \"1. Balanced Diet. 2. Regular Exercise.\\n\\n\"\n"
+"    )\n"
+"\n"
+"    forks = s.fork(2)\n"
+"    for i, f in enumerate(forks):\n"
+"        f += f\"Now, expand tip {i+1} into a paragraph:\\n\"\n"
+"        f += sgl.gen(f\"detailed_tip\", max_tokens=256, stop=\"\\n\\n\")\n"
+"\n"
+"    s += \"Tip 1:\" + forks[0][\"detailed_tip\"] + \"\\n\"\n"
+"    s += \"Tip 2:\" + forks[1][\"detailed_tip\"] + \"\\n\"\n"
+"    s += \"In summary\" + sgl.gen(\"summary\")\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:124
+msgid "Multi-Modality"
+msgstr ""
+
+#: ../../../frontend/frontend.md:125
+msgid "Use `sgl.image` to pass an image as input."
+msgstr ""
+
+#: ../../../frontend/frontend.md:127
+msgid ""
+"@sgl.function\n"
+"def image_qa(s, image_file, question):\n"
+"    s += sgl.user(sgl.image(image_file) + question)\n"
+"    s += sgl.assistant(sgl.gen(\"answer\", max_tokens=256)\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:134
+msgid ""
+"See also [local_example_llava_next.py](https://github.com/sgl-project/sglang/"
+"blob/main/examples/frontend_language/quick_start/local_example_llava_next."
+"py)."
+msgstr ""
+
+#: ../../../frontend/frontend.md:136
+msgid "Constrained Decoding"
+msgstr ""
+
+#: ../../../frontend/frontend.md:137
+msgid ""
+"Use `regex` to specify a regular expression as a decoding constraint. This "
+"is only supported for local models."
+msgstr ""
+
+#: ../../../frontend/frontend.md:140
+msgid ""
+"@sgl.function\n"
+"def regular_expression_gen(s):\n"
+"    s += \"Q: What is the IP address of the Google DNS servers?\\n\"\n"
+"    s += \"A: \" + sgl.gen(\n"
+"        \"answer\",\n"
+"        temperature=0,\n"
+"        regex=r\"((25[0-5]|2[0-4]\\d|[01]?\\d\\d?).){3}(25[0-5]|2[0-4]\\d|"
+"[01]?\\d\\d?)\",\n"
+"    )\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:151
+msgid "JSON Decoding"
+msgstr ""
+
+#: ../../../frontend/frontend.md:152
+msgid "Use `regex` to specify a JSON schema with a regular expression."
+msgstr ""
+
+#: ../../../frontend/frontend.md:154
+msgid ""
+"character_regex = (\n"
+"    r\"\"\"\\{\\n\"\"\"\n"
+"    + r\"\"\"    \"name\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"    \"house\": \"(Gryffindor|Slytherin|Ravenclaw|Hufflepuff)\","
+"\\n\"\"\"\n"
+"    + r\"\"\"    \"blood status\": \"(Pure-blood|Half-blood|Muggle-born)\","
+"\\n\"\"\"\n"
+"    + r\"\"\"    \"occupation\": \"(student|teacher|auror|ministry of magic|"
+"death eater|order of the phoenix)\",\\n\"\"\"\n"
+"    + r\"\"\"    \"wand\": \\{\\n\"\"\"\n"
+"    + r\"\"\"        \"wood\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"        \"core\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"        \"length\": [0-9]{1,2}\\.[0-9]{0,2}\\n\"\"\"\n"
+"    + r\"\"\"    \\},\\n\"\"\"\n"
+"    + r\"\"\"    \"alive\": \"(Alive|Deceased)\",\\n\"\"\"\n"
+"    + r\"\"\"    \"patronus\": \"[\\w\\d\\s]{1,16}\",\\n\"\"\"\n"
+"    + r\"\"\"    \"bogart\": \"[\\w\\d\\s]{1,16}\"\\n\"\"\"\n"
+"    + r\"\"\"\\}\"\"\"\n"
+")\n"
+"\n"
+"@sgl.function\n"
+"def character_gen(s, name):\n"
+"    s += name + \" is a character in Harry Potter. Please fill in the "
+"following information about this character.\\n\"\n"
+"    s += sgl.gen(\"json_output\", max_tokens=256, regex=character_regex)\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:178
+msgid ""
+"See also [json_decode.py](https://github.com/sgl-project/sglang/blob/main/"
+"examples/frontend_language/usage/json_decode.py) for an additional example "
+"of specifying formats with Pydantic models."
+msgstr ""
+
+#: ../../../frontend/frontend.md:180
+msgid "Batching"
+msgstr ""
+
+#: ../../../frontend/frontend.md:181
+msgid "Use `run_batch` to run a batch of requests with continuous batching."
+msgstr ""
+
+#: ../../../frontend/frontend.md:183
+msgid ""
+"@sgl.function\n"
+"def text_qa(s, question):\n"
+"    s += \"Q: \" + question + \"\\n\"\n"
+"    s += \"A:\" + sgl.gen(\"answer\", stop=\"\\n\")\n"
+"\n"
+"states = text_qa.run_batch(\n"
+"    [\n"
+"        {\"question\": \"What is the capital of the United Kingdom?\"},\n"
+"        {\"question\": \"What is the capital of France?\"},\n"
+"        {\"question\": \"What is the capital of Japan?\"},\n"
+"    ],\n"
+"    progress_bar=True\n"
+")\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:199
+msgid "Streaming"
+msgstr ""
+
+#: ../../../frontend/frontend.md:200
+msgid "Add `stream=True` to enable streaming."
+msgstr ""
+
+#: ../../../frontend/frontend.md:202
+msgid ""
+"@sgl.function\n"
+"def text_qa(s, question):\n"
+"    s += \"Q: \" + question + \"\\n\"\n"
+"    s += \"A:\" + sgl.gen(\"answer\", stop=\"\\n\")\n"
+"\n"
+"state = text_qa.run(\n"
+"    question=\"What is the capital of France?\",\n"
+"    temperature=0.1,\n"
+"    stream=True\n"
+")\n"
+"\n"
+"for out in state.text_iter():\n"
+"    print(out, end=\"\", flush=True)\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:218
+msgid "Roles"
+msgstr ""
+
+#: ../../../frontend/frontend.md:220
+msgid ""
+"Use `sgl.system`， `sgl.user` and `sgl.assistant` to set roles when using "
+"Chat models. You can also define more complex role prompts using begin and "
+"end tokens."
+msgstr ""
+
+#: ../../../frontend/frontend.md:222
+msgid ""
+"@sgl.function\n"
+"def chat_example(s):\n"
+"    s += sgl.system(\"You are a helpful assistant.\")\n"
+"    # Same as: s += s.system(\"You are a helpful assistant.\")\n"
+"\n"
+"    with s.user():\n"
+"        s += \"Question: What is the capital of France?\"\n"
+"\n"
+"    s += sgl.assistant_begin()\n"
+"    s += \"Answer: \" + sgl.gen(max_tokens=100, stop=\"\\n\")\n"
+"    s += sgl.assistant_end()\n"
+msgstr ""
+
+#: ../../../frontend/frontend.md:236
+msgid "Tips and Implementation Details"
+msgstr ""
+
+#: ../../../frontend/frontend.md:237
+msgid ""
+"The `choices` argument in `sgl.gen` is implemented by computing the [token-"
+"length normalized log probabilities](https://blog.eleuther.ai/multiple-"
+"choice-normalization/) of all choices and selecting the one with the highest "
+"probability."
+msgstr ""
+
+#: ../../../frontend/frontend.md:238
+msgid ""
+"The `regex` argument in `sgl.gen` is implemented through autoregressive "
+"decoding with logit bias masking, according to the constraints set by the "
+"regex. It is compatible with `temperature=0` and `temperature != 0`."
+msgstr ""
