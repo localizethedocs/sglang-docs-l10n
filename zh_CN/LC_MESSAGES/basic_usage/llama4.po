@@ -1,0 +1,249 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang stable\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-10 09:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../basic_usage/llama4.md:1
+msgid "Llama4 Usage"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:3
+msgid ""
+"[Llama 4](https://github.com/meta-llama/llama-models/blob/main/models/llama4/"
+"MODEL_CARD.md) is Meta's latest generation of open-source LLM model with "
+"industry-leading performance."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:5
+msgid ""
+"SGLang has supported Llama 4 Scout (109B) and Llama 4 Maverick (400B) since "
+"[v0.4.5](https://github.com/sgl-project/sglang/releases/tag/v0.4.5)."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:7
+msgid ""
+"Ongoing optimizations are tracked in the [Roadmap](https://github.com/sgl-"
+"project/sglang/issues/5118)."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:9
+msgid "Launch Llama 4 with SGLang"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:11
+msgid "To serve Llama 4 models on 8xH100/H200 GPUs:"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:13
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Llama-4-Scout-17B-16E-Instruct \\\n"
+"  --tp 8 \\\n"
+"  --context-length 1000000\n"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:20
+msgid "Configuration Tips"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:22
+msgid ""
+"**OOM Mitigation**: Adjust `--context-length` to avoid a GPU out-of-memory "
+"issue. For the Scout model, we recommend setting this value up to 1M on "
+"8\\*H100 and up to 2.5M on 8\\*H200. For the Maverick model, we don't need "
+"to set context length on 8\\*H200. When hybrid kv cache is enabled, `--"
+"context-length` can be set up to 5M on 8\\*H100 and up to 10M on 8\\*H200 "
+"for the Scout model."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:24
+msgid ""
+"**Attention Backend Auto-Selection**: SGLang automatically selects the "
+"optimal attention backend for Llama 4 based on your hardware. You typically "
+"don't need to specify `--attention-backend` manually:"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:25
+msgid "**Blackwell GPUs (B200/GB200)**: `trtllm_mha`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:26
+msgid "**Hopper GPUs (H100/H200)**: `fa3`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:27
+msgid "**AMD GPUs**: `aiter`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:28
+msgid "**Intel XPU**: `intel_xpu`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:29
+msgid "**Other platforms**: `triton` (fallback)"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:31
+msgid ""
+"To override the auto-selection, explicitly specify `--attention-backend` "
+"with one of the supported backends: `fa3`, `aiter`, `triton`, `trtllm_mha`, "
+"or `intel_xpu`."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:33
+msgid ""
+"**Chat Template**: Add `--chat-template llama-4` for chat completion tasks."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:34
+msgid ""
+"**Enable Multi-Modal**: Add `--enable-multimodal` for multi-modal "
+"capabilities."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:35
+msgid ""
+"**Enable Hybrid-KVCache**: Set `--swa-full-tokens-ratio` to adjust the ratio "
+"of SWA layer (for Llama4, it's local attention layer) KV tokens / full layer "
+"KV tokens. (default: 0.8, range: 0-1)"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:38
+msgid "EAGLE Speculative Decoding"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:39
+msgid ""
+"**Description**: SGLang has supported Llama 4 Maverick (400B) with [EAGLE "
+"speculative decoding](https://docs.sglang.io/advanced_features/"
+"speculative_decoding.html#EAGLE-Decoding)."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:41
+msgid ""
+"**Usage**: Add arguments `--speculative-draft-model-path`, `--speculative-"
+"algorithm`, `--speculative-num-steps`, `--speculative-eagle-topk` and `--"
+"speculative-num-draft-tokens` to enable this feature. For example:"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:43
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Llama-4-Maverick-17B-128E-Instruct \\\n"
+"  --speculative-algorithm EAGLE3 \\\n"
+"  --speculative-draft-model-path nvidia/Llama-4-Maverick-17B-128E-Eagle3 \\\n"
+"  --speculative-num-steps 3 \\\n"
+"  --speculative-eagle-topk 1 \\\n"
+"  --speculative-num-draft-tokens 4 \\\n"
+"  --trust-remote-code \\\n"
+"  --tp 8 \\\n"
+"  --context-length 1000000\n"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:56
+msgid ""
+"**Note** The Llama 4 draft model *nvidia/Llama-4-Maverick-17B-128E-Eagle3* "
+"can only recognize conversations in chat mode."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:58
+msgid "Benchmarking Results"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:60
+msgid "Accuracy Test with `lm_eval`"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:62
+msgid ""
+"The accuracy on SGLang for both Llama4 Scout and Llama4 Maverick can match "
+"the [official benchmark numbers](https://ai.meta.com/blog/llama-4-multimodal-"
+"intelligence/)."
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:64
+msgid "Benchmark results on MMLU Pro dataset with 8*H100:"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "Llama-4-Scout-17B-16E-Instruct"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "Llama-4-Maverick-17B-128E-Instruct"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "Official Benchmark"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "74.3"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "80.5"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "SGLang"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "75.2"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:0
+msgid "80.7"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:70
+msgid "Commands:"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:72
+msgid ""
+"# Llama-4-Scout-17B-16E-Instruct model\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Llama-4-Scout-17B-16E-Instruct \\\n"
+"  --port 30000 \\\n"
+"  --tp 8 \\\n"
+"  --mem-fraction-static 0.8 \\\n"
+"  --context-length 65536\n"
+"lm_eval --model local-chat-completions --model_args model=meta-llama/Llama-4-"
+"Scout-17B-16E-Instruct,base_url=http://localhost:30000/v1/chat/completions,"
+"num_concurrent=128,timeout=999999,max_gen_toks=2048 --tasks mmlu_pro --"
+"batch_size 128 --apply_chat_template --num_fewshot 0\n"
+"\n"
+"# Llama-4-Maverick-17B-128E-Instruct\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path meta-llama/Llama-4-Maverick-17B-128E-Instruct \\\n"
+"  --port 30000 \\\n"
+"  --tp 8 \\\n"
+"  --mem-fraction-static 0.8 \\\n"
+"  --context-length 65536\n"
+"lm_eval --model local-chat-completions --model_args model=meta-llama/Llama-4-"
+"Maverick-17B-128E-Instruct,base_url=http://localhost:30000/v1/chat/"
+"completions,num_concurrent=128,timeout=999999,max_gen_toks=2048 --tasks "
+"mmlu_pro --batch_size 128 --apply_chat_template --num_fewshot 0\n"
+msgstr ""
+
+#: ../../../basic_usage/llama4.md:92
+msgid ""
+"Details can be seen in [this PR](https://github.com/sgl-project/sglang/"
+"pull/5092)."
+msgstr ""
