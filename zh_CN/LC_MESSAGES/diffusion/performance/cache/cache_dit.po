@@ -1,0 +1,980 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2026, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../diffusion/performance/cache/cache_dit.md:1
+msgid "Cache-DiT"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:3
+msgid ""
+"SGLang integrates [Cache-DiT](https://github.com/vipshop/cache-dit), a "
+"caching acceleration engine for Diffusion Transformers (DiT), to achieve up "
+"to **1.69x inference speedup** with minimal quality loss."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:5
+msgid "Overview"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:7
+msgid ""
+"**Cache-DiT** uses intelligent caching strategies to skip redundant "
+"computation in the denoising loop:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:9
+msgid ""
+"**DBCache (Dual Block Cache)**: Dynamically decides when to cache "
+"transformer blocks based on residual differences"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:10
+msgid ""
+"**TaylorSeer**: Uses Taylor expansion for calibration to optimize caching "
+"decisions"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:11
+msgid ""
+"**SCM (Step Computation Masking)**: Step-level caching control for "
+"additional speedup"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:13
+msgid "Basic Usage"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:15
+msgid ""
+"Enable Cache-DiT by exporting the environment variable and using `sglang "
+"generate` or `sglang serve` :"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:17
+msgid ""
+"SGLANG_CACHE_DIT_ENABLED=true \\\n"
+"sglang generate --model-path Qwen/Qwen-Image \\\n"
+"    --prompt \"A beautiful sunset over the mountains\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:23
+msgid "Diffusers Backend"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:25
+msgid ""
+"Cache-DiT supports loading acceleration configs from a custom YAML file. For "
+"diffusers pipelines (`diffusers` backend), pass the YAML/JSON path via `--"
+"cache-dit-config`. This flow requires cache-dit >= 1.2.0 (`cache_dit."
+"load_configs`)."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:29
+msgid "Single GPU inference"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:31
+msgid "Define a `cache.yaml` file that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:33
+msgid "DBCache + TaylorSeer"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:35
+msgid ""
+"cache_config:\n"
+"  max_warmup_steps: 8\n"
+"  warmup_interval: 2\n"
+"  max_cached_steps: -1\n"
+"  max_continuous_cached_steps: 2\n"
+"  Fn_compute_blocks: 1\n"
+"  Bn_compute_blocks: 0\n"
+"  residual_diff_threshold: 0.12\n"
+"  enable_taylorseer: true\n"
+"  taylorseer_order: 1\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:48
+msgid "Then apply the config with:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:50
+msgid ""
+"sglang generate \\\n"
+"  --backend diffusers \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --cache-dit-config cache.yaml \\\n"
+"  --prompt \"A beautiful sunset over the mountains\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:58
+msgid "DBCache + TaylorSeer + SCM (Step Computation Mask)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:60
+msgid ""
+"cache_config:\n"
+"  max_warmup_steps: 8\n"
+"  warmup_interval: 2\n"
+"  max_cached_steps: -1\n"
+"  max_continuous_cached_steps: 2\n"
+"  Fn_compute_blocks: 1\n"
+"  Bn_compute_blocks: 0\n"
+"  residual_diff_threshold: 0.12\n"
+"  enable_taylorseer: true\n"
+"  taylorseer_order: 1\n"
+"  # Must set the num_inference_steps for SCM. The SCM will automatically\n"
+"  # generate the steps computation mask based on the num_inference_steps.\n"
+"  # Reference: https://cache-dit.readthedocs.io/en/latest/user_guide/"
+"CACHE_API/#scm-steps-computation-masking\n"
+"  num_inference_steps: 28\n"
+"  steps_computation_mask: fast\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:78
+msgid "DBCache + TaylorSeer + SCM (Step Computation Mask) + Cache CFG"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:80
+msgid ""
+"cache_config:\n"
+"  max_warmup_steps: 8\n"
+"  warmup_interval: 2\n"
+"  max_cached_steps: -1\n"
+"  max_continuous_cached_steps: 2\n"
+"  Fn_compute_blocks: 1\n"
+"  Bn_compute_blocks: 0\n"
+"  residual_diff_threshold: 0.12\n"
+"  enable_taylorseer: true\n"
+"  taylorseer_order: 1\n"
+"  num_inference_steps: 28\n"
+"  steps_computation_mask: fast\n"
+"  enable_sperate_cfg: true # e.g, Qwen-Image, Wan, Chroma, Ovis-Image, etc.\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:96
+msgid "Distributed inference"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:98
+msgid "1D Parallelism"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:100
+msgid ""
+"Define a parallelism only config yaml `parallel.yaml` file that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:102
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:108
+msgid ""
+"Then, apply the distributed inference acceleration config from yaml. "
+"`ulysses_size: auto` means that cache-dit will auto detect the `world_size` "
+"as the ulysses_size. Otherwise, you should manually set it as specific int "
+"number, e.g, 4."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:110
+msgid ""
+"Then apply the distributed config with: (Note: please add `--num-gpus N` to "
+"specify the number of gpus for distributed inference)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:112
+msgid ""
+"sglang generate \\\n"
+"  --backend diffusers \\\n"
+"  --num-gpus 4 \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --cache-dit-config parallel.yaml \\\n"
+"  --prompt \"A futuristic cityscape at sunset\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:121
+msgid "2D Parallelism"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:123
+msgid ""
+"You can also define a 2D parallelism config yaml `parallel_2d.yaml` file "
+"that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:125
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  tp_size: 2\n"
+"  attention_backend: native\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:131
+msgid ""
+"Then, apply the 2D parallelism config from yaml. Here `tp_size: 2` means "
+"using tensor parallelism with size 2. The `ulysses_size: auto` means that "
+"cache-dit will auto detect the `world_size // tp_size` as the ulysses_size."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:133
+msgid "3D Parallelism"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:135
+msgid ""
+"You can also define a 3D parallelism config yaml `parallel_3d.yaml` file "
+"that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:137
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: 2\n"
+"  ring_size: 2\n"
+"  tp_size: 2\n"
+"  attention_backend: native\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:144
+msgid ""
+"Then, apply the 3D parallelism config from yaml. Here `ulysses_size: 2`, "
+"`ring_size: 2`, `tp_size: 2` means using ulysses parallelism with size 2, "
+"ring parallelism with size 2 and tensor parallelism with size 2."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:146
+msgid "Ulysses Anything Attention"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:148
+msgid ""
+"To enable Ulysses Anything Attention, you can define a parallelism config "
+"yaml `parallel_uaa.yaml` file that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:150
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+"  ulysses_anything: true\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:157
+msgid "Ulysses FP8 Communication"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:159
+msgid ""
+"For device that don't have NVLink support, you can enable Ulysses FP8 "
+"Communication to further reduce the communication overhead. You can define a "
+"parallelism config yaml `parallel_fp8.yaml` file that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:161
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+"  ulysses_float8: true\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:168
+msgid "Async Ulysses CP"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:170
+msgid ""
+"You can also enable async ulysses CP to overlap the communication and "
+"computation. Define a parallelism config yaml `parallel_async.yaml` file "
+"that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:172
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+"  ulysses_async: true # Now, only support for FLUX.1, Qwen-Image, Ovis-Image "
+"and Z-Image.\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:178
+msgid ""
+"Then, apply the config from yaml. Here `ulysses_async: true` means enabling "
+"async ulysses CP."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:180
+msgid "TE-P and VAE-P"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:182
+msgid ""
+"You can also specify the extra parallel modules in the yaml config. For "
+"example, define a parallelism config yaml `parallel_extra.yaml` file that "
+"contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:184
+msgid ""
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+"  extra_parallel_modules: [\"text_encoder\", \"vae\"]\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:192
+msgid "Hybrid Cache and Parallelism"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:194
+msgid ""
+"Define a hybrid cache and parallel acceleration config yaml `hybrid.yaml` "
+"file that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:196
+msgid ""
+"cache_config:\n"
+"  max_warmup_steps: 8\n"
+"  warmup_interval: 2\n"
+"  max_cached_steps: -1\n"
+"  max_continuous_cached_steps: 2\n"
+"  Fn_compute_blocks: 1\n"
+"  Bn_compute_blocks: 0\n"
+"  residual_diff_threshold: 0.12\n"
+"  enable_taylorseer: true\n"
+"  taylorseer_order: 1\n"
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+"  extra_parallel_modules: [\"text_encoder\", \"vae\"]\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:213
+msgid ""
+"Then, apply the hybrid cache and parallel acceleration config from yaml."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:215
+msgid ""
+"sglang generate \\\n"
+"  --backend diffusers \\\n"
+"  --num-gpus 4 \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --cache-dit-config hybrid.yaml \\\n"
+"  --prompt \"A beautiful sunset over the mountains\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:224
+msgid "Attention Backend"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:226
+msgid ""
+"In some cases, users may want to only specify the attention backend without "
+"any other optimization configs. In this case, you can define a yaml file "
+"`attention.yaml` that only contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:228
+msgid "attention_backend: \"flash\" # '_flash_3' for Hopper\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:232
+msgid "Quantization"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:234
+msgid ""
+"You can also specify the quantization config in the yaml file, required "
+"`torchao>=0.16.0`. For example, define a yaml file `quantize.yaml` that "
+"contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:236
+msgid ""
+"quantize_config: # quantization configuration for transformer modules\n"
+"  # float8 (DQ), float8_weight_only, float8_blockwise, int8 (DQ), "
+"int8_weight_only, etc.\n"
+"  quant_type: \"float8\"\n"
+"  # layers to exclude from quantization (transformer). layers that contains "
+"any of the\n"
+"  # keywords in the exclude_layers list will be excluded from quantization. "
+"This is useful\n"
+"  # for some sensitive layers that are not robust to quantization, e.g., "
+"embedding layers.\n"
+"  exclude_layers:\n"
+"    - \"embedder\"\n"
+"    - \"embed\"\n"
+"  verbose: false # whether to print verbose logs during quantization\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:248
+msgid ""
+"Then, apply the quantization config from yaml. Please also enable torch."
+"compile for better performance if you are using quantization. For example:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:250
+msgid ""
+"sglang generate \\\n"
+"  --backend diffusers \\\n"
+"  --model-path Qwen/Qwen-Image \\\n"
+"  --warmup \\\n"
+"  --cache-dit-config quantize.yaml \\\n"
+"  --enable-torch-compile \\\n"
+"  --dit-cpu-offload false \\\n"
+"  --text-encoder-cpu-offload false \\\n"
+"  --prompt \"A beautiful sunset over the mountains\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:262
+msgid "Combined Configs: Cache + Parallelism + Quantization"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:264
+msgid ""
+"You can also combine all the above configs together in a single yaml file "
+"`combined.yaml` that contains:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:266
+msgid ""
+"cache_config:\n"
+"  max_warmup_steps: 8\n"
+"  warmup_interval: 2\n"
+"  max_cached_steps: -1\n"
+"  max_continuous_cached_steps: 2\n"
+"  Fn_compute_blocks: 1\n"
+"  Bn_compute_blocks: 0\n"
+"  residual_diff_threshold: 0.12\n"
+"  enable_taylorseer: true\n"
+"  taylorseer_order: 1\n"
+"parallelism_config:\n"
+"  ulysses_size: auto\n"
+"  attention_backend: native\n"
+"  extra_parallel_modules: [\"text_encoder\", \"vae\"]\n"
+"quantize_config:\n"
+"  quant_type: \"float8\"\n"
+"  exclude_layers:\n"
+"    - \"embedder\"\n"
+"    - \"embed\"\n"
+"  verbose: false\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:288
+msgid ""
+"Then, apply the combined cache, parallelism and quantization config from "
+"yaml. Please also enable torch.compile for better performance if you are "
+"using quantization."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:290
+msgid "Advanced Configuration"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:292
+msgid "DBCache Parameters"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:294
+msgid "DBCache controls block-level caching behavior:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Parameter"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Env Variable"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Default"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Description"
+msgstr "描述"
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Fn"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_FN`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "1"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Number of first blocks to always compute"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Bn"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_BN`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "0"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Number of last blocks to always compute"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "W"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_WARMUP`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "4"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Warmup steps before caching starts"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "R"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_RDT`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "0.24"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Residual difference threshold"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "MC"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_MC`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "3"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Maximum continuous cached steps"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:304
+msgid "TaylorSeer Configuration"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:306
+msgid "TaylorSeer improves caching accuracy using Taylor expansion:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Enable"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_TAYLORSEER`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "false"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Enable TaylorSeer calibrator"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Order"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_TS_ORDER`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Taylor expansion order (1 or 2)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:313
+msgid "Combined Configuration Example"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:315
+msgid ""
+"DBCache and TaylorSeer are complementary strategies that work together, you "
+"can configure both sets of parameters simultaneously:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:318
+msgid ""
+"SGLANG_CACHE_DIT_ENABLED=true \\\n"
+"SGLANG_CACHE_DIT_FN=2 \\\n"
+"SGLANG_CACHE_DIT_BN=1 \\\n"
+"SGLANG_CACHE_DIT_WARMUP=4 \\\n"
+"SGLANG_CACHE_DIT_RDT=0.4 \\\n"
+"SGLANG_CACHE_DIT_MC=4 \\\n"
+"SGLANG_CACHE_DIT_TAYLORSEER=true \\\n"
+"SGLANG_CACHE_DIT_TS_ORDER=2 \\\n"
+"sglang generate --model-path black-forest-labs/FLUX.1-dev \\\n"
+"    --prompt \"A curious raccoon in a forest\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:331
+msgid "SCM (Step Computation Masking)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:333
+msgid ""
+"SCM provides step-level caching control for additional speedup. It decides "
+"which denoising steps to compute fully and which to use cached results."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:336
+msgid "**SCM Presets**"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:338
+msgid "SCM is configured with presets:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Preset"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Compute Ratio"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Speed"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Quality"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`none`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "100%"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Baseline"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Best"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`slow`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~75%"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~1.3x"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "High"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`medium`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~50%"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~2x"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Good"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`fast`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~35%"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~3x"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Acceptable"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`ultra`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~25%"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "~4x"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Lower"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:348
+msgid "**Usage**"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:350
+msgid ""
+"SGLANG_CACHE_DIT_ENABLED=true \\\n"
+"SGLANG_CACHE_DIT_SCM_PRESET=medium \\\n"
+"sglang generate --model-path Qwen/Qwen-Image \\\n"
+"    --prompt \"A futuristic cityscape at sunset\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:357
+msgid "**Custom SCM Bins**"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:359
+msgid "For fine-grained control over which steps to compute vs cache:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:361
+msgid ""
+"SGLANG_CACHE_DIT_ENABLED=true \\\n"
+"SGLANG_CACHE_DIT_SCM_COMPUTE_BINS=\"8,3,3,2,2\" \\\n"
+"SGLANG_CACHE_DIT_SCM_CACHE_BINS=\"1,2,2,2,3\" \\\n"
+"sglang generate --model-path Qwen/Qwen-Image \\\n"
+"    --prompt \"A futuristic cityscape at sunset\"\n"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:369
+msgid "**SCM Policy**"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Policy"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`dynamic`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_SCM_POLICY=dynamic`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Adaptive caching based on content (default)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`static`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "`SGLANG_CACHE_DIT_SCM_POLICY=static`"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Fixed caching pattern"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:376
+msgid "Environment Variables"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:378
+msgid ""
+"All Cache-DiT parameters can be configured via environment variables. See "
+"[Environment Variables](../../environment_variables.md) for the complete "
+"list."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:381
+msgid "Supported Models"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:383
+msgid ""
+"SGLang Diffusion x Cache-DiT supports almost all models originally supported "
+"in SGLang Diffusion:"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Model Family"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Example Models"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Wan"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Wan2.1, Wan2.2"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Flux"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "FLUX.1-dev, FLUX.2-dev"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Z-Image"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Z-Image-Turbo"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Qwen"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Qwen-Image, Qwen-Image-Edit"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "Hunyuan"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:0
+msgid "HunyuanVideo"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:393
+msgid "Performance Tips"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:395
+msgid ""
+"**Start with defaults**: The default parameters work well for most models"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:396
+msgid "**Use TaylorSeer**: It typically improves both speed and quality"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:397
+msgid ""
+"**Tune R threshold**: Lower values = better quality, higher values = faster"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:398
+msgid ""
+"**SCM for extra speed**: Use `medium` preset for good speed/quality balance"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:399
+msgid "**Warmup matters**: Higher warmup = more stable caching decisions"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:401
+msgid "Limitations"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:403
+msgid ""
+"**SGLang-native pipelines**: Distributed support (TP/SP) is not yet "
+"validated; Cache-DiT will be automatically disabled when `world_size > 1`."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:405
+msgid ""
+"**SCM minimum steps**: SCM requires >= 8 inference steps to be effective"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:406
+msgid ""
+"**Model support**: Only models registered in Cache-DiT's "
+"BlockAdapterRegister are supported"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:408
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:410
+msgid "SCM disabled for low step count"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:412
+msgid ""
+"For models with < 8 inference steps (e.g., DMD distilled models), SCM will "
+"be automatically disabled. DBCache acceleration still works."
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:415
+msgid "References"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:417
+msgid "[Cache-DiT](https://github.com/vipshop/cache-dit)"
+msgstr ""
+
+#: ../../../diffusion/performance/cache/cache_dit.md:418
+msgid "[SGLang Diffusion](../index.md)"
+msgstr ""
