@@ -1,0 +1,288 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../backend/quantization.md:1
+msgid "Quantization"
+msgstr ""
+
+#: ../../../backend/quantization.md:3
+msgid ""
+"SGLang supports various quantization methods, including offline quantization "
+"and online dynamic quantization."
+msgstr ""
+
+#: ../../../backend/quantization.md:5
+msgid ""
+"Offline quantization loads pre-quantized model weights directly during "
+"inference. This is required for quantization methods such as GPTQ and AWQ, "
+"which collect and pre-compute various statistics from the original weights "
+"using the calibration dataset."
+msgstr ""
+
+#: ../../../backend/quantization.md:8
+msgid ""
+"Online quantization dynamically computes scaling parameters—such as the "
+"maximum/minimum values of model weights—during runtime. Like NVIDIA FP8 "
+"training's [delayed scaling](https://docs.nvidia.com/deeplearning/"
+"transformer-engine/user-guide/examples/fp8_primer.html#Mixed-precision-"
+"training-with-FP8) mechanism, online quantization calculates the appropriate "
+"scaling factors on-the-fly to convert high-precision weights into a lower-"
+"precision format."
+msgstr ""
+
+#: ../../../backend/quantization.md:12
+msgid ""
+"**Note: For better performance, usability and convenience, offline "
+"quantization is recommended over online quantization.**"
+msgstr ""
+
+#: ../../../backend/quantization.md:14
+msgid ""
+"If you use a pre-quantized model, do not add `--quantization` to enable "
+"online quantization at the same time. For popular pre-quantized models, "
+"please visit [ModelCloud](https://huggingface.co/collections/ModelCloud/"
+"vortex-673743382af0a52b2a8b9fe2) or [NeuralMagic](https://huggingface.co/"
+"collections/neuralmagic) collections on HF for some popular quality "
+"validated quantized models. Quantized models must be validated via "
+"benchmarks post-quantization to guard against abnormal quantization loss "
+"regressions."
+msgstr ""
+
+#: ../../../backend/quantization.md:20
+msgid "Offline Quantization"
+msgstr ""
+
+#: ../../../backend/quantization.md:22
+msgid ""
+"To load already quantized models, simply load the model weights and config. "
+"**Again, if the model has been quantized offline, there's no need to add `--"
+"quantization` argument when starting the engine. The quantization method "
+"will be parsed from the downloaded Hugging Face config. For example, "
+"DeepSeek V3/R1 models are already in FP8, so do not add redundant parameters."
+"**"
+msgstr ""
+
+#: ../../../backend/quantization.md:26
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:32
+msgid ""
+"Take note, if your model is **per-channel quantized (INT8 or FP8) with per-"
+"token dynamic quantization activation**, you can opt to include `--"
+"quantization w8a8_int8` or `--quantization w8a8_fp8` to invoke the "
+"corresponding CUTLASS int8_kernel or fp8_kernel in sgl-kernel. This action "
+"will ignore the Hugging Face config's quantization settings. For instance, "
+"with `neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic`, if you execute "
+"with `--quantization w8a8_fp8`, the system will use the `W8A8Fp8Config` from "
+"SGLang to invoke the sgl-kernel, rather than the `CompressedTensorsConfig` "
+"for vLLM kernels."
+msgstr ""
+
+#: ../../../backend/quantization.md:34
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8-dynamic \\\n"
+"    --quantization w8a8_fp8 \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:41
+msgid "Examples of Offline Model Quantization"
+msgstr ""
+
+#: ../../../backend/quantization.md:43
+msgid "Using [GPTQModel](https://github.com/ModelCloud/GPTQModel)"
+msgstr ""
+
+#: ../../../backend/quantization.md:45
+msgid ""
+"# install\n"
+"pip install gptqmodel --no-build-isolation -v\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:50
+msgid ""
+"from datasets import load_dataset\n"
+"from gptqmodel import GPTQModel, QuantizeConfig\n"
+"\n"
+"model_id = \"meta-llama/Llama-3.2-1B-Instruct\"\n"
+"quant_path = \"Llama-3.2-1B-Instruct-gptqmodel-4bit\"\n"
+"\n"
+"calibration_dataset = load_dataset(\n"
+"    \"allenai/c4\", data_files=\"en/c4-train.00001-of-01024.json.gz\",\n"
+"    split=\"train\"\n"
+"  ).select(range(1024))[\"text\"]\n"
+"\n"
+"quant_config = QuantizeConfig(bits=4, group_size=128) # quantization config\n"
+"model = GPTQModel.load(model_id, quant_config) # load model\n"
+"\n"
+"model.quantize(calibration_dataset, batch_size=2) # quantize\n"
+"model.save(quant_path) # save model\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:69
+msgid "Using [LLM Compressor](https://github.com/vllm-project/llm-compressor/)"
+msgstr ""
+
+#: ../../../backend/quantization.md:71
+msgid ""
+"# install\n"
+"pip install llmcompressor\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:76
+msgid ""
+"Here, we take quantize `meta-llama/Meta-Llama-3-8B-Instruct` to `FP8` as an "
+"example to elaborate on how to do offline quantization."
+msgstr ""
+
+#: ../../../backend/quantization.md:78
+msgid ""
+"from transformers import AutoTokenizer\n"
+"from llmcompressor.transformers import SparseAutoModelForCausalLM\n"
+"from llmcompressor.transformers import oneshot\n"
+"from llmcompressor.modifiers.quantization import QuantizationModifier\n"
+"\n"
+"# Step 1: Load the original model.\n"
+"MODEL_ID = \"meta-llama/Meta-Llama-3-8B-Instruct\"\n"
+"\n"
+"model = SparseAutoModelForCausalLM.from_pretrained(\n"
+"  MODEL_ID, device_map=\"auto\", torch_dtype=\"auto\")\n"
+"tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)\n"
+"\n"
+"# Step 2: Perform offline quantization.\n"
+"# Step 2.1: Configure the simple PTQ quantization.\n"
+"recipe = QuantizationModifier(\n"
+"  targets=\"Linear\", scheme=\"FP8_DYNAMIC\", ignore=[\"lm_head\"])\n"
+"\n"
+"# Step 2.2: Apply the quantization algorithm.\n"
+"oneshot(model=model, recipe=recipe)\n"
+"\n"
+"# Step 3: Save the model.\n"
+"SAVE_DIR = MODEL_ID.split(\"/\")[1] + \"-FP8-Dynamic\"\n"
+"model.save_pretrained(SAVE_DIR)\n"
+"tokenizer.save_pretrained(SAVE_DIR)\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:105
+msgid ""
+"Then, you can directly use the quantized model with `SGLang`, by using the "
+"following command:"
+msgstr ""
+
+#: ../../../backend/quantization.md:107
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path $PWD/Meta-Llama-3-8B-Instruct-FP8-Dynamic \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:113
+msgid "Online Quantization"
+msgstr ""
+
+#: ../../../backend/quantization.md:115
+msgid ""
+"To enable online quantization, you can simply specify `--quantization` in "
+"the command line. For example, you can launch the server with the following "
+"command to enable `FP8` quantization for model `meta-llama/Meta-Llama-3.1-8B-"
+"Instruct`:"
+msgstr ""
+
+#: ../../../backend/quantization.md:117
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --quantization fp8 \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:124
+msgid ""
+"Our team is working on supporting more online quantization methods. SGLang "
+"will soon support methods including but not limited to `[\"awq\", \"gptq\", "
+"\"marlin\", \"gptq_marlin\", \"awq_marlin\", \"bitsandbytes\", \"gguf\"]`."
+msgstr ""
+
+#: ../../../backend/quantization.md:126
+msgid ""
+"SGLang also supports quantization methods based on [torchao](https://github."
+"com/pytorch/ao). You can simply specify `--torchao-config` in the command "
+"line to support this feature. For example, if you want to enable "
+"`int4wo-128` for model `meta-llama/Meta-Llama-3.1-8B-Instruct`, you can "
+"launch the server with the following command:"
+msgstr ""
+
+#: ../../../backend/quantization.md:128
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --torchao-config int4wo-128 \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:135
+msgid ""
+"SGLang supports the following quantization methods based on torchao "
+"`[\"int8dq\", \"int8wo\", \"fp8wo\", \"fp8dq-per_tensor\", \"fp8dq-"
+"per_row\", \"int4wo-32\", \"int4wo-64\", \"int4wo-128\", \"int4wo-256\"]`."
+msgstr ""
+
+#: ../../../backend/quantization.md:137
+msgid ""
+"Note: According to [this issue](https://github.com/sgl-project/sglang/"
+"issues/2219#issuecomment-2561890230), `\"int8dq\"` method currently has some "
+"bugs when using together with cuda graph capture. So we suggest to disable "
+"cuda graph capture when using `\"int8dq\"` method. Namely, please use the "
+"following command:"
+msgstr ""
+
+#: ../../../backend/quantization.md:139
+msgid ""
+"python3 -m sglang.launch_server \\\n"
+"    --model-path meta-llama/Meta-Llama-3.1-8B-Instruct \\\n"
+"    --torchao-config int8dq \\\n"
+"    --disable-cuda-graph \\\n"
+"    --port 30000 --host 0.0.0.0\n"
+msgstr ""
+
+#: ../../../backend/quantization.md:147
+msgid "Reference"
+msgstr ""
+
+#: ../../../backend/quantization.md:149
+msgid "[GPTQModel](https://github.com/ModelCloud/GPTQModel)"
+msgstr ""
+
+#: ../../../backend/quantization.md:150
+msgid "[LLM Compressor](https://github.com/vllm-project/llm-compressor/)"
+msgstr ""
+
+#: ../../../backend/quantization.md:151
+msgid ""
+"[Torchao: PyTorch Architecture Optimization](https://github.com/pytorch/ao)"
+msgstr ""
+
+#: ../../../backend/quantization.md:152
+msgid "[vLLM Quantization](https://docs.vllm.ai/en/latest/quantization/)"
+msgstr ""
