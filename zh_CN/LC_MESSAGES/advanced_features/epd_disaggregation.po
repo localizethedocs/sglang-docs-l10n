@@ -1,0 +1,335 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2025, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang latest\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-30 09:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../advanced_features/epd_disaggregation.md:1
+#: ../../../advanced_features/epd_disaggregation.md:120
+msgid "EPD Disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:3
+msgid "Why and What is EPD Disaggregation?"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:5
+msgid ""
+"In modern Vision-Language Model (VLM) inference, request execution naturally "
+"decomposes into three distinct stages: Encoder, Prefill, and Decode. The "
+"Encoder stage performs vision preprocessing and ViT-based image encoding, "
+"which is highly compute-intensive but only required during request "
+"initialization. The Prefill stage processes the full multimodal input "
+"sequence to initialize the language model’s Key-Value (KV) cache, while the "
+"Decode stage is dominated by memory bandwidth and KV cache access for "
+"autoregressive token generation."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:8
+msgid ""
+"Existing deployments typically colocate these stages within a unified "
+"execution engine, or at best apply Prefill–Decode (PD) disaggregation. "
+"However, such designs still tightly couple vision encoding with language "
+"prefill, leading to inefficient resource utilization, limited scalability "
+"for image-heavy workloads, and suboptimal scheduling under load."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:10
+msgid ""
+"To address these challenges, we introduce Encoder–Prefill–Decode (EPD) "
+"Disaggregation in SGLang. EPD further separates vision encoding from "
+"language processing, enabling independent horizontal scaling of encoder "
+"servers, improved load balancing for multimodal requests, and seamless "
+"integration with existing PD disaggregation to form a fully decoupled three-"
+"tier inference architecture."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:12
+msgid "Usage"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:14
+msgid ""
+"You can launch a language-only model using `--language-only`, or an encoder-"
+"only model using `--encoder-only`. When launching a language-only model, you "
+"must additionally specify the encoder service endpoints via `--encoder-urls`."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:17
+msgid ""
+"We support multiple encoder transfer backends, including zmq_to_scheduler, "
+"zmq_to_tokenizer, and mooncake (the default is zmq_to_scheduler). The "
+"backend can be selected using `--encoder-transfer-backend`."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:19
+msgid "Encoder transfer with Mooncake"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:21
+msgid ""
+"`--encoder-transfer-backend mooncake` controls **how encoder outputs are "
+"transferred** between encoder and language/prefill services. It is an "
+"encoder transfer option and can be used independently of the global "
+"multimodal embedding cache."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:23
+#: ../../../advanced_features/epd_disaggregation.md:63
+msgid "Example:"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:25
+msgid ""
+"# encoder\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --encoder-transfer-backend mooncake \\\n"
+"  --port 30000\n"
+"\n"
+"# language-only server\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --language-only \\\n"
+"  --encoder-urls http://127.0.0.1:30000 \\\n"
+"  --encoder-transfer-backend mooncake \\\n"
+"  --port 30002\n"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:42
+msgid "Global multimodal embedding cache with Mooncake"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:44
+msgid ""
+"SGLang also supports a Mooncake-backed **global multimodal embedding cache** "
+"for EPD workloads. When enabled on encoder servers, repeated image inputs "
+"can reuse previously computed ViT embeddings across instances instead of "
+"running the vision encoder again."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:46
+msgid "This feature is useful when:"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:48
+msgid "the deployment serves repeated or overlapping image inputs,"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:49
+msgid "encoder compute is the bottleneck, and"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:50
+msgid "Mooncake is already available in the cluster."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:52
+msgid ""
+"At a high level, the encoder checks whether the image embedding already "
+"exists in Mooncake. Cache hits are prefetched from the global store, while "
+"misses are encoded normally and inserted into the cache in the background."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:54
+msgid "To enable it:"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:56
+msgid ""
+"install and configure Mooncake in the same way as other SGLang Mooncake "
+"integrations,"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:57
+msgid "add `--enable-mm-global-cache` on the encoder server."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:59
+msgid ""
+"`--enable-mm-global-cache` controls **whether multimodal embeddings are "
+"looked up and stored in the global Mooncake cache**. It is separate from `--"
+"encoder-transfer-backend`, which only controls encoder output transport."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:61
+msgid ""
+"For Mooncake deployment and configuration details, see [HiCache best "
+"practices](hicache_best_practices.md#deployment-with-mooncake) and the "
+"[Mooncake backend README](../../python/sglang/srt/mem_cache/storage/"
+"mooncake_store/README.md)."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:65
+msgid ""
+"# Shared Mooncake configuration\n"
+"export MOONCAKE_TE_META_DATA_SERVER=\"http://127.0.0.1:8080/metadata\"\n"
+"export MOONCAKE_MASTER=\"127.0.0.1:50051\"\n"
+"export MOONCAKE_PROTOCOL=\"rdma\"\n"
+"export MOONCAKE_GLOBAL_SEGMENT_SIZE=\"4gb\"\n"
+"\n"
+"# encoder with global multimodal cache enabled\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --enable-mm-global-cache \\\n"
+"  --port 30000\n"
+"\n"
+"# language-only server\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --language-only \\\n"
+"  --encoder-urls http://127.0.0.1:30000 \\\n"
+"  --port 30002\n"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:87
+msgid "Notes:"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:89
+msgid ""
+"This cache is for **multimodal encoder embeddings**, not the language model "
+"KV cache."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:90
+msgid "The feature currently uses Mooncake as the shared backing store."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:91
+msgid ""
+"It can be enabled regardless of which `--encoder-transfer-backend` you use."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:92
+msgid ""
+"It is most relevant for EPD or encoder-disaggregated VLM deployments where "
+"the same images are likely to appear across requests or instances."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:94
+msgid "Qwen VL"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:96
+msgid "EP Disaggregation"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:98
+msgid ""
+"# encoder 0\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30000\n"
+"# encoder 1\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30001\n"
+"# language-only server\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --language-only \\\n"
+"  --encoder-urls http://127.0.0.1:30000 http://127.0.0.1:30001 \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30002\n"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:122
+msgid ""
+"# encoder 0\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30000\n"
+"# encoder 1\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30001\n"
+"# prefill 0\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --disaggregation-mode prefill \\\n"
+"  --language-only \\\n"
+"  --encoder-urls http://127.0.0.1:30000 http://127.0.0.1:30001 \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30002\n"
+"# decode 0\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --disaggregation-mode decode \\\n"
+"  --port 30003\n"
+"# router\n"
+"python -m sglang_router.launch_router \\\n"
+"  --pd-disaggregation \\\n"
+"  --prefill http://$PREFILL_HOST:30002 \\\n"
+"  --decode http://$DECODE_HOST:30003 \\\n"
+"  --port 8000\n"
+"\n"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:157
+msgid "gRPC Encoder (EPD)"
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:159
+msgid ""
+"You can run the encoder as a gRPC server while keeping prefill/decode as "
+"HTTP. When using gRPC encoders, set `SGLANG_ENCODER_MM_RECEIVER_MODE=grpc` "
+"for the prefill process so it uses the gRPC receiver."
+msgstr ""
+
+#: ../../../advanced_features/epd_disaggregation.md:163
+msgid ""
+"# gRPC encoder\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --encoder-only \\\n"
+"  --grpc-mode \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30000\n"
+"\n"
+"# prefill (HTTP) - tell it to use gRPC receiver\n"
+"SGLANG_ENCODER_MM_RECEIVER_MODE=grpc \\\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --disaggregation-mode prefill \\\n"
+"  --language-only \\\n"
+"  --encoder-urls grpc://127.0.0.1:30000 \\\n"
+"  --encoder-transfer-backend zmq_to_scheduler \\\n"
+"  --port 30002\n"
+"\n"
+"# decode (HTTP)\n"
+"python -m sglang.launch_server \\\n"
+"  --model-path Qwen/Qwen3-VL-8B-Instruct \\\n"
+"  --disaggregation-mode decode \\\n"
+"  --port 30003\n"
+"\n"
+"# router\n"
+"python -m sglang_router.launch_router \\\n"
+"  --pd-disaggregation \\\n"
+"  --prefill http://$PREFILL_HOST:30002 \\\n"
+"  --decode http://$DECODE_HOST:30003 \\\n"
+"  --port 8000\n"
+msgstr ""
