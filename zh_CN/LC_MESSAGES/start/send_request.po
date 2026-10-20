@@ -1,0 +1,259 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, SGLang
+# This file is distributed under the same license as the SGLang package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SGLang 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-09 18:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../start/send_request.ipynb:2
+msgid ""
+"<style>\n"
+"    .output_area.stderr, .output_area.stdout {\n"
+"        color: #d3d3d3 !important; /* light gray */\n"
+"    }\n"
+"</style>"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:9
+msgid "Quick Start: Sending Requests"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:11
+msgid ""
+"This notebook provides a quick-start guide to use SGLang in chat completions "
+"after installation."
+msgstr ""
+
+#: ../../../start/send_request.ipynb:13
+msgid ""
+"For Vision Language Models, see `OpenAI APIs - Vision <../backend/"
+"openai_api_vision.ipynb>`__."
+msgstr ""
+
+#: ../../../start/send_request.ipynb:14
+msgid ""
+"For Embedding Models, see `OpenAI APIs - Embedding <../backend/"
+"openai_api_embeddings.ipynb>`__ and `Encode (embedding model) <../backend/"
+"native_api.html#Encode-(embedding-model)>`__."
+msgstr ""
+
+#: ../../../start/send_request.ipynb:15
+msgid ""
+"For Reward Models, see `Classify (reward model) <../backend/native_api."
+"html#Classify-(reward-model)>`__."
+msgstr ""
+
+#: ../../../start/send_request.ipynb:27
+msgid "Launch A Server"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:29
+msgid "This code block is equivalent to executing"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:31
+msgid ""
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-"
+"Instruct \\\n"
+"--port 30000 --host 0.0.0.0"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:36
+msgid ""
+"in your terminal and wait for the server to be ready. Once the server is "
+"running, you can send test requests using curl or requests. The server "
+"implements the `OpenAI-compatible APIs <https://platform.openai.com/docs/api-"
+"reference/chat>`__."
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid "[ ]:"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"from sglang.utils import (\n"
+"    execute_shell_command,\n"
+"    wait_for_server,\n"
+"    terminate_process,\n"
+"    print_highlight,\n"
+")\n"
+"\n"
+"server_process = execute_shell_command(\n"
+"    \"\"\"\n"
+"python -m sglang.launch_server --model-path meta-llama/Meta-Llama-3.1-8B-"
+"Instruct \\\n"
+"--port 30000 --host 0.0.0.0\n"
+"\"\"\"\n"
+")\n"
+"\n"
+"wait_for_server(\"http://localhost:30000\")"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:71
+msgid "Using cURL"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"import subprocess, json\n"
+"\n"
+"curl_command = \"\"\"\n"
+"curl -s http://localhost:30000/v1/chat/completions \\\n"
+"  -d '{\"model\": \"meta-llama/Meta-Llama-3.1-8B-Instruct\", \"messages\": "
+"[{\"role\": \"user\", \"content\": \"What is the capital of France?\"}]}'\n"
+"\"\"\"\n"
+"\n"
+"response = json.loads(subprocess.check_output(curl_command, shell=True))\n"
+"print_highlight(response)"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:100
+msgid "Using Python Requests"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"import requests\n"
+"\n"
+"url = \"http://localhost:30000/v1/chat/completions\"\n"
+"\n"
+"data = {\n"
+"    \"model\": \"meta-llama/Meta-Llama-3.1-8B-Instruct\",\n"
+"    \"messages\": [{\"role\": \"user\", \"content\": \"What is the capital "
+"of France?\"}],\n"
+"}\n"
+"\n"
+"response = requests.post(url, json=data)\n"
+"print_highlight(response.json())"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:131
+msgid "Using OpenAI Python Client"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"import openai\n"
+"\n"
+"client = openai.Client(base_url=\"http://127.0.0.1:30000/v1\", "
+"api_key=\"None\")\n"
+"\n"
+"response = client.chat.completions.create(\n"
+"    model=\"meta-llama/Meta-Llama-3.1-8B-Instruct\",\n"
+"    messages=[\n"
+"        {\"role\": \"user\", \"content\": \"List 3 countries and their "
+"capitals.\"},\n"
+"    ],\n"
+"    temperature=0,\n"
+"    max_tokens=64,\n"
+")\n"
+"print_highlight(response)"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:164 ../../../start/send_request.ipynb:239
+msgid "Streaming"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"import openai\n"
+"\n"
+"client = openai.Client(base_url=\"http://127.0.0.1:30000/v1\", "
+"api_key=\"None\")\n"
+"\n"
+"# Use stream=True for streaming responses\n"
+"response = client.chat.completions.create(\n"
+"    model=\"meta-llama/Meta-Llama-3.1-8B-Instruct\",\n"
+"    messages=[\n"
+"        {\"role\": \"user\", \"content\": \"List 3 countries and their "
+"capitals.\"},\n"
+"    ],\n"
+"    temperature=0,\n"
+"    max_tokens=64,\n"
+"    stream=True,\n"
+")\n"
+"\n"
+"# Handle the streaming output\n"
+"for chunk in response:\n"
+"    if chunk.choices[0].delta.content:\n"
+"        print(chunk.choices[0].delta.content, end=\"\", flush=True)"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:203
+msgid "Using Native Generation APIs"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:205
+msgid ""
+"You can also use the native ``/generate`` endpoint with requests, which "
+"provides more flexiblity. An API reference is available at `Sampling "
+"Parameters <../references/sampling_params.md>`__."
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"import requests\n"
+"\n"
+"response = requests.post(\n"
+"    \"http://localhost:30000/generate\",\n"
+"    json={\n"
+"        \"text\": \"The capital of France is\",\n"
+"        \"sampling_params\": {\n"
+"            \"temperature\": 0,\n"
+"            \"max_new_tokens\": 32,\n"
+"        },\n"
+"    },\n"
+")\n"
+"\n"
+"print_highlight(response.json())"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid ""
+"import requests, json\n"
+"\n"
+"response = requests.post(\n"
+"    \"http://localhost:30000/generate\",\n"
+"    json={\n"
+"        \"text\": \"The capital of France is\",\n"
+"        \"sampling_params\": {\n"
+"            \"temperature\": 0,\n"
+"            \"max_new_tokens\": 32,\n"
+"        },\n"
+"        \"stream\": True,\n"
+"    },\n"
+"    stream=True,\n"
+")\n"
+"\n"
+"prev = 0\n"
+"for chunk in response.iter_lines(decode_unicode=False):\n"
+"    chunk = chunk.decode(\"utf-8\")\n"
+"    if chunk and chunk.startswith(\"data:\"):\n"
+"        if chunk == \"data: [DONE]\":\n"
+"            break\n"
+"        data = json.loads(chunk[5:].strip(\"\\n\"))\n"
+"        output = data[\"text\"]\n"
+"        print(output[prev:], end=\"\", flush=True)\n"
+"        prev = len(output)"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid "[8]:"
+msgstr ""
+
+#: ../../../start/send_request.ipynb:-1
+msgid "terminate_process(server_process)"
+msgstr ""
