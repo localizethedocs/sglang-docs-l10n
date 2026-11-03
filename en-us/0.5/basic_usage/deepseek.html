@@ -1,0 +1,925 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en-US" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DeepSeek Usage &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=731335ad" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=78fe28e9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'basic_usage/deepseek';</script>
+    <link rel="canonical" href="https://projects.localizethedocs.org/sglang-docs-l10n/basic_usage/deepseek.html" />
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DeepSeek V3.2 Usage" href="deepseek_v32.html" />
+    <link rel="prev" title="Sampling Parameters" href="sampling_params.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en-US"/>
+    <meta name="docbuild:last-update" content="Dec 09, 2025"/>
+<script type="text/javascript" src="../ltd-provenance.js"></script>
+<script type="text/javascript" src="../ltd-current.js"></script>
+<script type="text/javascript" src="../../../ltd-config.js"></script>
+<script type="text/javascript" src="../../../ltd-flyout.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="SGLang - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="SGLang - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Install SGLang</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="send_request.html">Sending Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openai_api.html">OpenAI-Compatible APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offline_engine_api.html">Offline Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="native_api.html">SGLang Native APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling_params.html">Sampling Parameters</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">DeepSeek Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deepseek_v32.html">DeepSeek V3.2 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpt_oss.html">GPT OSS Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama4.html">Llama4 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3.html">Qwen3-Next Usage</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/server_arguments.html">Server Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hyperparameter_tuning.html">Hyperparameter Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/attention_backend.html">Attention Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/speculative_decoding.html">Speculative Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs.html">Structured Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/structured_outputs_for_reasoning_models.html">Structured Outputs For Reasoning Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/tool_parser.html">Tool Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/separate_reasoning.html">Reasoning Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/lora.html">LoRA Serving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_disaggregation.html">PD Disaggregation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/hicache.html">Hierarchical KV Caching (HiCache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/pd_multiplexing.html">PD Multiplexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/vlm_query.html">Query Vision Language Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/router.html">SGLang Model Gateway (formerly SGLang Router)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/deterministic_inference.html">Deterministic Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/observability.html">Observability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_features/checkpoint_engine.html">Checkpoint Engine Integration</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supported Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/generative_models.html">Large Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/multimodal_language_models.html">Multimodal Language Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/embedding_models.html">Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/reward_models.html">Reward Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/rerank_models.html">Rerank Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/support_new_models.html">How to Support New Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/transformers_fallback.html">Transformers fallback in SGLang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported_models/modelscope.html">Use Models From ModelScope</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware Platforms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../platforms/amd_gpu.html">AMD GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/cpu_server.html">CPU Servers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/tpu.html">TPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/nvidia_jetson.html">NVIDIA Jetson Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/ascend_npu.html">Ascend NPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platforms/xpu.html">XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/development_guide_using_docker.html">Development Guide Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/benchmark_and_profiling.html">Benchmark and Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/bench_serving.html">Bench Serving Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../references/faq.html">Troubleshooting and Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/environment_variables.html">Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_metrics.html">Production Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/production_request_trace.html">Setup Guide</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../references/multi_node_deployment/multi_node_index.html">Multi-Node Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/custom_chat_template.html">Custom Chat Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/frontend/frontend_index.html">Frontend Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/learn_more.html">Learn more</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/blob/main/basic_usage/deepseek.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/edit/main/basic_usage/deepseek.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sgl-project.github.io/issues/new?title=Issue%20on%20page%20%2Fbasic_usage/deepseek.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/basic_usage/deepseek.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>DeepSeek Usage</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-deepseek-v3-1-v3-r1-with-sglang">Launch DeepSeek V3.1/V3/R1 with SGLang</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-weights">Download Weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-with-one-node-of-8-x-h200">Launch with one node of 8 x H200</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-examples-on-multi-node">Running examples on Multi-node</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizations">Optimizations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-latent-attention-mla-throughput-optimizations">Multi-head Latent Attention (MLA) Throughput Optimizations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-parallelism-attention">Data Parallelism Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-tensor-parallelism">Multi Node Tensor Parallelism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#block-wise-fp8">Block-wise FP8</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-token-prediction">Multi-token Prediction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-content-for-deepseek-r1-v3-1">Reasoning Content for DeepSeek R1 &amp; V3.1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-calling-for-deepseek-models">Function calling for DeepSeek Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#thinking-budget-for-deepseek-r1">Thinking Budget for DeepSeek R1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faq">FAQ</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deepseek-usage">
+<h1>DeepSeek Usage<a class="headerlink" href="#deepseek-usage" title="Link to this heading">#</a></h1>
+<p>SGLang provides many optimizations specifically designed for the DeepSeek models, making it the inference engine recommended by the official <a class="reference external" href="https://github.com/deepseek-ai/DeepSeek-V3/tree/main?tab=readme-ov-file#62-inference-with-sglang-recommended">DeepSeek team</a> from Day 0.</p>
+<p>This document outlines current optimizations for DeepSeek.
+For an overview of the implemented features see the completed <a class="reference external" href="https://github.com/sgl-project/sglang/issues/2591">Roadmap</a>.</p>
+<section id="launch-deepseek-v3-1-v3-r1-with-sglang">
+<h2>Launch DeepSeek V3.1/V3/R1 with SGLang<a class="headerlink" href="#launch-deepseek-v3-1-v3-r1-with-sglang" title="Link to this heading">#</a></h2>
+<p>To run DeepSeek V3.1/V3/R1 models, the recommended settings are as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Weight Type</p></th>
+<th class="head"><p>Configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Full precision FP8</strong><br><em>(recommended)</em></p></td>
+<td><p>8 x H200</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>8 x MI300X</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>2 x 8 x H100/800/20</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>Xeon 6980P CPU</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Full precision BF16</strong></p></td>
+<td><p>2 x 8 x H200</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>2 x 8 x MI300X</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>4 x 8 x H100/800/20</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>4 x 8 x A100/A800</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Quantized weights (AWQ)</strong></p></td>
+<td><p>8 x H100/800/20</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>8 x A100/A800</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Quantized weights (int8)</strong></p></td>
+<td><p>16 x A100/800</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>32 x L40S</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>Xeon 6980P CPU</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>2 x Atlas 800I A3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<style>
+.md-typeset__table {
+  width: 100%;
+}
+
+.md-typeset__table table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  border: 2px solid var(--md-typeset-table-color);
+  table-layout: fixed;
+}
+
+.md-typeset__table th {
+  border: 1px solid var(--md-typeset-table-color);
+  border-bottom: 2px solid var(--md-typeset-table-color);
+  background-color: var(--md-default-bg-color--lighter);
+  padding: 12px;
+}
+
+.md-typeset__table td {
+  border: 1px solid var(--md-typeset-table-color);
+  padding: 12px;
+}
+
+.md-typeset__table tr:nth-child(2n) {
+  background-color: var(--md-default-bg-color--lightest);
+}
+</style>
+<p>Detailed commands for reference:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#using-docker-recommended">8 x H200</a></p></li>
+<li><p><a class="reference internal" href="../platforms/amd_gpu.html#running-deepseek-v3"><span class="std std-ref">8 x MI300X</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-two-h208-nodes">2 x 8 x H200</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-four-a1008-nodes">4 x 8 x A100</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-8-a100a800-with-awq-quantization">8 x A100 (AWQ)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-16-a100a800-with-int8-quantization">16 x A100 (int8)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-32-l40s-with-int8-quantization">32 x L40S (int8)</a></p></li>
+<li><p><a class="reference internal" href="../platforms/cpu_server.html#example-running-deepseek-r1"><span class="std std-ref">Xeon 6980P CPU</span></a></p></li>
+<li><p><a class="reference internal" href="../platforms/ascend_npu.html#running-deepseek-v3"><span class="std std-ref">2 x Atlas 800I A3 (int8)</span></a></p></li>
+</ul>
+<section id="download-weights">
+<h3>Download Weights<a class="headerlink" href="#download-weights" title="Link to this heading">#</a></h3>
+<p>If you encounter errors when starting the server, ensure the weights have finished downloading. It’s recommended to download them beforehand or restart multiple times until all weights are downloaded. Please refer to <a class="reference external" href="https://huggingface.co/deepseek-ai/DeepSeek-V3-Base#61-inference-with-deepseek-infer-demo-example-only">DeepSeek V3</a> official guide to download the weights.</p>
+</section>
+<section id="launch-with-one-node-of-8-x-h200">
+<h3>Launch with one node of 8 x H200<a class="headerlink" href="#launch-with-one-node-of-8-x-h200" title="Link to this heading">#</a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#installation--launch">the example</a>.
+<strong>Note that Deepseek V3 is already in FP8</strong>, so we should not run it with any quantization arguments like <code class="docutils literal notranslate"><span class="pre">--quantization</span> <span class="pre">fp8</span> <span class="pre">--kv-cache-dtype</span> <span class="pre">fp8_e5m2</span></code>.</p>
+</section>
+<section id="running-examples-on-multi-node">
+<h3>Running examples on Multi-node<a class="headerlink" href="#running-examples-on-multi-node" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-two-h208-nodes">Serving with two H20*8 nodes</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-two-h2008-nodes-and-docker">Serving with two H200*8 nodes and docker</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-four-a1008-nodes">Serving with four A100*8 nodes</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="optimizations">
+<h2>Optimizations<a class="headerlink" href="#optimizations" title="Link to this heading">#</a></h2>
+<section id="multi-head-latent-attention-mla-throughput-optimizations">
+<h3>Multi-head Latent Attention (MLA) Throughput Optimizations<a class="headerlink" href="#multi-head-latent-attention-mla-throughput-optimizations" title="Link to this heading">#</a></h3>
+<p><strong>Description</strong>: <a class="reference external" href="https://arxiv.org/pdf/2405.04434">MLA</a> is an innovative attention mechanism introduced by the DeepSeek team, aimed at improving inference efficiency. SGLang has implemented specific optimizations for this, including:</p>
+<ul class="simple">
+<li><p><strong>Weight Absorption</strong>: By applying the associative law of matrix multiplication to reorder computation steps, this method balances computation and memory access and improves efficiency in the decoding phase.</p></li>
+<li><p><strong>MLA Attention Backends</strong>: Currently SGLang supports different optimized MLA attention backends, including <a class="reference external" href="https://github.com/Dao-AILab/flash-attention">FlashAttention3</a>, <a class="reference external" href="https://docs.flashinfer.ai/api/mla.html">Flashinfer</a>, <a class="reference external" href="https://github.com/deepseek-ai/FlashMLA">FlashMLA</a>, <a class="reference external" href="https://github.com/sgl-project/sglang/pull/5390">CutlassMLA</a>, <strong>TRTLLM MLA</strong> (optimized for Blackwell architecture), and <a class="reference external" href="https://github.com/triton-lang/triton">Triton</a> backends. The default FA3 provides good performance across wide workloads.</p></li>
+<li><p><strong>FP8 Quantization</strong>: W8A8 FP8 and KV Cache FP8 quantization enables efficient FP8 inference. Additionally, we have implemented Batched Matrix Multiplication (BMM) operator to facilitate FP8 inference in MLA with weight absorption.</p></li>
+<li><p><strong>CUDA Graph &amp; Torch.compile</strong>: Both MLA and Mixture of Experts (MoE) are compatible with CUDA Graph and Torch.compile, which reduces latency and accelerates decoding speed for small batch sizes.</p></li>
+<li><p><strong>Chunked Prefix Cache</strong>: Chunked prefix cache optimization can increase throughput by cutting prefix cache into chunks, processing them with multi-head attention and merging their states. Its improvement can be significant when doing chunked prefill on long sequences. Currently this optimization is only available for FlashAttention3 backend.</p></li>
+</ul>
+<p>Overall, with these optimizations, we have achieved up to <strong>7x</strong> acceleration in output throughput compared to the previous version.</p>
+<p align="center">
+  <img src="https://lmsys.org/images/blog/sglang_v0_3/deepseek_mla.svg" alt="Multi-head Latent Attention for DeepSeek Series Models">
+</p>
+<p><strong>Usage</strong>: MLA optimization is enabled by default. For MLA models on Blackwell architecture (e.g., B200), the default backend is FlashInfer. To use the optimized TRTLLM MLA backend for prefill and decode operations, explicitly specify <code class="docutils literal notranslate"><span class="pre">--attention-backend</span> <span class="pre">trtllm_mla</span></code>.</p>
+<p><strong>Reference</strong>: Check <a class="reference external" href="https://lmsys.org/blog/2024-09-04-sglang-v0-3/#deepseek-multi-head-latent-attention-mla-throughput-optimizations">Blog</a> and <a class="reference external" href="https://github.com/sgl-project/sgl-learning-materials/blob/main/slides/lmsys_1st_meetup_deepseek_mla.pdf">Slides</a> for more details.</p>
+</section>
+<section id="data-parallelism-attention">
+<h3>Data Parallelism Attention<a class="headerlink" href="#data-parallelism-attention" title="Link to this heading">#</a></h3>
+<p><strong>Description</strong>: This optimization involves data parallelism (DP) for the MLA attention mechanism of DeepSeek Series Models, which allows for a significant reduction in the KV cache size, enabling larger batch sizes. Each DP worker independently handles different types of batches (prefill, decode, idle), which are then synchronized before and after processing through the Mixture-of-Experts (MoE) layer. If you do not use DP attention, KV cache will be duplicated among all TP ranks.</p>
+<p align="center">
+  <img src="https://lmsys.org/images/blog/sglang_v0_4/dp_attention.svg" alt="Data Parallelism Attention for DeepSeek Series Models">
+</p>
+<p>With data parallelism attention enabled, we have achieved up to <strong>1.9x</strong> decoding throughput improvement compared to the previous version.</p>
+<p align="center">
+  <img src="https://lmsys.org/images/blog/sglang_v0_4/deepseek_coder_v2.svg" alt="Data Parallelism Attention Performance Comparison">
+</p>
+<p><strong>Usage</strong>:</p>
+<ul class="simple">
+<li><p>Append <code class="docutils literal notranslate"><span class="pre">--enable-dp-attention</span> <span class="pre">--tp</span> <span class="pre">8</span> <span class="pre">--dp</span> <span class="pre">8</span></code> to the server arguments when using 8 H200 GPUs. This optimization improves peak throughput in high batch size scenarios where the server is limited by KV cache capacity. However, it is not recommended for low-latency, small-batch use cases.</p></li>
+<li><p>DP and TP attention can be flexibly combined. For example, to deploy DeepSeek-V3/R1 on 2 nodes with 8 H100 GPUs each, you can specify <code class="docutils literal notranslate"><span class="pre">--enable-dp-attention</span> <span class="pre">--tp</span> <span class="pre">16</span> <span class="pre">--dp</span> <span class="pre">2</span></code>. This configuration runs attention with 2 DP groups, each containing 8 TP GPUs.</p></li>
+</ul>
+<p><strong>Reference</strong>: Check <a class="reference external" href="https://lmsys.org/blog/2024-12-04-sglang-v0-4/#data-parallelism-attention-for-deepseek-models">Blog</a>.</p>
+</section>
+<section id="multi-node-tensor-parallelism">
+<h3>Multi Node Tensor Parallelism<a class="headerlink" href="#multi-node-tensor-parallelism" title="Link to this heading">#</a></h3>
+<p><strong>Description</strong>: For users with limited memory on a single node, SGLang supports serving DeepSeek Series Models, including DeepSeek V3, across multiple nodes using tensor parallelism. This approach partitions the model parameters across multiple GPUs or nodes to handle models that are too large for one node’s memory.</p>
+<p><strong>Usage</strong>: Check <a class="reference external" href="https://github.com/sgl-project/sglang/tree/main/benchmark/deepseek_v3#example-serving-with-2-h208">here</a> for usage examples.</p>
+</section>
+<section id="block-wise-fp8">
+<h3>Block-wise FP8<a class="headerlink" href="#block-wise-fp8" title="Link to this heading">#</a></h3>
+<p><strong>Description</strong>: SGLang implements block-wise FP8 quantization with two key optimizations:</p>
+<ul class="simple">
+<li><p><strong>Activation</strong>: E4M3 format using per-token-per-128-channel sub-vector scales with online casting.</p></li>
+<li><p><strong>Weight</strong>: Per-128x128-block quantization for better numerical stability.</p></li>
+<li><p><strong>DeepGEMM</strong>: The <a class="reference external" href="https://github.com/deepseek-ai/DeepGEMM">DeepGEMM</a> kernel library optimized for FP8 matrix multiplications.</p></li>
+</ul>
+<p><strong>Usage</strong>: The activation and weight optimization above are turned on by default for DeepSeek V3 models. DeepGEMM is enabled by default on NVIDIA Hopper GPUs and disabled by default on other devices. DeepGEMM can also be manually turned off by setting the environment variable <code class="docutils literal notranslate"><span class="pre">SGLANG_ENABLE_JIT_DEEPGEMM=0</span></code>.</p>
+<p>Before serving the DeepSeek model, precompile the DeepGEMM kernels using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>sglang.compile_deep_gemm<span class="w"> </span>--model<span class="w"> </span>deepseek-ai/DeepSeek-V3<span class="w"> </span>--tp<span class="w"> </span><span class="m">8</span><span class="w"> </span>--trust-remote-code
+</pre></div>
+</div>
+<p>The precompilation process typically takes around 10 minutes to complete.</p>
+</section>
+<section id="multi-token-prediction">
+<h3>Multi-token Prediction<a class="headerlink" href="#multi-token-prediction" title="Link to this heading">#</a></h3>
+<p><strong>Description</strong>: SGLang implements DeepSeek V3 Multi-Token Prediction (MTP) based on <a class="reference external" href="https://docs.sglang.ai/advanced_features/speculative_decoding.html#EAGLE-Decoding">EAGLE speculative decoding</a>. With this optimization, the decoding speed can be improved by <strong>1.8x</strong> for batch size 1 and <strong>1.5x</strong> for batch size 32 respectively on H200 TP8 setting.</p>
+<p><strong>Usage</strong>:
+Add arguments <code class="docutils literal notranslate"><span class="pre">--speculative-algorithm</span></code>, <code class="docutils literal notranslate"><span class="pre">--speculative-num-steps</span></code>, <code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span></code> and <code class="docutils literal notranslate"><span class="pre">--speculative-num-draft-tokens</span></code> to enable this feature. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">sglang</span><span class="o">.</span><span class="n">launch_server</span> \
+  <span class="o">--</span><span class="n">model</span><span class="o">-</span><span class="n">path</span> <span class="n">deepseek</span><span class="o">-</span><span class="n">ai</span><span class="o">/</span><span class="n">DeepSeek</span><span class="o">-</span><span class="n">V3</span><span class="o">-</span><span class="mi">0324</span> \
+  <span class="o">--</span><span class="n">speculative</span><span class="o">-</span><span class="n">algorithm</span> <span class="n">EAGLE</span> \
+  <span class="o">--</span><span class="n">speculative</span><span class="o">-</span><span class="n">num</span><span class="o">-</span><span class="n">steps</span> <span class="mi">1</span> \
+  <span class="o">--</span><span class="n">speculative</span><span class="o">-</span><span class="n">eagle</span><span class="o">-</span><span class="n">topk</span> <span class="mi">1</span> \
+  <span class="o">--</span><span class="n">speculative</span><span class="o">-</span><span class="n">num</span><span class="o">-</span><span class="n">draft</span><span class="o">-</span><span class="n">tokens</span> <span class="mi">2</span> \
+  <span class="o">--</span><span class="n">trust</span><span class="o">-</span><span class="n">remote</span><span class="o">-</span><span class="n">code</span> \
+  <span class="o">--</span><span class="n">tp</span> <span class="mi">8</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The best configuration for <code class="docutils literal notranslate"><span class="pre">--speculative-num-steps</span></code>, <code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span></code> and <code class="docutils literal notranslate"><span class="pre">--speculative-num-draft-tokens</span></code> can be searched with <a class="reference external" href="https://github.com/sgl-project/sglang/blob/main/scripts/playground/bench_speculative.py">bench_speculative.py</a> script for given batch size. The minimum configuration is <code class="docutils literal notranslate"><span class="pre">--speculative-num-steps</span> <span class="pre">1</span> <span class="pre">--speculative-eagle-topk</span> <span class="pre">1</span> <span class="pre">--speculative-num-draft-tokens</span> <span class="pre">2</span></code>, which can achieve speedup for larger batch sizes.</p></li>
+<li><p>FlashAttention3, FlashMLA, and Triton backend fully supports MTP usage. For FlashInfer backend (<code class="docutils literal notranslate"><span class="pre">--attention-backend</span> <span class="pre">flashinfer</span></code>) with speculative decoding,<code class="docutils literal notranslate"><span class="pre">--speculative-eagle-topk</span></code> parameter should be set to <code class="docutils literal notranslate"><span class="pre">1</span></code>. MTP support for the CutlassMLA and TRTLLM MLA backends are still under development.</p></li>
+<li><p>To enable DeepSeek MTP for large batch sizes (&gt;32), there are some parameters should be changed (Reference <a class="reference external" href="https://github.com/sgl-project/sglang/issues/4543#issuecomment-2737413756">this discussion</a>):</p>
+<ul>
+<li><p>Adjust <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code> to a larger number. The default value is <code class="docutils literal notranslate"><span class="pre">48</span></code> for MTP. For larger batch sizes, you should increase this value beyond the default value.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">--cuda-graph-bs</span></code>. It’s a list of batch sizes for cuda graph capture. The default captured batch sizes for speculative decoding is set <a class="reference external" href="https://github.com/sgl-project/sglang/blob/49420741746c8f3e80e0eb17e7d012bfaf25793a/python/sglang/srt/model_executor/cuda_graph_runner.py#L126">here</a>. You can include more batch sizes into it.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="reasoning-content-for-deepseek-r1-v3-1">
+<h3>Reasoning Content for DeepSeek R1 &amp; V3.1<a class="headerlink" href="#reasoning-content-for-deepseek-r1-v3-1" title="Link to this heading">#</a></h3>
+<p>See <a class="reference external" href="https://docs.sglang.ai/advanced_features/separate_reasoning.html">Reasoning Parser</a> and <a class="reference external" href="https://docs.sglang.ai/basic_usage/openai_api_completions.html#Example:-DeepSeek-V3-Models">Thinking Parameter for DeepSeek V3.1</a>.</p>
+</section>
+<section id="function-calling-for-deepseek-models">
+<h3>Function calling for DeepSeek Models<a class="headerlink" href="#function-calling-for-deepseek-models" title="Link to this heading">#</a></h3>
+<p>Add arguments <code class="docutils literal notranslate"><span class="pre">--tool-call-parser</span> <span class="pre">deepseekv3</span></code> and <code class="docutils literal notranslate"><span class="pre">--chat-template</span> <span class="pre">./examples/chat_template/tool_chat_template_deepseekv3.jinja</span></code>(recommended) to enable this feature. For example (running on 1 * H20 node):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">sglang</span><span class="o">.</span><span class="n">launch_server</span> \
+  <span class="o">--</span><span class="n">model</span> <span class="n">deepseek</span><span class="o">-</span><span class="n">ai</span><span class="o">/</span><span class="n">DeepSeek</span><span class="o">-</span><span class="n">V3</span><span class="o">-</span><span class="mi">0324</span> \
+  <span class="o">--</span><span class="n">tp</span> <span class="mi">8</span> \
+  <span class="o">--</span><span class="n">port</span> <span class="mi">30000</span> \
+  <span class="o">--</span><span class="n">host</span> <span class="mf">0.0.0.0</span> \
+  <span class="o">--</span><span class="n">mem</span><span class="o">-</span><span class="n">fraction</span><span class="o">-</span><span class="n">static</span> <span class="mf">0.9</span> \
+  <span class="o">--</span><span class="n">tool</span><span class="o">-</span><span class="n">call</span><span class="o">-</span><span class="n">parser</span> <span class="n">deepseekv3</span> \
+  <span class="o">--</span><span class="n">chat</span><span class="o">-</span><span class="n">template</span> <span class="o">./</span><span class="n">examples</span><span class="o">/</span><span class="n">chat_template</span><span class="o">/</span><span class="n">tool_chat_template_deepseekv3</span><span class="o">.</span><span class="n">jinja</span>
+</pre></div>
+</div>
+<p>Sample Request:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://127.0.0.1:30000/v1/chat/completions&quot;</span> \
+<span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Content-Type: application/json&quot;</span> \
+<span class="o">-</span><span class="n">d</span> <span class="s1">&#39;{&quot;temperature&quot;: 0, &quot;max_tokens&quot;: 100, &quot;model&quot;: &quot;deepseek-ai/DeepSeek-V3-0324&quot;, &quot;tools&quot;: [{&quot;type&quot;: &quot;function&quot;, &quot;function&quot;: {&quot;name&quot;: &quot;query_weather&quot;, &quot;description&quot;: &quot;Get weather of an city, the user should supply a city first&quot;, &quot;parameters&quot;: {&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: {&quot;city&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The city, e.g. Beijing&quot;}}, &quot;required&quot;: [&quot;city&quot;]}}}], &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hows the weather like in Qingdao today&quot;}]}&#39;</span>
+</pre></div>
+</div>
+<p>Expected Response</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;6501ef8e2d874006bf555bc80cddc7c5&quot;</span><span class="p">,</span><span class="s2">&quot;object&quot;</span><span class="p">:</span><span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span><span class="s2">&quot;created&quot;</span><span class="p">:</span><span class="mi">1745993638</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;deepseek-ai/DeepSeek-V3-0324&quot;</span><span class="p">,</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span><span class="s2">&quot;content&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;reasoning_content&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;function&quot;</span><span class="p">,</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;query_weather&quot;</span><span class="p">,</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="se">\&quot;</span><span class="s2">city</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">Qingdao</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">}}]},</span><span class="s2">&quot;logprobs&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span><span class="s2">&quot;finish_reason&quot;</span><span class="p">:</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">,</span><span class="s2">&quot;matched_stop&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">}],</span><span class="s2">&quot;usage&quot;</span><span class="p">:{</span><span class="s2">&quot;prompt_tokens&quot;</span><span class="p">:</span><span class="mi">116</span><span class="p">,</span><span class="s2">&quot;total_tokens&quot;</span><span class="p">:</span><span class="mi">138</span><span class="p">,</span><span class="s2">&quot;completion_tokens&quot;</span><span class="p">:</span><span class="mi">22</span><span class="p">,</span><span class="s2">&quot;prompt_tokens_details&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">}}</span>
+
+</pre></div>
+</div>
+<p>Sample Streaming Request:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="s2">&quot;http://127.0.0.1:30000/v1/chat/completions&quot;</span> \
+<span class="o">-</span><span class="n">H</span> <span class="s2">&quot;Content-Type: application/json&quot;</span> \
+<span class="o">-</span><span class="n">d</span> <span class="s1">&#39;{&quot;temperature&quot;: 0, &quot;max_tokens&quot;: 100, &quot;model&quot;: &quot;deepseek-ai/DeepSeek-V3-0324&quot;,&quot;stream&quot;:true,&quot;tools&quot;: [{&quot;type&quot;: &quot;function&quot;, &quot;function&quot;: {&quot;name&quot;: &quot;query_weather&quot;, &quot;description&quot;: &quot;Get weather of an city, the user should supply a city first&quot;, &quot;parameters&quot;: {&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: {&quot;city&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The city, e.g. Beijing&quot;}}, &quot;required&quot;: [&quot;city&quot;]}}}], &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hows the weather like in Qingdao today&quot;}]}&#39;</span>
+</pre></div>
+</div>
+<p>Expected Streamed Chunks (simplified for clarity):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;{</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;city&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;Q&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;ing&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;dao&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:[{</span><span class="s2">&quot;function&quot;</span><span class="p">:{</span><span class="s2">&quot;arguments&quot;</span><span class="p">:</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">}}]}}]}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:[{</span><span class="s2">&quot;delta&quot;</span><span class="p">:{</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">}}],</span> <span class="s2">&quot;finish_reason&quot;</span><span class="p">:</span> <span class="s2">&quot;tool_calls&quot;</span><span class="p">}</span>
+<span class="n">data</span><span class="p">:</span> <span class="p">[</span><span class="n">DONE</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The client needs to concatenate all arguments fragments to reconstruct the complete tool call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Qingdao&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Important Notes:</p>
+<ol class="arabic simple">
+<li><p>Use a lower <code class="docutils literal notranslate"><span class="pre">&quot;temperature&quot;</span></code> value for better results.</p></li>
+<li><p>To receive more consistent tool call results, it is recommended to use <code class="docutils literal notranslate"><span class="pre">--chat-template</span> <span class="pre">examples/chat_template/tool_chat_template_deepseekv3.jinja</span></code>. It provides an improved unified prompt.</p></li>
+</ol>
+</section>
+<section id="thinking-budget-for-deepseek-r1">
+<h3>Thinking Budget for DeepSeek R1<a class="headerlink" href="#thinking-budget-for-deepseek-r1" title="Link to this heading">#</a></h3>
+<p>In SGLang, we can implement thinking budget with <code class="docutils literal notranslate"><span class="pre">CustomLogitProcessor</span></code>.</p>
+<p>Launch a server with <code class="docutils literal notranslate"><span class="pre">--enable-custom-logit-processor</span></code> flag on.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">sglang</span><span class="o">.</span><span class="n">launch_server</span> <span class="o">--</span><span class="n">model</span> <span class="n">deepseek</span><span class="o">-</span><span class="n">ai</span><span class="o">/</span><span class="n">DeepSeek</span><span class="o">-</span><span class="n">R1</span> <span class="o">--</span><span class="n">tp</span> <span class="mi">8</span> <span class="o">--</span><span class="n">port</span> <span class="mi">30000</span> <span class="o">--</span><span class="n">host</span> <span class="mf">0.0.0.0</span> <span class="o">--</span><span class="n">mem</span><span class="o">-</span><span class="n">fraction</span><span class="o">-</span><span class="n">static</span> <span class="mf">0.9</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">cuda</span><span class="o">-</span><span class="n">graph</span> <span class="o">--</span><span class="n">reasoning</span><span class="o">-</span><span class="n">parser</span> <span class="n">deepseek</span><span class="o">-</span><span class="n">r1</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">logit</span><span class="o">-</span><span class="n">processor</span>
+</pre></div>
+</div>
+<p>Sample Request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.pretty</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sglang.srt.sampling.custom_logit_processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeepSeekR1ThinkingBudgetLogitProcessor</span>
+
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:30000/v1&quot;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;deepseek-ai/DeepSeek-R1&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Question: Is Paris the Capital of France?&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;custom_logit_processor&quot;</span><span class="p">:</span> <span class="n">DeepSeekR1ThinkingBudgetLogitProcessor</span><span class="p">()</span><span class="o">.</span><span class="n">to_str</span><span class="p">(),</span>
+        <span class="s2">&quot;custom_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;thinking_budget&quot;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading">#</a></h2>
+<p><strong>Q: Model loading is taking too long, and I’m encountering an NCCL timeout. What should I do?</strong></p>
+<p>A: If you’re experiencing extended model loading times and an NCCL timeout, you can try increasing the timeout duration. Add the argument <code class="docutils literal notranslate"><span class="pre">--dist-timeout</span> <span class="pre">3600</span></code> when launching your model. This will set the timeout to one hour, which often resolves the issue.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="sampling_params.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Sampling Parameters</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="deepseek_v32.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">DeepSeek V3.2 Usage</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-deepseek-v3-1-v3-r1-with-sglang">Launch DeepSeek V3.1/V3/R1 with SGLang</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-weights">Download Weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-with-one-node-of-8-x-h200">Launch with one node of 8 x H200</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-examples-on-multi-node">Running examples on Multi-node</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizations">Optimizations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-latent-attention-mla-throughput-optimizations">Multi-head Latent Attention (MLA) Throughput Optimizations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-parallelism-attention">Data Parallelism Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-tensor-parallelism">Multi Node Tensor Parallelism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#block-wise-fp8">Block-wise FP8</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-token-prediction">Multi-token Prediction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-content-for-deepseek-r1-v3-1">Reasoning Content for DeepSeek R1 &amp; V3.1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-calling-for-deepseek-models">Function calling for DeepSeek Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#thinking-budget-for-deepseek-r1">Thinking Budget for DeepSeek R1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faq">FAQ</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023-2025, SGLang.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Dec 09, 2025.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
